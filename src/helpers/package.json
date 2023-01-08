@@ -1,0 +1,53 @@
+{
+  "name": "@wbce/orbits-fuel",
+  "version": "0.0.1",
+  "description": "Flow for DevOps - a simple way to write state machine",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "npx tsc",
+    "publish": "npm run build && npm publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/webcapsule/actions.git"
+  },
+  "author": "la webcapsule",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/webcapsule/actions/issues"
+  },
+  "homepage": "https://gitlab.com/webcapsule/actions#readme",
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.3",
+    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/node16-strictest-esm": "^1.0.3",
+    "@types/jasmine": "^4.3.1",
+    "@types/node": "^18.11.14",
+    "jasmine": "^4.5.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.238.0",
+    "@aws-sdk/client-ecr": "^3.238.0",
+    "@gitbeaker/node": "^35.8.0",
+    "@octokit/auth-token": "^3.0.2",
+    "@types/dockerode": "^3.3.14",
+    "@types/express": "^4.17.15",
+    "@wbce/orbits-core": "^1.0.0",
+    "@wbce/services": "^1.0.0",
+    "aws-cdk-lib": "^2.58.0",
+    "dockerode": "^3.3.4",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.1",
+    "octokit": "^2.0.10",
+    "winston": "^3.8.2"
+  }
+}

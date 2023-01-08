@@ -1,0 +1,15 @@
+{
+    "extends": "@tsconfig/node14/tsconfig.json",
+    "compilerOptions": {
+      "downlevelIteration": true,
+      "importHelpers": true,
+      "incremental": true,
+      "removeComments": true,
+      "resolveJsonModule": true,
+      "rootDir": ".",
+      "useUnknownInCatchVariables": false,
+      "declaration": true,
+      "outDir": "dist"
+    },
+    "exclude": ["specs/", "dist/"]
+  }
