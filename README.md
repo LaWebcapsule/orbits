@@ -35,6 +35,15 @@ npx ts-node-dev main.spec.ts
 ## Contributing
 This repository is open to contributions on all its forms.
 
+### Repository folders
+This git repository manages three packages
+- the core package is under /src/core/actions folder 
+- the fuel package is under /src/helpers folder
+- the service package is under /src/packages/services
+
+Also, there is a /src/examples folder with some examples.
+
+
 ## Roadmap
 > We will complete this soon.
 
