@@ -1,5 +1,5 @@
 # Orbits
-Keep your orbit stable ! A typescript framework for DevOps workflow
+Keep your orbit in the cloud galaxy ! A typescript framework for DevOps workflow
 
 ## Documentation
 
