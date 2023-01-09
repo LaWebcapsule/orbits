@@ -1,10 +1,10 @@
-# App documentation
+# Application documentation
 
-App are here to centralized the imports of Action.
-App are typescript class that extends the `ActionApp` class.
+Application are here to centralize the imports of Action.
+Application are typescript class that extends the `ActionApp` class.
 
 
-# Creating an app
+# Creating an Application
 
 See this example.
 
@@ -17,12 +17,12 @@ export class MyApp extends ActionApp{
 
 When creating an `ActionApp` class, you can complete two properties.
 The `declare` property should be filled with the `Action` class you created. 
-The `imports` property should be filled with `ActionApp` whom you plan to use the declared actions.
+The `imports` property should be filled with `ActionApp` whom you plan to use the declared Actions.
 
-> An action whom its class constructor is not declared in an `ActionApp` cannot be used. This will immediatly emit an error.
+> An Action whom its class constructor is not declared in an `ActionApp` cannot be used. This will immediatly emit an error.
 
 
-# Bootstraping an app
+# Bootstraping an Application
 
 ```typescript 
 @bootstrapApp({
@@ -38,10 +38,10 @@ export class MyApp extends ActionApp{
 }
 ```
 
-In order to bootstapp an app, you have to use the `bootstrapApp` decorator (see ). This method has to be call once and only once by process.
-It's here that you pass a mongo database connection and other parameters (see ).
+In order to bootstapp an Application, you have to use the `bootstrapApp` decorator (see ). This method has to be called only once by process.
+This is where you implement a mongo database connection and other parameters (see ).
 
-To wait for the end of bootstrapping, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first action !
+To wait for the end of bootstrapping, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
 
 ```typescript
 @bootstrapApp({
@@ -62,9 +62,9 @@ ActionApp.waitForActiveApp.then(()=>{
 })
 ```
 
-However, doing like this is problematic, because if a second process run this script a second `MyAction` will be created. It's probably not what you want.
+However, we may keep in mind that if a second process run this script, a second `MyAction` will be created. It's probably not what you want.
 In general :
-- you will set a new action via an external api call
+- you will set a new Action via an external api call
 - or you can do something like this 
 ```typescript
 
@@ -100,8 +100,8 @@ ActionApp.waitForActiveApp.then(()=>{
 
 ## Why we need apps ?
 
-The problem that apps solve is double :
-- when we get an action document from the database, we have to know how to build an action object. This implies to map the `permanentName` property stored in db with a constructor. An app keep a map of declared and imported Action.
+The problem that Applications solve is double :
+- when we get an Action document from the database, we have to know how to build an action object. This implies to map the `permanentName` property stored in db with a constructor. An app keep a map of declared and imported Action.
 - executor can launch action in different context. In consequence, their entrypoint is not the same as the entrypoint of the default context. App keeps trace of their path and the path of the bootstrapped app is passed to an executor. Such a way it can import the app and its differents action.
 
 ## Why we use a decorator ?
