@@ -1,14 +1,14 @@
 # Transaction documentation
 
-Transaction is a way to chain actions. The syntax is similar to how a promise work.
-A transaction is also a specific type of `Action`, so you can chain transactions in other transactions.
+Transaction is a way to chain Actions. The syntax is similar to how a promise work.
+A Transaction is also a specific type of `Action`, so you can chain Transactions in other Transactions.
 
 
 
-# Write a transaction
+# Write a Transaction
 
-A transaction keep an init function like an action.
-A transaction has a define method where you can write your flow of actions.
+A Transaction keeps an init function like an Action.
+A Transaction has a define method where you can write your flow of Actions.
 
 ```typescript
 export class MyTransaction extends Transaction{
@@ -37,9 +37,9 @@ export class MyTransaction extends Transaction{
 
 ## Next, catch and finally
 
-The `next`, `catch` and `finally` methods excepts a callback which return an action or an array of actions or a promise returning an action or an array of actions.  
-They imitates the Promise behaviors.  
-As a consequence, the argument of the callback is the result of the other actions.
+The `next`, `catch` and `finally` methods expects a callback which return an Action or an array of Actions or a promise returning an Action or a promise returning an array of Actions.  
+These methods reproduce the Promise behaviors.  
+As a consequence, the argument of the callback is the result of the other Actions.
 
 ```typescript
 export class MyTransaction extends Transaction{
@@ -61,8 +61,8 @@ export class MyTransaction extends Transaction{
 
 ## GoTo syntax
 
-To add flexibility in how to chain actions, there is also a goTo syntax style.
-You can see it in use in this example.
+To add flexibility on how to chain Actions, there is also a goTo syntax style.
+the syntaxe style is used in the following example.
 
 ```typescript
 export class MyTransaction extends Transaction{
@@ -96,7 +96,7 @@ export class MyTransaction extends Transaction{
 
 # Rollback
 
-Transaction are always candidate to rollback. You can specify how to rollback an action with the `rollback` method.
+Transactions are always candidates to rollback. You can specify how to rollback an Action with the `rollback` method.
 
 ```typescript
 
