@@ -1,11 +1,11 @@
 # Executor
 
-Executor allows action to be run in specific context. For example, assume you want to build an app and this process requires external dependencies, like grunt, java, composer...
-You can specify that an action will be run in a docker or in a lambda or in any other managed by an executor.
+Executor allows Action to be run in a specific context. For example, assume you want to build an app and this process requires external dependencies, like grunt, java, composer...
+You can specify that an Action will be run in a docker or in a lambda or in any other context managed by an executor.
 
-# Specify an executor
+# Specify an Executor
 
-You only need to add to the action class
+You only need to add to the Action class
 
 ```typescript
 
@@ -18,9 +18,9 @@ export class MyAction extends Action{
 
 ```
 
-Sometimes, an executor needs some installation before being able to be called.
+Sometimes, an Executor needs some installation before being able to be called.
 This installation can include building a docker image, deploying a cdk...
-As a consequence an executor has an install method which return an action.
+As a consequence, an Executor has an install method which return an Action.
 
 ```typescript
 const dockerExecutor = new DockerExecutor({
@@ -30,7 +30,7 @@ const installAction = dockerExecutor.install()
 
 ```
 
-You should consume the install action before doing any use of the executor.
+You should consume the install Action before doing any use of the Executor.
 Example : 
 ```typescript
 
@@ -49,6 +49,6 @@ export class MyBuildPipeline extends Transaction{
 ```
 
 
-# Write your own executor.
+# Write your own Executor.
 
-Writing your own executor is a bit more complex than consuming an executing one.
+Writing your own Executor is a bit more complex than consuming an executing one.
