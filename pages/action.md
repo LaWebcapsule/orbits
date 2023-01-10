@@ -1,17 +1,17 @@
 # Action documentation
 
 Actions are the finest granular level of Orbits.  
-An action represents the eventual completion (or failure) of an operation.
-It stores its state in a database to be able to retrieve it despite of process failures or network incidents.
+An Action represents the potential completion (or failure) of an operation.
+It stores the state of an operation in a database to be able to retrieve it despite of process failures or network incidents.
 Moreover, it has a lock management that guarantees the consistness of the flow.
 
 # Concepts
-See the [conceptual documentation](./action-in-depth.md) for understanding how actions work.
+See the [conceptual documentation](./action-in-depth.md) for a better understanding on how Actions work.
 
-# Write your first action
-Action is good to follow the state of an external process.
+# Write your first Action
+As stated, Action allows you to follow the state of an external process.
 The following example is fictive ; you can see real world example in the example folder.
-Assume we have a library ; let's write an action which launch a delivery command and success if the delivery go to its term, fail if not. 
+We assume we have a library ; let's write an Action that launches a delivery command and success if the delivery go to its term, fail if not. 
 
 
 Step 1 : extends the Action class
@@ -23,9 +23,9 @@ export class MyFirstAction extends Action{
     static permanentName: 'my-first-action'
 }
 ```
-The actionRef is important. When an action document is stored on the database, the actionRef is also stored. When orbits retrieve the document from the database, it will use this property to know which constructor it should call.
-As a consequence, you should not modifiy the permanentName. Think about it like an id you give to your action - it has no other utility. 
-If you don't specify any name, the name of the class will be use but this is more susceptible to change.
+The actionRef is important. When an Action document is stored in the database, the actionRef is also stored. When orbits retrieve the document from the database, it will use this property to know which constructor it should call.
+As a consequence, you may not want to modifiy the permanentName. Think about it as an id you give to your Action - it is its only purpose. 
+If you don't specify any name, the name of the class will be use as default but this is more likely to change.
 
 
 Step 2: choose the form of your argument, bag and result
@@ -91,7 +91,7 @@ export class MyFirstAction extends Action{
 ```
 
 Step 4: write the main method
-The main method will be called only once during all the lifecycle of an action
+The main method will be called only once during the whole lifecycle of an Action
 
 ```typescript
 import {Action} from '@orbits/core'
@@ -199,10 +199,10 @@ export class MyFirstAction extends Action{
 ```
 
 Step 5: 
-What happens in case that the createCommand worked but, because of a failure, the commandId was not stored in our action database ?
+What happens if a createCommand worked but, because of a failure, the commandId was not stored in our action database ?
 You should write a specific case for this in the watcher.
-Depending on the api consumes, there is two stategies.
-Sometimes the api allows you to set an id on the resource you created. In this case, you already have the id and just need to retrieve it.
+Depending on the api consumes, there are two stategies.
+Sometimes api allows you to set an id on the resource you created. In this case, you already have the id and just need to retrieve it.
 Example would be :
  ```typescript
     //set the id
@@ -213,7 +213,7 @@ Example would be :
 
  ```
 
- In most case, you have to write a custom logic. An example can be this :
+ In most case, you have to write a custom logic. As an example :
 ```typescript
 export class MyFirstAction extends Action{
     //....
@@ -261,20 +261,20 @@ export class MyFirstApp extends ActionApp{
 }
 ```
 
-# Other parameters to know about
+# Other parameters to be aware of
 
 ## cronActivity
 
-The `resume` method will be call at regular time.
+The `resume` method will be regularly called.
 The Orbits cron will call it when the current date is superior to `cronActivity.nextActivity`.
-You can dinamically modify this property.
-By default, each time `resume()` will be called, this date will be updated to the current time more the `cronActivity.frequency` number. You can dinamically modify this property.
+You can dynamically modify this property.
+By default, each time `resume()` will be called, this date will be updated to the current time plus the `cronActivity.frequency` value. You can dynamically modify this property.
 By default, the `cronActivity` get its value from the `defaultCronActivity` property in the class.
 
 ## delays
 
 Delays represents the amount of time an action can spend in a certain state.
-You can set default delays via the `defaultDelays` property. It excepts an object of type
+You can set default delays via the `defaultDelays` property. It expects an object of type
 ```typescript
 {
     [ActionState.IN_PROGRESS] : 10*60*1000,
@@ -283,12 +283,12 @@ You can set default delays via the `defaultDelays` property. It excepts an objec
 ```
 
 
-# Rolling back an action
+# Rolling back an Action
 
-You can rollback an action by passing :
+You can rollback an Action by passing :
 - a `rollback` method to the class
 - a `RollBackAction` to the class
-See the [api documentation](./../docs/classes/Action.md) for more information.
+See the [api documentation](./../docs/classes/Action.md) for further information.
 
 
 # In depth 
