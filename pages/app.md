@@ -98,13 +98,14 @@ ActionApp.waitForActiveApp.then(()=>{
 
 # In depth
 
-## Why we need apps ?
+## Why we need Applications ?
 
-The problem that Applications solve is double :
-- when we get an Action document from the database, we have to know how to build an action object. This implies to map the `permanentName` property stored in db with a constructor. An app keep a map of declared and imported Action.
-- executor can launch action in different context. In consequence, their entrypoint is not the same as the entrypoint of the default context. App keeps trace of their path and the path of the bootstrapped app is passed to an executor. Such a way it can import the app and its differents action.
+Applications solve two major issues :
+- When we get an Action document from the database, we have to know how to build an Action object. This implies to map the `permanentName` property stored in the database with a constructor. An Application keep a map of declared and imported Action.
+- Executors can launch Actions in different context. As a consequence, their inputs may be different from the default context's inputs. Application keeps track of both their own path and the path of the bootstrapped Application passed to an executor. This way, an executor can import the Application and its different Action.
 
-## Why we use a decorator ?
+
+## Why we use a Decorator ?
 
 We could do something like :
 
@@ -117,8 +118,8 @@ export class MyApp extends ActionApp{
 const myApp = new MyApp();
 myApp.bootstrap.then(....)
 ```
-The problem is that this could lead to the app being dynamically bootstrapped on some api call, manual user call... 
-Nevertheless, other process, like executor, can be launched, which should have a simple way to bootstrap the app.
-A decorator force the app to be bootstrapped just after the process start. 
-This also explain why we extends class everywhere in the framework. We wanted a way to be sure that all objects are defined at the beginning of a process and class can't be created dynamically.
+Unfortunatly this could lead to the Application being dynamically bootstrapped by some api call, manual user call... 
+Nevertheless, other process, like executor, can be launched, which should have a simple way to bootstrap the Application.
+A Decorator force the Application to be bootstrapped just after the process starts. 
+This also explains why we extend class everywhere in the framework. We wanted a way to be sure that all objects are defined at the beginning of a process and class can't be created dynamically.
 Moreover, the decorator allows us to keep trace of the code path and could permit a more complex Action dependency injector.
