@@ -69,24 +69,21 @@ You can know more about this [here](./executor.md)
 ---> :construction_worker: Work in Progress ; we would be please to find contributors to go quicker.
 
 ### Cdk
+
 The philosophy of this framework is near the philosophy of the cdk.
 The two couples quite well and Orbits allow you use to programmatically manage a cdk app.
-You can see an example here :
+You can see an example [here](./../src/examples/git-cdk-s3/)
 
 ### Git integration
  
-There are standard actions that allows to keep track of a repository states and to wait for some git events (new commits...)
+There are standard actions that allows to keep track of a repository states and to wait for some git events (new commits...).
 
 ---> :construction_worker: Work in Progress ; we would be please to find contributors to go quicker.
 
 # Get startted
 
-You can read :
-- this
-- this
-
 # Examples
 
-- Cdk example :
-- Git example :
-- Whole pipeline example :
+- [Cdk example](./../src/examples/git-cdk-s3/)
+- Git example : pending writing
+- Whole pipeline example : pending writing
