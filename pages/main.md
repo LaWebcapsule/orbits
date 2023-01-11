@@ -38,7 +38,7 @@ An orbit pipeline has three main concepts.
 
 ## Actions
 
-Actions are the building blocks of an orbit workflow. An action includes a typescript class that extends the `Action` core class. An action launch a command on a specific resource (creating an order, installing a new software on a machine, launching a Docker process...) and track the state of this command until it succeeds or fails. An action is a great way to follow the state of process that doesn't answer instantly.
+Actions are the building blocks of an orbit workflow. An action includes a typescript class that extends the `Action` core class. An action launch a command on a specific resource (creating an order, installing a new software on a machine, launching a Docker process...) and track the state of this command until it succeeds or fails. An action is a great way to follow the state of a process that doesn't terminate instantly.
 
 You can know more about this [here](./action.md).
 
@@ -46,7 +46,7 @@ You can know more about this [here](./action.md).
 
 Once you have written the actions that will compose your app (payment order, cdk deploying, signs process), you can chain and orchestrate them within a transaction.
 A transaction includes a typescript class that extends the `Transaction` core class.
-Transaction allows to chain action in a Promise-like style, except that you have the guarantee of consistness even if your current process crashes.
+Transaction allows to chain action in a Promise-like style, except that you have the guarantee of consistency even if your current process crashes.
 
 You can know more about this [here](./transaction.md).
 
@@ -63,14 +63,14 @@ Additionnally, you will probably need to know about this points.
 ### Executors
 
 Executors are a way to launch part of your workflow in a specific execution context (Docker, Lambda...). 
-As a consequence, orbit give you a full and customizable control over your pipeline. You can custom the policies rights access at a granular level in your pipeline.
+As a consequence, Orbits give you a full and customizable control over your pipeline. You can custom the rights access at a granular level in your pipeline and give an action specific policies.
 You can know more about this [here](./executor.md)
 
 ---> :construction_worker: Work in Progress ; we would be please to find contributors to go quicker.
 
 ### Cdk
 The philosophy of this framework is near the philosophy of the cdk.
-The two couples quite well and Orbit allows you use to programmatically manage a cdk app.
+The two couples quite well and Orbits allow you use to programmatically manage a cdk app.
 You can see an example here :
 
 ### Git integration

@@ -41,7 +41,7 @@ export class MyApp extends ActionApp{
 In order to bootstapp an Application, you have to use the `bootstrapApp` decorator (see ). This method has to be called only once by process.
 This is where you implement a mongo database connection and other parameters (see ).
 
-To wait for the end of bootstrapping, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
+To wait for the end of the bootstrapping process, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
 
 ```typescript
 @bootstrapApp({

@@ -7,8 +7,8 @@ A Transaction is also a specific type of `Action`, so you can chain Transactions
 
 # Write a Transaction
 
-A Transaction keeps an init function like an Action.
-A Transaction has a define method where you can write your flow of Actions.
+A Transaction, same as an `Action`, have an `init()` method.
+A Transaction also have a `define()` method where you can write your flow of Actions.
 
 ```typescript
 export class MyTransaction extends Transaction{
@@ -62,7 +62,7 @@ export class MyTransaction extends Transaction{
 ## GoTo syntax
 
 To add flexibility on how to chain Actions, there is also a goTo syntax style.
-the syntaxe style is used in the following example.
+This syntaxe style is used in the following example.
 
 ```typescript
 export class MyTransaction extends Transaction{
@@ -70,7 +70,7 @@ export class MyTransaction extends Transaction{
     define(){
         this.name("first step")
             .next(()=>{
-                return Action.reject({error : "first"})
+                return Action.resolve({success : "first"})
             })
             .name("second step")
             .next(()=>{
@@ -96,7 +96,7 @@ export class MyTransaction extends Transaction{
 
 # Rollback
 
-Transactions are always candidates to rollback. You can specify how to rollback an Action with the `rollback` method.
+Transactions are always candidates to rollback. You can specify how to rollback an Action with the `rollback()` method.
 
 ```typescript
 
