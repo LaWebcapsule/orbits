@@ -1,4 +1,4 @@
-import { Transaction } from "@wbce/actions";
+import { Action, Transaction } from "@wbce/actions";
 import { CdkBoostrapAction, CdkHelper, CdkHelperApp } from "@wbce/helpers";
 import { CdkBootstrapFrontStack, CdkDeployFrontStack } from "./cdk-stack/cdk-action";
 import * as s3Client from "@aws-sdk/client-s3"
@@ -50,7 +50,9 @@ export class CiPipeline extends Transaction{
                     Key: 'test'
     
                 })
-                s3Client.send(command)
+                return s3Client.send(command);
+            }).then(()=>{
+                return Action.resolve();
             }).catch(err=>{
                 console.log(err);
                 throw err;
