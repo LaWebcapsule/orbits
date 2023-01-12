@@ -1,5 +1,5 @@
 import { BootstrapTestStack, DeployTestStack, DockerAction } from "./actions-test";
-import {ActionState} from "@wbce/actions";
+import {ActionState} from "@wbce/orbits-core";
 
 describe("Test action", ()=>{
     let testAction = new DeployTestStack();

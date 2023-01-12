@@ -1,4 +1,4 @@
-import { ActionApp } from '@wbce/actions';
+import { ActionApp } from '@wbce/orbits-core';
 import {DockerBuildAction} from './docker-executor/docker-build-action' 
 
 export * from './docker-executor/docker-executor'

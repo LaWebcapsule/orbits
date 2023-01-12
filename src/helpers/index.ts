@@ -4,7 +4,7 @@ export * from './src/standards-actions/cdk/cdk-action'
 export * from './src/standards-actions/cdk/cdk-helper'
 
 
-import {ActionApp} from '@wbce/actions'
+import {ActionApp} from '@wbce/orbits-core'
 import { ExecutorHelperApp } from './src/executors/index'
 import { GitHelperApp } from './src/git-actions/gitcenter'
 import { CdkHelperApp } from './src/standards-actions/cdk/cdk-action'

@@ -1,4 +1,4 @@
-import { ActionApp } from "@wbce/actions";
+import { ActionApp } from "@wbce/orbits-core";
 import { AddGitWebHookAction, WaitForNewCommits } from "./gitactions";
 import { GithubApi } from "./github";
 import { GitlabApi } from "./gitlab";

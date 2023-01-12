@@ -1,4 +1,4 @@
-import { Executor, Action, ActionApp } from "@wbce/actions";
+import { Executor, Action, ActionApp } from "@wbce/orbits-core";
 import {o} from "@wbce/services";
 import Docker from "dockerode";
 import path from "path";

@@ -1,4 +1,4 @@
-import {Action, ActionState, ActionApp, bootstrapApp} from '@wbce/actions'
+import {Action, ActionState, ActionApp, bootstrapApp} from '@wbce/orbits-core'
 import {Cli} from '@wbce/services'
 import {DockerExecutor, EcrRegistry, PublicRegistry} from './../index'
 import * as cdk from 'aws-cdk-lib'

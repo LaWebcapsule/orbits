@@ -1,4 +1,4 @@
-import {Action} from "@wbce/actions";
+import {Action} from "@wbce/orbits-core";
 import { DockerExecutor } from "./docker-executor";
 import { EcrRegistry } from "./ecr-registry";
 import Docker from "dockerode"

@@ -1,6 +1,6 @@
 console.log("inside main spec 1 !!!")
 import jasmin from "jasmine";
-import { bootstrapApp, ActionApp } from "@wbce/actions";
+import { bootstrapApp, ActionApp } from "@wbce/orbits-core";
 import { DockerAction } from "./actions-test";
 let j = new jasmin();
 

@@ -1,5 +1,5 @@
-import { Action, ActionApp, bootstrapApp } from "@wbce/actions";
-import { CdkDeployAction, CdkHelperApp } from "@wbce/helpers";
+import { Action, ActionApp, bootstrapApp } from "@wbce/orbits-core";
+import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
 import { CdkBootstrapFrontStack, CdkDeployFrontStack } from "./src/cdk-stack/cdk-action";
 import {CiPipeline} from "./src/main-transaction";
 

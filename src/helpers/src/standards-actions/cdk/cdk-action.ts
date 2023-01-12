@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState } from "@wbce/actions";
+import { Action, ActionApp, ActionState } from "@wbce/orbits-core";
 import { Cli } from "@wbce/services";
 import * as cdk from "aws-cdk-lib"
 import { existsSync, readFileSync } from "fs";

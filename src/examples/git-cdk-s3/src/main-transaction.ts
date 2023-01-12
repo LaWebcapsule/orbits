@@ -1,5 +1,5 @@
-import { Action, Transaction } from "@wbce/actions";
-import { CdkBoostrapAction, CdkHelper, CdkHelperApp } from "@wbce/helpers";
+import { Action, Transaction } from "@wbce/orbits-core";
+import { CdkBoostrapAction, CdkHelper, CdkHelperApp } from "@wbce/orbits-fuel";
 import { CdkBootstrapFrontStack, CdkDeployFrontStack } from "./cdk-stack/cdk-action";
 import * as s3Client from "@aws-sdk/client-s3"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";

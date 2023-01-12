@@ -1,4 +1,4 @@
-import { Action, ActionApp } from "@wbce/actions";
+import { Action, ActionApp } from "@wbce/orbits-core";
 import * as express from "express"
 import { ActionApi } from "./rest-skeleton";
 
