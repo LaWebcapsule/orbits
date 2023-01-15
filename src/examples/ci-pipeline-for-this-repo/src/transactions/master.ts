@@ -28,6 +28,9 @@ export class MasterWorkflow extends Transaction{
         }).next(([commits])=>{
             const lastCommit = commits.pop();
             this.bag.lastCommit = lastCommit;
+            //Note : we could use semantic release to publish new versions
+            //but because of this : https://dev.to/antongolub/the-chronicles-of-semantic-release-and-monorepos-5cfc
+            //we only use semantic release to give us the new versions names of the different packages.
             return semanticRelease(this.semanticReleaseConfiguration, {}).then((result)=>{
 
             })
