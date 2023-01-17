@@ -3,7 +3,7 @@ import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
 import { PublishNpmPackage } from "./src/actions/publish-npm-package";
 import { RunTest } from "./src/actions/run-tests";
 import { UpdateNpmVersions } from "./src/actions/update-npm-versions";
-import {CiPipeline} from "./src/main-transaction";
+import { MasterWorkflow } from "./src/transactions/master";
 
 const url = `mongodb://localhost:27017/${process.env['mongo_database'] || 'example'}`
 
@@ -15,10 +15,10 @@ const url = `mongodb://localhost:27017/${process.env['mongo_database'] || 'examp
     }
 })
 export class ExampleApp extends ActionApp{
-    declare = [CiPipeline, PublishNpmPackage, RunTest, UpdateNpmVersions]
+    declare = [PublishNpmPackage, RunTest, UpdateNpmVersions, MasterWorkflow]
     imports: (typeof ActionApp)[]= [CdkHelperApp];
 }
-/* 
+
 ActionApp.waitForActiveApp.then(()=>{
     console.log("waitforactive app")
     ActionApp.activeApp.ActionModel.findOne({
@@ -26,19 +26,16 @@ ActionApp.waitForActiveApp.then(()=>{
             main : true
         }
     }).then((actionDb)=>{
-        console.log("actionDbFinding")
         if(actionDb){
-            //action already exists
             const action = Action.constructFromDb(actionDb);
             action.resume();
             return;
         }
         //create main action
-        const pipeline = new CiPipeline();
+        const pipeline = new MasterWorkflow();
         pipeline.setFilter({
             main : true
         })
         pipeline.dbDoc.save();
     })
 })
- */

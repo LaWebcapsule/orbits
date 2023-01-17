@@ -7,13 +7,15 @@ import { readFileSync, writeFileSync } from "fs"
 export class UpdateNpmVersions extends Action{
 
     executor = new DockerExecutor({
-        registry : new PublicRegistry('node')
+        registry : new PublicRegistry('node','16.14.2')
     })
 
     IArgument : {
         versions : {
-            packageJsonPath : string,
-            vName : string
+            relativePackageDir : string,
+            version? : string,
+            type : string,//'patch' or 'fix' or ...
+            notes? : string
         }[]
     }
 
@@ -24,26 +26,38 @@ export class UpdateNpmVersions extends Action{
     }
 
     init(){
+        console.log(process.env);
         return this.cli.command("git",  ["config", "--global", "user.name", process.env['git_user']!] ).then(()=>{
             return this.cli.command("git",  ["config", "--global", "user.password", process.env['git_pwd']!] )
+        }).then(()=>{
+            return this.cli.command("git",  ["config", "--global", "user.email", 'test_mail@mail.com'] )
         })
     }
 
 
     main(){
         //we could also modify the files directly via the github api in order to save one clone operation.
-        return this.cli.command("git", ["clone", "https://github.com/semantic-release/semantic-release.git", "/tmp/orbits"]).then(()=>{
+        console.log("update start ************************")
+        return this.cli.command("git", ["clone", "https://github.com/LaWebcapsule/orbits-fork.git", "/tmp/orbits"]).then(()=>{
             process.chdir("/tmp/orbits")
+            this.cli.command("ls", ["-al"]);
         }).then(()=>{
+            let changeVersion = Promise.resolve();
             for(const version of this.argument.versions){
-                this.changeVersion(version.packageJsonPath, version.vName);
+                changeVersion = changeVersion.then(()=>{
+                    process.chdir(`/tmp/orbits/${version.relativePackageDir}`);
+                    console.log("version updating **********************")
+                    return this.cli.command("npm", ["version", version.type])
+                })
             }
+            return changeVersion;
         }).then(()=>{
-            let commitMessage = "ci(sem-vers): update ${this.argument.versions.length} packages\n";
+            let commitMessage = "ci(sem-vers): update ${this.argument.versions.length} packages.json\n";
             for(const version of this.argument.versions){
-                commitMessage += ` ${version.packageJsonPath}--> ${version.vName}\n`
+                commitMessage += ` ${version.relativePackageDir} : ${version.type}\n`
+                commitMessage += version.notes
             }
-            return this.cli.command("git", ["commit", "-a", "-m"])
+            return this.cli.command("git", ["commit", "-a", "-m", commitMessage])
         })
         .then(()=>{
             return this.cli.command("git", ["push"]);

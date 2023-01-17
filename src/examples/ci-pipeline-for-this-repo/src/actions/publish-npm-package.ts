@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync } from "fs";
 export class PublishNpmPackage extends Action{
 
     executor = new DockerExecutor({
-        registry : new PublicRegistry('node')
+        registry : new PublicRegistry('node','16.14.2')
     })
 
     IArgument : {
