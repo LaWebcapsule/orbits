@@ -9,7 +9,7 @@ This example deploy a front stack (cloudfront+s3 bucket) and, after the deployme
 
 ## Architecture
 - ./src/cdk-stack/cdk-stack.ts contains the cdk stack class.
-- ./src/cdk-stack/cdk-stack.ts contains the Action class that allow to deploy the cdk stack.
+- ./src/cdk-stack/cdk-action.ts contains the Action class that allow to deploy the cdk stack.
 - ./src/main-transaction.ts contains our main workflow.
 - ./index.ts contains the bootstrapping process
 
