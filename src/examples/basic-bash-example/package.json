@@ -1,0 +1,38 @@
+{
+  "name": "@wbce/orbits-examples-basic-bash-example",
+  "version": "0.0.1",
+  "description": "Flow for DevOps - a simple way to write state machine",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "run": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/webcapsule/actions.git"
+  },
+  "author": "la webcapsule",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/webcapsule/actions/issues"
+  },
+  "homepage": "https://gitlab.com/webcapsule/actions#readme",
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.3",
+    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/node16-strictest-esm": "^1.0.3",
+    "@types/jasmine": "^4.3.1",
+    "@types/node": "^18.11.14",
+    "jasmine": "^4.5.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@wbce/orbits-core": "^0.0.2",
+    "@wbce/orbits-fuel": "^0.0.3",
+    "winston": "^3.8.2"
+  }
+}
