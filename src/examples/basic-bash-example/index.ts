@@ -1,7 +1,7 @@
 import { Action, ActionApp, bootstrapApp } from "@wbce/orbits-core";
-import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
-import {CiPipeline} from "./src/main-workflow";
+import {CiPipeline} from "./src/main-transaction";
 import { PrintAction } from "./src/actions/print-action";
+import { WaitAction } from "./src/actions/wait-action";
 
 @bootstrapApp({
     db : {
@@ -11,7 +11,7 @@ import { PrintAction } from "./src/actions/print-action";
     }
 })
 export class ExampleApp extends ActionApp{
-    declare = [CiPipeline, PrintAction]
+    declare = [CiPipeline, PrintAction, WaitAction]
 }
 
 ActionApp.waitForActiveApp.then(()=>{
@@ -22,12 +22,7 @@ ActionApp.waitForActiveApp.then(()=>{
         }
     }).then((actionDb)=>{
         console.log("actionDbFinding")
-        if(actionDb){
-            //action already exists
-            const action = Action.constructFromDb(actionDb);
-            action.resume();
-            return;
-        }
+        
         //create main action
         const pipeline = new CiPipeline();
         pipeline.setFilter({

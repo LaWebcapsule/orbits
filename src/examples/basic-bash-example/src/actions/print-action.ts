@@ -8,7 +8,7 @@ export class PrintAction extends Action{
     }
 
     main(){
-            console.log(this.argument.toPrint);
+            console.log('\x1b[36m%s\x1b[0m', this.argument.toPrint);
             return ActionState.SUCCESS;
         }
 
