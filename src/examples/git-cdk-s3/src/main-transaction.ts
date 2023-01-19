@@ -1,4 +1,4 @@
-import { Action, Transaction } from "@wbce/orbits-core";
+import { Action, Workflow } from "@wbce/orbits-core";
 import { CdkBoostrapAction, CdkHelper, CdkHelperApp } from "@wbce/orbits-fuel";
 import { CdkBootstrapFrontStack, CdkDeployFrontStack } from "./cdk-stack/cdk-action";
 import * as s3Client from "@aws-sdk/client-s3"
@@ -11,7 +11,7 @@ const defaultEnv = {
     region : 'eu-west-3'
 }
 
-export class CiPipeline extends Transaction{
+export class CiPipeline extends Workflow{
 
     define(){
         const stackName = 'my-first-pipe';

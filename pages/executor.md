@@ -45,7 +45,7 @@ You should consume the install Action before doing any use of the Executor.
 Example : 
 ```typescript
 
-export class MyBuildPipeline extends Transaction{
+export class MyBuildPipeline extends Workflow{
 
     define(){
         this.next(()=>{

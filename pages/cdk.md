@@ -14,10 +14,10 @@ export class DeployMyStack extends CdkDeploy{
 }
 ```
 
-# Four step : (optional) create a transaction
+# Four step : (optional) create a workflow
 
 ```typescript
-export class MyPipeline extends Transaction{
+export class MyPipeline extends Workflow{
 
     define(){
         this.next(()=>{

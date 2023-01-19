@@ -14,7 +14,7 @@ You can read more here :
 
 ## Hierarchy
 
-- [`Transaction`](Transaction.md)
+- [`Workflow`](Workflow.md)
 
   ↳ **`RevertAction`**
 
@@ -30,7 +30,7 @@ You can read more here :
 - [IBag](RevertAction.md#ibag)
 - [IResult](RevertAction.md#iresult)
 - [RollBackAction](RevertAction.md#rollbackaction)
-- [RollBackTransaction](RevertAction.md#rollbacktransaction)
+- [RollBackWorkflow](RevertAction.md#rollbackworkflow)
 - [app](RevertAction.md#app)
 - [cronDefaultSettings](RevertAction.md#crondefaultsettings)
 - [dBSession](RevertAction.md#dbsession)
@@ -61,7 +61,7 @@ You can read more here :
 - [catch](RevertAction.md#catch)
 - [changeState](RevertAction.md#changestate)
 - [checkPoint](RevertAction.md#checkpoint)
-- [createRollBackTransaction](RevertAction.md#createrollbacktransaction)
+- [createRollBackWorkflow](RevertAction.md#createrollbackworkflow)
 - [declareActionEnd](RevertAction.md#declareactionend)
 - [declareActionStart](RevertAction.md#declareactionstart)
 - [define](RevertAction.md#define)
@@ -112,11 +112,11 @@ You can read more here :
 
 #### Inherited from
 
-[Transaction](Transaction.md).[constructor](Transaction.md#constructor)
+[Workflow](Workflow.md).[constructor](Workflow.md#constructor)
 
 #### Defined in
 
-[src/transaction-manager.ts:46](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L46)
+[src/workflow-manager.ts:46](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L46)
 
 ## Properties
 
@@ -134,11 +134,11 @@ Interface of the argument of the action
 
 #### Overrides
 
-[Transaction](Transaction.md).[IArgument](Transaction.md#iargument)
+[Workflow](Workflow.md).[IArgument](Workflow.md#iargument)
 
 #### Defined in
 
-[src/transaction-manager.ts:462](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L462)
+[src/workflow-manager.ts:462](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L462)
 
 ___
 
@@ -161,11 +161,11 @@ Interface of the bag of the action
 
 #### Inherited from
 
-[Transaction](Transaction.md).[IBag](Transaction.md#ibag)
+[Workflow](Workflow.md).[IBag](Workflow.md#ibag)
 
 #### Defined in
 
-[src/transaction-manager.ts:32](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L32)
+[src/workflow-manager.ts:32](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L32)
 
 ___
 
@@ -177,7 +177,7 @@ Interface of the result of the action
 
 #### Inherited from
 
-[Transaction](Transaction.md).[IResult](Transaction.md#iresult)
+[Workflow](Workflow.md).[IResult](Workflow.md#iresult)
 
 #### Defined in
 
@@ -193,7 +193,7 @@ The action that rollback this action.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[RollBackAction](Transaction.md#rollbackaction)
+[Workflow](Workflow.md).[RollBackAction](Workflow.md#rollbackaction)
 
 #### Defined in
 
@@ -201,17 +201,17 @@ The action that rollback this action.
 
 ___
 
-### RollBackTransaction
+### RollBackWorkflow
 
-• **RollBackTransaction**: typeof [`RevertTransaction`](RevertTransaction.md) = `RevertTransaction`
+• **RollBackWorkflow**: typeof [`RevertWorkflow`](RevertWorkflow.md) = `RevertWorkflow`
 
 #### Inherited from
 
-[Transaction](Transaction.md).[RollBackTransaction](Transaction.md#rollbacktransaction)
+[Workflow](Workflow.md).[RollBackWorkflow](Workflow.md#rollbackworkflow)
 
 #### Defined in
 
-[src/transaction-manager.ts:386](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L386)
+[src/workflow-manager.ts:386](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L386)
 
 ___
 
@@ -221,7 +221,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[app](Transaction.md#app)
+[Workflow](Workflow.md).[app](Workflow.md#app)
 
 #### Defined in
 
@@ -248,7 +248,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 #### Inherited from
 
-[Transaction](Transaction.md).[cronDefaultSettings](Transaction.md#crondefaultsettings)
+[Workflow](Workflow.md).[cronDefaultSettings](Workflow.md#crondefaultsettings)
 
 #### Defined in
 
@@ -262,11 +262,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[dBSession](Transaction.md#dbsession)
+[Workflow](Workflow.md).[dBSession](Workflow.md#dbsession)
 
 #### Defined in
 
-[src/transaction-manager.ts:26](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L26)
+[src/workflow-manager.ts:26](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L26)
 
 ___
 
@@ -278,7 +278,7 @@ The database document of this action.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[dbDoc](Transaction.md#dbdoc)
+[Workflow](Workflow.md).[dbDoc](Workflow.md#dbdoc)
 
 #### Defined in
 
@@ -298,11 +298,11 @@ Action.defaultDelays[ActionState.IN_PROGRESS]
 
 #### Inherited from
 
-[Transaction](Transaction.md).[defaultDelay](Transaction.md#defaultdelay)
+[Workflow](Workflow.md).[defaultDelay](Workflow.md#defaultdelay)
 
 #### Defined in
 
-[src/transaction-manager.ts:23](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L23)
+[src/workflow-manager.ts:23](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L23)
 
 ___
 
@@ -328,7 +328,7 @@ You should modify this if your actions have longer timeouts.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[defaultDelays](Transaction.md#defaultdelays)
+[Workflow](Workflow.md).[defaultDelays](Workflow.md#defaultdelays)
 
 #### Defined in
 
@@ -342,11 +342,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[docsToSaveAtStepStart](Transaction.md#docstosaveatstepstart)
+[Workflow](Workflow.md).[docsToSaveAtStepStart](Workflow.md#docstosaveatstepstart)
 
 #### Defined in
 
-[src/transaction-manager.ts:28](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L28)
+[src/workflow-manager.ts:28](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L28)
 
 ___
 
@@ -358,7 +358,7 @@ Specify an executor in which all actions of this class will run.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[executor](Transaction.md#executor)
+[Workflow](Workflow.md).[executor](Workflow.md#executor)
 
 #### Defined in
 
@@ -372,7 +372,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[isInitialised](Transaction.md#isinitialised)
+[Workflow](Workflow.md).[isInitialised](Workflow.md#isinitialised)
 
 #### Defined in
 
@@ -386,7 +386,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:466](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L466)
+[src/workflow-manager.ts:466](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L466)
 
 ___
 
@@ -396,11 +396,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[steps](Transaction.md#steps)
+[Workflow](Workflow.md).[steps](Workflow.md#steps)
 
 #### Defined in
 
-[src/transaction-manager.ts:30](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L30)
+[src/workflow-manager.ts:30](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L30)
 
 ___
 
@@ -414,7 +414,7 @@ See :
 
 #### Inherited from
 
-[Transaction](Transaction.md).[permanentRef](Transaction.md#permanentref)
+[Workflow](Workflow.md).[permanentRef](Workflow.md#permanentref)
 
 #### Defined in
 
@@ -432,7 +432,7 @@ See :
 
 #### Inherited from
 
-Transaction.\_id
+Workflow.\_id
 
 #### Defined in
 
@@ -450,7 +450,7 @@ ___
 
 #### Inherited from
 
-Transaction.argument
+Workflow.argument
 
 #### Defined in
 
@@ -470,7 +470,7 @@ Transaction.argument
 
 #### Inherited from
 
-Transaction.argument
+Workflow.argument
 
 #### Defined in
 
@@ -488,7 +488,7 @@ ___
 
 #### Inherited from
 
-Transaction.bag
+Workflow.bag
 
 #### Defined in
 
@@ -508,7 +508,7 @@ Transaction.bag
 
 #### Inherited from
 
-Transaction.bag
+Workflow.bag
 
 #### Defined in
 
@@ -526,7 +526,7 @@ ___
 
 #### Inherited from
 
-Transaction.cronActivity
+Workflow.cronActivity
 
 #### Defined in
 
@@ -546,7 +546,7 @@ Transaction.cronActivity
 
 #### Inherited from
 
-Transaction.cronActivity
+Workflow.cronActivity
 
 #### Defined in
 
@@ -564,11 +564,11 @@ ___
 
 #### Inherited from
 
-Transaction.isRollBackPossible
+Workflow.isRollBackPossible
 
 #### Defined in
 
-[src/transaction-manager.ts:372](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L372)
+[src/workflow-manager.ts:372](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L372)
 
 ___
 
@@ -582,7 +582,7 @@ ___
 
 #### Inherited from
 
-Transaction.repeat
+Workflow.repeat
 
 #### Defined in
 
@@ -602,7 +602,7 @@ Transaction.repeat
 
 #### Inherited from
 
-Transaction.repeat
+Workflow.repeat
 
 #### Defined in
 
@@ -620,7 +620,7 @@ ___
 
 #### Inherited from
 
-Transaction.result
+Workflow.result
 
 #### Defined in
 
@@ -640,7 +640,7 @@ Transaction.result
 
 #### Inherited from
 
-Transaction.result
+Workflow.result
 
 #### Defined in
 
@@ -663,7 +663,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[_resume](Transaction.md#_resume)
+[Workflow](Workflow.md).[_resume](Workflow.md#_resume)
 
 #### Defined in
 
@@ -687,7 +687,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[activityLogs](Transaction.md#activitylogs)
+[Workflow](Workflow.md).[activityLogs](Workflow.md#activitylogs)
 
 #### Defined in
 
@@ -713,11 +713,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[catch](Transaction.md#catch)
+[Workflow](Workflow.md).[catch](Workflow.md#catch)
 
 #### Defined in
 
-[src/transaction-manager.ts:60](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L60)
+[src/workflow-manager.ts:60](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L60)
 
 ___
 
@@ -737,7 +737,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[changeState](Transaction.md#changestate)
+[Workflow](Workflow.md).[changeState](Workflow.md#changestate)
 
 #### Defined in
 
@@ -761,27 +761,27 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[checkPoint](Transaction.md#checkpoint)
+[Workflow](Workflow.md).[checkPoint](Workflow.md#checkpoint)
 
 #### Defined in
 
-[src/transaction-manager.ts:124](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L124)
+[src/workflow-manager.ts:124](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L124)
 
 ___
 
-### createRollBackTransaction
+### createRollBackWorkflow
 
-▸ **createRollBackTransaction**(): [`Transaction`](Transaction.md)
+▸ **createRollBackWorkflow**(): [`Workflow`](Workflow.md)
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
-The transaction that wait for the end of this action if needed and then rollback this action.
+The workflow that wait for the end of this action if needed and then rollback this action.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[createRollBackTransaction](Transaction.md#createrollbacktransaction)
+[Workflow](Workflow.md).[createRollBackWorkflow](Workflow.md#createrollbackworkflow)
 
 #### Defined in
 
@@ -805,11 +805,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[declareActionEnd](Transaction.md#declareactionend)
+[Workflow](Workflow.md).[declareActionEnd](Workflow.md#declareactionend)
 
 #### Defined in
 
-[src/transaction-manager.ts:175](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L175)
+[src/workflow-manager.ts:175](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L175)
 
 ___
 
@@ -829,11 +829,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[declareActionStart](Transaction.md#declareactionstart)
+[Workflow](Workflow.md).[declareActionStart](Workflow.md#declareactionstart)
 
 #### Defined in
 
-[src/transaction-manager.ts:162](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L162)
+[src/workflow-manager.ts:162](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L162)
 
 ___
 
@@ -847,11 +847,11 @@ ___
 
 #### Overrides
 
-[Transaction](Transaction.md).[define](Transaction.md#define)
+[Workflow](Workflow.md).[define](Workflow.md#define)
 
 #### Defined in
 
-[src/transaction-manager.ts:478](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L478)
+[src/workflow-manager.ts:478](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L478)
 
 ___
 
@@ -865,11 +865,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[endStep](Transaction.md#endstep)
+[Workflow](Workflow.md).[endStep](Workflow.md#endstep)
 
 #### Defined in
 
-[src/transaction-manager.ts:288](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L288)
+[src/workflow-manager.ts:288](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L288)
 
 ___
 
@@ -891,11 +891,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[finally](Transaction.md#finally)
+[Workflow](Workflow.md).[finally](Workflow.md#finally)
 
 #### Defined in
 
-[src/transaction-manager.ts:69](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L69)
+[src/workflow-manager.ts:69](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L69)
 
 ___
 
@@ -916,7 +916,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[getLogs](Transaction.md#getlogs)
+[Workflow](Workflow.md).[getLogs](Workflow.md#getlogs)
 
 #### Defined in
 
@@ -934,11 +934,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[getNextStep](Transaction.md#getnextstep)
+[Workflow](Workflow.md).[getNextStep](Workflow.md#getnextstep)
 
 #### Defined in
 
-[src/transaction-manager.ts:186](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L186)
+[src/workflow-manager.ts:186](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L186)
 
 ___
 
@@ -959,11 +959,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[goTo](Transaction.md#goto)
+[Workflow](Workflow.md).[goTo](Workflow.md#goto)
 
 #### Defined in
 
-[src/transaction-manager.ts:140](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L140)
+[src/workflow-manager.ts:140](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L140)
 
 ___
 
@@ -983,11 +983,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[goToStep](Transaction.md#gotostep)
+[Workflow](Workflow.md).[goToStep](Workflow.md#gotostep)
 
 #### Defined in
 
-[src/transaction-manager.ts:132](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L132)
+[src/workflow-manager.ts:132](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L132)
 
 ___
 
@@ -1015,11 +1015,11 @@ You cannot store class object on the database. If your action use complex object
 
 #### Overrides
 
-[Transaction](Transaction.md).[init](Transaction.md#init)
+[Workflow](Workflow.md).[init](Workflow.md#init)
 
 #### Defined in
 
-[src/transaction-manager.ts:468](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L468)
+[src/workflow-manager.ts:468](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L468)
 
 ___
 
@@ -1033,11 +1033,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[initialisation](Transaction.md#initialisation)
+[Workflow](Workflow.md).[initialisation](Workflow.md#initialisation)
 
 #### Defined in
 
-[src/transaction-manager.ts:306](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L306)
+[src/workflow-manager.ts:306](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L306)
 
 ___
 
@@ -1057,7 +1057,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[internalLog](Transaction.md#internallog)
+[Workflow](Workflow.md).[internalLog](Workflow.md#internallog)
 
 #### Defined in
 
@@ -1081,7 +1081,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[internalLogError](Transaction.md#internallogerror)
+[Workflow](Workflow.md).[internalLogError](Workflow.md#internallogerror)
 
 #### Defined in
 
@@ -1105,11 +1105,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[isActionActive](Transaction.md#isactionactive)
+[Workflow](Workflow.md).[isActionActive](Workflow.md#isactionactive)
 
 #### Defined in
 
-[src/transaction-manager.ts:158](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L158)
+[src/workflow-manager.ts:158](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L158)
 
 ___
 
@@ -1127,11 +1127,11 @@ It returns a state value.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[main](Transaction.md#main)
+[Workflow](Workflow.md).[main](Workflow.md#main)
 
 #### Defined in
 
-[src/transaction-manager.ts:319](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L319)
+[src/workflow-manager.ts:319](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L319)
 
 ___
 
@@ -1153,11 +1153,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[next](Transaction.md#next)
+[Workflow](Workflow.md).[next](Workflow.md#next)
 
 #### Defined in
 
-[src/transaction-manager.ts:51](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L51)
+[src/workflow-manager.ts:51](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L51)
 
 ___
 
@@ -1177,11 +1177,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[onErrorGoTo](Transaction.md#onerrorgoto)
+[Workflow](Workflow.md).[onErrorGoTo](Workflow.md#onerrorgoto)
 
 #### Defined in
 
-[src/transaction-manager.ts:153](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L153)
+[src/workflow-manager.ts:153](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L153)
 
 ___
 
@@ -1201,7 +1201,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[onStateNotification](Transaction.md#onstatenotification)
+[Workflow](Workflow.md).[onStateNotification](Workflow.md#onstatenotification)
 
 #### Defined in
 
@@ -1225,11 +1225,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[onSuccessGoTo](Transaction.md#onsuccessgoto)
+[Workflow](Workflow.md).[onSuccessGoTo](Workflow.md#onsuccessgoto)
 
 #### Defined in
 
-[src/transaction-manager.ts:148](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L148)
+[src/workflow-manager.ts:148](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L148)
 
 ___
 
@@ -1249,11 +1249,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[registerDocToSaveAtStepStart](Transaction.md#registerdoctosaveatstepstart)
+[Workflow](Workflow.md).[registerDocToSaveAtStepStart](Workflow.md#registerdoctosaveatstepstart)
 
 #### Defined in
 
-[src/transaction-manager.ts:302](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L302)
+[src/workflow-manager.ts:302](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L302)
 
 ___
 
@@ -1272,7 +1272,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[resume](Transaction.md#resume)
+[Workflow](Workflow.md).[resume](Workflow.md#resume)
 
 #### Defined in
 
@@ -1295,7 +1295,7 @@ A promise that resolves when the last document version has be loaded
 
 #### Inherited from
 
-[Transaction](Transaction.md).[resyncWithDb](Transaction.md#resyncwithdb)
+[Workflow](Workflow.md).[resyncWithDb](Workflow.md#resyncwithdb)
 
 #### Defined in
 
@@ -1315,7 +1315,7 @@ Shortcut to configure a rollback. Will be encapsulated in a larger action
 
 #### Inherited from
 
-[Transaction](Transaction.md).[rollBack](Transaction.md#rollback)
+[Workflow](Workflow.md).[rollBack](Workflow.md#rollback)
 
 #### Defined in
 
@@ -1335,7 +1335,7 @@ Shortcut to configure the watcher of the rollback Action
 
 #### Inherited from
 
-[Transaction](Transaction.md).[rollBackWatcher](Transaction.md#rollbackwatcher)
+[Workflow](Workflow.md).[rollBackWatcher](Workflow.md#rollbackwatcher)
 
 #### Defined in
 
@@ -1361,11 +1361,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[rollback](Transaction.md#rollback-1)
+[Workflow](Workflow.md).[rollback](Workflow.md#rollback-1)
 
 #### Defined in
 
-[src/transaction-manager.ts:115](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L115)
+[src/workflow-manager.ts:115](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L115)
 
 ___
 
@@ -1379,7 +1379,7 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[save](Transaction.md#save)
+[Workflow](Workflow.md).[save](Workflow.md#save)
 
 #### Defined in
 
@@ -1408,7 +1408,7 @@ Once set, the argument of an action should not be modified.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[setArgument](Transaction.md#setargument)
+[Workflow](Workflow.md).[setArgument](Workflow.md#setargument)
 
 #### Defined in
 
@@ -1436,7 +1436,7 @@ an action or a group of actions
 
 #### Inherited from
 
-[Transaction](Transaction.md).[setFilter](Transaction.md#setfilter)
+[Workflow](Workflow.md).[setFilter](Workflow.md#setfilter)
 
 #### Defined in
 
@@ -1464,7 +1464,7 @@ Configure the number of times an action is repeated.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[setRepeat](Transaction.md#setrepeat)
+[Workflow](Workflow.md).[setRepeat](Workflow.md#setrepeat)
 
 #### Defined in
 
@@ -1490,7 +1490,7 @@ Set the result of the action.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[setResult](Transaction.md#setresult)
+[Workflow](Workflow.md).[setResult](Workflow.md#setresult)
 
 #### Defined in
 
@@ -1508,11 +1508,11 @@ ___
 
 #### Inherited from
 
-[Transaction](Transaction.md).[startStep](Transaction.md#startstep)
+[Workflow](Workflow.md).[startStep](Workflow.md#startstep)
 
 #### Defined in
 
-[src/transaction-manager.ts:228](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L228)
+[src/workflow-manager.ts:228](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L228)
 
 ___
 
@@ -1531,11 +1531,11 @@ It is called :
 
 #### Inherited from
 
-[Transaction](Transaction.md).[watcher](Transaction.md#watcher)
+[Workflow](Workflow.md).[watcher](Workflow.md#watcher)
 
 #### Defined in
 
-[src/transaction-manager.ts:334](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L334)
+[src/workflow-manager.ts:334](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L334)
 
 ___
 
@@ -1559,7 +1559,7 @@ an action for which dbDoc property is equal to actionDb
 
 #### Inherited from
 
-[Transaction](Transaction.md).[constructFromDb](Transaction.md#constructfromdb)
+[Workflow](Workflow.md).[constructFromDb](Workflow.md#constructfromdb)
 
 #### Defined in
 
@@ -1590,7 +1590,7 @@ A new instance of the RejectAction class.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[reject](Transaction.md#reject)
+[Workflow](Workflow.md).[reject](Workflow.md#reject)
 
 #### Defined in
 
@@ -1618,7 +1618,7 @@ A new instance of the ResolveAction class.
 
 #### Inherited from
 
-[Transaction](Transaction.md).[resolve](Transaction.md#resolve)
+[Workflow](Workflow.md).[resolve](Workflow.md#resolve)
 
 #### Defined in
 

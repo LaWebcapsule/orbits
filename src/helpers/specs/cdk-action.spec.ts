@@ -34,7 +34,7 @@ describe("Test action", ()=>{
     })
 
     afterAll(()=>{
-        const rollback = testAction.createRollBackTransaction();
+        const rollback = testAction.createRollBackWorkflow();
         return rollback.dbDoc.save();
     })
     

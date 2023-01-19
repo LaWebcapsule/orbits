@@ -52,12 +52,12 @@ See for more infos on how to configure the delays.
 
 ## ActionState.SUCCESS
 
-The action has succeeded. If it is part of a transaction, the transaction will be notified of the success.
+The action has succeeded. If it is part of a workflow, the workflow will be notified of the success.
 It then enter the CLOSED state.
 
 ## ActionState.ERROR
 
-The action has failed. If it is part of a transaction, the transaction will be notified of the failure.
+The action has failed. If it is part of a workflow, the workflow will be notified of the failure.
 It then enter the CLOSED state.
 
 ## ActionState.CLOSED
