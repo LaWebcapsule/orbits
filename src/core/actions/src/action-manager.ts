@@ -1,8 +1,7 @@
 import { errorCodes } from "./error/errorcodes";
 import { ActionSchemaInterface, ActionState } from "./models/action";
-import { Workflow, RevertAction, ActionApp } from "./../index";
+import { Workflow, ActionApp, RevertAction } from "./../index";
 import { wbceAsyncStorage } from "@wbce/services";
-import { o } from "@wbce/services";
 import { ActionError } from "./error/error";
 import { Executor } from "./action-executor";
 
