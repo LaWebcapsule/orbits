@@ -1,6 +1,6 @@
 import { Action, ActionApp, bootstrapApp } from "@wbce/orbits-core";
 import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
-import {CiPipeline} from "./src/main-transaction";
+import {CiPipeline} from "./src/main-workflow";
 import { PrintAction } from "./src/actions/print-action";
 
 @bootstrapApp({

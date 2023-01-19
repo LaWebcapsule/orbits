@@ -1,11 +1,11 @@
-import { Transaction } from "@wbce/orbits-core";
+import { Workflow } from "@wbce/orbits-core";
 import { PrintAction } from "./actions/print-action";
 
 const defaultEnv = {
     timer: 30,
 }
 
-export class CiPipeline extends Transaction {
+export class CiPipeline extends Workflow {
     define() {
         const stackName = 'main-pipeline';
         console.log("ciPipeline define")
