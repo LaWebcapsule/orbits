@@ -24,7 +24,7 @@ You can read more here :
 - [IBag](RejectAction.md#ibag)
 - [IResult](RejectAction.md#iresult)
 - [RollBackAction](RejectAction.md#rollbackaction)
-- [RollBackTransaction](RejectAction.md#rollbacktransaction)
+- [RollBackWorkflow](RejectAction.md#rollbackworkflow)
 - [app](RejectAction.md#app)
 - [cronDefaultSettings](RejectAction.md#crondefaultsettings)
 - [dbDoc](RejectAction.md#dbdoc)
@@ -49,7 +49,7 @@ You can read more here :
 - [\_resume](RejectAction.md#_resume)
 - [activityLogs](RejectAction.md#activitylogs)
 - [changeState](RejectAction.md#changestate)
-- [createRollBackTransaction](RejectAction.md#createrollbacktransaction)
+- [createRollBackWorkflow](RejectAction.md#createrollbackworkflow)
 - [getLogs](RejectAction.md#getlogs)
 - [init](RejectAction.md#init)
 - [initialisation](RejectAction.md#initialisation)
@@ -151,13 +151,13 @@ The action that rollback this action.
 
 ___
 
-### RollBackTransaction
+### RollBackWorkflow
 
-• **RollBackTransaction**: typeof [`Transaction`](Transaction.md) = `RevertAction`
+• **RollBackWorkflow**: typeof [`Workflow`](Workflow.md) = `RevertAction`
 
 #### Inherited from
 
-[Action](Action.md).[RollBackTransaction](Action.md#rollbacktransaction)
+[Action](Action.md).[RollBackWorkflow](Action.md#rollbackworkflow)
 
 #### Defined in
 
@@ -617,19 +617,19 @@ ___
 
 ___
 
-### createRollBackTransaction
+### createRollBackWorkflow
 
-▸ **createRollBackTransaction**(): [`Transaction`](Transaction.md)
+▸ **createRollBackWorkflow**(): [`Workflow`](Workflow.md)
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
-The transaction that wait for the end of this action if needed and then rollback this action.
+The workflow that wait for the end of this action if needed and then rollback this action.
 
 #### Inherited from
 
-[Action](Action.md).[createRollBackTransaction](Action.md#createrollbacktransaction)
+[Action](Action.md).[createRollBackWorkflow](Action.md#createrollbackworkflow)
 
 #### Defined in
 

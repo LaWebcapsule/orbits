@@ -1,17 +1,17 @@
-# Transaction documentation
+# Workflow documentation
 
-Transaction is a way to chain Actions. The syntax is similar to how a promise work.
-A Transaction is also a specific type of `Action`, so you can chain Transactions in other Transactions.
+Workflow is a way to chain Actions. The syntax is similar to how a promise work.
+A Workflow is also a specific type of `Action`, so you can chain Workflows in other Workflows.
 
 
 
-# Write a Transaction
+# Write a Workflow
 
-A Transaction, same as an `Action`, have an `init()` method.
-A Transaction also have a `define()` method where you can write your flow of Actions.
+A Workflow, same as an `Action`, have an `init()` method.
+A Workflow also have a `define()` method where you can write your flow of Actions.
 
 ```typescript
-export class MyTransaction extends Transaction{
+export class MyWorkflow extends Workflow{
 
     define(){
         this.next(()=>{
@@ -42,7 +42,7 @@ These methods reproduce the Promise behaviors.
 As a consequence, the argument of the callback is the result of the other Actions.
 
 ```typescript
-export class MyTransaction extends Transaction{
+export class MyWorkflow extends Workflow{
 
     define(){
         this.next(()=>{
@@ -65,7 +65,7 @@ To add flexibility on how to chain Actions, there is also a goTo syntax style.
 This syntaxe style is used in the following example.
 
 ```typescript
-export class MyTransaction extends Transaction{
+export class MyWorkflow extends Workflow{
 
     define(){
         this.name("first step")
@@ -96,12 +96,12 @@ export class MyTransaction extends Transaction{
 
 # Rollback
 
-Transactions are always candidates to rollback. You can specify how to rollback an Action with the `rollback()` method.
+Workflows are always candidates to rollback. You can specify how to rollback an Action with the `rollback()` method.
 
 ```typescript
 
 let x = 0;
-export class MyTransaction extends Transaction{
+export class MyWorkflow extends Workflow{
     
     define(){
         this.next(()=>{

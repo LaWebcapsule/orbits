@@ -18,9 +18,9 @@ export interface Step{
 }
 
 
-export class Transaction extends Action{
+export class Workflow extends Action{
 
-    override defaultDelay = Infinity;//une transaction n'est jamais considéré en erreur, meme au bout de x temps:
+    override defaultDelay = Infinity;//une workflow n'est jamais considéré en erreur, meme au bout de x temps:
     //en effet, les actions sous-jacentes sont mieux aptes à témoigner de l'erreur ou non
 
     dBSession? : mongoose.ClientSession;
@@ -160,12 +160,12 @@ export class Transaction extends Action{
     }
 
     declareActionStart(dbDoc : ActionSchemaInterface){
-        const transactionBag = this.dbDoc.bag;
-        dbDoc.transactionId = this.dbDoc._id.toString();
-        dbDoc.transactionStep = (transactionBag.stepsHistory.length-1);
+        const workflowBag = this.dbDoc.bag;
+        dbDoc.workflowId = this.dbDoc._id.toString();
+        dbDoc.workflowStep = (workflowBag.stepsHistory.length-1);
         dbDoc.filter = {...this.dbDoc.filter, ...dbDoc.filter};
         dbDoc.markModified('filter');
-        transactionBag.actions[dbDoc._id.toString()] = {
+        workflowBag.actions[dbDoc._id.toString()] = {
             state : dbDoc.state,
             result : dbDoc.result
         }
@@ -173,9 +173,9 @@ export class Transaction extends Action{
     }
 
     declareActionEnd(dbDoc : ActionSchemaInterface<any>){
-        const transactionBag = this.dbDoc.bag;
-        transactionBag.actions[dbDoc._id.toString()]!.state = dbDoc.state;
-        transactionBag.actions[dbDoc._id.toString()]!.result = dbDoc.result;
+        const workflowBag = this.dbDoc.bag;
+        workflowBag.actions[dbDoc._id.toString()]!.state = dbDoc.state;
+        workflowBag.actions[dbDoc._id.toString()]!.result = dbDoc.result;
         const action = Action.constructFromDb(dbDoc);
         if(action.isRollBackPossible){
             this.bag.isRollBackPossible = true;
@@ -230,7 +230,7 @@ export class Transaction extends Action{
             this.dBSession = mongooseSession;
             return this.getNextStep()
         }).then(actions=>{
-            return this.dBSession!.withTransaction(()=>{
+            return this.dBSession!.withWorkflow(()=>{
                 //attention : cette fonction est souvent retry :
                 //en effet TransientErrorFrequente
                 //ne rien mettre a l'interieur qui soit cumulatif
@@ -249,13 +249,13 @@ export class Transaction extends Action{
                 this.dbDoc.markModified('bag');
                 this.dbDoc.markModified('state');//necessaire en cas de retry
                 //pq on procede en deux temps pour les sauvegardes :
-                //https://stackoverflow.com/questions/64084992/mongotransactionexception-query-failed-with-error-code-251
-                //la premiere requete d'une transaction doit arriver avant les autres. Sinon pbme.
+                //https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
+                //la premiere requete d'une workflow doit arriver avant les autres. Sinon pbme.
                 return this.dbDoc.save().then(()=>{
                     const svgdsPromise : any[] = [];
                     for(let action of actions as Action[]){
                         action.dbDoc.isNew = true;//necessaire ?
-                        //semble resoudre un bug, ou : transientError et donc retry du withTransaction
+                        //semble resoudre un bug, ou : transientError et donc retry du withWorkflow
                         //mais isNew false et donc DocumentNotFoundError
                         //a confirmer
                         action.dbDoc.$session(this.dBSession);
@@ -278,7 +278,7 @@ export class Transaction extends Action{
         }).then(()=>{
             this.internalLog(`state changed`);
             this.internalLog(`step started : ${this.dbDoc.bag.currentStepIndex}`);
-            //on a change directement l'etat dans la transaction
+            //on a change directement l'etat dans la workflow
             //on peut appeler directement resume
             return this.resume();
         }) 
@@ -288,7 +288,7 @@ export class Transaction extends Action{
     endStep(){
         return this.app.ActionModel.find({
             _id : {$in : Object.keys(this.bag.actions)},
-            transactionId : this.dbDoc._id.toString(),
+            workflowId : this.dbDoc._id.toString(),
             state : {$gt : ActionState.PAUSED}
         }).then((actions)=>{
             for(let action of actions){
@@ -320,8 +320,8 @@ export class Transaction extends Action{
         return this.startStep().catch(err=>{
             if(!(err in ActionState)){
                 //si une erreur survient lors de l'appel à l'étape
-                //on reste bloque sur l'étape mais la transaction ne passe pas en erreur
-                //c'est a dire que la transaction reste en meme etat : executing_main
+                //on reste bloque sur l'étape mais la workflow ne passe pas en erreur
+                //c'est a dire que la workflow reste en meme etat : executing_main
                 //on reessaiera plus tard
                 this.internalLogError(err);
                 throw this.dbDoc.state;//on fait donc croire que rien n'a changé
@@ -333,7 +333,7 @@ export class Transaction extends Action{
 
     override watcher(){
         return this.app.ActionModel.find({
-            transactionId : this.dbDoc._id.toString(),
+            workflowId : this.dbDoc._id.toString(),
             $or : [{
                 state : {$lt : ActionState.SUCCESS}
             }, {
@@ -383,24 +383,24 @@ export class Transaction extends Action{
         return false;
     }
 
-    override RollBackTransaction = RevertTransaction;
+    override RollBackWorkflow = RevertWorkflow;
 }
 
 
 
-export class RevertTransaction<TransactionToRevert extends Transaction> extends Transaction{
+export class RevertWorkflow<WorkflowToRevert extends Workflow> extends Workflow{
     override IArgument : {
        actionId : string
     }
 
-    oldAction : TransactionToRevert
+    oldAction : WorkflowToRevert
 
     override init(){
      return this.app.ActionModel.findById(this.argument.actionId).then((dbDoc)=>{
         if(!this.dbDoc){
             throw ActionState.ERROR
         }
-        this.oldAction = Action.constructFromDb(dbDoc as any as ActionSchemaInterface) as TransactionToRevert;
+        this.oldAction = Action.constructFromDb(dbDoc as any as ActionSchemaInterface) as WorkflowToRevert;
         return this.oldAction.initialisation();
      })   
     }
@@ -440,14 +440,14 @@ export class RevertTransaction<TransactionToRevert extends Transaction> extends 
 
     revertChildrenAction(stepIndex){
         return this.app.ActionModel.find({
-            transactionId : this.oldAction.dbDoc._id.toString(),
-            transactionStep : stepIndex,
+            workflowId : this.oldAction.dbDoc._id.toString(),
+            workflowStep : stepIndex,
             state : {$lte : ActionState.SUCCESS}
         }).then((actions)=>{
             return actions.map(a=>Action.constructFromDb(a as any as ActionSchemaInterface))
                 .filter(a=>a.isRollBackPossible)
                 .map((a : Action)=>{
-                    const rollBack = new a.RollBackTransaction();
+                    const rollBack = new a.RollBackWorkflow();
                     rollBack.setArgument({
                         actionId : a.dbDoc._id.toString()
                     })
@@ -458,7 +458,7 @@ export class RevertTransaction<TransactionToRevert extends Transaction> extends 
 }
 
 
-export class RevertAction<ActionToRevert extends Action> extends Transaction{
+export class RevertAction<ActionToRevert extends Action> extends Workflow{
     override IArgument : {
         actionId : string
     }
@@ -478,7 +478,7 @@ export class RevertAction<ActionToRevert extends Action> extends Transaction{
     override define(){
         this.next(()=>{
             //on commence par attendre la fin de l'action
-            //donc on attache l'ancienne action a la transaction
+            //donc on attache l'ancienne action a la workflow
             const aToRevert = this.oldAction;
             if(aToRevert.dbDoc.state < ActionState.SUCCESS){
                 this.declareActionStart(aToRevert.dbDoc);
