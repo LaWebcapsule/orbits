@@ -12,28 +12,24 @@ export class WaitAction extends Action {
         initTime: number
     }
 
-    init(){
+    main() {
         this.bag.initTime = new Date().getTime();
-        console.log("Wait action initialized with: "+ this.bag.initTime);
+        console.log("Wait action initialized with: " + this.bag.initTime);
+        // modify the default delay to have the watcher called again in due time
         this.defaultDelay = this.argument.waitTime ? this.argument.waitTime / 1000 : 1;
-        return Promise.resolve();
+        return ActionState.IN_PROGRESS;
     }
 
-    main() {
+    watcher() {
+        var waitTime = this.argument.waitTime ? this.argument.waitTime : 1000;
         var currentTime = new Date().getTime();
-        if (this.argument.waitTime > 0) {
-            if(currentTime - this.argument.waitTime > this.bag.initTime){
-                console.log("Wait action over");
-                return ActionState.SUCCESS;
-            }
-        }else{
-            console.log("Using default wait time: 1000ms");
-            if(currentTime - 1000 > this.bag.initTime){
-                console.log("Wait action over");
-                return ActionState.SUCCESS;
-            }
+        var diff = currentTime - this.bag.initTime - waitTime;
+        if (diff > 0) {
+            console.log("Wait action over");
+            return Promise.resolve(ActionState.SUCCESS);
         }
-        return ActionState.IN_PROGRESS;
+        console.log("Wait action still waiting: "+diff);
+        return Promise.resolve(ActionState.IN_PROGRESS);
     }
 
 }
