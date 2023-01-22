@@ -3,7 +3,7 @@ import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
 import { PublishNpmPackage } from "./src/actions/publish-npm-package";
 import { RunTest } from "./src/actions/run-tests";
 import { UpdateNpmVersions } from "./src/actions/update-npm-versions";
-import { MasterWorkflow } from "./src/transactions/master";
+import { MasterWorkflow } from "./src/workflows/master";
 
 const url = `mongodb://localhost:27017/${process.env['mongo_database'] || 'example'}`
 

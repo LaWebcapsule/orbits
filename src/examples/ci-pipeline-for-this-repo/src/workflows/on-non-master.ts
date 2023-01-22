@@ -1,8 +1,8 @@
-import { Transaction } from "@wbce/orbits-core";
+import { Workflow } from "@wbce/orbits-core";
 
 
 
-export class OnNonMasterWorkflow extends Transaction{
+export class OnNonMasterWorkflow extends Workflow{
 
     define(){
         this.next(()=>{

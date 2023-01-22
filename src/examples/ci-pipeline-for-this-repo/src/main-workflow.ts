@@ -1,7 +1,5 @@
-import { Action, Transaction } from "@wbce/orbits-core";
-import { CdkHelper } from "@wbce/orbits-fuel";
-import { App } from "aws-cdk-lib";
-import { WaitForNewCommits } from "@wbce/orbits-fuel/dist/src/git-actions/gitactions";
+import { Action, Workflow } from "@wbce/orbits-core";
+import { CdkHelper, WaitForNewCommits } from "@wbce/orbits-fuel";
 
 const defaultEnv = {
     account : '123456789',
@@ -14,26 +12,23 @@ const publicUrl = {
 
 
 
-export class OnCommitsAction extends Transaction{
-    define(): void | Promise<void> {
+export class OnCommitsAction extends Workflow{
+    define(){
         this.name("wait")
-            .then(()=>{
+            .next(()=>{
                 const waitForNewCommits = new WaitForNewCommits();
-                waitForNewCommits.setArgument({
-
-                })
                 return waitForNewCommits
             })
-            .then((commits)=>{
-                return Action.build()
-            }).then((deploy)=>{
+            .next((commits)=>{
+                //return Action.build()
+            }).next((deploy)=>{
 
             })
 
     }
 }
 
-export class CiPipeline extends Transaction{
+export class CiPipeline extends Workflow{
 
     define(){
         const stackName = 'my-first-pipe';

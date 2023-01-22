@@ -2,15 +2,24 @@ import { Action, ActionState, Executor } from "@wbce/orbits-core";
 import { DockerExecutor, PublicRegistry } from "@wbce/orbits-fuel";
 import { Cli } from "@wbce/services";
 import { readFileSync, writeFileSync } from "fs";
+import { GitCloneAction } from "./git-clone-repo";
 
 
 
 
-export class PublishNpmPackage extends Action{
+export class PublishNpmPackage extends GitCloneAction{
 
     executor = new DockerExecutor({
-        registry : new PublicRegistry('node','16.14.2')
+        registry : new PublicRegistry('node','16.14.2'),
+        dockerConfig : {
+            env : {
+                'git_user' : 'ci_wbce',
+                'git_pwd': process.env['git_pwd'],
+                'NPM_TOKEN': process.env['NPM_TOKEN']
+            }
+        }
     })
+
 
     IArgument : {
         packagePath : string
@@ -22,17 +31,15 @@ export class PublishNpmPackage extends Action{
         [ActionState.EXECUTING_MAIN] : 3*60*1000
     }
 
-    init(){
-        return this.cli.command("git",  ["config", "--global", "user.name", process.env['git_user']!] ).then(()=>{
-            return this.cli.command("git",  ["config", "--global", "user.password", process.env['git_pwd']!] )
-        })
-    }
 
 
     main(){
         //we could also modify the files directly via the github api in order to save one clone operation.
-        return this.cli.command("git", ["clone", "https://github.com/semantic-release/semantic-release.git", "/tmp/orbits"]).then(()=>{
-            return process.chdir(`/tmp/orbits/${this.argument.packagePath}`)
+        return this.gitClone().then(()=>{
+            process.chdir(this.argument.packagePath);
+            return this.cli.command("npm", ["install"]);
+        }).then(()=>{
+            return this.cli.command("npm", ["config", "set","_authToken", process.env['NPM_TOKEN']!  ])
         }).then(()=>{
             return this.cli.command("npm", ["run", "publish"]);
         }).then(()=>{
@@ -57,10 +64,5 @@ export class PublishNpmPackage extends Action{
         });
     } */
 
-    changeVersion(pathToPackageJson, versionName){
-        const packageJson = JSON.parse(readFileSync(pathToPackageJson, {encoding: "utf-8"}))
-        packageJson.version = versionName
-        writeFileSync(JSON.stringify(packageJson), pathToPackageJson);
-    }
 
 }
