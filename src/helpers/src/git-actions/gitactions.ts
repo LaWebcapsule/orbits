@@ -1,18 +1,28 @@
 import { Action, ActionState } from "@wbce/orbits-core";
-import { GitProvider, gitProviders } from "./gitcenter";
+import { gitCenter, GitProvider, gitProviders } from "./gitcenter";
 import { Commit } from "./gitrepo";
 
 
 export class GitAction extends Action{
     //to note : this action is not registered. It serves as a base for the other actions.
     IArgument: {
-        repoName : string
+        repoName : string,
+        gitProviderName : gitProviders
     }
 
 
     gitProvider : GitProvider;
     initGitProvider(){
-        
+        let gitToken = process.env['git_token'];
+        if(!gitToken && this.argument.gitProviderName === gitProviders.GITHUB){
+            gitToken = process.env['gh_token']
+        }
+        else if(!gitToken && this.argument.gitProviderName === gitProviders.GITLAB){
+            gitToken = process.env['gitlab_token'];
+        }
+        this.gitProvider = gitCenter.getGitProvider(this.argument.gitProviderName, {
+            token : gitToken
+        })   
     }
 
     init(){
@@ -58,7 +68,7 @@ export class WaitForNewCommits extends GitAction{
     IArgument : {
         branches : {
             name: string,
-            lastCommit : Commit
+            lastCommit? : Commit
         }[]
     } & GitAction['IArgument']
 
@@ -85,7 +95,7 @@ export class WaitForNewCommits extends GitAction{
                 return this.gitProvider.getLastCommitsOnBranch(
                     this.argument.repoName,
                     branch.name,
-                    branch.lastCommit.createdAt
+                    branch.lastCommit?.createdAt || new Date(0)
                 )
             }).then((commits)=>{
                 if(commits.length > 0){
