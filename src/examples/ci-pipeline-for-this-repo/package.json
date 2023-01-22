@@ -1,23 +1,16 @@
 {
-  "name": "@wbce/orbits-core",
-  "version": "0.0.6",
+  "name": "@wbce/orbits-examples",
+  "version": "0.0.1",
   "description": "Flow for DevOps - a simple way to write state machine",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
-  "typedoc": {
-    "entryPoint": "./index.ts"
-  },
+  "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "publish-package": "npm run build && npm publish --access public",
+    "run": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LaWebcapsule/orbits"
+    "url": "git+https://gitlab.com/webcapsule/actions.git"
   },
   "author": "la webcapsule",
   "license": "ISC",
@@ -38,8 +31,14 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@wbce/services": "^0.0.x",
-    "mongoose": "^6.8.1",
+    "@semantic-release/npm": "^9.0.2",
+    "@types/semantic-release": "^20.0.0",
+    "@wbce/services": "^0.0.1",
+    "@wbce/orbits-core": "0.0.x",
+    "@wbce/orbits-fuel": "0.0.x",
+    "semantic-release": "^20.0.2",
+    "semantic-release-monorepo": "^7.0.5",
+    "tsx": "^3.12.2",
     "winston": "^3.8.2"
   }
 }

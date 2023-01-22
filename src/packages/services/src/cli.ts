@@ -22,7 +22,9 @@ export class Cli{
                 }
                 else{
                     //on pourrait faire une liste des erreurs standards
-                    reject(code);
+                    error = new Error();
+                    error.message = `Process ${command} exited with code ${code}`;
+                    reject(error);
                 }
             })
         })

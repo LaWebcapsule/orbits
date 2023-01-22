@@ -71,6 +71,21 @@ export class GithubApi implements GitProvider{
         })
     }
 
+    isPrOpened(id: string, branchId: string): Promise<boolean> {
+        return this.getCurrentUser().then((user)=>{
+            return this.octokit.rest.pulls.list({
+                repo : id,
+                owner: user.data.login,
+                query : {
+                    head: branchId,
+                    state: "open"
+                }
+            })
+        }).then((infos)=>{
+            return infos.data.length ? true : false;
+        })
+    }
+
     addWebHook(repo: string, targetUrl : string, events : string[]){
         return this.getCurrentUser().then((user)=>{
             return this.octokit.rest.repos.createWebhook({
