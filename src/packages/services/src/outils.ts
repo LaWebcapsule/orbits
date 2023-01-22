@@ -1,21 +1,20 @@
 const deepCopy = (src : any, dest : any)=>{
-    for(const key in src){
-        if(typeof src[key] !== 'object'){//est une feuille
-            dest[key] = src[key];
-        }
-        else{
-            if(!dest[key]){
-                if(Array.isArray(src[key])){
-                    dest[key] = [];  
-                }
-                else{
-                    dest[key] = {};
-                }
-            }
-            deepCopy(src[key], dest[key])   
+    //!! this copy has to be free of prototype pollution.
+    //that why we use recursive assign
+    Object.assign(dest, src);
+    for(const key in dest){
+        if(dest[key] && typeof dest[key] === 'object'){
+          if(Array.isArray(dest[key])){
+            dest[key] = []
+          }
+          else{
+            dest[key] = {}
+          }
+          //dest[key] = new src[key].constructor();//doesn't work if the constructor expects parameters.
+          deepCopy(src[key], dest[key])
         }
     }
-}
+  }
 
 /*
 Essai pour typer testPath

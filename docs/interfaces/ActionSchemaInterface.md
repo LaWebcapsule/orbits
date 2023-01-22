@@ -50,8 +50,8 @@
 - [schema](ActionSchemaInterface.md#schema)
 - [state](ActionSchemaInterface.md#state)
 - [stateUpdatedAt](ActionSchemaInterface.md#stateupdatedat)
-- [transactionId](ActionSchemaInterface.md#transactionid)
-- [transactionStep](ActionSchemaInterface.md#transactionstep)
+- [workflowId](ActionSchemaInterface.md#workflowid)
+- [workflowStep](ActionSchemaInterface.md#workflowstep)
 - [updateNextActivity](ActionSchemaInterface.md#updatenextactivity)
 - [updatedAt](ActionSchemaInterface.md#updatedat)
 
@@ -527,9 +527,9 @@ ___
 
 ___
 
-### transactionId
+### workflowId
 
-• `Optional` **transactionId**: `string`
+• `Optional` **workflowId**: `string`
 
 #### Defined in
 
@@ -537,9 +537,9 @@ ___
 
 ___
 
-### transactionStep
+### workflowStep
 
-• `Optional` **transactionStep**: `number`
+• `Optional` **workflowStep**: `number`
 
 #### Defined in
 

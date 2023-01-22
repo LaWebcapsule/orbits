@@ -1,7 +1,7 @@
 import { Action, ActionApp, bootstrapApp } from "@wbce/orbits-core";
 import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
 import { CdkBootstrapFrontStack, CdkDeployFrontStack } from "./src/cdk-stack/cdk-action";
-import {CiPipeline} from "./src/main-transaction";
+import {CiPipeline} from "./src/main-workflow";
 
 @bootstrapApp({
     db : {

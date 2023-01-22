@@ -42,17 +42,17 @@ Actions are the building blocks of an orbit workflow. An action includes a types
 
 You can know more about this [here](./action.md).
 
-## Transaction
+## Workflow
 
-Once you have written the actions that will compose your app (payment order, cdk deploying, signs process), you can chain and orchestrate them within a transaction.
-A transaction includes a typescript class that extends the `Transaction` core class.
-Transaction allows to chain action in a Promise-like style, except that you have the guarantee of consistency even if your current process crashes.
+Once you have written the actions that will compose your app (payment order, cdk deploying, signs process), you can chain and orchestrate them within a workflow.
+A workflow includes a typescript class that extends the `Workflow` core class.
+Workflow allows to chain action in a Promise-like style, except that you have the guarantee of consistency even if your current process crashes.
 
-You can know more about this [here](./transaction.md).
+You can know more about this [here](./workflow.md).
 
 ## Application
 
-Once you have written the transactions that will compose your app, you have to create and bootstrap an Orbit app. There can be only one app by process. The app manages database configuration and maps the different actions that you can use.
+Once you have written the workflows that will compose your app, you have to create and bootstrap an Orbit app. There can be only one app by process. The app manages database configuration and maps the different actions that you can use.
 
 You can know more about this [here](./app.md).
 

@@ -1,6 +1,6 @@
 import jasmin from "jasmine";
 import { ActionApp, bootstrapApp } from "./../index";
-import { TestActionWithError, TestAction, TestActionWithWatcherEnding, TransactionApp } from "./test-action";
+import { TestActionWithError, TestAction, TestActionWithWatcherEnding, WorkflowApp } from "./test-action";
 
 let j = new jasmin();
 
@@ -10,7 +10,7 @@ j.loadConfig({
     spec_dir: '.',
     spec_files: [
         'action.spec.ts',
-        'transaction.spec.ts'
+        'workflow.spec.ts'
         //'action-job.spec.ts',
         //'other-action.spec.ts'
         //'./action-app.spec.ts'
@@ -28,7 +28,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 })
 export class TestApp extends ActionApp{
     declare = [TestAction, TestActionWithWatcherEnding, TestActionWithError];
-    imports = [TransactionApp];
+    imports = [WorkflowApp];
 }
 
 

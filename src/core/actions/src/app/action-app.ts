@@ -5,7 +5,7 @@ import { ActionCron } from "../action-job";
 import { Action, RejectAction, ResolveAction, RollBackAction } from '../../index';
 import { ActionError } from '../error/error';
 import { ActionSchemaInterface } from '../../index';
-import { RevertAction, RevertTransaction } from '../../index';
+import { RevertAction, RevertWorkflow } from '../../index';
 import { AppDb, setDbConnection } from './db-connection';
 import { defaultLogger, setLogger } from './logger';
 
@@ -123,5 +123,5 @@ export function bootstrapApp(opts: ActionAppConfig){
 }
 
 export class CoreActionApp extends ActionApp{
-    declare = [ResolveAction, RejectAction, RollBackAction, RevertAction, RevertTransaction, Action]
+    declare = [ResolveAction, RejectAction, RollBackAction, RevertAction, RevertWorkflow, Action]
 }

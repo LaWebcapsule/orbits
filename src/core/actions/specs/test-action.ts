@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState, Transaction } from "../index";
+import { Action, ActionApp, ActionState, Workflow } from "../index";
 
 export class TestActionWithWatcherEnding extends Action{
 
@@ -77,10 +77,10 @@ export class TestAction extends Action{
 
 }
 
-export class BasicTransaction extends Transaction{
+export class BasicWorkflow extends Workflow{
     IBag : {
       n : number
-    } & Transaction["IBag"]
+    } & Workflow["IBag"]
   
     //image = "app-api_app"
   
@@ -138,7 +138,7 @@ export class TestActionWithRollBack extends Action{
 }
   
   
-export class TestRollBack extends Transaction{
+export class TestRollBack extends Workflow{
     constructor(){
         super();
         this.next(()=>{
@@ -178,6 +178,6 @@ export class TestRollBack extends Transaction{
 }
 
 
-export class TransactionApp extends ActionApp{
-    declare = [TestRollBack, TestActionWithRollBack, BasicTransaction]
+export class WorkflowApp extends ActionApp{
+    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow]
 }

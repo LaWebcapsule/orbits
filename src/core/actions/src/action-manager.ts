@@ -1,8 +1,7 @@
 import { errorCodes } from "./error/errorcodes";
 import { ActionSchemaInterface, ActionState } from "./models/action";
-import { Transaction, RevertAction, ActionApp } from "./../index";
+import { Workflow, ActionApp, RevertAction } from "./../index";
 import { wbceAsyncStorage } from "@wbce/services";
-import { o } from "@wbce/services";
 import { ActionError } from "./error/error";
 import { Executor } from "./action-executor";
 
@@ -251,7 +250,7 @@ export class Action{
         return this.changeState(ActionState.EXECUTING_MAIN)
         .catch(err=>{
             if(err && err.code === errorCodes.RESSOURCE_LOCKED){
-                throw ActionState.UNKNOW;//le thread current n'est pas maitre de la transaction
+                throw ActionState.UNKNOW;//le thread current n'est pas maitre de la workflow
                 //et decline donc ses responsabilites
             }
             throw err;
@@ -346,7 +345,7 @@ export class Action{
 
     isInitialised  = false;
     initialisation(){
-        //principalement la pour les transactions
+        //principalement la pour les workflows
         //on peut ainsi ajouter un complement a init.
         //si se complexifie, fonctionner par hook (tableau)
         if(this.isInitialised){
@@ -519,12 +518,12 @@ export class Action{
             this.dbDoc.nExecutions[this.dbDoc.state] ++
             return this.changeState(ActionState.SLEEPING);
         }
-        else if(this.dbDoc.transactionId){
-            return this.app.ActionModel.findById(this.dbDoc.transactionId).then((transactionDb)=>{
-                if(transactionDb){
-                    const transaction = Action.constructFromDb(transactionDb as any) as unknown as Transaction;
-                    if(transaction.isActionActive(this)){
-                        return transaction.resume();
+        else if(this.dbDoc.workflowId){
+            return this.app.ActionModel.findById(this.dbDoc.workflowId).then((workflowDb)=>{
+                if(workflowDb){
+                    const workflow = Action.constructFromDb(workflowDb as any) as unknown as Workflow;
+                    if(workflow.isActionActive(this)){
+                        return workflow.resume();
                     }
                 }
                 return markAsClosed();
@@ -627,7 +626,7 @@ export class Action{
         const mockAction = new Action();
         if(    
             this.RollBackAction !== mockAction.RollBackAction 
-            || this.RollBackTransaction !== mockAction.RollBackTransaction
+            || this.RollBackWorkflow !== mockAction.RollBackWorkflow
             || this.rollBack !== mockAction.rollBack 
             || this.rollBackWatcher !== mockAction.rollBackWatcher
             ){
@@ -664,15 +663,15 @@ export class Action{
      * The action that rollback this action.
      */
     RollBackAction : typeof Action = RollBackAction //se contente d'un rollback
-    RollBackTransaction : typeof Transaction = RevertAction //attend la fin de l'action, puis declenche le rollback --> cycle complet
+    RollBackWorkflow : typeof Workflow = RevertAction //attend la fin de l'action, puis declenche le rollback --> cycle complet
 
 
     /**
      * 
-     * @returns The transaction that wait for the end of this action if needed and then rollback this action.
+     * @returns The workflow that wait for the end of this action if needed and then rollback this action.
      */
-    createRollBackTransaction(){
-        const t = new this.RollBackTransaction();
+    createRollBackWorkflow(){
+        const t = new this.RollBackWorkflow();
         t.setArgument({
             actionId : this.dbDoc._id.toString()
         })

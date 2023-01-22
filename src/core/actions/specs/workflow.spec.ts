@@ -1,13 +1,13 @@
-import { ActionApp, ActionState } from "./../index";
-import { Action, Transaction } from "../index";
-import { BasicTransaction, TestAction, TestActionWithError, TestActionWithWatcherEnding, TestRollBack, x } from "./test-action";
+import { ActionApp, ActionState } from "../index";
+import { Action, Workflow } from "../index";
+import { BasicWorkflow, TestAction, TestActionWithError, TestActionWithWatcherEnding, TestRollBack, x } from "./test-action";
 
-describe("testing transaction -", () => {
+describe("testing workflow -", () => {
   
 
-  let basicTransaction = new BasicTransaction();
-  basicTransaction.setArgument({ x: 14})
-  basicTransaction.dbDoc.save();
+  let basicWorkflow = new BasicWorkflow();
+  basicWorkflow.setArgument({ x: 14})
+  basicWorkflow.dbDoc.save();
 
   beforeAll(() => {
     jasmine.setDefaultSpyStrategy((and) => and.callThrough());
@@ -24,27 +24,27 @@ describe("testing transaction -", () => {
         i++
       }, 1000)
     }).then(()=>{
-      return basicTransaction.resyncWithDb();
+      return basicWorkflow.resyncWithDb();
     })
   });
 
   it("should be a sucess", () => {
-      expect(basicTransaction.dbDoc.state).toEqual(ActionState.SUCCESS);
-      //expect(basicTransaction.dbDoc.nExecutions[ActionState.SUCCESS]).toEqual(1);
+      expect(basicWorkflow.dbDoc.state).toEqual(ActionState.SUCCESS);
+      //expect(basicWorkflow.dbDoc.nExecutions[ActionState.SUCCESS]).toEqual(1);
   });
 
   it("should have correct path", ()=>{
-    expect(basicTransaction.bag.stepsHistory).toEqual([0, 1, 3, 4])
+    expect(basicWorkflow.bag.stepsHistory).toEqual([0, 1, 3, 4])
   })
 
   it("should have launched sub-actions", ()=>{
-    return basicTransaction.app.ActionModel.find({transactionId : basicTransaction.dbDoc._id}).then(actions=>{
+    return basicWorkflow.app.ActionModel.find({workflowId : basicWorkflow.dbDoc._id}).then(actions=>{
       expect(actions.length).toEqual(4)
     })
   })
 
   afterAll(()=>{
-    return basicTransaction.app.ActionModel.remove({transactionId : basicTransaction.dbDoc._id})
+    return basicWorkflow.app.ActionModel.remove({workflowId : basicWorkflow.dbDoc._id})
   })
 });
 
@@ -58,7 +58,7 @@ describe("testing rollBack -", () => {
       return new Promise((resolve)=>{
         setTimeout(()=>{
           console.log('launching rollback')
-          rollBack = new t.RollBackTransaction();
+          rollBack = new t.RollBackWorkflow();
           rollBack.setArgument({
             actionId : t.dbDoc._id.toString()
           })

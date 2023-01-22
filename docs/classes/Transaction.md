@@ -1,6 +1,6 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / Transaction
+[@wbce/orbits](../README.md) / [Exports](../modules.md) / Workflow
 
-# Class: Transaction
+# Class: Workflow
 
 Action is the class to structure actions
 Extends this class to build new actions behaviours.
@@ -10,9 +10,9 @@ You can read more here :
 
 - [`Action`](Action.md)
 
-  ↳ **`Transaction`**
+  ↳ **`Workflow`**
 
-  ↳↳ [`RevertTransaction`](RevertTransaction.md)
+  ↳↳ [`RevertWorkflow`](RevertWorkflow.md)
 
   ↳↳ [`RevertAction`](RevertAction.md)
 
@@ -20,86 +20,86 @@ You can read more here :
 
 ### Constructors
 
-- [constructor](Transaction.md#constructor)
+- [constructor](Workflow.md#constructor)
 
 ### Properties
 
-- [IArgument](Transaction.md#iargument)
-- [IBag](Transaction.md#ibag)
-- [IResult](Transaction.md#iresult)
-- [RollBackAction](Transaction.md#rollbackaction)
-- [RollBackTransaction](Transaction.md#rollbacktransaction)
-- [app](Transaction.md#app)
-- [cronDefaultSettings](Transaction.md#crondefaultsettings)
-- [dBSession](Transaction.md#dbsession)
-- [dbDoc](Transaction.md#dbdoc)
-- [defaultDelay](Transaction.md#defaultdelay)
-- [defaultDelays](Transaction.md#defaultdelays)
-- [docsToSaveAtStepStart](Transaction.md#docstosaveatstepstart)
-- [executor](Transaction.md#executor)
-- [isInitialised](Transaction.md#isinitialised)
-- [steps](Transaction.md#steps)
-- [permanentRef](Transaction.md#permanentref)
+- [IArgument](Workflow.md#iargument)
+- [IBag](Workflow.md#ibag)
+- [IResult](Workflow.md#iresult)
+- [RollBackAction](Workflow.md#rollbackaction)
+- [RollBackWorkflow](Workflow.md#rollbackworkflow)
+- [app](Workflow.md#app)
+- [cronDefaultSettings](Workflow.md#crondefaultsettings)
+- [dBSession](Workflow.md#dbsession)
+- [dbDoc](Workflow.md#dbdoc)
+- [defaultDelay](Workflow.md#defaultdelay)
+- [defaultDelays](Workflow.md#defaultdelays)
+- [docsToSaveAtStepStart](Workflow.md#docstosaveatstepstart)
+- [executor](Workflow.md#executor)
+- [isInitialised](Workflow.md#isinitialised)
+- [steps](Workflow.md#steps)
+- [permanentRef](Workflow.md#permanentref)
 
 ### Accessors
 
-- [\_id](Transaction.md#_id)
-- [argument](Transaction.md#argument)
-- [bag](Transaction.md#bag)
-- [cronActivity](Transaction.md#cronactivity)
-- [isRollBackPossible](Transaction.md#isrollbackpossible)
-- [repeat](Transaction.md#repeat)
-- [result](Transaction.md#result)
+- [\_id](Workflow.md#_id)
+- [argument](Workflow.md#argument)
+- [bag](Workflow.md#bag)
+- [cronActivity](Workflow.md#cronactivity)
+- [isRollBackPossible](Workflow.md#isrollbackpossible)
+- [repeat](Workflow.md#repeat)
+- [result](Workflow.md#result)
 
 ### Methods
 
-- [\_resume](Transaction.md#_resume)
-- [activityLogs](Transaction.md#activitylogs)
-- [catch](Transaction.md#catch)
-- [changeState](Transaction.md#changestate)
-- [checkPoint](Transaction.md#checkpoint)
-- [createRollBackTransaction](Transaction.md#createrollbacktransaction)
-- [declareActionEnd](Transaction.md#declareactionend)
-- [declareActionStart](Transaction.md#declareactionstart)
-- [define](Transaction.md#define)
-- [endStep](Transaction.md#endstep)
-- [finally](Transaction.md#finally)
-- [getLogs](Transaction.md#getlogs)
-- [getNextStep](Transaction.md#getnextstep)
-- [goTo](Transaction.md#goto)
-- [goToStep](Transaction.md#gotostep)
-- [init](Transaction.md#init)
-- [initialisation](Transaction.md#initialisation)
-- [internalLog](Transaction.md#internallog)
-- [internalLogError](Transaction.md#internallogerror)
-- [isActionActive](Transaction.md#isactionactive)
-- [main](Transaction.md#main)
-- [next](Transaction.md#next)
-- [onErrorGoTo](Transaction.md#onerrorgoto)
-- [onStateNotification](Transaction.md#onstatenotification)
-- [onSuccessGoTo](Transaction.md#onsuccessgoto)
-- [registerDocToSaveAtStepStart](Transaction.md#registerdoctosaveatstepstart)
-- [resume](Transaction.md#resume)
-- [resyncWithDb](Transaction.md#resyncwithdb)
-- [rollBack](Transaction.md#rollback)
-- [rollBackWatcher](Transaction.md#rollbackwatcher)
-- [rollback](Transaction.md#rollback-1)
-- [save](Transaction.md#save)
-- [setArgument](Transaction.md#setargument)
-- [setFilter](Transaction.md#setfilter)
-- [setRepeat](Transaction.md#setrepeat)
-- [setResult](Transaction.md#setresult)
-- [startStep](Transaction.md#startstep)
-- [watcher](Transaction.md#watcher)
-- [constructFromDb](Transaction.md#constructfromdb)
-- [reject](Transaction.md#reject)
-- [resolve](Transaction.md#resolve)
+- [\_resume](Workflow.md#_resume)
+- [activityLogs](Workflow.md#activitylogs)
+- [catch](Workflow.md#catch)
+- [changeState](Workflow.md#changestate)
+- [checkPoint](Workflow.md#checkpoint)
+- [createRollBackWorkflow](Workflow.md#createrollbackworkflow)
+- [declareActionEnd](Workflow.md#declareactionend)
+- [declareActionStart](Workflow.md#declareactionstart)
+- [define](Workflow.md#define)
+- [endStep](Workflow.md#endstep)
+- [finally](Workflow.md#finally)
+- [getLogs](Workflow.md#getlogs)
+- [getNextStep](Workflow.md#getnextstep)
+- [goTo](Workflow.md#goto)
+- [goToStep](Workflow.md#gotostep)
+- [init](Workflow.md#init)
+- [initialisation](Workflow.md#initialisation)
+- [internalLog](Workflow.md#internallog)
+- [internalLogError](Workflow.md#internallogerror)
+- [isActionActive](Workflow.md#isactionactive)
+- [main](Workflow.md#main)
+- [next](Workflow.md#next)
+- [onErrorGoTo](Workflow.md#onerrorgoto)
+- [onStateNotification](Workflow.md#onstatenotification)
+- [onSuccessGoTo](Workflow.md#onsuccessgoto)
+- [registerDocToSaveAtStepStart](Workflow.md#registerdoctosaveatstepstart)
+- [resume](Workflow.md#resume)
+- [resyncWithDb](Workflow.md#resyncwithdb)
+- [rollBack](Workflow.md#rollback)
+- [rollBackWatcher](Workflow.md#rollbackwatcher)
+- [rollback](Workflow.md#rollback-1)
+- [save](Workflow.md#save)
+- [setArgument](Workflow.md#setargument)
+- [setFilter](Workflow.md#setfilter)
+- [setRepeat](Workflow.md#setrepeat)
+- [setResult](Workflow.md#setresult)
+- [startStep](Workflow.md#startstep)
+- [watcher](Workflow.md#watcher)
+- [constructFromDb](Workflow.md#constructfromdb)
+- [reject](Workflow.md#reject)
+- [resolve](Workflow.md#resolve)
 
 ## Constructors
 
 ### constructor
 
-• **new Transaction**()
+• **new Workflow**()
 
 #### Overrides
 
@@ -107,7 +107,7 @@ You can read more here :
 
 #### Defined in
 
-[src/transaction-manager.ts:46](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L46)
+[src/workflow-manager.ts:46](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L46)
 
 ## Properties
 
@@ -150,7 +150,7 @@ Interface of the bag of the action
 
 #### Defined in
 
-[src/transaction-manager.ts:32](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L32)
+[src/workflow-manager.ts:32](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L32)
 
 ___
 
@@ -186,17 +186,17 @@ The action that rollback this action.
 
 ___
 
-### RollBackTransaction
+### RollBackWorkflow
 
-• **RollBackTransaction**: typeof [`RevertTransaction`](RevertTransaction.md) = `RevertTransaction`
+• **RollBackWorkflow**: typeof [`RevertWorkflow`](RevertWorkflow.md) = `RevertWorkflow`
 
 #### Overrides
 
-[Action](Action.md).[RollBackTransaction](Action.md#rollbacktransaction)
+[Action](Action.md).[RollBackWorkflow](Action.md#rollbackworkflow)
 
 #### Defined in
 
-[src/transaction-manager.ts:386](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L386)
+[src/workflow-manager.ts:386](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L386)
 
 ___
 
@@ -247,7 +247,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:26](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L26)
+[src/workflow-manager.ts:26](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L26)
 
 ___
 
@@ -283,7 +283,7 @@ Action.defaultDelays[ActionState.IN_PROGRESS]
 
 #### Defined in
 
-[src/transaction-manager.ts:23](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L23)
+[src/workflow-manager.ts:23](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L23)
 
 ___
 
@@ -323,7 +323,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:28](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L28)
+[src/workflow-manager.ts:28](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L28)
 
 ___
 
@@ -363,7 +363,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:30](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L30)
+[src/workflow-manager.ts:30](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L30)
 
 ___
 
@@ -531,7 +531,7 @@ Action.isRollBackPossible
 
 #### Defined in
 
-[src/transaction-manager.ts:372](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L372)
+[src/workflow-manager.ts:372](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L372)
 
 ___
 
@@ -660,7 +660,7 @@ ___
 
 ### catch
 
-▸ **catch**(`cb`, `opts?`): [`Transaction`](Transaction.md)
+▸ **catch**(`cb`, `opts?`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -672,11 +672,11 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:60](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L60)
+[src/workflow-manager.ts:60](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L60)
 
 ___
 
@@ -706,7 +706,7 @@ ___
 
 ### checkPoint
 
-▸ **checkPoint**(`name`): [`Transaction`](Transaction.md)
+▸ **checkPoint**(`name`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -716,27 +716,27 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:124](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L124)
+[src/workflow-manager.ts:124](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L124)
 
 ___
 
-### createRollBackTransaction
+### createRollBackWorkflow
 
-▸ **createRollBackTransaction**(): [`Transaction`](Transaction.md)
+▸ **createRollBackWorkflow**(): [`Workflow`](Workflow.md)
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
-The transaction that wait for the end of this action if needed and then rollback this action.
+The workflow that wait for the end of this action if needed and then rollback this action.
 
 #### Inherited from
 
-[Action](Action.md).[createRollBackTransaction](Action.md#createrollbacktransaction)
+[Action](Action.md).[createRollBackWorkflow](Action.md#createrollbackworkflow)
 
 #### Defined in
 
@@ -760,7 +760,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:175](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L175)
+[src/workflow-manager.ts:175](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L175)
 
 ___
 
@@ -780,7 +780,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:162](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L162)
+[src/workflow-manager.ts:162](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L162)
 
 ___
 
@@ -794,7 +794,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:315](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L315)
+[src/workflow-manager.ts:315](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L315)
 
 ___
 
@@ -808,13 +808,13 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:288](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L288)
+[src/workflow-manager.ts:288](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L288)
 
 ___
 
 ### finally
 
-▸ **finally**(`cb`, `opts?`): [`Transaction`](Transaction.md)
+▸ **finally**(`cb`, `opts?`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -826,11 +826,11 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:69](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L69)
+[src/workflow-manager.ts:69](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L69)
 
 ___
 
@@ -869,13 +869,13 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:186](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L186)
+[src/workflow-manager.ts:186](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L186)
 
 ___
 
 ### goTo
 
-▸ **goTo**(`name`, `onState`): [`Transaction`](Transaction.md)
+▸ **goTo**(`name`, `onState`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -886,11 +886,11 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:140](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L140)
+[src/workflow-manager.ts:140](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L140)
 
 ___
 
@@ -910,7 +910,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:132](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L132)
+[src/workflow-manager.ts:132](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L132)
 
 ___
 
@@ -960,7 +960,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:306](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L306)
+[src/workflow-manager.ts:306](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L306)
 
 ___
 
@@ -1028,7 +1028,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:158](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L158)
+[src/workflow-manager.ts:158](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L158)
 
 ___
 
@@ -1050,13 +1050,13 @@ It returns a state value.
 
 #### Defined in
 
-[src/transaction-manager.ts:319](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L319)
+[src/workflow-manager.ts:319](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L319)
 
 ___
 
 ### next
 
-▸ **next**(`cb`, `opts?`): [`Transaction`](Transaction.md)
+▸ **next**(`cb`, `opts?`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -1068,17 +1068,17 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:51](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L51)
+[src/workflow-manager.ts:51](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L51)
 
 ___
 
 ### onErrorGoTo
 
-▸ **onErrorGoTo**(`name`): [`Transaction`](Transaction.md)
+▸ **onErrorGoTo**(`name`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -1088,11 +1088,11 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:153](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L153)
+[src/workflow-manager.ts:153](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L153)
 
 ___
 
@@ -1122,7 +1122,7 @@ ___
 
 ### onSuccessGoTo
 
-▸ **onSuccessGoTo**(`name`): [`Transaction`](Transaction.md)
+▸ **onSuccessGoTo**(`name`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -1132,11 +1132,11 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:148](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L148)
+[src/workflow-manager.ts:148](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L148)
 
 ___
 
@@ -1156,7 +1156,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:302](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L302)
+[src/workflow-manager.ts:302](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L302)
 
 ___
 
@@ -1248,7 +1248,7 @@ ___
 
 ### rollback
 
-▸ **rollback**(`cb`, `opts?`): [`Transaction`](Transaction.md)
+▸ **rollback**(`cb`, `opts?`): [`Workflow`](Workflow.md)
 
 #### Parameters
 
@@ -1260,11 +1260,11 @@ ___
 
 #### Returns
 
-[`Transaction`](Transaction.md)
+[`Workflow`](Workflow.md)
 
 #### Defined in
 
-[src/transaction-manager.ts:115](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L115)
+[src/workflow-manager.ts:115](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L115)
 
 ___
 
@@ -1406,7 +1406,7 @@ ___
 
 #### Defined in
 
-[src/transaction-manager.ts:228](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L228)
+[src/workflow-manager.ts:228](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L228)
 
 ___
 
@@ -1429,7 +1429,7 @@ It is called :
 
 #### Defined in
 
-[src/transaction-manager.ts:334](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/transaction-manager.ts#L334)
+[src/workflow-manager.ts:334](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/workflow-manager.ts#L334)
 
 ___
 
