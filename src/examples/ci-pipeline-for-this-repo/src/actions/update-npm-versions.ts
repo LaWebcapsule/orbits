@@ -57,6 +57,8 @@ export class UpdateNpmVersions extends GitCloneAction{
     getLastCommit(){
         return new Promise<Commit>((resolve, reject)=>{
             exec('git log --pretty="%H %ad" --date iso-strict -n 1', (err, res, err2)=>{
+                //normal output :
+                //a39bf724b6756c306650a643c93489eefaadd2ba 2023-01-23T14:58:51+01:00
                 if(err){
                     reject(err)
                 }
@@ -64,6 +66,7 @@ export class UpdateNpmVersions extends GitCloneAction{
                     reject(err2)
                 }
                 else{
+                    res = res.slice(0, -1);//we remove the last character, which is \n
                     const data = res.split(' ');
                     resolve({
                         sha : data[0],

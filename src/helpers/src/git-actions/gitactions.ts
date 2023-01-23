@@ -99,13 +99,17 @@ export class WaitForNewCommits extends GitAction{
         let hasNewCommits = false;
         let p = Promise.resolve();
         for(const branch of this.argument.branches){
+            const since = branch.lastCommit?.createdAt.getTime() || 0;
             p = p.then(()=>{
                 return this.gitProvider.getLastCommitsOnBranch(
                     this.argument.repoName,
                     branch.name,
-                    branch.lastCommit?.createdAt || new Date(0)
+                    new Date(since)
                 )
             }).then((commits)=>{
+                commits = commits.filter(c=>{
+                    return c.sha !== branch.lastCommit?.sha
+                })
                 if(commits.length > 0){
                     hasNewCommits = true
                     this.result.branches.push({

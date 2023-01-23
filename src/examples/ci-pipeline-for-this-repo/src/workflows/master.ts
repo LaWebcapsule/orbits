@@ -1,5 +1,6 @@
 import { Workflow, Action } from "@wbce/orbits-core";
 import { Commit, WaitForNewCommits, gitProviders } from "@wbce/orbits-fuel";
+import { ActionState } from "../../../../core/actions";
 import { PublishNpmPackage } from "../actions/publish-npm-package";
 import { UpdateNpmVersions } from "../actions/update-npm-versions";
 
@@ -43,11 +44,10 @@ export class MasterWorkflow extends Workflow{
                 return waitForNewCommits;
             })
             .next(()=>{
-                //const lastCommit = commits.pop();
-                //this.bag.lastCommit = lastCommit;
                 //Note : we could use semantic release to publish new versions
                 //but because of this : https://dev.to/antongolub/the-chronicles-of-semantic-release-and-monorepos-5cfc
-                //we only use semantic release to give us the new versions names of the different packages.
+                //we will use semantic release to give us the new versions names of the different packages.
+                //for now, we always update the three packages.
                 for(const key in this.mapPackageDirectory){
                     this.bag.releasesToPublish.push({
                         type : 'patch',
@@ -58,6 +58,9 @@ export class MasterWorkflow extends Workflow{
                 const updateVersions = new UpdateNpmVersions();
                 updateVersions.setArgument({
                     versions : this.bag.releasesToPublish
+                })
+                updateVersions.setRepeat({
+                    [ActionState.ERROR] : 3 //in case of failure (network error, ...), we retry it three times.
                 })
                 return updateVersions
             })
@@ -91,6 +94,9 @@ export class MasterWorkflow extends Workflow{
                     const publish = new PublishNpmPackage()
                     publish.setArgument({
                         packagePath : newReleaseOfPackage.relativePackageDir
+                    })
+                    publish.setRepeat({
+                        [ActionState.ERROR] : 3 //in case of failure (network error, ...), we retry it three times.
                     })
                     return publish;
                 })
