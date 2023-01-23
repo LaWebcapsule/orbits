@@ -6,10 +6,8 @@ const defaultEnv = {
     region : 'eu-west-3'
 }
 
-const publicUrl = {
 
-}
-
+/* 
 
 
 export class OnCommitsAction extends Workflow{
@@ -67,4 +65,4 @@ export class CiPipeline extends Workflow{
         })
         return Promise.resolve();
     }    
-}
+} */
