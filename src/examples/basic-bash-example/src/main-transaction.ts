@@ -2,7 +2,7 @@ import { Transaction } from "@wbce/orbits-core";
 import { PrintAction } from "./actions/print-action";
 import { WaitAction } from "./actions/wait-action";
 import { ActionState } from "@wbce/orbits-core/dist";
-import { ResolveAction } from "@wbce/orbits-core/dist/src/action-manager";
+import { Action, ResolveAction } from "@wbce/orbits-core/dist/src/action-manager";
 
 export class CiPipeline extends Transaction {
     IBag: {
@@ -43,8 +43,9 @@ export class CiPipeline extends Transaction {
         })
         .catch(err => {
             // Global Pipeline Catch
+            console.log("outch!")
             console.log(err);
-            throw err;
+            return Action.reject(err);
         })
     }
 }    
