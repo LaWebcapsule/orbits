@@ -21,12 +21,10 @@ export class CiPipeline extends Transaction {
     };
 
     define() {
-        const stackName = 'main-pipeline';
         console.log("ciPipeline define")
         this.name('init').next(()=>{
             this.bag.counter = 0;
-            console.log('init step');
-            return Promise.resolve();
+            return;
         }).name('print').next(() => {
             const printAction = new PrintAction();
             printAction.setArgument({toPrint :'Print me boy. ' + this.bag.counter});
