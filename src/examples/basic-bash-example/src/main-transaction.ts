@@ -24,6 +24,7 @@ export class CiPipeline extends Transaction {
         console.log("ciPipeline define")
         this.name('init').next(()=>{
             this.bag.counter = 0;
+            console.log('init step');
             return;
         }).name('print').next(() => {
             const printAction = new PrintAction();
