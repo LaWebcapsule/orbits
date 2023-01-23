@@ -1,0 +1,22 @@
+{
+    "extends": "@tsconfig/node16/tsconfig.json",
+    "compilerOptions": {
+      "downlevelIteration": true,
+      "importHelpers": true,
+      "incremental": true,
+      "removeComments": true,
+      "resolveJsonModule": true,
+      "rootDir": ".",
+      "useUnknownInCatchVariables": false,
+      "declaration": true,
+      "noImplicitAny": false,
+      "noImplicitOverride": false,
+      "strictPropertyInitialization": false,
+      "exactOptionalPropertyTypes":false,
+      "experimentalDecorators": true,
+      "importsNotUsedAsValues":"preserve",
+      "strict": false,
+      "outDir": "dist"
+    },
+    "exclude":["dist/"]
+  }

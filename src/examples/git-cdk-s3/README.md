@@ -40,3 +40,8 @@ npm run build
 ```console
 npm start
 ```
+
+You can also use ts-node :
+```console
+npx ts-node index.ts
+```

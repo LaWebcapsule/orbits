@@ -1,18 +1,28 @@
 import { Action, ActionState } from "@wbce/orbits-core";
-import { GitProvider, gitProviders } from "./gitcenter";
+import { gitCenter, GitProvider, gitProviders } from "./gitcenter";
 import { Commit } from "./gitrepo";
 
 
 export class GitAction extends Action{
     //to note : this action is not registered. It serves as a base for the other actions.
     IArgument: {
-        repoName : string
+        repoName : string,
+        gitProviderName : gitProviders
     }
 
 
     gitProvider : GitProvider;
     initGitProvider(){
-        
+        let gitToken = process.env['git_token'];
+        if(!gitToken && this.argument.gitProviderName === gitProviders.GITHUB){
+            gitToken = process.env['gh_token']
+        }
+        else if(!gitToken && this.argument.gitProviderName === gitProviders.GITLAB){
+            gitToken = process.env['gitlab_token'];
+        }
+        this.gitProvider = gitCenter.getGitProvider(this.argument.gitProviderName, {
+            token : gitToken
+        })   
     }
 
     init(){
@@ -58,7 +68,7 @@ export class WaitForNewCommits extends GitAction{
     IArgument : {
         branches : {
             name: string,
-            lastCommit : Commit
+            lastCommit? : Commit
         }[]
     } & GitAction['IArgument']
 
@@ -73,6 +83,14 @@ export class WaitForNewCommits extends GitAction{
         activityFrequence : 24*60*60*1000
     }
 
+    init(){
+        return super.init().then(()=>{
+            if(!this.result.branches){
+                this.result.branches = [];
+            }
+        })
+    }
+
     main(){
         return Promise.resolve(ActionState.IN_PROGRESS);
     }
@@ -81,13 +99,17 @@ export class WaitForNewCommits extends GitAction{
         let hasNewCommits = false;
         let p = Promise.resolve();
         for(const branch of this.argument.branches){
+            const since = branch.lastCommit?.createdAt.getTime() || 0;
             p = p.then(()=>{
                 return this.gitProvider.getLastCommitsOnBranch(
                     this.argument.repoName,
                     branch.name,
-                    branch.lastCommit.createdAt
+                    new Date(since)
                 )
             }).then((commits)=>{
+                commits = commits.filter(c=>{
+                    return c.sha !== branch.lastCommit?.sha
+                })
                 if(commits.length > 0){
                     hasNewCommits = true
                     this.result.branches.push({
