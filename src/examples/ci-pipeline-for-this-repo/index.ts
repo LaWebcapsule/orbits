@@ -1,5 +1,5 @@
 import { Action, ActionApp, bootstrapApp } from "@wbce/orbits-core";
-import { CdkDeployAction, CdkHelperApp } from "@wbce/orbits-fuel";
+import { HelperApp } from "@wbce/orbits-fuel";
 import { PublishNpmPackage } from "./src/actions/publish-npm-package";
 import { RunTest } from "./src/actions/run-tests";
 import { UpdateNpmVersions } from "./src/actions/update-npm-versions";
@@ -16,7 +16,7 @@ const url = `mongodb://localhost:27017/${process.env['mongo_database'] || 'examp
 })
 export class ExampleApp extends ActionApp{
     declare = [PublishNpmPackage, RunTest, UpdateNpmVersions, MasterWorkflow]
-    imports: (typeof ActionApp)[]= [CdkHelperApp];
+    imports = [HelperApp];
 }
 
 ActionApp.waitForActiveApp.then(()=>{

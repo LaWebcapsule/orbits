@@ -25,7 +25,7 @@ export const gitCenter = {
     registry : new Map<gitProviders, new(...args : any[])=>GitProvider>(),
 
     getGitProvider(providerName : gitProviders, authConfig : GitProvider['authConfig']){
-        return new (gitCenter.registry.get(providerName))()
+        return new (gitCenter.registry.get(providerName))(authConfig);
     }
 
 }

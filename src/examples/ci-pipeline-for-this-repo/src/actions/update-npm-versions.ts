@@ -1,6 +1,7 @@
 import {Action, ActionState, Executor} from "@wbce/orbits-core"
-import {DockerExecutor, PublicRegistry} from "@wbce/orbits-fuel"
+import {DockerExecutor, PublicRegistry, Commit} from "@wbce/orbits-fuel"
 import {Cli} from "@wbce/services"
+import { exec } from "child_process"
 import { readFileSync, writeFileSync } from "fs"
 import { GitCloneAction } from "./git-clone-repo"
 
@@ -16,6 +17,8 @@ export class UpdateNpmVersions extends GitCloneAction{
             notes? : string
         }[]
     }
+
+    IResult: Commit
 
     defaultDelays: { 1?: number | undefined; 2?: number | undefined } = {
         [ActionState.EXECUTING_MAIN] : 3*60*1000
@@ -44,8 +47,32 @@ export class UpdateNpmVersions extends GitCloneAction{
         .then(()=>{
             return this.cli.command("git", ["push"]);
         }).then(()=>{
+            return this.getLastCommit();
+        }).then((commit)=>{
+            this.result = commit;
             return ActionState.SUCCESS
         })
+    }
+
+    getLastCommit(){
+        return new Promise<Commit>((resolve, reject)=>{
+            exec('git log --pretty="%H %ad" --date iso-strict -n 1', (err, res, err2)=>{
+                if(err){
+                    reject(err)
+                }
+                else if(err2){
+                    reject(err2)
+                }
+                else{
+                    const data = res.split(' ');
+                    resolve({
+                        sha : data[0],
+                        createdAt : new Date(data[1])
+                    } as Commit)
+                }
+            })
+        })
+        
     }
 
     /* watcher() {

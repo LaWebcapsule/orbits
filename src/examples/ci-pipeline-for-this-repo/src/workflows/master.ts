@@ -1,5 +1,5 @@
-import { Workflow } from "@wbce/orbits-core";
-import { Commit } from "@wbce/orbits-fuel";
+import { Workflow, Action } from "@wbce/orbits-core";
+import { Commit, WaitForNewCommits, gitProviders } from "@wbce/orbits-fuel";
 import { PublishNpmPackage } from "../actions/publish-npm-package";
 import { UpdateNpmVersions } from "../actions/update-npm-versions";
 
@@ -28,22 +28,21 @@ export class MasterWorkflow extends Workflow{
     }
 
     define(){
-
-
         this.name("wait for new commits step")
             .next(()=>{
                 this.bag.releasesToPublish = [];
-                /* const waitForNewCommits = new WaitForNewCommits()
+                const waitForNewCommits = new WaitForNewCommits()
                 waitForNewCommits.setArgument({
+                    repoName : 'LaWebcapsule/orbits-fork',
+                    gitProviderName : gitProviders.GITHUB,
                     branches : [{
-                        name : 'master',
+                        name : 'main',
                         lastCommit : this.bag.lastCommit
-                    }],
-                    repoName: 'LaWebcapsule/orbits'
-                }) */
-                return;//waitForNewCommits
+                    }]
+                })
+                return waitForNewCommits;
             })
-            /* .next(()=>{
+            .next(()=>{
                 //const lastCommit = commits.pop();
                 //this.bag.lastCommit = lastCommit;
                 //Note : we could use semantic release to publish new versions
@@ -62,12 +61,16 @@ export class MasterWorkflow extends Workflow{
                 })
                 return updateVersions
             })
+            .next((lastCommit : UpdateNpmVersions['IResult'])=>{
+                this.bag.lastCommit = lastCommit;
+                return Action.resolve()
+            })
 
         //the following syntax is a bit audacious
         //Our problem is :
         // - because of dependencies (orbits-fuel depends on orbits-core depends on services)
         //   we have to wait one package has been published to be able to publish the second
-        // - not all package has to be published all the times
+        // - not all packages have to be published all the times
         // So in the case we want to publish all the three packages in this repo, we need three steps
         // But in the case we want to publish only one package, we only need one step
         // As a consequence, we are dynamically adding step
@@ -93,7 +96,7 @@ export class MasterWorkflow extends Workflow{
                 })
             }
         }
-         */
+        
         //Infinite loop : we are always watching for new commits
         this.onErrorGoTo("wait for new commits step")
             .onSuccessGoTo("wait for new commits step")

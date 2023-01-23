@@ -83,6 +83,14 @@ export class WaitForNewCommits extends GitAction{
         activityFrequence : 24*60*60*1000
     }
 
+    init(){
+        return super.init().then(()=>{
+            if(!this.result.branches){
+                this.result.branches = [];
+            }
+        })
+    }
+
     main(){
         return Promise.resolve(ActionState.IN_PROGRESS);
     }

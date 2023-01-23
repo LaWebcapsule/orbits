@@ -1,7 +1,6 @@
-import { Action, ActionState, Executor } from "@wbce/orbits-core";
+import { ActionState } from "@wbce/orbits-core";
 import { DockerExecutor, PublicRegistry } from "@wbce/orbits-fuel";
 import { Cli } from "@wbce/services";
-import { readFileSync, writeFileSync } from "fs";
 import { GitCloneAction } from "./git-clone-repo";
 
 
@@ -24,6 +23,7 @@ export class PublishNpmPackage extends GitCloneAction{
     IArgument : {
         packagePath : string
     }
+    
 
     cli = new Cli()
 
@@ -41,7 +41,7 @@ export class PublishNpmPackage extends GitCloneAction{
         }).then(()=>{
             return this.cli.command("npm", ["config", "set","_authToken", process.env['NPM_TOKEN']!  ])
         }).then(()=>{
-            return this.cli.command("npm", ["run", "publish"]);
+            return this.cli.command("npm", ["run", "publish-package"]);
         }).then(()=>{
             return ActionState.SUCCESS
         })

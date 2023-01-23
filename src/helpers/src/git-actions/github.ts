@@ -39,11 +39,41 @@ export class GithubApi implements GitProvider{
         return this.octokit.rest.users.getAuthenticated()
     }
 
+
+    /**
+     * From the repo parameter, infer owner and repoName
+     * If repo is, e.g., "LaWebcapsule/Orbits", owner will be "LaWebcapsule", repoName, "Orbits"
+     * If repo is, e.g., "MyRepo", owner will be the authenticated user, repoName, "MyRepo"
+     * @param repo : string
+     * @returns {
+    *  user : the current user,
+    *  owner : the most probable owner,
+    *  repoName : the repository name
+    * }
+    */
+   getOwnerAndRepoName(repo : string){
+        const repoData = repo.split("/");
+        if(repoData.length === 2){
+            return Promise.resolve({
+                owner : repoData[0],
+                repoName : repoData[1]
+            })
+        }
+        else{
+            return this.getCurrentUser().then((user)=>{
+                return {
+                    owner : user.data.login,
+                    repoName : repo
+                }    
+            })
+        }
+   }
+
     getDateOfCommit(repo : string, sha : string){
-        return this.getCurrentUser().then((user)=>{
+        return this.getOwnerAndRepoName(repo).then((repoInfo)=>{
             return this.octokit.rest.repos.listCommits({
-                owner : user.data.login,
-                repo,
+                owner : repoInfo.owner,
+                repo : repoInfo.repoName,
                 sha
             }).then((res)=>{
                 return res.data[0].commit.author.date
@@ -52,10 +82,10 @@ export class GithubApi implements GitProvider{
     }
 
     getLastCommitsOnBranch(repo : string, branch : string, since : Date){
-        return this.getCurrentUser().then((user)=>{
+        return this.getOwnerAndRepoName(repo).then((repoInfo)=>{
             return this.octokit.rest.repos.listCommits({
-                owner : user.data.login,
-                repo,
+                owner : repoInfo.owner,
+                repo : repoInfo.repoName,
                 sha : branch,
                 since : since.toISOString()
             })
@@ -71,11 +101,11 @@ export class GithubApi implements GitProvider{
         })
     }
 
-    isPrOpened(id: string, branchId: string): Promise<boolean> {
-        return this.getCurrentUser().then((user)=>{
+    isPrOpened(repo: string, branchId: string): Promise<boolean> {
+        return this.getOwnerAndRepoName(repo).then((repoInfo)=>{
             return this.octokit.rest.pulls.list({
-                repo : id,
-                owner: user.data.login,
+                owner : repoInfo.owner,
+                repo : repoInfo.repoName,
                 query : {
                     head: branchId,
                     state: "open"
@@ -87,10 +117,10 @@ export class GithubApi implements GitProvider{
     }
 
     addWebHook(repo: string, targetUrl : string, events : string[]){
-        return this.getCurrentUser().then((user)=>{
+        return this.getOwnerAndRepoName(repo).then((repoInfo)=>{
             return this.octokit.rest.repos.createWebhook({
-                owner : user.data.login,
-                repo,
+                owner : repoInfo.owner,
+                repo : repoInfo.repoName,
                 name : 'web',
                 events,
                 config : {
@@ -99,5 +129,6 @@ export class GithubApi implements GitProvider{
             })
         })
     }
+
 
 }
