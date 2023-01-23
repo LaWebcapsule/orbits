@@ -261,6 +261,40 @@ export class MyFirstApp extends ActionApp{
 }
 ```
 
+# Database interaction
+
+The db document is accessible via the `dbDoc` property. Most property are internal settings for the framework.
+We can modify these properties (if you know what you are doing) ; it's a mongoose document.
+You can also store in these three stores
+
+## Argument
+
+The `argument` property should be set via the `setArgument()` methods and should not be modified once the action leave the `ActionState.SLEEPING`.
+The interface of the `argument` is set via the `IArgument` property of the class.
+If you want to set default argument, you should override the `setArgument()` property.
+If you want to modify an argument, you should instead see the [bag](./action.md#bag) property
+
+## Bag
+
+Bag is an object stored in database where you can set all you need during the process (ids, caches...).
+The interface of the `bag` is set via the `IBag` property of the class.
+You can see an example of how to use it in the [write your first action](./action.md#write-your-first-action) section.
+
+## Result
+
+The `result` property is an object stored in database where you set the result of your action.
+The interface of the `result` is set via the `IResult` property of the class.
+If your Action belongs to a Workflow, the result object will then be available in the Workflow.
+
+# Behavior on error
+
+The best way to set the Action in `ActionState.ERROR` state, is to return that state.
+However, there are cases where an error can be implicit set on error.
+
+- if an error is thrown in the `main` or in the `init` function
+- if one of delays expired (see [delays](#delays))
+
+
 # Other parameters to be aware of
 
 ## cronActivity
