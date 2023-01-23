@@ -1,6 +1,6 @@
 {
   "name": "@wbce/services",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Tools for the actions repository",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
