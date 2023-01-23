@@ -23,15 +23,23 @@ export class GithubApi implements GitProvider{
     octokit : Octokit
 
     constructor(public authConfig : GitProvider['authConfig']){
-        let authStrategy, authInfo;
+        let octokitAuth = {};
         if(authConfig.token){
-            authStrategy = createTokenAuth,
-            authInfo = authConfig.token
+            octokitAuth = {
+                auth : authConfig.token
+            }
+        }
+        else{
+            /**
+             * octokitAuth = {
+             *  authStategy : ...,
+             *  auth : ...(an object) 
+             * }
+             */
         }
 
         this.octokit = new Octokit({
-            authStrategy,
-            auth: authInfo
+            ...octokitAuth
         })
     }
 
