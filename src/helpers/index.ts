@@ -1,5 +1,5 @@
 export * from './src/executors/index'
-export * from './src/git-actions/gitcenter'
+export * from './src/git-actions/index'
 export * from './src/standards-actions/cdk/cdk-action'
 export * from './src/standards-actions/cdk/cdk-helper'
 

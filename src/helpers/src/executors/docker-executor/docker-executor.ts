@@ -11,14 +11,19 @@ export class DockerExecutor extends Executor{
         getCredentials : (...any)=>Promise<Docker.AuthConfig | void>
     };
     dockerfile : any;
+    dockerConfig = {
+        env : {}
+    }
 
     constructor(opts : {
         registry? : DockerExecutor['registry'],
-        dockerfile? : DockerExecutor['dockerfile']
+        dockerfile? : DockerExecutor['dockerfile'],
+        dockerConfig? : DockerExecutor['dockerConfig']
     }){
         super();
         this.registry = opts.registry || this.registry;
         this.dockerfile = opts.dockerfile || this.dockerfile;
+        this.dockerConfig = opts.dockerConfig || this.dockerConfig;
     }
 
 
@@ -73,8 +78,8 @@ export class DockerExecutor extends Executor{
                 }) 
             }).then((image)=>{
                 const envVariables = [];
-                for(const k in process.env){
-                    envVariables.push(`${k}=${process.env[k]}`)
+                for(const k in this.dockerConfig.env){
+                    envVariables.push(`${k}=${this.dockerConfig.env[k]}`)
                 }
                 envVariables.push(`wbce_id=${this.registry.url}:${this.registry.tag}`);
                 const appPaths = this.calculatePath();

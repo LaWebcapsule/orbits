@@ -1,20 +1,16 @@
 {
-  "name": "@wbce/orbits-fuel",
-  "version": "0.0.13",
+  "name": "@wbce/orbits-examples",
+  "version": "0.0.1",
   "description": "Flow for DevOps - a simple way to write state machine",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
+  "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "publish-package": "npm run build && npm publish --access public",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LaWebcapsule/orbits"
+    "url": "git+https://gitlab.com/webcapsule/actions.git"
   },
   "author": "la webcapsule",
   "license": "ISC",
@@ -35,19 +31,14 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.238.0",
-    "@aws-sdk/client-ecr": "^3.238.0",
-    "@gitbeaker/node": "^35.8.0",
-    "@octokit/auth-token": "^3.0.2",
-    "@types/dockerode": "^3.3.14",
-    "@types/express": "^4.17.15",
-    "@wbce/services": "0.0.x",
+    "@semantic-release/npm": "^9.0.2",
+    "@types/semantic-release": "^20.0.0",
+    "@wbce/services": "^0.0.1",
     "@wbce/orbits-core": "0.0.x",
-    "aws-cdk-lib": "^2.58.0",
-    "dockerode": "^3.3.4",
-    "express": "^4.18.2",
-    "mongoose": "^6.8.1",
-    "octokit": "^2.0.10",
+    "@wbce/orbits-fuel": "0.0.x",
+    "semantic-release": "^20.0.2",
+    "semantic-release-monorepo": "^7.0.5",
+    "tsx": "^3.12.2",
     "winston": "^3.8.2"
   }
 }
