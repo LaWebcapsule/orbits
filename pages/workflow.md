@@ -59,6 +59,34 @@ export class MyWorkflow extends Workflow{
 }
 ```
 
+## Behavior on error or failure
+
+A callback of the `next`, `catch` and `finally` methods can be called multiple times. You have to use an action if you have to ensure a one and only one job.
+As a consequence, a callback of the `next`, `catch` and `finally` should be idempotent.
+If a callback throws an error, it will be retried (by default every ten minutes) until the callback properly returns. This is by design. For example, you can make http call in your callback to configure the parameters of an action. If one of the calls throws an error (due to network, timeout resources), the process will just retry the callback latter. 
+
+```typescript
+export class MyWorkflow extends Workflow{
+
+    define(){
+        this.next(()=>{
+            return this.readName(this.argument.id).then((name)=>{
+            //if the readName function throw an error
+            //Orbits will just retry it latter.
+                const sayHelloAction  = new SayHelloAction();
+                sayHelloAction.setArgument({
+                    name
+                })
+                return sayHelloAction;
+            })
+        })
+    }
+
+}
+```
+
+## Database interaction
+
 ## GoTo syntax
 
 To add flexibility on how to chain Actions, there is also a goTo syntax style.

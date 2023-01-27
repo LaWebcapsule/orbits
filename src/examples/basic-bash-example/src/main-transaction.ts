@@ -2,7 +2,7 @@ import { Transaction } from "@wbce/orbits-core";
 import { PrintAction } from "./actions/print-action";
 import { WaitAction } from "./actions/wait-action";
 import { ActionState } from "@wbce/orbits-core/dist";
-import { ResolveAction } from "@wbce/orbits-core/dist/src/action-manager";
+import { Action, ResolveAction } from "@wbce/orbits-core/dist/src/action-manager";
 
 export class CiPipeline extends Transaction {
     IBag: {
@@ -21,12 +21,11 @@ export class CiPipeline extends Transaction {
     };
 
     define() {
-        const stackName = 'main-pipeline';
         console.log("ciPipeline define")
         this.name('init').next(()=>{
             this.bag.counter = 0;
             console.log('init step');
-            return Promise.resolve();
+            return;
         }).name('print').next(() => {
             const printAction = new PrintAction();
             printAction.setArgument({toPrint :'Print me boy. ' + this.bag.counter});
@@ -44,8 +43,9 @@ export class CiPipeline extends Transaction {
         })
         .catch(err => {
             // Global Pipeline Catch
+            console.log("outch!")
             console.log(err);
-            throw err;
+            return Action.reject(err);
         })
     }
 }    
