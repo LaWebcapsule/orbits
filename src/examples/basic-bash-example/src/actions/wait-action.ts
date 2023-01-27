@@ -16,7 +16,7 @@ export class WaitAction extends Action {
 
     main() {
         this.bag.initTime = Date.now();
-        // planify the cronActivity to be sure the waiter will be resume in due time
+        // planify the cronActivity to be sure the waiter will be resumed in due time
         const waitTime = this.argument.waitTime || this.defaultWaitingTime;
         this.cronActivity.nextActivity = new Date(Date.now()+waitTime);
         return ActionState.IN_PROGRESS;
