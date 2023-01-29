@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { ActionError } from "./error/error";
 import { o } from "@wbce/services";
 import { ActionState, ActionSchemaInterface } from './models/action';
-import {Action} from './../index'
+import {Action} from '../index'
 
 
 
@@ -230,7 +230,7 @@ export class Workflow extends Action{
             this.dBSession = mongooseSession;
             return this.getNextStep()
         }).then(actions=>{
-            return this.dBSession!.withWorkflow(()=>{
+            return this.dBSession!.withTransaction(()=>{
                 //attention : cette fonction est souvent retry :
                 //en effet TransientErrorFrequente
                 //ne rien mettre a l'interieur qui soit cumulatif
@@ -255,7 +255,7 @@ export class Workflow extends Action{
                     const svgdsPromise : any[] = [];
                     for(let action of actions as Action[]){
                         action.dbDoc.isNew = true;//necessaire ?
-                        //semble resoudre un bug, ou : transientError et donc retry du withWorkflow
+                        //semble resoudre un bug, ou : transientError et donc retry du withTransaction
                         //mais isNew false et donc DocumentNotFoundError
                         //a confirmer
                         action.dbDoc.$session(this.dBSession);

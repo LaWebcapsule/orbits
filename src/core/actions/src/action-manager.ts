@@ -1,8 +1,7 @@
 import { errorCodes } from "./error/errorcodes";
 import { ActionSchemaInterface, ActionState } from "./models/action";
-import { Workflow, RevertAction, ActionApp } from "./../index";
+import { Workflow, ActionApp, RevertAction } from "./../index";
 import { wbceAsyncStorage } from "@wbce/services";
-import { o } from "@wbce/services";
 import { ActionError } from "./error/error";
 import { Executor } from "./action-executor";
 
@@ -679,6 +678,7 @@ export class Action{
         return t;
     }
 }
+
 /* > The ResolveAction class is a subclass of the Action class. It is used to create an Action that resolve in SUCCESS state */
 export class ResolveAction extends Action{   
 

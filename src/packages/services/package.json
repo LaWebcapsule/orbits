@@ -1,13 +1,15 @@
 {
   "name": "@wbce/services",
-  "version": "0.0.1",
+  "version": "0.0.9",
   "description": "Tools for the actions repository",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "build": "npx tsc",
-    "publish": "npm run build && npm publish --access public",
+    "publish-package": "npm run build && npm publish --access public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

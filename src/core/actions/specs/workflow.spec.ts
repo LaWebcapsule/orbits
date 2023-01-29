@@ -1,4 +1,4 @@
-import { ActionApp, ActionState } from "./../index";
+import { ActionApp, ActionState } from "../index";
 import { Action, Workflow } from "../index";
 import { BasicWorkflow, TestAction, TestActionWithError, TestActionWithWatcherEnding, TestRollBack, x } from "./test-action";
 
