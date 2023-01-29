@@ -87,6 +87,53 @@ export class MyWorkflow extends Workflow{
 
 ## Database interaction
 
+As documented in the [action](./action.md#database-interaction) presentation, and same as an Action, a Workflow has the three `argument`, `bag` and `result` properties.
+We should clarify the way the `bag` is disponible in the define() method.
+For this, we propose the following commented example.
+
+```typescript
+export class MyWorkflow extends Workflow{
+
+    define(){
+        console.log(this.bag.x);//here, x can be 0, 1 or 2, depending the step of the workflow.
+        this.next(()=>{
+            this.bag.x = 0 //set x to zero
+        })
+        .next(()=>{
+            this.bag.x ++ //a next() property can be called multiple time in case of failure
+                        //but the bag is saved only if the callback returns properly.
+                        //so we are sure after this x=1;
+        }).next(()=>{
+            this.bag.x ++ //set x to two
+        })
+    }
+
+}
+```
+
+### The special `registerDocToSaveAtStepStart` method
+
+The `next()`, `catch()`, `finally()` methods return (an array of) Action.
+To be sure all the actions are saved and the workflow is set in a `ActionState.IN_PROGRESS`, we use a mongodb transaction. If you want to add some documents to that transaction, you can use the `registerDocToSaveAtStepStart`. The document will be saved if and only if the step begins.
+
+```typescript
+export class MyWorkflow extends Workflow{
+
+    define(){
+        //.... something before...
+        this.next((name)=>{
+            const newUser = new User(name);//assume it's a mongo document.
+            this.registerDocToSaveAtStepStart(newuser);//newUser will be saved if and only if this step start, so there is no risk of duplicate.
+            return Action.resolve();
+        })
+        //...something after...
+
+    }
+
+}
+``` 
+
+
 ## GoTo syntax
 
 To add flexibility on how to chain Actions, there is also a goTo syntax style.
