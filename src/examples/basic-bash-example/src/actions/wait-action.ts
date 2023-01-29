@@ -8,27 +8,28 @@ export class WaitAction extends Action {
         waitTime: number
     }
 
+    defaultWaitingTime = 1000;//one second.
+
     IBag: {
         initTime: number
     }
 
     main() {
-        this.bag.initTime = new Date().getTime();
-        console.log("Wait action initialized with: " + this.bag.initTime);
-        // modify the default delay to have the watcher called again in due time
-        this.defaultDelay = this.argument.waitTime ? this.argument.waitTime / 1000 : 1;
+        this.bag.initTime = Date.now();
+        // planify the cronActivity to be sure the waiter will be resumed in due time
+        const waitTime = this.argument.waitTime || this.defaultWaitingTime;
+        this.cronActivity.nextActivity = new Date(Date.now()+waitTime);
         return ActionState.IN_PROGRESS;
     }
 
     watcher() {
-        var waitTime = this.argument.waitTime ? this.argument.waitTime : 1000;
-        var currentTime = new Date().getTime();
-        var diff = currentTime - this.bag.initTime - waitTime;
-        if (diff > 0) {
+        const waitTime = this.argument.waitTime || this.defaultWaitingTime;
+        const timeElasped = Date.now() - this.bag.initTime;
+        if (timeElasped > waitTime) {
             console.log("Wait action over");
             return Promise.resolve(ActionState.SUCCESS);
         }
-        console.log("Wait action still waiting: "+diff);
+        console.log(`Wait action still waiting for ${waitTime - timeElasped} ms `);
         return Promise.resolve(ActionState.IN_PROGRESS);
     }
 
