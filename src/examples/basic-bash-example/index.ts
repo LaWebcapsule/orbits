@@ -1,5 +1,5 @@
 import { Action, ActionApp, bootstrapApp } from "@wbce/orbits-core";
-import {CiPipeline} from "./src/main-transaction";
+import {CiPipeline} from "./src/main-worflow";
 import { PrintAction } from "./src/actions/print-action";
 import { WaitAction } from "./src/actions/wait-action";
 

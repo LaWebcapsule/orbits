@@ -31,8 +31,8 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@wbce/orbits-core": "^0.0.2",
-    "@wbce/orbits-fuel": "^0.0.3",
+    "@wbce/orbits-core": "0.0.x",
+    "@wbce/orbits-fuel": "0.0.x",
     "winston": "^3.8.2"
   }
 }

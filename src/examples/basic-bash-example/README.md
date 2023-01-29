@@ -1,15 +1,13 @@
-# Cdk example
+# Bash example
 
-This is an example of how to use the AWS CDK with Orbits.  
-This example has the purpose to be simple ; if you want to use it in real life, you will have to customize it.  
+This is a simple example demonstrating how workflow and actions work.  
 
 ## Scope
 
-This example deploy a front stack (cloudfront+s3 bucket) and, after the deployment, dynamically add an object to the bucket.
+This example increment a counter and print it 30 times in the console, with a delay between each print.
 
 ## Architecture
-- ./src/cdk-stack/cdk-stack.ts contains the cdk stack class.
-- ./src/cdk-stack/cdk-stack.ts contains the Action class that allow to deploy the cdk stack.
+- ./src/actions/ contains the actions to print and wait.
 - ./src/main-workflow.ts contains our main workflow.
 - ./index.ts contains the bootstrapping process
 
@@ -24,7 +22,9 @@ See the requirements for [Orbits installation](./../../../README.md)
 
 Once this folder downloaded on your machine and the requirements installed, you can :
 - modify the bootstraping process with your mongodb url
-- modify the stack with a specific bucketName
+- add or remove different steps of the process.
+
+
 
 ### Launching the app
 
@@ -39,4 +39,9 @@ npm run build
 - launch the app
 ```console
 npm start
+```
+
+You can also use ts-node :
+```console
+npx ts-node index.ts
 ```
