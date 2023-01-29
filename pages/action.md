@@ -294,8 +294,6 @@ However, there are cases where an error can be implicit set on error.
 - if an error is thrown in the `main` or in the `init` function
 - if one of delays expired (see [delays](#delays))
 
-
-
 # Other parameters to be aware of
 
 ## cronActivity
