@@ -57,3 +57,14 @@ You can also use ts-node :
 ```console
 npx ts-node index.ts
 ```
+
+#### With docker compose
+
+- Copy the docker-compose file at the root of this git project.
+```console
+cp ./../../../docker-compose.yml ./docker-compose.yml
+```
+- Launch the app with docker-compose
+```console
+docker compose up
+```

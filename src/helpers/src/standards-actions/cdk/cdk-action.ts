@@ -2,8 +2,7 @@ import { Action, ActionApp, ActionState } from "@wbce/orbits-core";
 import { Cli } from "@wbce/services";
 import * as cdk from "aws-cdk-lib"
 import { existsSync, readFileSync } from "fs";
-import { DockerExecutor, EcrRegistry, PublicRegistry } from "../../executors";
-import {CloudFormationClient, CloudFormationClientConfig, DescribeStackResourceCommand } from '@aws-sdk/client-cloudformation';
+import { DockerExecutor, PublicRegistry } from "../../executors";
 import { CdkHelper } from "./cdk-helper";
 
 
@@ -17,14 +16,14 @@ export class CdkAction extends Action{
     commandName : 'deploy' | 'bootstrap' | 'destroy';
 
     executor = new DockerExecutor({
-        registry : new PublicRegistry('contino/aws-cdk'),
-        dockerfile : './Dockerfile'
+        registry : new PublicRegistry('node', '16')
     })
 
     IArgument : {
         cdkContext? : {
             [k : string] : any
         },
+        cdkVersion? : string,
         stackName: string,
         stackProps? : {
             env? : {
@@ -39,7 +38,7 @@ export class CdkAction extends Action{
 
     init(){
         this.setContextFromArgument();
-        this.stack = new this.StackConstructor(this.cdkApp, this.argument.stackName, this.argument.stackProps) 
+        this.stack = new this.StackConstructor(this.cdkApp, this.argument.stackName, this.argument.stackProps);
         return Promise.resolve();
     }
 
@@ -60,7 +59,10 @@ export class CdkAction extends Action{
         commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir]
         //e.g.
         //commandArguments = ['deploy', '--no-interactive', '--app', this.cdkApp.outdir];
-        return this.cli.command('cdk', commandArguments).then(()=>{
+        const cdkVersion = this.argument.cdkVersion || 'latest';
+        return this.cli.command('npm', ['install', `aws-cdk@${cdkVersion}`]).then(()=>{
+            return this.cli.command('npx', ['cdk', ...commandArguments])
+        }).then(()=>{
             if(existsSync(`${this.cdkApp.outdir}/cdk.context.json`)){
                 this.result = JSON.parse(readFileSync(`${this.cdkApp.outdir}/cdk.context.json`).toString());
             }

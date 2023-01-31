@@ -6,7 +6,7 @@ import {CiPipeline} from "./src/main-workflow";
 @bootstrapApp({
     db : {
         mongo: {
-            url: 'mongodb://localhost:27017/example'
+            url: 'mongodb://localhost:27017/cdk-example'
         }
     }
 })
@@ -19,7 +19,7 @@ ActionApp.waitForActiveApp.then(()=>{
     console.log("waitforactive app")
     ActionApp.activeApp.ActionModel.findOne({
         filter : {
-            main : true
+            'principalWorkflow' : true
         }
     }).then((actionDb)=>{
         console.log("actionDbFinding")
@@ -29,11 +29,11 @@ ActionApp.waitForActiveApp.then(()=>{
             action.resume();
             return;
         }
-        //create main action
+        //create principal action
         const pipeline = new CiPipeline();
         pipeline.setFilter({
-            main : true
+            principalWorkflow : true
         })
-        pipeline.dbDoc.save();
+        pipeline.save();
     })
 })

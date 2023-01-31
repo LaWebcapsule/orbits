@@ -2,20 +2,18 @@ version: '3.3'
 
 services:
   orbits:
-    container_name: orbits
     image : node:16
     depends_on:
       - "mongo"
     network_mode: "host"
     user: node:998 #cf https://docs.npmjs.com/cli/v7/using-npm/scripts#user
-    command: "npm start"
+    command: "npm run build-and-start"
     working_dir: "/app"
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
       
   mongo:
-    container_name: mongo
     image: mongo
     volumes:
       - ~/mongors/data:/data/db

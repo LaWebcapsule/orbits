@@ -39,7 +39,7 @@ npm install @wbce/orbits-core
 ### Docker compose
 
 You can use the docker-compose.yml in order to run your app.
-- Put the file at the root of your Orbits directory (for example, at ./src/examples/bash-example)
+- Put the file at the root of your Orbits directory (for example, at ./src/examples/basic-bash-example)
 - launch a docker-compose process with the `docker compose up` command.
 If you opt for this way of working, you still need to [install the depencies](#standard-installation) 
 

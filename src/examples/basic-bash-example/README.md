@@ -24,8 +24,6 @@ Once this folder downloaded on your machine and the requirements installed, you 
 - modify the bootstraping process with your mongodb url
 - add or remove different steps of the process.
 
-
-
 ### Launching the app
 
 - install the dependencies
@@ -45,3 +43,15 @@ You can also use ts-node :
 ```console
 npx ts-node index.ts
 ```
+
+### With docker compose
+
+- Copy the docker-compose file at the root of this git project.
+```console
+cp ./../../../docker-compose.yml ./docker-compose.yml
+```
+- Launch the app with docker-compose.
+```console
+docker compose up
+```
+

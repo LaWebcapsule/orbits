@@ -1,5 +1,7 @@
 import { Executor, Action, ActionApp } from "@wbce/orbits-core";
-import {o} from "@wbce/services";
+import {Cli, o} from "@wbce/services";
+import { exec } from "child_process";
+import Dockerode from "dockerode";
 import Docker from "dockerode";
 import path from "path";
 
@@ -11,7 +13,7 @@ export class DockerExecutor extends Executor{
         getCredentials : (...any)=>Promise<Docker.AuthConfig | void>
     };
     dockerfile : any;
-    dockerConfig = {
+    dockerConfig : {[key : string] : any, env : {[key: string]: string}} = {
         env : {}
     }
 
@@ -77,12 +79,13 @@ export class DockerExecutor extends Executor{
                     })
                 }) 
             }).then((image)=>{
+                return this.calculatePath()
+            }).then((appPaths)=>{
                 const envVariables = [];
                 for(const k in this.dockerConfig.env){
                     envVariables.push(`${k}=${this.dockerConfig.env[k]}`)
                 }
                 envVariables.push(`wbce_id=${this.registry.url}:${this.registry.tag}`);
-                const appPaths = this.calculatePath();
                 const executionContext = this.calculateExecutionContext();
                 const dockerConfig = {
                     "WorkingDir" : `/app`,
@@ -92,15 +95,16 @@ export class DockerExecutor extends Executor{
                     //https://docs.npmjs.com/cli/v7/using-npm/scripts#user
                     //maybe use AddGroup ?
                     //or maybe we should be a simple and normal user... But which one ?
-                    //maybe 1000 would not work with all images,
+                    //maybe node would not work with all images
                     "Binds" : [
                         '/var/run/docker.sock:/var/run/docker.sock',
-                        `${appPaths.rootFolder}:/app:ro`,
-                        `${__dirname}/${executionContext.entrypoint}:/${executionContext.entrypoint}:ro`
-                    ]
+                        `${appPaths.primaryRootFolder || appPaths.rootFolder}:/app:ro`,
+                        `${appPaths.primaryCurrentFolder || appPaths.currentFolder}/${executionContext.entrypoint}:/${executionContext.entrypoint}:ro`
+                    ],
+                    ...this.dockerConfig
                 };
+                dockerConfig['env'] = undefined;//'env' is a shorcut to construct Env. So we delete if after
                 let cmd = [...executionContext.command, `/app/${appPaths.relativeEntrypointPathFromRoot}/${executionContext.entrypoint}`, appPaths.relativeImportPathFromEntrypoint,  action._id.toString()]
-                //cmd = ['ls', '-al']
                 return docker.run(`${this.registry.url}:${this.registry.tag}`, cmd, process.stdout, dockerConfig)
             }).then(function(data) {
                 const output = data[0];
@@ -139,22 +143,75 @@ export class DockerExecutor extends Executor{
         }
     }
 
-    calculatePath(){
+    calculatePath() : Promise<{
+        rootFolder : string, //the app root folder, e.g. /app
+        primaryRootFolder? : string, //the root folder above the mount points, for example : /myuser/orbits/app
+        currentFolder : string,//the current directory
+        primaryCurrentFolder? : string, //the current directory above the mount point
+        bootstrapPath : string,//the location of the index file
+        relativeEntrypointPathFromRoot : string,//how to pass to 'rootFolder' until 'entrypoint'
+        relativeImportPathFromEntrypoint : string //how to pass to 'entrypoint' to bootstap path
+    }>{
         const stackPaths = o.getStackTracePaths();
         const rootFolder = stackPaths[0].substring(0, stackPaths[0].indexOf('node_modules'));
         const bootstrapPath = ActionApp.boostrapPath;
         const relativeEntrypointPathFromRoot = __dirname.replace(rootFolder, '');
         let relativeImportPathFromEntrypoint = bootstrapPath.replace(rootFolder, '');
         relativeImportPathFromEntrypoint = path.relative(relativeEntrypointPathFromRoot, relativeImportPathFromEntrypoint);
-        console.log(relativeImportPathFromEntrypoint);
-        return {
+        const result = {
             rootFolder,
             bootstrapPath,
+            currentFolder : __dirname,
             relativeEntrypointPathFromRoot,
             relativeImportPathFromEntrypoint
         }
+        return this.getDockerMounts().then(mounts=>{
+            if(!mounts){
+                return result;
+            }
+            for(const mount of mounts){
+                if(result.rootFolder.startsWith(mount.Destination)){
+                    result['primaryRootFolder'] = result.rootFolder.replace(mount.Destination, mount.Source);
+                    result['currentFolder'] = result.currentFolder.replace(mount.Destination, mount.Source);
+                    return result;
+                }      
+            }
+            return result;
+        })
 
     }
+
+    getDockerMounts(){
+        //necesary if we want to do Docker inside Docker
+        //indeed, the mount point to create when we launch a new Docker
+        //has to refer to the mount point of the first host
+        return new Promise<string>((resolve, reject)=>{
+            exec("cat /proc/self/cgroup | grep 'docker' | tail -n1", (err, res, err2)=>{
+                if(err || err2){
+                    reject(err || err2);
+                }
+                const resSplitted = res.split("/")
+                let dockerId = resSplitted[resSplitted.length-1];
+                dockerId = dockerId.substring(0, dockerId.length-1)
+                resolve(dockerId);
+            })
+        }).then((res)=>{
+            if(!res){
+                throw new Error("not in Dind mode")
+            }
+            const docker = new Docker({socketPath: '/var/run/docker.sock'});
+            const container = docker.getContainer(res);
+            return docker.getContainer(res).inspect()
+        }).then((data)=>{
+            return data.Mounts;
+        }).catch(err=>{
+            //we print the error, but we don't care of an error in this case
+            console.log("try-catch error - error catched (normal behaviour)")
+            console.log(err.message);
+            return;
+        })
+    }
+
 
     isInsideDocker(){
         return process.env['wbce_id'] === `${this.registry.url}:${this.registry.tag}`;
