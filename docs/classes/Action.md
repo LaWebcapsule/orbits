@@ -91,7 +91,7 @@ You can read more here :
 
 #### Defined in
 
-[src/action-manager.ts:156](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L156)
+[src/action-manager.ts:155](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L155)
 
 ## Properties
 
@@ -103,7 +103,7 @@ Interface of the argument of the action
 
 #### Defined in
 
-[src/action-manager.ts:76](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L76)
+[src/action-manager.ts:75](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L75)
 
 ___
 
@@ -115,7 +115,7 @@ Interface of the bag of the action
 
 #### Defined in
 
-[src/action-manager.ts:83](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L83)
+[src/action-manager.ts:82](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L82)
 
 ___
 
@@ -127,7 +127,7 @@ Interface of the result of the action
 
 #### Defined in
 
-[src/action-manager.ts:89](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L89)
+[src/action-manager.ts:88](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L88)
 
 ___
 
@@ -139,7 +139,7 @@ The action that rollback this action.
 
 #### Defined in
 
-[src/action-manager.ts:666](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L666)
+[src/action-manager.ts:665](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L665)
 
 ___
 
@@ -149,7 +149,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:667](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L667)
+[src/action-manager.ts:666](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L666)
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:32](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L32)
+[src/action-manager.ts:31](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L31)
 
 ___
 
@@ -182,7 +182,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 #### Defined in
 
-[src/action-manager.ts:66](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L66)
+[src/action-manager.ts:65](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L65)
 
 ___
 
@@ -194,7 +194,7 @@ The database document of this action.
 
 #### Defined in
 
-[src/action-manager.ts:96](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L96)
+[src/action-manager.ts:95](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L95)
 
 ___
 
@@ -210,7 +210,7 @@ Action.defaultDelays[ActionState.IN_PROGRESS]
 
 #### Defined in
 
-[src/action-manager.ts:39](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L39)
+[src/action-manager.ts:38](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L38)
 
 ___
 
@@ -236,7 +236,7 @@ You should modify this if your actions have longer timeouts.
 
 #### Defined in
 
-[src/action-manager.ts:54](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L54)
+[src/action-manager.ts:53](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L53)
 
 ___
 
@@ -248,7 +248,7 @@ Specify an executor in which all actions of this class will run.
 
 #### Defined in
 
-[src/action-manager.ts:30](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L30)
+[src/action-manager.ts:29](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L29)
 
 ___
 
@@ -258,7 +258,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:347](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L347)
+[src/action-manager.ts:346](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L346)
 
 ___
 
@@ -272,7 +272,7 @@ See :
 
 #### Defined in
 
-[src/action-manager.ts:25](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L25)
+[src/action-manager.ts:24](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L24)
 
 ## Accessors
 
@@ -286,7 +286,7 @@ See :
 
 #### Defined in
 
-[src/action-manager.ts:143](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L143)
+[src/action-manager.ts:142](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L142)
 
 ___
 
@@ -300,7 +300,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:107](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L107)
+[src/action-manager.ts:106](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L106)
 
 • `set` **argument**(`argument`): `void`
 
@@ -316,7 +316,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:111](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L111)
+[src/action-manager.ts:110](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L110)
 
 ___
 
@@ -330,7 +330,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:98](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L98)
+[src/action-manager.ts:97](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L97)
 
 • `set` **bag**(`bag`): `void`
 
@@ -346,7 +346,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:102](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L102)
+[src/action-manager.ts:101](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L101)
 
 ___
 
@@ -360,7 +360,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:134](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L134)
+[src/action-manager.ts:133](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L133)
 
 • `set` **cronActivity**(`cronActivity`): `void`
 
@@ -376,7 +376,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:138](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L138)
+[src/action-manager.ts:137](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L137)
 
 ___
 
@@ -390,7 +390,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:625](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L625)
+[src/action-manager.ts:624](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L624)
 
 ___
 
@@ -404,7 +404,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:125](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L125)
+[src/action-manager.ts:124](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L124)
 
 • `set` **repeat**(`repeat`): `void`
 
@@ -420,7 +420,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:129](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L129)
+[src/action-manager.ts:128](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L128)
 
 ___
 
@@ -434,7 +434,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:116](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L116)
+[src/action-manager.ts:115](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L115)
 
 • `set` **result**(`result`): `void`
 
@@ -450,7 +450,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:120](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L120)
+[src/action-manager.ts:119](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L119)
 
 ## Methods
 
@@ -469,7 +469,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 #### Defined in
 
-[src/action-manager.ts:438](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L438)
+[src/action-manager.ts:437](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L437)
 
 ___
 
@@ -489,7 +489,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:562](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L562)
+[src/action-manager.ts:561](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L561)
 
 ___
 
@@ -509,7 +509,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:479](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L479)
+[src/action-manager.ts:478](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L478)
 
 ___
 
@@ -523,7 +523,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:377](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L377)
+[src/action-manager.ts:376](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L376)
 
 ___
 
@@ -539,7 +539,7 @@ The workflow that wait for the end of this action if needed and then rollback th
 
 #### Defined in
 
-[src/action-manager.ts:674](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L674)
+[src/action-manager.ts:673](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L673)
 
 ___
 
@@ -553,7 +553,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:558](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L558)
+[src/action-manager.ts:557](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L557)
 
 ___
 
@@ -567,7 +567,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:495](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L495)
+[src/action-manager.ts:494](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L494)
 
 ___
 
@@ -581,7 +581,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:250](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L250)
+[src/action-manager.ts:249](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L249)
 
 ___
 
@@ -602,7 +602,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:566](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L566)
+[src/action-manager.ts:565](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L565)
 
 ___
 
@@ -630,7 +630,7 @@ You cannot store class object on the database. If your action use complex object
 
 #### Defined in
 
-[src/action-manager.ts:286](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L286)
+[src/action-manager.ts:285](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L285)
 
 ___
 
@@ -644,7 +644,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:348](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L348)
+[src/action-manager.ts:347](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L347)
 
 ___
 
@@ -664,7 +664,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:607](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L607)
+[src/action-manager.ts:606](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L606)
 
 ___
 
@@ -684,7 +684,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:616](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L616)
+[src/action-manager.ts:615](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L615)
 
 ___
 
@@ -702,7 +702,7 @@ It returns a state value.
 
 #### Defined in
 
-[src/action-manager.ts:406](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L406)
+[src/action-manager.ts:405](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L405)
 
 ___
 
@@ -722,7 +722,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:488](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L488)
+[src/action-manager.ts:487](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L487)
 
 ___
 
@@ -736,7 +736,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:536](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L536)
+[src/action-manager.ts:535](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L535)
 
 ___
 
@@ -755,7 +755,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 #### Defined in
 
-[src/action-manager.ts:415](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L415)
+[src/action-manager.ts:414](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L414)
 
 ___
 
@@ -774,7 +774,7 @@ A promise that resolves when the last document version has be loaded
 
 #### Defined in
 
-[src/action-manager.ts:213](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L213)
+[src/action-manager.ts:212](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L212)
 
 ___
 
@@ -790,7 +790,7 @@ Shortcut to configure a rollback. Will be encapsulated in a larger action
 
 #### Defined in
 
-[src/action-manager.ts:644](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L644)
+[src/action-manager.ts:643](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L643)
 
 ___
 
@@ -806,7 +806,7 @@ Shortcut to configure the watcher of the rollback Action
 
 #### Defined in
 
-[src/action-manager.ts:652](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L652)
+[src/action-manager.ts:651](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L651)
 
 ___
 
@@ -820,7 +820,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:147](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L147)
+[src/action-manager.ts:146](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L146)
 
 ___
 
@@ -844,7 +844,7 @@ Once set, the argument of an action should not be modified.
 
 #### Defined in
 
-[src/action-manager.ts:296](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L296)
+[src/action-manager.ts:295](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L295)
 
 ___
 
@@ -868,7 +868,7 @@ an action or a group of actions
 
 #### Defined in
 
-[src/action-manager.ts:320](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L320)
+[src/action-manager.ts:319](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L319)
 
 ___
 
@@ -892,7 +892,7 @@ Configure the number of times an action is repeated.
 
 #### Defined in
 
-[src/action-manager.ts:306](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L306)
+[src/action-manager.ts:305](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L305)
 
 ___
 
@@ -914,7 +914,7 @@ Set the result of the action.
 
 #### Defined in
 
-[src/action-manager.ts:330](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L330)
+[src/action-manager.ts:329](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L329)
 
 ___
 
@@ -928,7 +928,7 @@ ___
 
 #### Defined in
 
-[src/action-manager.ts:360](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L360)
+[src/action-manager.ts:359](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L359)
 
 ___
 
@@ -947,7 +947,7 @@ It is called :
 
 #### Defined in
 
-[src/action-manager.ts:343](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L343)
+[src/action-manager.ts:342](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L342)
 
 ___
 
@@ -971,7 +971,7 @@ an action for which dbDoc property is equal to actionDb
 
 #### Defined in
 
-[src/action-manager.ts:200](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L200)
+[src/action-manager.ts:199](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L199)
 
 ___
 
@@ -998,7 +998,7 @@ A new instance of the RejectAction class.
 
 #### Defined in
 
-[src/action-manager.ts:244](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L244)
+[src/action-manager.ts:243](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L243)
 
 ___
 
@@ -1022,4 +1022,4 @@ A new instance of the ResolveAction class.
 
 #### Defined in
 
-[src/action-manager.ts:230](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-manager.ts#L230)
+[src/action-manager.ts:229](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-manager.ts#L229)

@@ -6,17 +6,4 @@ module.exports = {
       // './src/packages'
     ],
     entryPointStrategy: 'packages',
-    /* pluginPages: {
-      pages: [
-        {
-          moduleRoot: true,
-          title: '@wbce/orbits',
-          source : 'main.md',
-          children : [{
-            title : 'action',
-            source : 'action.md'
-          }]
-        }
-      ]
-    } */
 };

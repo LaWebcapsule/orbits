@@ -32,7 +32,7 @@
 
 #### Defined in
 
-[src/action-job.ts:14](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L14)
+[src/action-job.ts:14](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L14)
 
 ## Properties
 
@@ -42,7 +42,7 @@
 
 #### Defined in
 
-[src/action-job.ts:10](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L10)
+[src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:11](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L11)
+[src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L11)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:9](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L9)
+[src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L9)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:18](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L18)
+[src/action-job.ts:18](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L18)
 
 ## Methods
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:88](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L88)
+[src/action-job.ts:88](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L88)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:46](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L46)
+[src/action-job.ts:46](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L46)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:69](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L69)
+[src/action-job.ts:69](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L69)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:56](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L56)
+[src/action-job.ts:56](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L56)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:135](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L135)
+[src/action-job.ts:135](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L135)
 
 ___
 
@@ -168,4 +168,4 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:19](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-job.ts#L19)
+[src/action-job.ts:19](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-job.ts#L19)

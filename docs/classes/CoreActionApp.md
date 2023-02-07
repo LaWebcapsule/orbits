@@ -56,7 +56,7 @@
 
 #### Defined in
 
-[src/app/action-app.ts:52](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L52)
+[src/app/action-app.ts:52](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L52)
 
 ## Properties
 
@@ -70,7 +70,7 @@
 
 #### Defined in
 
-[src/app/action-app.ts:50](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L50)
+[src/app/action-app.ts:50](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L50)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:32](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L32)
+[src/app/action-app.ts:32](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L32)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:44](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L44)
+[src/app/action-app.ts:44](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L44)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:126](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L126)
+[src/app/action-app.ts:126](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L126)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:39](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L39)
+[src/app/action-app.ts:39](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L39)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:33](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L33)
+[src/app/action-app.ts:33](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L33)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:35](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L35)
+[src/app/action-app.ts:35](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L35)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:42](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L42)
+[src/app/action-app.ts:42](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L42)
 
 ___
 
@@ -182,7 +182,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:20](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L20)
+[src/app/action-app.ts:20](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L20)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:22](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L22)
+[src/app/action-app.ts:22](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L22)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:30](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L30)
+[src/app/action-app.ts:30](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L30)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:25](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L25)
+[src/app/action-app.ts:25](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L25)
 
 ___
 
@@ -238,7 +238,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:24](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L24)
+[src/app/action-app.ts:24](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L24)
 
 ___
 
@@ -252,7 +252,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:26](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L26)
+[src/app/action-app.ts:26](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L26)
 
 ## Methods
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:64](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L64)
+[src/app/action-app.ts:64](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L64)
 
 ___
 
@@ -288,4 +288,4 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:97](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L97)
+[src/app/action-app.ts:97](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L97)

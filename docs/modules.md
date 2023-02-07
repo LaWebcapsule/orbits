@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[src/models/action.ts:59](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/models/action.ts#L59)
+[src/models/action.ts:59](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L59)
 
 ## Functions
 
@@ -76,4 +76,4 @@
 
 #### Defined in
 
-[src/app/action-app.ts:107](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L107)
+[src/app/action-app.ts:107](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L107)

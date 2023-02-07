@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[src/app/action-app.ts:14](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L14)
+[src/app/action-app.ts:14](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L14)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:15](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/app/action-app.ts#L15)
+[src/app/action-app.ts:15](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L15)

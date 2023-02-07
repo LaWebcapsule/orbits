@@ -32,7 +32,7 @@
 
 #### Defined in
 
-[src/action-executor.ts:7](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-executor.ts#L7)
+[src/action-executor.ts:7](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-executor.ts#L7)
 
 ## Methods
 
@@ -46,7 +46,7 @@
 
 #### Defined in
 
-[src/action-executor.ts:9](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-executor.ts#L9)
+[src/action-executor.ts:9](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-executor.ts#L9)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[src/action-executor.ts:13](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-executor.ts#L13)
+[src/action-executor.ts:13](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-executor.ts#L13)
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-[src/action-executor.ts:17](https://gitlab.com/webcapsule/actions/-/blob/5d56f22/src/core/actions/src/action-executor.ts#L17)
+[src/action-executor.ts:17](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/action-executor.ts#L17)

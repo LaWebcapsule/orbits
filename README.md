@@ -25,6 +25,15 @@ To get a mongodb connection, you can:
 - use a Mongo Atlas cluster (you can start with a free cluster)
 - use the [docker compose](./docker-compose.yml) file.
 
+### Docker compose
+
+You can use the docker-compose.yml in order to run your app.
+- Put the [docker compose](./docker-compose.yml) file at the root of your Orbits directory (for example, at ./src/examples/basic-bash-example)
+- launch a docker-compose process with the `docker compose up` command.
+If you opt for this way of working, you still need to [install the depencies](#standard-installation) 
+
+
+
 ### Standard installation
 
 ```bash
@@ -35,14 +44,6 @@ npm install @wbce/orbits-core @wbce/orbits-fuel
 ```bash
 npm install @wbce/orbits-core
 ```
-
-### Docker compose
-
-You can use the docker-compose.yml in order to run your app.
-- Put the file at the root of your Orbits directory (for example, at ./src/examples/basic-bash-example)
-- launch a docker-compose process with the `docker compose up` command.
-If you opt for this way of working, you still need to [install the depencies](#standard-installation) 
-
 
 ## Testing
 In each specific package, go to the `/specs/` folder. There is a `main.spec.ts`.
@@ -64,5 +65,24 @@ Also, there is a /src/examples folder with some examples.
 
 
 ## Roadmap
-> We will complete this soon.
 
+> We will formalize this roadmap with a more appropriate tool soon or later. At this stage, you can suggest modification opening an issue, opening a pull request, or [contacting us](#contact-us).
+
+* Executors:
+  - complete the docker executor to build the image from a Dockerfile
+  - add an AWS ECS executor
+  - add a lambda executor
+* Git integration:
+  - simplify the process to manage a git repository, add git hooks...
+  - add Waiters for main git steps (PR, release...)
+* Api integration:
+  - write an example with the API helper
+  - add a better way to interact with Orbits via API
+* Secrets:
+  - propose an integration with a vault
+* IAM and Aws Integration :
+  - propose a way to have granular permission at the level of the Action
+
+## Contact us
+You can contact us to give us feedback or in case of problems :
+equipe@webcapsule.io

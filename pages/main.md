@@ -5,7 +5,7 @@ Welcome on board ! You are at the good place to start a smooth travel and to con
 # T.O.C.
 
 - [What is orbit](#what-is-orbit)
-- [Api documentation](./../docs/README.md)
+- [Api reference](./../docs/README.md) (:construction_worker: Redaction in Progress)
 - [Examples](./../src/examples/)
 - [Cdk usage](./cdk.md)
 
@@ -80,10 +80,12 @@ There are standard actions that allows to keep track of a repository states and 
 
 ---> :construction_worker: Work in Progress ; we would be please to find contributors to go quicker.
 
-# Get startted
-
 # Examples
 
+- [Hello world example](./../src/examples/basic-bash-example/)
 - [Cdk example](./../src/examples/git-cdk-s3/)
-- Git example : pending writing
-- Whole pipeline example : pending writing
+- [Whole pipeline example](./../src/examples/ci-pipeline-for-this-repo)
+
+# Installation
+
+Please, see [this](./../README.md)
