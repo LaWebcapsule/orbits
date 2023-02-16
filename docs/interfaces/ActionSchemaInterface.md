@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:25](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L25)
+[src/models/action.ts:25](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L25)
 
 ___
 
@@ -205,7 +205,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:22](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L22)
+[src/models/action.ts:22](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L22)
 
 ___
 
@@ -215,7 +215,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:23](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L23)
+[src/models/action.ts:23](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L23)
 
 ___
 
@@ -257,7 +257,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:52](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L52)
+[src/models/action.ts:52](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L52)
 
 ___
 
@@ -276,7 +276,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L45)
+[src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L45)
 
 ___
 
@@ -302,7 +302,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:40](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L40)
+[src/models/action.ts:40](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L40)
 
 ___
 
@@ -319,7 +319,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:41](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L41)
+[src/models/action.ts:41](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L41)
 
 ___
 
@@ -345,7 +345,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:26](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L26)
+[src/models/action.ts:26](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L26)
 
 ___
 
@@ -395,7 +395,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:55](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L55)
+[src/models/action.ts:55](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L55)
 
 ___
 
@@ -405,7 +405,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L30)
+[src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L30)
 
 ___
 
@@ -415,7 +415,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L31)
+[src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L31)
 
 ___
 
@@ -432,7 +432,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L36)
+[src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L36)
 
 ___
 
@@ -442,7 +442,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L29)
+[src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L29)
 
 ___
 
@@ -460,7 +460,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L54)
+[src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L54)
 
 ___
 
@@ -477,7 +477,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L32)
+[src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L32)
 
 ___
 
@@ -487,7 +487,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:24](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L24)
+[src/models/action.ts:24](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L24)
 
 ___
 
@@ -513,7 +513,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:20](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L20)
+[src/models/action.ts:20](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L20)
 
 ___
 
@@ -523,7 +523,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:21](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L21)
+[src/models/action.ts:21](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L21)
 
 ___
 
@@ -541,7 +541,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L53)
+[src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L53)
 
 ___
 
@@ -551,7 +551,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:51](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L51)
+[src/models/action.ts:51](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L51)
 
 ___
 
@@ -561,7 +561,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L27)
+[src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L27)
 
 ___
 
@@ -571,7 +571,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L28)
+[src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L28)
 
 ## Methods
 

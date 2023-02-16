@@ -4,8 +4,6 @@ import { o } from "@wbce/services";
 import { ActionState, ActionSchemaInterface } from './models/action';
 import {Action} from '../index'
 
-
-
 export interface Step{
     [ActionState.SUCCESS]? : boolean;
     [ActionState.ERROR]? : boolean;

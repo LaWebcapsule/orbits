@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[src/models/action.ts:59](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/models/action.ts#L59)
+[src/models/action.ts:59](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L59)
 
 ## Functions
 
@@ -52,11 +52,14 @@
 
 ▸ **bootstrapApp**(`opts`): (`classTargetConstructor`: `any`) => `void`
 
+Decorator :
+It bootstraps an app
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `opts` | [`ActionAppConfig`](interfaces/ActionAppConfig.md) |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `opts` | [`ActionAppConfig`](interfaces/ActionAppConfig.md) \| () => [`ActionAppConfig`](interfaces/ActionAppConfig.md) \| `Promise`<[`ActionAppConfig`](interfaces/ActionAppConfig.md)\> | ActionAppConfig \| (()=>(ActionAppConfig\|Promise<ActionAppConfig>)). Either an object of class ActionAppConfig or a callback returning a Promise, this promise have to return an ActionAppConfig |
 
 #### Returns
 
@@ -76,4 +79,4 @@
 
 #### Defined in
 
-[src/app/action-app.ts:107](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/app/action-app.ts#L107)
+[src/app/action-app.ts:118](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L118)

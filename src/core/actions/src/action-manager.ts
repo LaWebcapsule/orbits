@@ -558,7 +558,7 @@ export class Action{
         return this.dbDoc.remove();
     }
 
-    activityLogs(options : any){
+    activityLogs(options : any):(any[] | Promise<any[]>){
         return [] as string[];
     }
 

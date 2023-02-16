@@ -9,9 +9,13 @@ import { RevertAction, RevertWorkflow } from '../../index';
 import { AppDb, setDbConnection } from './db-connection';
 import { defaultLogger, setLogger } from './logger';
 
-
+/**  An interface that describes how the app can be configured. 
+ *  
+ */
 export interface ActionAppConfig{
+    /** db configuration*/
     db? : AppDb,
+    /** log driver configuration */
     logger?: winston.Logger
 }
 
@@ -104,8 +108,25 @@ export class ActionApp{
 
 }
 
-export function bootstrapApp(opts: ActionAppConfig){
+/**
+ * Decorator :
+ * It bootstraps an app
+ * @param {ActionAppConfig | (()=>(ActionAppConfig|Promise<ActionAppConfig>))} opts - ActionAppConfig |
+ * (()=>(ActionAppConfig|Promise<ActionAppConfig>)). Either an object of class ActionAppConfig or a callback returning a Promise, this promise have to
+ * return an ActionAppConfig 
+ */
+export function bootstrapApp(opts: ActionAppConfig | (()=>(ActionAppConfig|Promise<ActionAppConfig>)) ){
     return function(classTargetConstructor: any){
+        if(typeof opts === 'function'){
+            //if opts is a callback,
+            //we get the result and we deal with it as if it was a promise.
+            //then we just call bootstrapApp again with the result.
+            const p = Promise.resolve(opts());
+            p.then((result)=>{
+                return bootstrapApp(result)(classTargetConstructor);
+            })
+            return;
+        }
         if(ActionApp.activeApp){
             throw new ActionError('Only one app by process can be bootstrapped. Please merge your second app with the first.');
         }

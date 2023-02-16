@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[src/workflow-manager.ts:10](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/workflow-manager.ts#L10)
+[src/workflow-manager.ts:8](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L8)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:11](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/workflow-manager.ts#L11)
+[src/workflow-manager.ts:9](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L9)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:12](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/workflow-manager.ts#L12)
+[src/workflow-manager.ts:10](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L10)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:13](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/workflow-manager.ts#L13)
+[src/workflow-manager.ts:11](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L11)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:14](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/workflow-manager.ts#L14)
+[src/workflow-manager.ts:12](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L12)
 
 ___
 
@@ -105,4 +105,4 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:17](https://github.com/LaWebcapsule/orbits/blob/96719ff/src/core/actions/src/workflow-manager.ts#L17)
+[src/workflow-manager.ts:15](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L15)
