@@ -198,8 +198,22 @@ export class Action{
      */
     static constructFromDb(actionDb : ActionSchemaInterface<any>) : Action{
         const app = ActionApp.getActiveApp();
+        
         const ActionCtr = app.actionsRegistry.get(actionDb.actionRef);
-        const action = new ActionCtr();
+        let action: Action;
+        try{
+            action = new ActionCtr();    
+        }
+        catch(err){
+            throw new ActionError(
+                `The action with ref ${actionDb.actionRef} has not been registered`,
+                errorCodes.RESSOURCE_NOT_FOUND,
+                {
+                    err,
+                    actionDb
+                }
+            )
+        }
         action.dbDoc = actionDb;
         return action;
     }
