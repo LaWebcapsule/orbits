@@ -38,6 +38,16 @@ export class TestStack extends cdk.Stack{
 
 export class DeployTestStack extends CdkDeployAction{
     StackConstructor: typeof cdk.Stack = TestStack;
+
+    executor = new DockerExecutor({
+        registry : new PublicRegistry('node', '16'),
+        dockerConfig : {
+            env : {
+                'AWS_ACCESS_KEY_ID': process.env['AWS_ACCESS_KEY_ID'],
+                'AWS_SECRET_ACCESS_KEY': process.env['AWS_SECRET_ACCESS_KEY']
+            }
+        }
+    })
 }
 
 export class BootstrapTestStack extends CdkBoostrapAction{

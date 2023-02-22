@@ -1,3 +1,4 @@
+import { AwsCdkCli, ICloudAssemblyDirectoryProducer } from "@aws-cdk/cli-lib-alpha";
 import { Action, ActionApp, ActionState } from "@wbce/orbits-core";
 import { Cli } from "@wbce/services";
 import * as cdk from "aws-cdk-lib"
@@ -7,7 +8,7 @@ import { CdkHelper } from "./cdk-helper";
 
 
 
-export class CdkAction extends Action{
+export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer{
     cli = new Cli();
     cdkApp = new cdk.App();
     StackConstructor : typeof cdk.Stack;
@@ -36,31 +37,46 @@ export class CdkAction extends Action{
 
     IResult: any;
 
+
+    async produce(context: Record<string, any>) {
+        this.cdkApp = new cdk.App({ context });
+        this.generateStack();
+        return this.cdkApp.synth().directory;
+    }
+
+    generateStack(){
+        this.stack = new this.StackConstructor(this.cdkApp, this.argument.stackName, this.argument.stackProps);
+    }
+
     init(){
         this.setContextFromArgument();
-        this.stack = new this.StackConstructor(this.cdkApp, this.argument.stackName, this.argument.stackProps);
         return Promise.resolve();
     }
 
     main(){
-        this.cdkApp.synth();
-        let commandArguments : string[] = [this.commandName];
-        switch (this.commandName) {
-            case 'bootstrap':
-                if(this.argument.stackProps?.env){
-                    const env = this.argument.stackProps.env
-                    commandArguments = [...commandArguments, `aws://${env.account}/${env.region}`]
-                }
-                break;
-        
-            default:
-                break;
-        }
-        commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir]
-        //e.g.
-        //commandArguments = ['deploy', '--no-interactive', '--app', this.cdkApp.outdir];
         const cdkVersion = this.argument.cdkVersion || 'latest';
         return this.cli.command('npm', ['install', `aws-cdk@${cdkVersion}`]).then(()=>{
+            const cdkCli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
+            return cdkCli.synth({
+                stacks : [
+                    this.argument.stackName
+                ],
+                exclusively : true
+            })
+        }).then(()=>{
+            let commandArguments : string[] = [this.commandName];
+            switch (this.commandName) {
+                case 'bootstrap':
+                    if(this.argument.stackProps?.env){
+                        const env = this.argument.stackProps.env
+                        commandArguments = [...commandArguments, `aws://${env.account}/${env.region}`]
+                    }
+                    break;
+            
+                default:
+                    break;
+            }
+            commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir]
             return this.cli.command('npx', ['cdk', ...commandArguments])
         }).then(()=>{
             if(existsSync(`${this.cdkApp.outdir}/cdk.context.json`)){
@@ -81,7 +97,7 @@ export class CdkAction extends Action{
         const region = this.argument.stackProps?.env.region;
         region ? opts['region'] = region : undefined;
         const cdkHelper = new CdkHelper(opts);
-        return cdkHelper.describeStack(this.stack).then((stackDescription)=>{
+        return cdkHelper.describeStackFromName(this.argument.stackName).then((stackDescription)=>{
             if(stackDescription.LastUpdatedTime.getTime() <= this.dbDoc.stateUpdatedAt.getTime()){
                 //it has not begin
                 return ActionState.SLEEPING;
@@ -95,8 +111,7 @@ export class CdkAction extends Action{
             if(stackDescription.StackStatus.includes('COMPLETE')){
                 return ActionState.SUCCESS
             }
-        }).then(()=>{
-            return ActionState.SUCCESS
+            return ActionState.UNKNOW;
         }).catch((err : Error)=>{
             if(err.message.includes('Stack with id') && err.message.includes('doest not exist')){
                 return ActionState.SLEEPING
@@ -104,6 +119,7 @@ export class CdkAction extends Action{
             throw err;
         })
     }
+
 
 }
 

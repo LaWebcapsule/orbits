@@ -7,8 +7,8 @@ let j = new jasmin();
 j.loadConfig({
     spec_dir: '.',
     spec_files: [
-        'docker-executor.spec.ts',
-        //'cdk-action.spec.ts'
+        //'docker-executor.spec.ts',
+        'cdk-action.spec.ts'
     ]
 })
 

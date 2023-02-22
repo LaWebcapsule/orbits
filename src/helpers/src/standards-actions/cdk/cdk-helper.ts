@@ -25,6 +25,15 @@ export class CdkHelper{
         });
     }
 
+    describeStackFromName(stackName : string){
+        const command = new DescribeStacksCommand({
+            StackName : stackName
+        })
+        return this.cfnClient.send(command).then((res)=>{
+            return res.Stacks[0];
+        });
+    }
+
 
 
 
