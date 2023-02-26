@@ -26,14 +26,9 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         },
         cdkVersion? : string,
         stackName: string,
-        stackProps? : {
-            env? : {
-                account: string,
-                region: string
-            },
-            [key : string]: any
-        }
+        stackProps? : any & cdk.StackProps
     }
+
 
     IResult: any;
 
@@ -54,15 +49,15 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
     }
 
     main(){
-        const cdkVersion = this.argument.cdkVersion || 'latest';
-        return this.cli.command('npm', ['install', `aws-cdk@${cdkVersion}`]).then(()=>{
-            const cdkCli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
-            return cdkCli.synth({
-                stacks : [
-                    this.argument.stackName
-                ],
-                exclusively : true
-            })
+        const cdkCli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
+        return cdkCli.synth({
+            stacks : [
+                this.argument.stackName
+            ],
+            exclusively : true
+        }).then(()=>{
+            const cdkVersion = this.argument.cdkVersion || 'latest';
+            return this.cli.command('npm', ['install', `aws-cdk@${cdkVersion}`])
         }).then(()=>{
             let commandArguments : string[] = [this.commandName];
             switch (this.commandName) {
