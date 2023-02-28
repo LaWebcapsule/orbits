@@ -9,14 +9,19 @@ For now, only mongo is supported.
 Either url or conn should be present.
 */
 export interface AppDb{
-    mongo : {
+    mongo? : {
         url? : string,
         opts? : mongoose.ConnectOptions,
         conn? : mongoose.Connection
-    }
+    },
+    noDatabase? : boolean
 }
 
 export function setDbConnection(app : ActionApp){
+    if(app.db.noDatabase){
+        app.logger.warn("noDatabase option : this can cause problem if you retrieve or save new actions")
+        return;
+    }
     if(app.db.mongo.conn){
         app.ActionModel = app.db.mongo.conn.model<ActionSchemaInterface>('Action', actionSchema)
         return;

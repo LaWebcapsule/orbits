@@ -74,7 +74,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
             commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir]
             return this.cli.command('npx', ['cdk', ...commandArguments])
         }).then(()=>{
-            if(existsSync(`${this.cdkApp.outdir}/cdk.context.json`)){
+            if(existsSync(`./cdk.context.json`)){
                 this.result = JSON.parse(readFileSync(`${this.cdkApp.outdir}/cdk.context.json`).toString());
             }
             return ActionState.SUCCESS
@@ -93,7 +93,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         region ? opts['region'] = region : undefined;
         const cdkHelper = new CdkHelper(opts);
         return cdkHelper.describeStackFromName(this.argument.stackName).then((stackDescription)=>{
-            if(stackDescription.LastUpdatedTime.getTime() <= this.dbDoc.stateUpdatedAt.getTime()){
+            if(stackDescription.LastUpdatedTime.getTime() <= this.dbDoc.createdAt.getTime()){
                 //it has not begin
                 return ActionState.SLEEPING;
             }

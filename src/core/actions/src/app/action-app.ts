@@ -16,7 +16,10 @@ export interface ActionAppConfig{
     /** db configuration*/
     db? : AppDb,
     /** log driver configuration */
-    logger?: winston.Logger
+    logger?: winston.Logger,
+    workers? : {
+        quantity : number
+    }
 }
 
 
@@ -53,15 +56,15 @@ export class ActionApp{
 
     ActionModel : mongoose.Model<ActionSchemaInterface>;
 
-    constructor(opts? : {
-        db? : AppDb,
-        logger?: winston.Logger
-    }){
+    constructor(opts? : ActionAppConfig){
         if(opts?.logger){
             this.logger = opts.logger;
         }
         if(opts?.db){
             this.db = opts.db
+        }
+        if(opts?.workers){
+            this.numberOfWorker = opts?.workers.quantity
         }
     }
 

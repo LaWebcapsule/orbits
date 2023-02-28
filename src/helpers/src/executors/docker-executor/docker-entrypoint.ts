@@ -25,6 +25,8 @@ import(params.bootstrapPath).then((test)=>{
     console.log("adios")
     process.exit()
 }).catch((err)=>{
+    console.log("error in the entrypoint")
+    console.log(err)
     const errCode = 1000 + (err.code || 0);//1000 because we have errorCodes values of -1, 0, ...
     process.exit(errCode)
 })
