@@ -71,7 +71,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                 default:
                     break;
             }
-            commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir]
+            commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir, this.argument.stackName]
             return this.cli.command('npx', ['cdk', ...commandArguments])
         }).then(()=>{
             if(existsSync(`./cdk.context.json`)){
