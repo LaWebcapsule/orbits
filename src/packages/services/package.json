@@ -1,6 +1,6 @@
 {
   "name": "@wbce/services",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Tools for the actions repository",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@tsconfig/node14": "^1.0.3",
     "@types/node": "^18.11.14",
+    "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
     "typescript": "^4.9.4"
   }

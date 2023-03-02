@@ -1,10 +1,11 @@
-import { spawn } from "child_process"
+import { spawn, SpawnOptions, SpawnOptionsWithoutStdio } from "child_process"
+import { Stream, Writable } from "stream";
 
 export class Cli{
 
-    command(command : string, args : string[], options = {}){
+    command(command : string, args : string[], options : SpawnOptionsWithoutStdio & {stderr? : Writable, stdout? : Writable} = {}){
         return new Promise<void>((resolve, reject)=>{
-            const childProcess = spawn(command, args, {...options, stdio: ['inherit', 'inherit', 'inherit']});
+            const childProcess = spawn(command, args, {...options});
             let error : Error;
             childProcess.on("error", (err)=>{
                 error = new Error();
@@ -13,6 +14,10 @@ export class Cli{
                     error = 'command not found!'
                 } */
             })
+            childProcess.stderr.pipe(options.stderr || process.stderr);
+            childProcess.stdout.pipe(options.stdout || process.stdout);
+
+
             childProcess.on("close", (code)=>{
                 if(error){
                     reject(error);

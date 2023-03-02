@@ -75,7 +75,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
             return this.cli.command('npx', ['cdk', ...commandArguments])
         }).then(()=>{
             if(existsSync(`./cdk.context.json`)){
-                this.result = JSON.parse(readFileSync(`${this.cdkApp.outdir}/cdk.context.json`).toString());
+                this.result = JSON.parse(readFileSync(`./cdk.context.json`).toString());
             }
             return ActionState.SUCCESS
         })

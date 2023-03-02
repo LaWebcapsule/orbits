@@ -1,6 +1,6 @@
 {
   "name": "@wbce/orbits-fuel",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Flow for DevOps - a simple way to write state machine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
