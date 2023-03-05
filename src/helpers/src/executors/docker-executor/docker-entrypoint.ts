@@ -7,26 +7,24 @@ const params = {
 
 
 console.log("inside docker starting!")
-console.log(params);
 import(params.bootstrapPath).then((test)=>{
     console.log("after import!")
-    console.log(test);
     return ActionApp.waitForActiveApp
 }).then(()=>{
-    console.log("after bootstrap")
+    ActionApp.activeApp.logger.info("after bootstrap")
     const app = ActionApp.getActiveApp();
     return app.ActionModel.findById(params.actionId)
 }).then((actionDb)=>{
-    console.log("finding in db")
+    ActionApp.activeApp.logger.info("finding in db")
     const action = Action.constructFromDb(actionDb);
     process.chdir('/tmp');
     return action.resume();
 }).then(()=>{
-    console.log("adios")
+    ActionApp.activeApp.logger.info("adios")
     process.exit()
 }).catch((err)=>{
-    console.log("error in the entrypoint")
-    console.log(err)
+    ActionApp.activeApp.logger.error("error in the entrypoint")
+    ActionApp.activeApp.logger.error(err)
     const errCode = 1000 + (err.code || 0);//1000 because we have errorCodes values of -1, 0, ...
     process.exit(errCode)
 })

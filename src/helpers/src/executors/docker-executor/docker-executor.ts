@@ -1,4 +1,4 @@
-import { Executor, Action, ActionApp } from "@wbce/orbits-core";
+import { Executor, Action, ActionApp, ActionState } from "@wbce/orbits-core";
 import {Cli, o} from "@wbce/services";
 import { exec } from "child_process";
 import Dockerode from "dockerode";
@@ -53,6 +53,8 @@ export class DockerExecutor extends Executor{
         }) */
     }
 
+    scope = [ActionState.SLEEPING, ActionState.PAUSED]
+
     resume(action: Action) {
         if(this.isInsideDocker()){
             return action._resume();
@@ -73,7 +75,7 @@ export class DockerExecutor extends Executor{
                         else{
                             docker.modem.followProgress(res, 
                                 (err, res) => err ? reject(err) : resolve(res), 
-                                (event)=>console.log(event)
+                                (event)=>ActionApp.activeApp.logger.info(event)
                             )
                         }
                     })
@@ -111,7 +113,6 @@ export class DockerExecutor extends Executor{
                 const container = data[1];
                 return container.remove();
             }).catch((err)=>{
-                console.log(err);
                 //note : we do not manage here the error, we just quit properly
                 action.internalLogError(err);
             });
@@ -205,9 +206,7 @@ export class DockerExecutor extends Executor{
         }).then((data)=>{
             return data.Mounts;
         }).catch(err=>{
-            //we print the error, but we don't care of an error in this case
-            console.log("try-catch error - error catched (normal behaviour)")
-            console.log(err.message);
+            //we don't care of an error in this case
             return;
         })
     }

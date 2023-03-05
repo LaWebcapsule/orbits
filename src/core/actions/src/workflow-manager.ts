@@ -31,7 +31,8 @@ export class Workflow extends Action{
         actions : {
             [key : string] : {
                 state : ActionState,
-                result : any
+                result : any,
+                index : number
             }
         },
         currentStepIndex? : number,
@@ -157,7 +158,8 @@ export class Workflow extends Action{
         return o.testPath(this.dbDoc, 'bag', 'actions', action.dbDoc._id.toString() ) ? true : false;
     }
 
-    declareActionStart(dbDoc : ActionSchemaInterface){
+    declareActionStart(dbDoc : ActionSchemaInterface, index : number){
+        //we register the index in order to give the result in the correct order
         const workflowBag = this.dbDoc.bag;
         dbDoc.workflowId = this.dbDoc._id.toString();
         dbDoc.workflowStep = (workflowBag.stepsHistory.length-1);
@@ -165,7 +167,8 @@ export class Workflow extends Action{
         dbDoc.markModified('filter');
         workflowBag.actions[dbDoc._id.toString()] = {
             state : dbDoc.state,
-            result : dbDoc.result
+            result : dbDoc.result,
+            index
         }
         this.dbDoc.markModified('bag.actions');
     }
@@ -182,18 +185,22 @@ export class Workflow extends Action{
     }
 
     getNextStep(){
-        let isStepSuccess = true;
-        let oldStepState = ActionState.ERROR;
-        let oldResults : any[] = [];
-        for(let k in this.bag.actions){
-            oldResults.push(this.bag.actions[k]!.result)
-        } 
+        
         if(this.bag.currentStepIndex === undefined){
             //initialisation
             this.bag.currentStepIndex = -1;
             this.bag.actions = {};
             this.bag.stepsHistory = [];
         }
+        let isStepSuccess = true;
+        let oldStepState = ActionState.ERROR;
+
+        const numberOfActions = Object.keys(this.bag.actions).length
+        let oldResults : any[] = new Array(numberOfActions);
+        for(let k in this.bag.actions){
+            oldResults[this.bag.actions[k].index] = this.bag.actions[k].result;
+        }
+
         for(let key in this.bag.actions){
             isStepSuccess = isStepSuccess 
                 && this.bag.actions[key]!.state === ActionState.SUCCESS
@@ -239,9 +246,9 @@ export class Workflow extends Action{
                 if(!Array.isArray(actions)){
                     actions = [actions];
                 }
-                for(let action of actions){
-                    this.declareActionStart(action.dbDoc);
-                }
+                actions.map((action, index)=>{
+                    this.declareActionStart(action.dbDoc, index)
+                })
                 this.dbDoc.$session(this.dBSession);
                 this.dbDoc.state = ActionState.IN_PROGRESS;
                 this.dbDoc.markModified('bag');
@@ -479,7 +486,7 @@ export class RevertAction<ActionToRevert extends Action> extends Workflow{
             //donc on attache l'ancienne action a la workflow
             const aToRevert = this.oldAction;
             if(aToRevert.dbDoc.state < ActionState.SUCCESS){
-                this.declareActionStart(aToRevert.dbDoc);
+                this.declareActionStart(aToRevert.dbDoc, 0);
                 aToRevert.setRepeat({
                     [ActionState.SUCCESS] : 0,
                     [ActionState.ERROR] : 0

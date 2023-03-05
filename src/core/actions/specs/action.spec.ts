@@ -1,5 +1,4 @@
 import { ActionState } from "../index";
-import { Action, registerAction } from "./../index";
 import { TestAction } from "./test-action";
 
 
