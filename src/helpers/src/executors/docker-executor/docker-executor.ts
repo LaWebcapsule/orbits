@@ -59,7 +59,7 @@ export class DockerExecutor extends Executor{
         if(this.isInsideDocker()){
             return action._resume();
         }
-        if(this.scope && !(this.scope.find(state => state === action.dbDoc.state))){
+        if(this.scope && !(this.scope.includes(action.dbDoc.state))){
             return action._resume();
         }
         const docker = new Docker({socketPath: '/var/run/docker.sock'});
