@@ -84,7 +84,7 @@ export class BasicWorkflow extends Workflow{
   
     //image = "app-api_app"
   
-    defaultDelay = 100*1000
+    static defaultDelay = 100*1000
   
     constructor() {
       super();

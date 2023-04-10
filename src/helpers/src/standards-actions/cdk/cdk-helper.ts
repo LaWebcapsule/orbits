@@ -1,4 +1,4 @@
-import {CloudFormationClient, CloudFormationClientConfig, DescribeStackResourceCommand, DescribeStacksCommand } from '@aws-sdk/client-cloudformation';
+import {CloudFormationClient, CloudFormationClientConfig, DescribeStackResourceCommand, DescribeStacksCommand, GetTemplateSummaryCommand } from '@aws-sdk/client-cloudformation';
 import * as cdk from 'aws-cdk-lib';
 
 export class CdkHelper{
@@ -34,7 +34,13 @@ export class CdkHelper{
         });
     }
 
-
-
+    describeStackTemplate(stackName : string){
+        const command = new GetTemplateSummaryCommand({
+            StackName : stackName
+        })
+        return this.cfnClient.send(command).then(res=>{
+            return res;
+        })
+    }
 
 }

@@ -36,6 +36,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
     async produce(context: Record<string, any>) {
         this.cdkApp = new cdk.App({ context });
         this.generateStack();
+        this.stack.addMetadata("actionId", this._id.toString());
         return this.cdkApp.synth().directory;
     }
 
@@ -67,6 +68,10 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                         commandArguments = [...commandArguments, `aws://${env.account}/${env.region}`]
                     }
                     break;
+
+                case 'deploy':
+                    commandArguments = [...commandArguments, '--method=direct'];
+                    break;
             
                 default:
                     break;
@@ -92,6 +97,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         const region = this.argument.stackProps?.env.region;
         region ? opts['region'] = region : undefined;
         const cdkHelper = new CdkHelper(opts);
+        let lastActionId : string;
         return cdkHelper.describeStackFromName(this.argument.stackName).then((stackDescription)=>{
             if(stackDescription.LastUpdatedTime.getTime() <= this.dbDoc.createdAt.getTime()){
                 //it has not begin
@@ -124,7 +130,7 @@ export class CdkBoostrapAction extends CdkAction{
 
 export class CdkDeployAction extends CdkAction{
     commandName = 'deploy' as 'deploy'
-    defaultDelays = { 
+    static defaultDelays = { 
        [ActionState.EXECUTING_MAIN] : 10*60*1000,
        [ActionState.IN_PROGRESS]: 10*60*1000 
     };
@@ -133,7 +139,7 @@ export class CdkDeployAction extends CdkAction{
 
 export class CdkDestroyAction extends CdkAction{
     commandName = 'destroy' as 'destroy';
-    defaultDelays = { 
+    static defaultDelays = { 
         [ActionState.EXECUTING_MAIN] : 10*60*1000,
         [ActionState.IN_PROGRESS]: 10*60*1000 
      };

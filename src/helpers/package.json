@@ -1,6 +1,6 @@
 {
   "name": "@wbce/orbits-fuel",
-  "version": "0.0.31",
+  "version": "0.0.35",
   "description": "Flow for DevOps - a simple way to write state machine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +35,7 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@aws-cdk/cli-lib-alpha": "^2.67.0-alpha.0",
+    "@aws-cdk/cli-lib-alpha": "^2.69.0-alpha.0",
     "@aws-sdk/client-cloudformation": "^3.238.0",
     "@aws-sdk/client-ecr": "^3.238.0",
     "@gitbeaker/node": "^35.8.0",

@@ -20,7 +20,7 @@ export class UpdateNpmVersions extends GitCloneAction{
 
     IResult: Commit
 
-    defaultDelays: { 1?: number | undefined; 2?: number | undefined } = {
+    static defaultDelays: { 1?: number | undefined; 2?: number | undefined } = {
         [ActionState.EXECUTING_MAIN] : 3*60*1000
     }
 

@@ -19,7 +19,7 @@ export class Action{
     /**
      * The id of the action we store in database.
      * This should be a permanent id that designates your instance.
-     * See : 
+     * 
      */
     static permanentRef : string;
 
@@ -34,8 +34,10 @@ export class Action{
 
     /**
      * Shorcut to @link Action.defaultDelays[ActionState.IN_PROGRESS]
+     * Note that if defaultDelay is not set, this property will be 'inherited' from parent classes
+     * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
      */
-    defaultDelay : number = 10*60*1000;
+    static defaultDelay : number = 10*60*1000;
 
     /**
      * 
@@ -48,9 +50,11 @@ export class Action{
      *    [ActionState.EXECUTING_MAIN] : 2*60*1000
      * }
      * 
-     * You should modify this if your actions have longer timeouts. 
+     * You should configure this if your actions have longer timeouts. 
+     * Note that if defaultDelays is not set, this property will be 'inherited' from parent classes
+     * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
      */
-    defaultDelays : {
+    static defaultDelays : {
         [k in ActionState.IN_PROGRESS | ActionState.EXECUTING_MAIN]? : number
     } = {
         [ActionState.IN_PROGRESS] : this.defaultDelay,
@@ -60,9 +64,10 @@ export class Action{
     /**
      * Configure the frequence in which a cron will cause the @link Action.resume method.
      * You can also dinamically modify the dbDoc.cronActivity property to modify the call to a cron.
+     * Note that if cronDefaultSettings are not set, this property will be 'inherited' from parent classes
+     * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
      */
-
-    cronDefaultSettings : {
+    static cronDefaultSettings : {
         activityFrequence : number
     } = {
         activityFrequence : 10*60*1000
@@ -147,11 +152,7 @@ export class Action{
         return this.dbDoc.save();
     }
 
-    /***
-     * @hidden
-     */
-    static childPropertySet = false; //cf after for the meaning of this variable
-    //can be tricky
+
     constructor(){
         const actionRef = this.app.inversedActionsRegistry.get(this.constructor as any)
         if(!actionRef){
@@ -162,31 +163,43 @@ export class Action{
                 }
             )
         }
-        //childPropertySet : tricky but nothing better at this stage
-        //Indeed, this doesn't know Action child property
-        //and so, default arguments could be uncorrect
-        //we proceed in two times
-        //As constructor are synchronous (and Node is monothread)
-        //We create a mock of the action, and we attach the default property to the dbDoc
-        //#[to_confirm]
-        if(!Action.childPropertySet){
-            Action.childPropertySet = true;
-            try{
-                const mock = new (this.constructor as any)(this) as Action;
-                this.dbDoc  = new this.app.ActionModel({
-                    actionRef,
-                    state : ActionState.SLEEPING,
-                    bag : {}
-                }) as any   
-                this.dbDoc.cronActivity.frequence = mock.cronDefaultSettings.activityFrequence 
-                if(mock.defaultDelay){//meme pbme que pour la db, on a besoin des proprietes child, pour set la propriete
-                    mock.defaultDelays[ActionState.IN_PROGRESS] = mock.defaultDelay
-                }
-                this.dbDoc.delays = mock.defaultDelays as any;    
+
+        let cronDefaultSettings = Action.cronDefaultSettings;
+        let defaultDelays = Action.defaultDelays;
+        let defaultDelay;
+        //static property are not inherited in ts
+        //but we want the default to be inherited so we go through the constructor chain and we take the first value implemented in the chain
+        //for each of the default (cronDefaultSettings, defaultDelay, defaultDelays)
+        let ctr = this.constructor as typeof Action;
+        while(ctr !== Action){
+            cronDefaultSettings = cronDefaultSettings || ctr.cronDefaultSettings;
+            defaultDelays = defaultDelays || ctr.defaultDelays;
+            //if defaultDelays.1 is not set, this means defaultDelays.1 can still be set via defaultDelay static property
+            //if defaultDelays.1 is set, this means defaultDelay is useless
+            if(!defaultDelays?.[ActionState.SUCCESS]){
+                defaultDelay = defaultDelay || ctr.defaultDelay;
             }
-            finally{
-                Action.childPropertySet = false;
+            if(defaultDelay && defaultDelay && !defaultDelays?.[ActionState.SUCCESS]){
+                defaultDelays[ActionState.SUCCESS] = defaultDelay;
             }
+            ctr = Object.getPrototypeOf(ctr);
+        }
+        cronDefaultSettings = cronDefaultSettings || Action.cronDefaultSettings;
+        defaultDelays = defaultDelays || Action.defaultDelays;
+        if(!defaultDelay?.[ActionState.SUCCESS]){
+            defaultDelays[ActionState.SUCCESS] = Action.defaultDelay;
+        }
+
+        this.dbDoc  = new this.app.ActionModel({
+            actionRef,
+            state : ActionState.SLEEPING,
+            bag : {}
+        }) as any   
+        this.dbDoc.cronActivity.frequence = cronDefaultSettings.activityFrequence 
+        this.dbDoc.delays = defaultDelays as any;
+        if(defaultDelay){
+            this.dbDoc.delays[ActionState.SUCCESS] = defaultDelay;
+            
         }
         this.app = ActionApp.getActiveApp();
     }

@@ -18,7 +18,7 @@ export interface Step{
 
 export class Workflow extends Action{
 
-    override defaultDelay = Infinity;//une workflow n'est jamais considéré en erreur, meme au bout de x temps:
+    static defaultDelay = Infinity;//une workflow n'est jamais considéré en erreur, meme au bout de x temps:
     //en effet, les actions sous-jacentes sont mieux aptes à témoigner de l'erreur ou non
 
     dBSession? : mongoose.ClientSession;

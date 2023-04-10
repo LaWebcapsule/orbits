@@ -6,7 +6,7 @@ import { GitCloneAction } from "./git-clone-repo";
 
 export class RunTest extends GitCloneAction{
 
-    defaultDelays = {
+    static defaultDelays = {
         [ActionState.EXECUTING_MAIN] : 10*60*1000//test can not take more than 10 minutes.
     }
 

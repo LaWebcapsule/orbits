@@ -40,7 +40,7 @@ export class AddGitWebHookAction extends GitAction{
         events : string[]
     }
 
-    defaultDelay = 2*60*1000;
+    static defaultDelay = 2*60*1000;
 
     main(){
         return this.gitProvider.addWebHook(
@@ -63,7 +63,7 @@ export class AddGitWebHookAction extends GitAction{
 
 export class WaitForNewCommits extends GitAction{
 
-    defaultDelay = Infinity;//potentiellement infini
+    static defaultDelay = Infinity;//potentiellement infini
 
     IArgument : {
         branches : {
@@ -79,7 +79,7 @@ export class WaitForNewCommits extends GitAction{
         }[]
     }
 
-    cronDefaultSettings = {
+    static cronDefaultSettings = {
         activityFrequence : 24*60*60*1000
     }
 

@@ -27,7 +27,7 @@ export class PublishNpmPackage extends GitCloneAction{
 
     cli = new Cli()
 
-    defaultDelays: { 1?: number | undefined; 2?: number | undefined } = {
+    static defaultDelays: { 1?: number | undefined; 2?: number | undefined } = {
         [ActionState.EXECUTING_MAIN] : 3*60*1000
     }
 
