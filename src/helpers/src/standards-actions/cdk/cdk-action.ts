@@ -29,6 +29,9 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         stackProps? : any & cdk.StackProps
     }
 
+    IBag: {
+        stackName : string
+    };
 
     IResult: any;
 
