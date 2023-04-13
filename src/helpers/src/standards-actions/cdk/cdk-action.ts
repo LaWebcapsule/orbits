@@ -30,7 +30,8 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
     }
 
     IBag: {
-        stackName : string
+        stackName? : string,
+        env? : cdk.StackProps['env']
     };
 
     IResult: any;
@@ -44,7 +45,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
     }
 
     generateStack(){
-        this.stack = new this.StackConstructor(this.cdkApp, this.argument.stackName, this.argument.stackProps);
+        this.stack = new this.StackConstructor(this.cdkApp, this.argument.stackName || this.bag.stackName, this.argument.stackProps);
     }
 
     init(){
@@ -56,7 +57,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         const cdkCli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
         return cdkCli.synth({
             stacks : [
-                this.argument.stackName
+                this.argument.stackName || this.bag.stackName
             ],
             exclusively : true
         }).then(()=>{
@@ -97,10 +98,8 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
 
     watcher(): Promise<ActionState> {
         const opts = {};
-        const region = this.argument.stackProps?.env.region;
-        region ? opts['region'] = region : undefined;
+        opts['region'] = this.argument.stackProps?.env.region || this.bag.env?.region;
         const cdkHelper = new CdkHelper(opts);
-        let lastActionId : string;
         return cdkHelper.describeStackFromName(this.argument.stackName).then((stackDescription)=>{
             if(stackDescription.LastUpdatedTime.getTime() <= this.dbDoc.createdAt.getTime()){
                 //it has not begin

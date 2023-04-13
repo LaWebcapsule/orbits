@@ -409,12 +409,14 @@ export class Action{
                 return actionState;
             }).catch((err)=>{
                 if(err === ActionState.UNKNOW){
-                    throw ActionState.SLEEPING;//n'a jamais ete lance
+                    return ActionState.SLEEPING;//n'a jamais ete lance
                 }
-                if(err in ActionState){
-                    throw err;   
+                if(err in ActionState){//court circuit
+                    return err;   
                 }
                 else{
+                    this.internalLogError(err);
+                    this.result = err;
                     return ActionState.ERROR
                 }
             })

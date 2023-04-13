@@ -9,7 +9,7 @@ export interface StorageObject{
 
 export class WBCEAsyncStorage extends AsyncLocalStorage<StorageObject>{
 
-    //we can use promise syntax here
+    //we can not use promise syntax here
     //e.g. we cannot implement something like :
     //this.addNestedStorage({}).then(...)
     //because of https://github.com/nodejs/help/issues/3041

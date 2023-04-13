@@ -28,8 +28,13 @@ export class DockerAction extends Action{
 
 export class TestStack extends cdk.Stack{
 
-    constructor(scope, name, props){
+    constructor(scope, name, props : cdk.StackProps){
         super(scope, name, props);
+
+        this.node.setContext("test", true);
+
+        const myVpc = cdk.aws_ec2.Vpc.fromLookup(this, 'vpc', {isDefault: true})
+        
         new cdk.aws_s3.Bucket(this, 'my-bucket', {
             removalPolicy : cdk.RemovalPolicy.DESTROY
         })
