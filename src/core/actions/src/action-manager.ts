@@ -1,7 +1,7 @@
 import { errorCodes } from "./error/errorcodes";
 import { ActionSchemaInterface, ActionState } from "./models/action";
 import { Workflow, ActionApp, RevertAction } from "./../index";
-import { wbceAsyncStorage } from "@wbce/services";
+import { o, wbceAsyncStorage } from "@wbce/services";
 import { ActionError } from "./error/error";
 import { Executor } from "./action-executor";
 
@@ -163,31 +163,34 @@ export class Action{
                 }
             )
         }
-
-        let cronDefaultSettings = Action.cronDefaultSettings;
-        let defaultDelays = Action.defaultDelays;
-        let defaultDelay;
-        //static property are not inherited in ts
-        //but we want the default to be inherited so we go through the constructor chain and we take the first value implemented in the chain
-        //for each of the default (cronDefaultSettings, defaultDelay, defaultDelays)
+        debugger;
+        //we copy the static properties to form the dynamic one
+        //and we verify that defaultDelay has priority over defaultDelays[ActionState.Success]
+        //if and only if it was setted before in the inheritance chain
+        let cronDefaultSettings, defaultDelays, defaultDelay ;
         let ctr = this.constructor as typeof Action;
+        cronDefaultSettings = {};
+        o.deepCopy(ctr.cronDefaultSettings, cronDefaultSettings);
+        defaultDelays = {};
+        o.deepCopy(ctr.defaultDelays, defaultDelays)
+        defaultDelay = ctr.defaultDelay;
+        let nInheritanceForDefaultDelay = Infinity;
+        let nInheritanceForDefaultDelays = Infinity;
+        let n = 1;
+
         while(ctr !== Action){
-            cronDefaultSettings = cronDefaultSettings || ctr.cronDefaultSettings;
-            defaultDelays = defaultDelays || ctr.defaultDelays;
-            //if defaultDelays.1 is not set, this means defaultDelays.1 can still be set via defaultDelay static property
-            //if defaultDelays.1 is set, this means defaultDelay is useless
-            if(!defaultDelays?.[ActionState.SUCCESS]){
-                defaultDelay = defaultDelay || ctr.defaultDelay;
+            if(ctr.hasOwnProperty("defaultDelay") && (n < nInheritanceForDefaultDelay)){
+                nInheritanceForDefaultDelay = n;
             }
-            if(defaultDelay && defaultDelay && !defaultDelays?.[ActionState.SUCCESS]){
-                defaultDelays[ActionState.SUCCESS] = defaultDelay;
+            if(ctr.hasOwnProperty("defaultDelays") && (n < nInheritanceForDefaultDelays)){
+                nInheritanceForDefaultDelays = n; 
             }
+            n++;
             ctr = Object.getPrototypeOf(ctr);
         }
-        cronDefaultSettings = cronDefaultSettings || Action.cronDefaultSettings;
-        defaultDelays = defaultDelays || Action.defaultDelays;
-        if(!defaultDelay?.[ActionState.SUCCESS]){
-            defaultDelays[ActionState.SUCCESS] = Action.defaultDelay;
+        
+        if(nInheritanceForDefaultDelay < nInheritanceForDefaultDelays){
+            defaultDelays[ActionState.IN_PROGRESS] = defaultDelay
         }
 
         this.dbDoc  = new this.app.ActionModel({
@@ -197,10 +200,7 @@ export class Action{
         }) as any   
         this.dbDoc.cronActivity.frequence = cronDefaultSettings.activityFrequence 
         this.dbDoc.delays = defaultDelays as any;
-        if(defaultDelay){
-            this.dbDoc.delays[ActionState.SUCCESS] = defaultDelay;
-            
-        }
+
         this.app = ActionApp.getActiveApp();
     }
 

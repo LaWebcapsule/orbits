@@ -82,10 +82,6 @@ export class BasicWorkflow extends Workflow{
       n : number
     } & Workflow["IBag"]
   
-    //image = "app-api_app"
-  
-    static defaultDelay = 100*1000
-  
     constructor() {
       super();
       this.next(() => {
