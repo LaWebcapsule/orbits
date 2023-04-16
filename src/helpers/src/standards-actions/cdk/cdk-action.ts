@@ -15,6 +15,10 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
     StackConstructor : typeof cdk.Stack;
     stack : cdk.Stack;
 
+    static cronDefaultSettings = {
+        activityFrequence : 60*1000
+    }
+
     commandName : 'deploy' | 'bootstrap' | 'destroy';
 
     executor = new DockerExecutor({
@@ -57,6 +61,12 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
     main(){
         const cdkCli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
         let cdkError = '';
+        let pingInterval = setInterval(()=>{
+            //just to mention that process is still live
+            //every minute
+            this.dbDoc.stateUpdatedAt = new Date();
+            this.dbDoc.save();
+        }, 60*1000);
         return cdkCli.synth({
             stacks : [
                 this.argument.stackName || this.bag.stackName
@@ -104,6 +114,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                 },
             })
             streamError.pipe(process.stderr);
+            
             return this.cli.command('npx', ['cdk', ...commandArguments], {stderr: streamError})
         }).catch(()=>{
             if(cdkError.includes('ValidationError: No updates are to be performed')){
@@ -117,6 +128,8 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                 this.result = JSON.parse(readFileSync(`./cdk.context.json`).toString());
             }
             return ActionState.SUCCESS
+        }).finally(()=>{
+            clearInterval(pingInterval)
         })
     }
 
