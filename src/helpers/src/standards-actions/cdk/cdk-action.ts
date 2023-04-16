@@ -5,6 +5,7 @@ import * as cdk from "aws-cdk-lib"
 import { existsSync, readFileSync } from "fs";
 import { DockerExecutor, PublicRegistry } from "../../executors";
 import { CdkHelper } from "./cdk-helper";
+import { Duplex, Transform, Writable } from "stream";
 
 
 
@@ -55,6 +56,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
 
     main(){
         const cdkCli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
+        let cdkError = '';
         return cdkCli.synth({
             stacks : [
                 this.argument.stackName || this.bag.stackName
@@ -68,20 +70,48 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
             switch (this.commandName) {
                 case 'bootstrap':
                     if(this.argument.stackProps?.env){
-                        const env = this.argument.stackProps.env
+                        const env = this.argument.stackProps.env || this.bag.env;
                         commandArguments = [...commandArguments, `aws://${env.account}/${env.region}`]
                     }
                     break;
 
                 case 'deploy':
-                    commandArguments = [...commandArguments, '--method=direct'];
+                    commandArguments = [...commandArguments, '--method=direct', '--exclusively'];
+                    break;
+
+                case 'destroy':
+                    commandArguments = [...commandArguments, '--exclusively'];
                     break;
             
                 default:
                     break;
             }
             commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir, this.argument.stackName]
-            return this.cli.command('npx', ['cdk', ...commandArguments])
+            let lines = [];
+            let lastLine = '';
+            const streamError = new Transform({
+                decodeStrings: true,
+                transform(chunk, encoding, callback) {
+                    lastLine +=chunk.toString()
+                    lines = lastLine.split('\n');
+                    for(const line of lines){
+                        if(line.includes('failed: Error:')){
+                            cdkError = line;
+                        }
+                    }
+                    lastLine = lines.pop();
+                    callback(undefined, chunk);
+                },
+            })
+            streamError.pipe(process.stderr);
+            return this.cli.command('npx', ['cdk', ...commandArguments], {stderr: streamError})
+        }).catch(()=>{
+            if(cdkError.includes('ValidationError: No updates are to be performed')){
+                //we consider this is a success
+                this.internalLog('catched error, not considered as a real error')
+                return;
+            }
+            throw new Error(cdkError);
         }).then(()=>{
             if(existsSync(`./cdk.context.json`)){
                 this.result = JSON.parse(readFileSync(`./cdk.context.json`).toString());

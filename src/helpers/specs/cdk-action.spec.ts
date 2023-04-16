@@ -4,7 +4,7 @@ import {ActionState} from "@wbce/orbits-core";
 describe("Test action", ()=>{
     let testAction = new DeployTestStack();
     const defaultEnv = {
-        account : '12345',
+        account : '889065479324',
         region : 'eu-west-3'
     }
     testAction.setArgument({
