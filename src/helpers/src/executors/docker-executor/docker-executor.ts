@@ -131,7 +131,7 @@ export class DockerExecutor extends Executor{
         if(isTsNode){
             return {
                 type : 'typescript',
-                command : ['npx', 'ts-node-dev'],
+                command : ['npx', 'tsx'],
                 entrypoint : `docker-entrypoint.${isTs ? 'ts' : 'js'}`
             }
         }

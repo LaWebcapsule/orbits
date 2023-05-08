@@ -7,8 +7,6 @@ import { DockerExecutor, PublicRegistry } from "../../executors";
 import { CdkHelper } from "./cdk-helper";
 import { Duplex, Transform, Writable } from "stream";
 
-
-
 export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer{
     cli = new Cli();
     cdkApp = new cdk.App();
@@ -114,15 +112,19 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                 },
             })
             streamError.pipe(process.stderr);
-            
             return this.cli.command('npx', ['cdk', ...commandArguments], {stderr: streamError})
-        }).catch(()=>{
+        }).catch((err)=>{
             if(cdkError.includes('ValidationError: No updates are to be performed')){
                 //we consider this is a success
                 this.internalLog('catched error, not considered as a real error')
                 return;
             }
-            throw new Error(cdkError);
+            if(cdkError){
+                throw new Error(cdkError);
+            }
+            else{
+                throw err;
+            }
         }).then(()=>{
             if(existsSync(`./cdk.context.json`)){
                 this.result = JSON.parse(readFileSync(`./cdk.context.json`).toString());
