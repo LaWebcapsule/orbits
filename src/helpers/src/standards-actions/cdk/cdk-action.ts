@@ -103,7 +103,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                     lastLine +=chunk.toString()
                     lines = lastLine.split('\n');
                     for(const line of lines){
-                        if(line.includes('failed: Error:')){
+                        if(line.includes('failed: Error')){
                             cdkError = line;
                         }
                     }
@@ -114,7 +114,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
             streamError.pipe(process.stderr);
             return this.cli.command('npx', ['cdk', ...commandArguments], {stderr: streamError})
         }).catch((err)=>{
-            if(cdkError.includes('ValidationError: No updates are to be performed')){
+            if(cdkError.includes('ValidationError') && cdkError.includes('No updates are to be performed')){
                 //we consider this is a success
                 this.internalLog('catched error, not considered as a real error')
                 return;
