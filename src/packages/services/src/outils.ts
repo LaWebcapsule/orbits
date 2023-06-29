@@ -81,10 +81,10 @@ const getStackTracePaths : ()=>string[] = ()=>{
     const result = []
     for(let i = 0; i< stacks.length ; i++){
         const line = stacks[i];
-        const pattern =   /at[^(]+(?:\(([^)]+):[0-9]+:[0-9]+\)|(.*))/
+        const pattern =   /at[^\/]+([^ (]+):[0-9]+:[0-9]+/
         const path = pattern.exec(line);
         if(path){
-          path[1]?.includes('file:///') ? path[1].replace('file:///', '/') : null;
+          path[1] =  path[1]?.replace('///', '/');//to manage the case file:///home/... => ///home/...
           result.push(
               path[1]
           )
