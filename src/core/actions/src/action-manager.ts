@@ -243,8 +243,7 @@ export class Action{
             }
             else{
                 this.dbDoc.$isDeleted(true);
-            }
-            
+            }  
         })
     }
 

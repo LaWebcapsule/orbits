@@ -272,14 +272,14 @@ export class Workflow extends Action{
                     }
                     return Promise.all(svgdsPromise)
                 }).then(()=>Promise.resolve());//le then est une question de typage pour conformite mongoose
+            }).finally(()=>{
+                return this.resyncWithDb();
             })
         }).finally(()=>{
             this.docsToSaveAtStepStart = [];
             if(this.dBSession){
                 return this.dBSession.endSession()
             }
-        }).finally(()=>{
-            return this.resyncWithDb();
         }).then(()=>{
             this.internalLog(`state changed`);
             this.internalLog(`step started : ${this.dbDoc.bag.currentStepIndex}`);
