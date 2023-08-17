@@ -521,9 +521,9 @@ export class Action{
 
     private end(){
         const markAsClosed = ()=>{
-            //on attend dix minutes avant de mettre l'action en closed;
-            if((Date.now() - this.dbDoc.stateUpdatedAt.getTime()) < 10*60*1000){
-                this.cronActivity.nextActivity = new Date(this.dbDoc.stateUpdatedAt.getTime() + 10*60*1000);
+            //on attend une journée avant de mettre l'action en closed;
+            if((Date.now() - this.dbDoc.stateUpdatedAt.getTime()) < 24*60*60*1000){
+                this.cronActivity.nextActivity = new Date(this.dbDoc.stateUpdatedAt.getTime() + 24*60*60*1000);
                 return this.dbDoc.save().then(()=>{
                     return ActionState.UNKNOW;//court circuit
                 });
