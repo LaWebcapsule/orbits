@@ -163,7 +163,6 @@ export class Action{
                 }
             )
         }
-        debugger;
         //we copy the static properties to form the dynamic one
         //and we verify that defaultDelay has priority over defaultDelays[ActionState.Success]
         //if and only if it was setted before in the inheritance chain
