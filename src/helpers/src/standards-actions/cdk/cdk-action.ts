@@ -88,7 +88,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                     break;
 
                 case 'destroy':
-                    commandArguments = [...commandArguments, '--exclusively'];
+                    commandArguments = [...commandArguments, '--exclusively', '--force'];
                     break;
             
                 default:
@@ -146,7 +146,8 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         opts['region'] = this.argument.stackProps?.env.region || this.bag.env?.region;
         const cdkHelper = new CdkHelper(opts);
         return cdkHelper.describeStackFromName(this.argument.stackName).then((stackDescription)=>{
-            if(stackDescription.LastUpdatedTime.getTime() <= this.dbDoc.createdAt.getTime()){
+            const lastDesployTime = stackDescription.LastUpdatedTime || stackDescription.CreationTime; //after the first deploy of a stack, there is no LastUpdatedTime
+            if(lastDesployTime.getTime() <= this.dbDoc.createdAt.getTime()){
                 //it has not begin
                 return ActionState.SLEEPING;
             }
