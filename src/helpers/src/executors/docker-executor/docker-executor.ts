@@ -102,7 +102,14 @@ export class DockerExecutor extends Executor{
                         '/var/run/docker.sock:/var/run/docker.sock',
                         `${appPaths.primaryRootFolder || appPaths.rootFolder}:/app:ro`,
                         `${appPaths.primaryCurrentFolder || appPaths.currentFolder}/${executionContext.entrypoint}:/${executionContext.entrypoint}:ro`
-                    ],
+                    ],//deprecated
+                    "HostConfig":{
+                        "Binds":[
+                            '/var/run/docker.sock:/var/run/docker.sock',
+                            `${appPaths.primaryRootFolder || appPaths.rootFolder}:/app:ro`,
+                            `${appPaths.primaryCurrentFolder || appPaths.currentFolder}/${executionContext.entrypoint}:/${executionContext.entrypoint}:ro`
+                        ]
+                    },
                     ...this.dockerConfig
                 };
                 dockerConfig['env'] = undefined;//'env' is a shorcut to construct Env. So we delete if after

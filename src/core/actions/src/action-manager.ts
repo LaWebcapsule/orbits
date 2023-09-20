@@ -5,8 +5,6 @@ import { o, wbceAsyncStorage } from "@wbce/services";
 import { ActionError } from "./error/error";
 import { Executor } from "./action-executor";
 
-
-
 /** 
  * Action is the class to structure actions
  * Extends this class to build new actions behaviours.
@@ -76,14 +74,12 @@ export class Action{
     /**
      * Interface of the argument of the action
      */
-
     IArgument : {};
 
 
     /**
      * Interface of the bag of the action
      */
-
     IBag : {};
 
 
@@ -311,6 +307,10 @@ export class Action{
         return Promise.resolve()
     };
 
+    defineExecutor(): void | Promise<void>{
+        return;
+    }
+
     /**
      * It takes an object of type `IArgument` and sets the `argument` 
      * that will be stored in the database.
@@ -381,6 +381,16 @@ export class Action{
         return this.init();
     }
 
+    isExecutorSet = false;
+    private setExecutor(){
+        if(this.isExecutorSet){
+            return Promise.resolve(); 
+        }
+        this.isExecutorSet = true;
+        this.internalLog("setExecutor");
+        return Promise.resolve(this.defineExecutor());
+    }
+
     private watch(){
         return this.initialisation().then(
             ()=>{
@@ -447,12 +457,18 @@ export class Action{
                 filter : this.dbDoc.filter
             }
         }, ()=>{
-            if(this.executor){
-                return this.executor.resume(this);
+            let setExecutor = Promise.resolve();
+            if(!this.isExecutorSet){
+                setExecutor = this.setExecutor();
             }
-            else{
-                return this._resume();
-            }
+            return setExecutor.then(()=>{
+                if(this.executor){
+                    return this.executor.resume(this);
+                }
+                else{
+                    return this._resume();
+                }
+            })
         })
     }
 

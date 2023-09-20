@@ -1,25 +1,12 @@
 import { Cli } from "@wbce/services";
 import { Action } from "../src/action-manager";
 import { ActionState } from "../src/models/action";
-
-export class DockerAction extends Action{
-
-    cli = new Cli()
-
-    main(){
-        return this.cli.command('node', ['--v']).then(()=>{
-            return ActionState.SUCCESS
-        }, ()=>{
-            return ActionState.ERROR
-        })
-    }
-    
-}
-
+import { Executor } from "../src/action-executor";
+import { TestExecutorAction } from "./test-action";
 
 
 describe("Test executor with docker", ()=>{
-    const testAction = new DockerAction();
+    const testAction = new TestExecutorAction();
     testAction.setArgument({y : 1});
 
     beforeAll(()=>{

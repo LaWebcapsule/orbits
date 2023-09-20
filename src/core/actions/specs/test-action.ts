@@ -1,4 +1,5 @@
-import { Action, ActionApp, ActionState, Workflow } from "../index";
+import { Cli } from "@wbce/services";
+import { Action, ActionApp, ActionState, Executor, Workflow } from "../index";
 
 export class TestActionWithWatcherEnding extends Action{
 
@@ -174,6 +175,35 @@ export class TestRollBack extends Workflow{
 }
 
 
+export class TestExecutor extends Executor{
+
+    resume(action){
+        return action._resume();
+    }
+}
+
+
+export class TestExecutorAction extends Action{
+
+    cli = new Cli()
+
+    defineExecutor(): Promise<undefined> | undefined {
+        //this.executor = new TestExecutor();
+        return;
+    }
+
+    main(){
+        return this.cli.command('node', ['-v']).then(()=>{
+            return ActionState.SUCCESS
+        }, ()=>{
+            return ActionState.ERROR
+        })
+    }
+    
+}
+
+
+
 export class WorkflowApp extends ActionApp{
-    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow]
+    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow, TestExecutorAction]
 }

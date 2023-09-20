@@ -9,8 +9,8 @@ let j = new jasmin();
 j.loadConfig({
     spec_dir: '.',
     spec_files: [
-        'action.spec.ts',
-        'workflow.spec.ts'
+        'action-executor.spec.ts',
+        //'workflow.spec.ts'
         //'action-job.spec.ts',
         //'other-action.spec.ts'
         //'./action-app.spec.ts'
@@ -19,12 +19,22 @@ j.loadConfig({
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 
+const db = {
+    protocol : "mongodb+srv",
+    url : "",
+    name : "orbits-test",
+    connectQsParams : "?retryWrites=true&w=majority"
+}
+let dbOpts = {
+}
+
 @bootstrapApp({
-    db: {
+    db : {
         mongo: {
-            url: 'mongodb://localhost:27017/test'
+            url : `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
+            opts: dbOpts
         }
-    } 
+    }
 })
 export class TestApp extends ActionApp{
     declare = [TestAction, TestActionWithWatcherEnding, TestActionWithError];
