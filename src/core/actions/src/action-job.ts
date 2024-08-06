@@ -85,11 +85,11 @@ export class ActionCron{
         })
     }
 
-    consumeAction(actionDb : ActionSchemaInterface<any>){
+    async consumeAction(actionDb : ActionSchemaInterface<any>){
         //ce n'est pas tres grave si deux consumers tourne en parallele de temps en temps
         //par contre, on veut eviter que cela se produise trop souvent
         //d'ou le pseudo verrou : pendingCronActivity
-        const action = Action.constructFromDb(actionDb);
+        const action = await Action.constructFromDb(actionDb);
         //Pour eviter d'ecraser des donnees (notamment bag), on passe directement via un update
         const previousNextActivity = action.cronActivity.nextActivity;
         const currentDate = new Date()

@@ -1,4 +1,4 @@
-import {Action, ActionApp, registerActionApp} from './../index'
+import {Action, ActionApp} from './../index'
 
 
 
@@ -6,16 +6,10 @@ export class TestAction extends Action{
 
 }
 
-@registerActionApp({
-    permanentName : 'ImportedApp'
-})
 export class ImportedApp extends ActionApp{
     declare = [TestAction]
 }
 
-@registerActionApp({
-    permanentName : 'ImportingApp'
-})
 export class ImportingApp extends ActionApp{
     imports: (typeof ActionApp)[] = [ImportedApp];
 }

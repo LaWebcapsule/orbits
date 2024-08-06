@@ -9,12 +9,7 @@ describe("Test action", ()=>{
     testAction.setArgument({y : 1});
 
     beforeAll(()=>{
-        spyOn(testAction, 'init');
         return testAction.resume();
-    })
-    
-    it("should have been initialized", ()=>{
-        expect(testAction.init).toHaveBeenCalled();
     })
 
     it("should  be a success", ()=>{

@@ -22,7 +22,8 @@ const expendError = (obj : any)=>{
 }
 
 const filterError = winston.format((info : any)=>{
-    return expendError(info)
+  const result = expendError(info);
+  return result
 });
 
   

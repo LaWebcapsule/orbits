@@ -155,7 +155,7 @@ export class TestRollBack extends Workflow{
             x+=2
         })
         .rollback(()=>{
-            x--
+            x-=2
         })
         .catch(()=>{
             x +=2
@@ -202,8 +202,37 @@ export class TestExecutorAction extends Action{
     
 }
 
+export class TestActionInWorkflow extends Workflow{
+
+    static permanentRef: string | string[] = ['xx', 'xxx'];
+
+    define(): Promise<void> | void {
+        this.next(()=>{
+            return Action.resolve();
+        })
+        .name("actionInWorkflow")
+        .next(()=>{
+            const inWorkflowAction = this.inWorkflowStepAction('inWorkflowSuccess', ()=>{
+                return Promise.resolve();
+            })
+            const inWorkflowError = this.inWorkflowStepAction('inWorkflowError', ()=>{
+                return Promise.reject()
+            })
+            return [inWorkflowAction, inWorkflowError]
+        })
+        .name("catch")
+        .catch(()=>{
+            const inWorkflowAction = this.inWorkflowStepAction('inWorkflowSuccess2', ()=>{
+                return Promise.resolve();
+            })
+            return [new TestAction(), inWorkflowAction] 
+        })
+
+    }
+}
+
 
 
 export class WorkflowApp extends ActionApp{
-    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow, TestExecutorAction]
+    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow, TestExecutorAction, TestActionInWorkflow, Workflow]
 }

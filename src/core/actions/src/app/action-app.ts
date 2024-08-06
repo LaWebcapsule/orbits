@@ -2,7 +2,7 @@ import {o} from '@wbce/services';
 import mongoose from 'mongoose';
 import * as winston from 'winston';
 import { ActionCron } from "../action-job";
-import { Action, RejectAction, ResolveAction, RollBackAction } from '../../index';
+import { Action, RejectAction, ResolveAction, RollBackAction, Workflow } from '../../index';
 import { ActionError } from '../error/error';
 import { ActionSchemaInterface } from '../../index';
 import { RevertAction, RevertWorkflow } from '../../index';
@@ -75,9 +75,19 @@ export class ActionApp{
         this.imports.push(CoreActionApp);
         this.import();
         for(const actionCtr of this.declare){
-            const actionRef = actionCtr.permanentRef || actionCtr.name
-            this.actionsRegistry.set(actionRef, actionCtr);   
-            this.inversedActionsRegistry.set(actionCtr, actionRef)
+            let refs = [];
+            const actionRef = actionCtr.permanentRef;
+            if(Array.isArray(actionRef)){
+                refs = actionRef
+            }
+            else if(actionRef){
+                refs.push(actionRef)
+            }
+            refs.push(actionCtr.name);
+            for(const ref of refs){
+                this.actionsRegistry.set(ref, actionCtr);   
+            }
+            this.inversedActionsRegistry.set(actionCtr, refs[0])
         }
         ActionApp.activeApp = this;
         setLogger(this);
@@ -147,5 +157,5 @@ export function bootstrapApp(opts: ActionAppConfig | (()=>(ActionAppConfig|Promi
 }
 
 export class CoreActionApp extends ActionApp{
-    declare = [ResolveAction, RejectAction, RollBackAction, RevertAction, RevertWorkflow, Action]
+    declare = [ResolveAction, RejectAction, RollBackAction, RevertAction, RevertWorkflow, Action, Workflow]
 }
