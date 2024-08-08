@@ -5,9 +5,9 @@ import { ActionState, ActionSchemaInterface } from './models/action';
 import {Action} from '../index'
 import { errorCodes } from "./error/errorcodes";
 
-export interface StepResult{
+export interface StepResult<T=any>{
     state : ActionState.SUCCESS | ActionState.ERROR,
-    result : any,
+    result : T,
     isError: boolean,
     actionRef: string,
     actionId : string
