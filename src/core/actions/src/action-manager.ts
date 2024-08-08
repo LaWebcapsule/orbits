@@ -2,7 +2,7 @@ import { errorCodes } from "./error/errorcodes";
 import { ActionSchemaInterface, ActionState } from "./models/action";
 import { Workflow, ActionApp, RevertAction } from "./../index";
 import { o, wbceAsyncStorage } from "@wbce/services";
-import { ActionError } from "./error/error";
+import { ActionError, BreakingActionState } from "./error/error";
 import { Executor } from "./action-executor";
 
 /** 
@@ -19,7 +19,7 @@ export class Action{
      * This should be a permanent id that designates your instance.
      * 
      */
-    static permanentRef : string;
+    static permanentRef : string | string[];
 
     /**
      * Specify an executor in which all actions of this class will run.
@@ -204,9 +204,8 @@ export class Action{
      * @param actionDb a document coming from the database 
      * @returns an action for which dbDoc property is equal to actionDb
      */
-    static constructFromDb(actionDb : ActionSchemaInterface<any>) : Action{
-        const app = ActionApp.getActiveApp();
-        
+    static _constructFromDb(actionDb : ActionSchemaInterface<any>) : Action{
+        const app = ActionApp.getActiveApp();        
         const ActionCtr = app.actionsRegistry.get(actionDb.actionRef);
         let action: Action;
         try{
@@ -224,6 +223,43 @@ export class Action{
         }
         action.dbDoc = actionDb;
         return action;
+    }
+
+    static async constructFromDb(actionDb : ActionSchemaInterface<any>){
+        if(actionDb.definitionFrom?.workflow?._id){
+            return this.dynamicDefinitionFromWorkflowStep(actionDb)
+        }
+        else{
+            return Action._constructFromDb(actionDb)
+        }
+    }
+
+    static async dynamicDefinitionFromWorkflowStep(dbDoc : ActionSchemaInterface<any>){
+        return ActionApp.activeApp.ActionModel.findById(dbDoc.definitionFrom.workflow._id).then(async (workflowDoc)=>{
+            const workflow = Action._constructFromDb(workflowDoc) as Workflow;
+            await workflow.initialisation();
+            const stepsActions = await workflow.getActionsOfStep(dbDoc.definitionFrom.workflow);
+            let action : Action;
+            if(Array.isArray(stepsActions)){
+                action = stepsActions.find(a=>a.dbDoc.definitionFrom.workflow.marker === dbDoc.definitionFrom.workflow.marker);
+            }
+            else if(stepsActions instanceof Action){
+                action = stepsActions;
+            }
+            action.dbDoc = dbDoc;
+            return action;
+        })
+    }
+
+    dynamiclyDefineFromWorfklowStep(workflow : Workflow, marker : string){
+        this.dbDoc.definitionFrom.workflow = {
+            _id : workflow._id.toString(),
+            ref : workflow.dbDoc.actionRef,
+            stepIndex : workflow.bag.currentStepIndex,
+            stepName : workflow.bag.currentStepName,
+            marker
+        }
+        this.dbDoc.markModified('definitionFrom');
     }
 
     /**
@@ -271,7 +307,7 @@ export class Action{
         return this.changeState(ActionState.EXECUTING_MAIN)
         .catch(err=>{
             if(err && err.code === errorCodes.RESSOURCE_LOCKED){
-                throw ActionState.UNKNOW;//le thread current n'est pas maitre de la workflow
+                throw new BreakingActionState(ActionState.UNKNOW);//le thread current n'est pas maitre de la workflow
                 //et decline donc ses responsabilites
             }
             throw err;
@@ -286,8 +322,11 @@ export class Action{
         .catch((err)=>{
             //pour courcircuiter les étapes, on peut retourner un etat par le throw/catch.
             //notamment en cas d'erreur
-            if(err in ActionState){
-                return err;
+            if(err instanceof BreakingActionState){
+                if(err.result){
+                    this.setResult(err.result);
+                }
+                return err.actionState;
             }
             //c'est une autre erreur qu'on a attrapé
             this.internalLogError(err);
@@ -376,9 +415,10 @@ export class Action{
         if(this.isInitialised){
             return Promise.resolve();
         }
-        this.isInitialised = true;
         this.internalLog('init');
-        return this.init();
+        return this.init().then(()=>{
+            this.isInitialised = true;
+        });
     }
 
     isExecutorSet = false;
@@ -419,8 +459,11 @@ export class Action{
                 if(err === ActionState.UNKNOW){
                     return ActionState.SLEEPING;//n'a jamais ete lance
                 }
-                if(err in ActionState){//court circuit
-                    return err;   
+                if(err instanceof BreakingActionState){//court circuit
+                    if(err.result){
+                        this.setResult(err.result);
+                    }
+                    return err.actionState;   
                 }
                 else{
                     this.internalLogError(err);
@@ -522,7 +565,7 @@ export class Action{
         const oldState = this.dbDoc.state;
         this.dbDoc.state = actionState;
         return this.dbDoc.lockAndSave().then(()=>{
-            this.internalLog(`state changed : ${oldState}--> ${actionState}`);
+            this.internalLog(`state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`);
         })
     }
 
@@ -562,9 +605,9 @@ export class Action{
             return this.changeState(ActionState.SLEEPING);
         }
         else if(this.dbDoc.workflowId){
-            return this.app.ActionModel.findById(this.dbDoc.workflowId).then((workflowDb)=>{
+            return this.app.ActionModel.findById(this.dbDoc.workflowId).then(async (workflowDb)=>{
                 if(workflowDb){
-                    const workflow = Action.constructFromDb(workflowDb as any) as unknown as Workflow;
+                    const workflow = await Action.constructFromDb(workflowDb as any) as unknown as Workflow;
                     if(workflow.isActionActive(this)){
                         return workflow.resume();
                     }
@@ -647,10 +690,19 @@ export class Action{
     }
 
     internalLog(message : string){
+        let defFromWorkflow : any;
+        if(this.dbDoc.definitionFrom.workflow.marker){
+            defFromWorkflow = (this.dbDoc.definitionFrom.workflow as any).toObject()
+        }
+        let filter = this.dbDoc.filter;
+        if(!Object.keys(filter).length){
+            filter = undefined
+        }
         this.app.logger.info(message, {
             actionRef : this.dbDoc.actionRef,
             actionId : this.dbDoc._id.toString(),
-            filter : this.dbDoc.filter,
+            filter,
+            definedIn : defFromWorkflow,
             timestamp : new Date().toISOString()
         })
     }
@@ -759,11 +811,11 @@ export class RollBackAction<A extends Action> extends Action{
     oldAction : A;
 
     init(){
-        return this.app.ActionModel.findById(this.argument.actionId).then((dbDoc)=>{
+        return this.app.ActionModel.findById(this.argument.actionId).then(async (dbDoc)=>{
            if(!dbDoc){
-               throw ActionState.ERROR
+               throw new BreakingActionState(ActionState.ERROR)
            }
-           this.oldAction = Action.constructFromDb(dbDoc as any) as A;
+           this.oldAction = await Action.constructFromDb(dbDoc as any) as A;
            return this.oldAction.initialisation();
         })
     }

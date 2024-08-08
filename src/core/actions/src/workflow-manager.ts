@@ -1,13 +1,22 @@
 import mongoose from "mongoose";
-import { ActionError } from "./error/error";
+import { ActionError, BreakingActionState } from "./error/error";
 import { o } from "@wbce/services";
 import { ActionState, ActionSchemaInterface } from './models/action';
 import {Action} from '../index'
+import { errorCodes } from "./error/errorcodes";
+
+export interface StepResult{
+    state : ActionState.SUCCESS | ActionState.ERROR,
+    result : any,
+    isError: boolean,
+    actionRef: string,
+    actionId : string
+}
 
 export interface Step{
     [ActionState.SUCCESS]? : boolean;
     [ActionState.ERROR]? : boolean;
-    cb? : (...args : any[])=> void | Action | Action[] | Promise<void | Action | Action[]>;
+    cb? : (...args : StepResult[])=> void | Action | Action[] | Promise<void | Action | Action[]>;
     name? : string;
     opts? : {
         retry : number
@@ -32,13 +41,17 @@ export class Workflow extends Action{
             [key : string] : {
                 state : ActionState,
                 result : any,
+                ref: string,
                 index : number
             }
         },
         currentStepIndex? : number,
+        currentStepName?: string,
         nTimesCurrentStep : number,
         stepsHistory : number[],
-        oldResult : any,
+        oldResult : StepResult[],
+        preserveOldResult : StepResult[],
+        getNextStepAttemp: number,
         isRollBackPossible : boolean 
     }
 
@@ -57,6 +70,10 @@ export class Workflow extends Action{
     }
 
     catch(cb : Step['cb'], opts? : Step['opts']){
+        return this.onError(cb, opts)
+    }
+
+    onError(cb : Step['cb'], opts? : Step['opts']){
         this.steps.push({
             [ActionState.ERROR] : true,
             cb,
@@ -66,6 +83,10 @@ export class Workflow extends Action{
     }
 
     finally(cb : Step['cb'], opts? : Step['opts']){
+        return this.onComplete(cb, opts);
+    }
+
+    onComplete(cb : Step['cb'], opts? : Step['opts']){
         //finally en promise :
         //ex : then(throw err).finally(...).finally(...).cactch(//on passe ici !)
         //mais aussi then(throw err).finally(throw err2).finally(...).catch(//on reçoit err2)
@@ -75,10 +96,15 @@ export class Workflow extends Action{
         //pour imiter le comportement et plutot que typer les steps, on ajoute trois étapes
         //--> stocke les arguments --> execute le finally --> depile les anciens arguments
         
-        const transfertArgumentActions = (...args : any[])=>{
+        const transfertArgumentActions = (...args : StepResult[])=>{
             const actions : any[] = [];
             for(const result of args){
-                actions.push(Action.resolve(result))
+                if(result.isError){
+                    actions.push(Action.reject(result));
+                }
+                else{
+                    actions.push(Action.resolve(result));
+                }
             }
             return actions;
         }
@@ -88,7 +114,7 @@ export class Workflow extends Action{
             [ActionState.SUCCESS] : true,
             [ActionState.ERROR] : true,
             cb : (...args : any[])=>{
-                this.bag.oldResult = args;
+                this.bag.preserveOldResult = args;
                 return transfertArgumentActions(...args)
             },
             opts
@@ -104,7 +130,7 @@ export class Workflow extends Action{
         this.steps.push({
             [ActionState.SUCCESS] : true,
             cb : (...args : any[])=>{
-                return transfertArgumentActions(...this.bag.oldResult)
+                return transfertArgumentActions(...this.bag.preserveOldResult)
             },
             opts
         })
@@ -131,6 +157,7 @@ export class Workflow extends Action{
     goToStep(name : string){
         const newIndex = this.steps.findIndex(s=>s.name === name);
         if(newIndex !== -1){
+            this.bag.currentStepName = name;
             this.bag.currentStepIndex = newIndex
         }
         return Action.resolve({});
@@ -142,6 +169,20 @@ export class Workflow extends Action{
             cb : this.goToStep.bind(this, name)
         })
         return this;
+    }
+
+    breakAndReturn(result){
+        const newIndex = this.steps.length +1;
+        this.bag.currentStepName = 'exit';
+        this.bag.currentStepIndex = newIndex;
+        return Action.resolve(result);
+    }
+
+    breakAndReject(result){
+        const newIndex = this.steps.length +1;
+        this.bag.currentStepName = 'exit';
+        this.bag.currentStepIndex = newIndex;
+        return Action.reject(result);
     }
 
     onSuccessGoTo(name : string){
@@ -163,21 +204,31 @@ export class Workflow extends Action{
         const workflowBag = this.dbDoc.bag;
         dbDoc.workflowId = this.dbDoc._id.toString();
         dbDoc.workflowStep = (workflowBag.stepsHistory.length-1);
+        dbDoc.workflowStack = [
+            ...this.dbDoc.workflowStack,
+            {
+                ref : this.dbDoc.actionRef,
+                _id : this._id.toString(),
+                stepIndex : this.bag.currentStepIndex,
+                stepName : this.bag.currentStepName
+            }
+        ]
         dbDoc.filter = {...this.dbDoc.filter, ...dbDoc.filter};
         dbDoc.markModified('filter');
         workflowBag.actions[dbDoc._id.toString()] = {
             state : dbDoc.state,
             result : dbDoc.result,
+            ref: dbDoc.actionRef,
             index
         }
         this.dbDoc.markModified('bag.actions');
     }
 
-    declareActionEnd(dbDoc : ActionSchemaInterface<any>){
+    async declareActionEnd(dbDoc : ActionSchemaInterface<any>){
         const workflowBag = this.dbDoc.bag;
         workflowBag.actions[dbDoc._id.toString()]!.state = dbDoc.state;
         workflowBag.actions[dbDoc._id.toString()]!.result = dbDoc.result;
-        const action = Action.constructFromDb(dbDoc);
+        const action = await Action.constructFromDb(dbDoc);
         if(action.isRollBackPossible){
             this.bag.isRollBackPossible = true;
         }
@@ -185,7 +236,6 @@ export class Workflow extends Action{
     }
 
     getNextStep(){
-        
         if(this.bag.currentStepIndex === undefined){
             //initialisation
             this.bag.currentStepIndex = -1;
@@ -196,9 +246,16 @@ export class Workflow extends Action{
         let oldStepState = ActionState.ERROR;
 
         const numberOfActions = Object.keys(this.bag.actions).length
-        let oldResults : any[] = new Array(numberOfActions);
+        let oldResults : StepResult[] = new Array(numberOfActions);
         for(let k in this.bag.actions){
-            oldResults[this.bag.actions[k].index] = this.bag.actions[k].result;
+            const actionSynth = this.bag.actions[k];
+            oldResults[actionSynth.index] = {
+                result : actionSynth.result,
+                actionRef : actionSynth.ref,
+                actionId : k,
+                isError :(actionSynth.state === ActionState.ERROR),
+                state : actionSynth.state as ActionState.SUCCESS | ActionState.ERROR
+            };
         }
 
         for(let key in this.bag.actions){
@@ -211,6 +268,7 @@ export class Workflow extends Action{
             return i > this.bag!.currentStepIndex! && step[oldStepState];
         })
         this.bag.currentStepIndex = newIndex;
+        this.bag.currentStepName = this.steps[newIndex -1]?.name
         this.bag.actions = {};
         this.dbDoc.markModified("bag");
         this.dbDoc.markModified("bag.actions");
@@ -221,19 +279,43 @@ export class Workflow extends Action{
             if(this.bag.stepsHistory.length > 200){
                 this.bag.stepsHistory.shift();
             }
+            this.bag.oldResult = oldResults;
             return Promise.resolve(this.steps[this.bag.currentStepIndex]!['cb']!(...oldResults))
         }
         else{
             //c'est fini:
             this.result = oldResults;
-            throw oldStepState;
+            throw new BreakingActionState(oldStepState);
         }
+    }
+
+    getActionsOfStep(opts : {
+        stepIndex? : number,
+        stepName?: string,
+        oldResults? : any[]
+    }){
+        const stepIndex =  this.steps.findIndex(s=>s.name === opts.stepName) || opts.stepIndex;
+        if(stepIndex <0){
+            throw new ActionError(`cannot find workflow step with ${opts} ; workflowId : ${this._id.toString()} ; workflowCtr : ${this.constructor.name}`, errorCodes.Not_ACCEPTABLE)
+        }
+        const oldResults = opts.oldResults || this.bag.oldResult;
+        return Promise.resolve(this.steps[stepIndex]!['cb'](...oldResults))
     }
 
     startStep(){
         return this.app.db.mongo.conn.startSession().then(mongooseSession=>{
             this.dBSession = mongooseSession;
-            return this.getNextStep()
+            return this.getNextStep().catch((err)=>{
+                this.bag.nTimesCurrentStep = this.bag.nTimesCurrentStep + 1 || 0;
+                if(this.bag.nTimesCurrentStep > Infinity ){//change this once the deprecation has been done
+                    this.dbDoc.state = ActionState.ERROR;
+                    this.dbDoc.result = {
+                        err,
+                        message : `blocked on step : ${this.bag.currentStepIndex}, ${this.bag.currentStepName} ; could not launch step.`
+                    }
+                }
+
+            })
         }).then(actions=>{
             return this.dBSession!.withTransaction(()=>{
                 //attention : cette fonction est souvent retry :
@@ -295,9 +377,9 @@ export class Workflow extends Action{
             _id : {$in : Object.keys(this.bag.actions)},
             workflowId : this.dbDoc._id.toString(),
             state : {$gt : ActionState.PAUSED}
-        }).then((actions)=>{
+        }).then(async (actions)=>{
             for(let action of actions){
-                this.declareActionEnd(action as any as ActionSchemaInterface);
+                await this.declareActionEnd(action as any as ActionSchemaInterface);
             }
             this.internalLog('endStep')
             return ActionState.PAUSED;
@@ -306,6 +388,10 @@ export class Workflow extends Action{
 
     registerDocToSaveAtStepStart(doc : mongoose.Document){
         this.docsToSaveAtStepStart.push(doc);
+    }
+
+    registerDetachedAction(action: Action){
+        this.docsToSaveAtStepStart.push(action.dbDoc);
     }
 
     override initialisation(){
@@ -323,13 +409,12 @@ export class Workflow extends Action{
 
     override main(){
         return this.startStep().catch(err=>{
-            if(!(err in ActionState)){
+            if(!(err instanceof BreakingActionState)){
                 //si une erreur survient lors de l'appel à l'étape
                 //on reste bloque sur l'étape mais la workflow ne passe pas en erreur
                 //c'est a dire que la workflow reste en meme etat : executing_main
-                //on reessaiera plus tard
                 this.internalLogError(err);
-                throw this.dbDoc.state;//on fait donc croire que rien n'a changé
+                throw new BreakingActionState(this.dbDoc.state);//on fait donc croire que rien n'a changé
             }
             throw err;
         });
@@ -363,14 +448,76 @@ export class Workflow extends Action{
                     //pas de // dans le cron
                     //sinon declenche un watch ou un execute dans toutes les actions non finies
                     //le watch se fait en //
-                    actions.map(a=>{
-                        return Action.constructFromDb(a as any as ActionSchemaInterface)
-                    }).map(
-                        a => a.resume()
-                    )
+                    actions.map(async a=>{
+                        const action = await Action.constructFromDb(a as any as ActionSchemaInterface);
+                        action.resume();
+                    })
                 }
                 return ActionState.IN_PROGRESS;
             }
+        })
+    }
+
+    inWorkflowStepAction(marker : string, opts: {
+        init? : Action['init'],
+        main: Action['main'],
+        watcher?: Action['watcher']
+    }) : Action
+    inWorkflowStepAction(marker : string, cb : ()=> Promise<void>) : Action
+    inWorkflowStepAction(marker: string, cb : (()=> Promise<void>) | {
+        init? : Action['init'],
+        main: Action['main'],
+        watcher?: Action['watcher']
+    }): Action{
+        let opts = cb;
+        if(typeof cb === 'function'){
+            opts = {
+                main : ()=>{
+                    return cb().then(()=>{
+                        return ActionState.SUCCESS
+                    }, ()=>{
+                        return ActionState.ERROR
+                    })
+                }
+            }
+        }
+        const action = new Action();
+        action.dynamiclyDefineFromWorfklowStep(this, marker);
+        action.main = opts['main'];
+        if(cb['init']){
+            action.init = opts['init']
+        }
+        if(cb['watcher']){
+            action.watcher = opts['watcher']
+        }
+        return action;
+    }
+
+    inWorkflowRedefineAction(marker: string, actions : ()=>Action | Action[])
+    inWorkflowRedefineAction(marker: string, actions : ()=>Promise<Action | Action[]> )
+    async inWorkflowRedefineAction(marker: string, actions : Action | Action[] | (()=>Action | Action[] | Promise<Action | Action[]>) ){
+        if(typeof actions === 'function'){
+            actions = await Promise.resolve(actions());
+        }
+        if(actions instanceof Action){
+            actions.dynamiclyDefineFromWorfklowStep(this, marker);
+            return actions;
+        }
+        for(const action of actions){
+            action.dynamiclyDefineFromWorfklowStep(this, marker);
+        }
+        return actions;
+
+    }
+
+    override internalLogError(err : Error){
+        this.app.logger.error('!!-.-!!', {
+            actionRef : this.dbDoc.actionRef,
+            actionId : this.dbDoc._id.toString(),
+            filter : this.dbDoc.filter,
+            err : err,
+            workflowStepId : this.dbDoc.bag.currentStepIndex,
+            workflowStepName : this.dbDoc.bag.currentStepName
         })
     }
 
@@ -401,11 +548,11 @@ export class RevertWorkflow<WorkflowToRevert extends Workflow> extends Workflow{
     oldAction : WorkflowToRevert
 
     override init(){
-     return this.app.ActionModel.findById(this.argument.actionId).then((dbDoc)=>{
+     return this.app.ActionModel.findById(this.argument.actionId).then(async (dbDoc)=>{
         if(!this.dbDoc){
-            throw ActionState.ERROR
+            throw new BreakingActionState(ActionState.ERROR)
         }
-        this.oldAction = Action.constructFromDb(dbDoc as any as ActionSchemaInterface) as WorkflowToRevert;
+        this.oldAction = await Action.constructFromDb(dbDoc as any as ActionSchemaInterface) as WorkflowToRevert;
         return this.oldAction.initialisation();
      })   
     }
@@ -448,16 +595,19 @@ export class RevertWorkflow<WorkflowToRevert extends Workflow> extends Workflow{
             workflowId : this.oldAction.dbDoc._id.toString(),
             workflowStep : stepIndex,
             state : {$lte : ActionState.SUCCESS}
-        }).then((actions)=>{
-            return actions.map(a=>Action.constructFromDb(a as any as ActionSchemaInterface))
-                .filter(a=>a.isRollBackPossible)
-                .map((a : Action)=>{
-                    const rollBack = new a.RollBackWorkflow();
+        }).then(async (actions)=>{
+            const result = [];
+            for(const a of actions){
+                const action = await Action.constructFromDb(a as any as ActionSchemaInterface);
+                if(action.isRollBackPossible){
+                    const rollBack = new action.RollBackWorkflow();
                     rollBack.setArgument({
-                        actionId : a.dbDoc._id.toString()
+                        actionId : action.dbDoc._id.toString()
                     })
-                    return rollBack;
-                })
+                    result.push(rollBack);
+                }
+            }
+            return result;
         })
     }
 }
@@ -471,11 +621,11 @@ export class RevertAction<ActionToRevert extends Action> extends Workflow{
     oldAction : ActionToRevert;
 
     override init(){
-     return this.app.ActionModel.findById(this.argument.actionId).then((dbDoc)=>{
+     return this.app.ActionModel.findById(this.argument.actionId).then(async (dbDoc)=>{
         if(!this.dbDoc){
-            throw ActionState.ERROR
+            throw new BreakingActionState(ActionState.ERROR)
         }
-        this.oldAction = Action.constructFromDb(dbDoc as any as ActionSchemaInterface) as ActionToRevert;
+        this.oldAction = await Action.constructFromDb(dbDoc as any as ActionSchemaInterface) as ActionToRevert;
         return this.oldAction.initialisation();
      })   
     }

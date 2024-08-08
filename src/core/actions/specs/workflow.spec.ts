@@ -61,15 +61,16 @@ describe("testing rollBack -", () => {
           rollBack.setArgument({
             actionId : t.dbDoc._id.toString()
           })
-          rollBack.resume();
-          resolve(rollBack);
+          rollBack.resume().then(()=>{
+            resolve(rollBack);
+          });
         }, 2000)
       })
     }).then(()=>{
       return new Promise((resolve)=>{
         setTimeout(()=>{
           resolve(1);
-        }, 5000)
+        }, 30000)
       })
     });
   });

@@ -26,6 +26,12 @@ export interface ActionSchemaInterface<TArgument = any, TBag = any, TResult = an
     filter : Object,
     workflowId? : string,
     workflowStep? : number,
+    workflowStack : {
+        ref : string,
+        stepIndex : number,
+        stepName : string,
+        _id : string
+    }[]
     nTimes : number,
     locked : Boolean,
     lockedAt : Date,
@@ -50,6 +56,15 @@ export interface ActionSchemaInterface<TArgument = any, TBag = any, TResult = an
     },
     updatedAt : Date,
     createdAt : Date,
+    definitionFrom? : {
+        workflow : {
+            _id : string,
+            ref : string,
+            stepName : string,
+            stepIndex: number,
+            marker: string
+        }
+    },
     updateNextActivity : ()=>void
     optimisticLock : ()=>Promise<void>
     lockAndSave : ()=>Promise<void>
@@ -66,6 +81,12 @@ export const actionSchema = new mongoose.Schema({
     actionRef : String,
     workflowId : String,
     workflowStep : Number,
+    workflowStack : [{
+        ref : String,
+        stepIndex : Number,
+        stepName : String,
+        _id : String
+    }],
     nTimes : {type : Number, default : 0},
     delays : {
         [ActionState.EXECUTING_MAIN] : Number,
@@ -86,6 +107,15 @@ export const actionSchema = new mongoose.Schema({
     nExecutions : {
         [ActionState.ERROR] : {type : Number, default : 0},
         [ActionState.SUCCESS] : {type : Number, default : 0}
+    },
+    definitionFrom : {
+        workflow : {
+            _id : String,
+            ref: String,
+            stepName : String,
+            stepIndex: Number,
+            marker: String
+        }
     }
 }, {
     timestamps: true,

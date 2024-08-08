@@ -18,5 +18,5 @@
       "strict": false,
       "outDir": "dist"
     },
-    "exclude":["dist/", "specs/"]
+    "exclude":["dist/"]
   }
