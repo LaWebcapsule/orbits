@@ -1,12 +1,12 @@
 # How to use the cdk with Orbits
 
-You can see the result of this tutorial here :
+You can see the result of this tutorial here:
 
-# First step : have a stack constructor
+- First step: have a stack constructor
 
-# Second step : (optional) create a bootstrapAction
+- Second step: (optional) create a bootstrapAction
 
-# Third step : create a deployAction
+- Third step: create a deployAction
 
 ```typescript
 export class DeployMyStack extends CdkDeploy{
@@ -14,27 +14,21 @@ export class DeployMyStack extends CdkDeploy{
 }
 ```
 
-# Four step : (optional) create a workflow
+- Four step: (optional) create a workflow
 
 ```typescript
 export class MyPipeline extends Workflow{
 
     define(){
         this.next(()=>{
-
-
+            // ...
         }).next(()=>{
-
+            // ...
         })
 
     }
 
 }
-
 ```
 
-# Four step : register the action and bootstap an app
-
-
-
-
+- Four step: register the action and bootstrap an app

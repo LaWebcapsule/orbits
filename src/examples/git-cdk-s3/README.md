@@ -22,8 +22,8 @@ See the requirements for [Orbits installation](./../../../README.md)
 
 ### Customizing the app
 
-Once this folder downloaded on your machine and the requirements installed, you can :
-- modify the bootstraping process with your mongodb url
+Once this folder downloaded on your machine and the requirements installed, you can:
+- modify the bootstrapping process with your mongodb url
 - modify the stack with a specific bucketName
 
 ### Launching the app
@@ -41,7 +41,7 @@ npm run build
 npm start
 ```
 
-You can also use ts-node :
+You can also use ts-node:
 ```console
 npx ts-node index.ts
 ```
