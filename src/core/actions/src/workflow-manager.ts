@@ -294,7 +294,7 @@ export class Workflow extends Action{
         stepName?: string,
         oldResults? : any[]
     }){
-        const stepIndex = opts.stepIndex || this.steps.findIndex(s=>s.name === opts.stepName);
+        const stepIndex =  this.steps.findIndex(s=>s.name === opts.stepName) || opts.stepIndex;
         if(stepIndex <0){
             throw new ActionError(`cannot find workflow step with ${opts} ; workflowId : ${this._id.toString()} ; workflowCtr : ${this.constructor.name}`, errorCodes.Not_ACCEPTABLE)
         }
