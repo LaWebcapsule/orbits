@@ -34,12 +34,38 @@ describe("Test action defined in workflow", ()=>{
         })
     })
 
+    it("should have failed for modified in workflow action", ()=>{
+        return testAction.app.ActionModel.findOne({
+            "definitionFrom.workflow.marker": "inWorkflowRedefine"
+        }).then((dbDoc)=>{
+            expect(dbDoc).not.toBeUndefined()
+            expect(dbDoc.state).toEqual(ActionState.ERROR)
+        })
+    })
+
     it("should have errored for one subAction", ()=>{
         return testAction.app.ActionModel.findOne({
             "definitionFrom.workflow.marker": "inWorkflowError"
         }).then((dbDoc)=>{
             expect(dbDoc).not.toBeUndefined()
             expect(dbDoc.state).toEqual(ActionState.ERROR)
+        })
+    })
+
+    it("should have error as result for inWorkflowError action", ()=>{
+        return testAction.app.ActionModel.findOne({
+            "definitionFrom.workflow.marker": "inWorkflowError"
+        }).then((dbDoc)=>{
+            expect(dbDoc.result.message).toEqual("test");
+        })
+    })
+
+
+    it("should have result for inWorkflowSuccess action", ()=>{
+        return testAction.app.ActionModel.findOne({
+            "definitionFrom.workflow.marker": "inWorkflowSuccess"
+        }).then((dbDoc)=>{
+            expect(dbDoc.result).toEqual({x: 1});
         })
     })
 

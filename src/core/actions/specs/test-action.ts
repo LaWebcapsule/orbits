@@ -211,21 +211,31 @@ export class TestActionInWorkflow extends Workflow{
             return Action.resolve();
         })
         .name("actionInWorkflow")
-        .next(()=>{
+        .next(async ()=>{
             const inWorkflowAction = this.inWorkflowStepAction('inWorkflowSuccess', ()=>{
-                return Promise.resolve();
+                return Promise.resolve({x : 1});
             })
             const inWorkflowError = this.inWorkflowStepAction('inWorkflowError', ()=>{
-                return Promise.reject()
+                return Promise.reject(new Error("test"))
             })
-            return [inWorkflowAction, inWorkflowError]
+            const modifiedInWorkflowAction = this.inWorkflowRedefineAction('inWorkflowRedefine', ()=>{
+                const action = new TestAction();
+                action.main = ()=>{
+                    action.setResult({
+                        x :'10'
+                    })
+                    return Promise.resolve(ActionState.ERROR)
+                }
+                return action;
+            })
+            return [inWorkflowAction, inWorkflowError, await modifiedInWorkflowAction]
         })
         .name("catch")
         .catch(()=>{
             const inWorkflowAction = this.inWorkflowStepAction('inWorkflowSuccess2', ()=>{
                 return Promise.resolve();
             })
-            return [new TestAction(), inWorkflowAction] 
+            return [new TestAction(), inWorkflowAction, new BasicWorkflow()] 
         })
 
     }

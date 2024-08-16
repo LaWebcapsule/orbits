@@ -10,7 +10,9 @@ export interface StepResult<T=any>{
     result : T,
     isError: boolean,
     actionRef: string,
-    actionId : string
+    actionId : string,
+    parentStepId : number,
+    parentStepName : string
 }
 
 export interface Step{
@@ -253,6 +255,8 @@ export class Workflow extends Action{
                 result : actionSynth.result,
                 actionRef : actionSynth.ref,
                 actionId : k,
+                parentStepId: this.bag.currentStepIndex,
+                parentStepName : this.bag.currentStepName,
                 isError :(actionSynth.state === ActionState.ERROR),
                 state : actionSynth.state as ActionState.SUCCESS | ActionState.ERROR
             };
@@ -294,8 +298,17 @@ export class Workflow extends Action{
         stepName?: string,
         oldResults? : any[]
     }){
-        const stepIndex =  this.steps.findIndex(s=>s.name === opts.stepName) || opts.stepIndex;
-        if(stepIndex <0){
+        let stepIndex;
+        if(opts.stepName){
+            stepIndex = this.steps.findIndex(s=>s.name === opts.stepName)
+            if(stepIndex !== -1){
+                stepIndex = stepIndex +1;
+            }
+        }
+        if(!stepIndex || stepIndex < 0){
+            stepIndex = opts.stepIndex;
+        }
+        if(!stepIndex || stepIndex <0){
             throw new ActionError(`cannot find workflow step with ${opts} ; workflowId : ${this._id.toString()} ; workflowCtr : ${this.constructor.name}`, errorCodes.Not_ACCEPTABLE)
         }
         const oldResults = opts.oldResults || this.bag.oldResult;
@@ -463,8 +476,8 @@ export class Workflow extends Action{
         main: Action['main'],
         watcher?: Action['watcher']
     }) : Action
-    inWorkflowStepAction(marker : string, cb : ()=> Promise<void>) : Action
-    inWorkflowStepAction(marker: string, cb : (()=> Promise<void>) | {
+    inWorkflowStepAction(marker : string, cb : ()=> Promise<any>) : Action
+    inWorkflowStepAction(marker: string, cb : (()=> Promise<any>) | {
         init? : Action['init'],
         main: Action['main'],
         watcher?: Action['watcher']
@@ -472,11 +485,10 @@ export class Workflow extends Action{
         let opts = cb;
         if(typeof cb === 'function'){
             opts = {
-                main : ()=>{
-                    return cb().then(()=>{
+                main : function(this : Action){
+                    return cb().then((res)=>{
+                        this.setResult(res);
                         return ActionState.SUCCESS
-                    }, ()=>{
-                        return ActionState.ERROR
                     })
                 }
             }
@@ -493,21 +505,15 @@ export class Workflow extends Action{
         return action;
     }
 
-    inWorkflowRedefineAction(marker: string, actions : ()=>Action | Action[])
-    inWorkflowRedefineAction(marker: string, actions : ()=>Promise<Action | Action[]> )
-    async inWorkflowRedefineAction(marker: string, actions : Action | Action[] | (()=>Action | Action[] | Promise<Action | Action[]>) ){
-        if(typeof actions === 'function'){
-            actions = await Promise.resolve(actions());
+    inWorkflowRedefineAction(marker: string, actions : Action) : Promise<Action>
+    inWorkflowRedefineAction(marker: string, actions : ()=>Action) : Promise<Action>
+    inWorkflowRedefineAction(marker: string, actions : ()=>Promise<Action> ) : Promise<Action>
+    async inWorkflowRedefineAction(marker: string, action : Action | (()=>Action | Promise<Action>) ){
+        if(typeof action === 'function'){
+            action = await Promise.resolve(action());
         }
-        if(actions instanceof Action){
-            actions.dynamiclyDefineFromWorfklowStep(this, marker);
-            return actions;
-        }
-        for(const action of actions){
-            action.dynamiclyDefineFromWorfklowStep(this, marker);
-        }
-        return actions;
-
+        action.dynamiclyDefineFromWorfklowStep(this, marker);
+        return action;
     }
 
     override internalLogError(err : Error){
