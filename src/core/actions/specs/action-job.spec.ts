@@ -1,4 +1,5 @@
 import { ActionCron } from "../src/action-job";
+import { Action } from "../src/action-manager";
 import { ActionApp } from "../src/app/action-app";
 import { ActionState } from "../src/models/action";
 import { TestActionWithWatcherEnding } from "./test-action";
@@ -24,16 +25,21 @@ describe("action job with empty db", ()=>{
     })
 })
 
+let wrongDefAction : Action;
 describe("actionCron with two actions to manage", ()=>{
 
     beforeAll(()=>{
         const a1 = new TestActionWithWatcherEnding();
         const a2 = new TestActionWithWatcherEnding();
+        wrongDefAction = new TestActionWithWatcherEnding();
+        wrongDefAction.dbDoc.definitionFrom.workflow._id = "xyz";
         actionJob.nDatabaseEmpty = 0;
         return ActionApp.activeApp.ActionModel.deleteMany({}).then(()=>{
             return new Promise<void>((resolve)=>{
-                a1.resume().then(()=>{
-                    return a2.resume()
+                a1.save().then(()=>{
+                    return a2.save()
+                }).then(()=>{
+                    return wrongDefAction.save();
                 }).then(()=>{
                     setTimeout(()=>{
                         resolve()
@@ -45,13 +51,15 @@ describe("actionCron with two actions to manage", ()=>{
 
     it("- actions should be a success", ()=>{
         return ActionApp.activeApp.ActionModel.find({}).then(actions=>{
-            expect(actions.length).toEqual(2)
-            expect(actions.filter(a=>a.state === ActionState.IN_PROGRESS).length).toEqual(0)
+            expect(actions.length).toEqual(3)
+            expect(actions.filter(a=>a.state === ActionState.SUCCESS).length).toEqual(2)
         })
     })
 
-    afterAll(()=>{
-        return ActionApp.activeApp.ActionModel.deleteMany({})
+    it(" - wrongly defined action should be still pending", ()=>{
+        return wrongDefAction.resyncWithDb().then(()=>{
+            expect(wrongDefAction.dbDoc.state).toEqual(ActionState.SLEEPING);
+        })
     })
 
 

@@ -148,7 +148,6 @@ export class Action{
         return this.dbDoc.save();
     }
 
-
     constructor(){
         const actionRef = this.app.inversedActionsRegistry.get(this.constructor as any)
         if(!actionRef){
@@ -235,8 +234,9 @@ export class Action{
     }
 
     static async dynamicDefinitionFromWorkflowStep(dbDoc : ActionSchemaInterface<any>){
-        return ActionApp.activeApp.ActionModel.findById(dbDoc.definitionFrom.workflow._id).then(async (workflowDoc)=>{
-            const workflow = Action._constructFromDb(workflowDoc) as Workflow;
+        try{
+            const workflowDoc = await ActionApp.activeApp.ActionModel.findById(dbDoc.definitionFrom.workflow._id)
+            const workflow = await Action.constructFromDb(workflowDoc) as Workflow;
             await workflow.initialisation();
             const stepsActions = await workflow.getActionsOfStep(dbDoc.definitionFrom.workflow);
             let action : Action;
@@ -248,7 +248,13 @@ export class Action{
             }
             action.dbDoc = dbDoc;
             return action;
-        })
+        }
+        catch(err){
+            if(dbDoc.state >= ActionState.SUCCESS && dbDoc.state < ActionState.REVERTING){
+                return Action._constructFromDb(dbDoc);
+            }
+            throw err;
+        }
     }
 
     dynamiclyDefineFromWorfklowStep(workflow : Workflow, marker : string){
@@ -450,18 +456,27 @@ export class Action{
 
     private checkExecutionDelay(){
         if((Date.now() - this.dbDoc.stateUpdatedAt.getTime()) >= this.dbDoc.delays[ActionState.EXECUTING_MAIN]){
-            return this.watch().then((actionState)=>{
+            this.internalLog('main function has timed out')
+            const timeoutError = new ActionError("main function has timed out", errorCodes.TIMEOUT)
+            return this.initialisation().then(
+                ()=>{
+                    this.internalLog('onMainTimeout');
+                    return this.onMainTimeout();
+                }
+            ).then((actionState)=>{
                 if(actionState === ActionState.UNKNOW){
-                    return ActionState.SLEEPING;//n'a jamais ete lance
+                    this.setResult(timeoutError)
+                    return ActionState.ERROR;
                 }
                 return actionState;
             }).catch((err)=>{
-                if(err === ActionState.UNKNOW){
-                    return ActionState.SLEEPING;//n'a jamais ete lance
-                }
                 if(err instanceof BreakingActionState){//court circuit
                     if(err.result){
                         this.setResult(err.result);
+                    }
+                    if(err.actionState === ActionState.UNKNOW){
+                        this.setResult(timeoutError);
+                        return ActionState.ERROR;
                     }
                     return err.actionState;   
                 }
@@ -482,7 +497,7 @@ export class Action{
      * @returns 
      */
 
-    main(): ActionState | void | unknown{
+    main(): ActionState | Promise<ActionState>{
         return Promise.resolve(ActionState.ERROR);
     }
 
@@ -577,6 +592,16 @@ export class Action{
         return Promise.resolve()
     }
 
+    /**
+     * This method is called when timeout for ActionState.EXECUTING_MAIN state is exhausted. 
+     * It returns a state value.
+     * It can return ActionState.SLEEPING if the process infers that main() has not run and if the action has to be retried. 
+     * @returns 
+     */
+    onMainTimeout() : ActionState | Promise<ActionState>{
+        return ActionState.UNKNOW;
+    }
+
     private end(){
         const markAsClosed = ()=>{
             //on attend une journée avant de mettre l'action en closed;
@@ -599,9 +624,12 @@ export class Action{
             this.result = {};
             //!note : pas de "return" d'état ici
             //on se contente de changer d'état et
-            //on ne continue pas derrière, la prochaine iteration a lieu à la frequence du cron
+            //on ne continue pas derrière, la prochaine iteration a lieu à la frequence du cron (min. 10 minutes)
             //comportement a confirmer
             this.dbDoc.nExecutions[this.dbDoc.state] ++
+            if((this.dbDoc.cronActivity.nextActivity.getTime() - Date.now()) < 10*60*1000){
+                this.dbDoc.cronActivity.nextActivity = new Date(Date.now()+10*60*1000);
+            }
             return this.changeState(ActionState.SLEEPING);
         }
         else if(this.dbDoc.workflowId){

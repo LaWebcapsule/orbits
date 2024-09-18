@@ -305,10 +305,10 @@ export class Workflow extends Action{
                 stepIndex = stepIndex +1;
             }
         }
-        if(!stepIndex || stepIndex < 0){
+        if(stepIndex === undefined || stepIndex < 0){
             stepIndex = opts.stepIndex;
         }
-        if(!stepIndex || stepIndex <0){
+        if(stepIndex === undefined || stepIndex <0){
             throw new ActionError(`cannot find workflow step with ${opts} ; workflowId : ${this._id.toString()} ; workflowCtr : ${this.constructor.name}`, errorCodes.Not_ACCEPTABLE)
         }
         const oldResults = opts.oldResults || this.bag.oldResult;
@@ -321,13 +321,12 @@ export class Workflow extends Action{
             return this.getNextStep().catch((err)=>{
                 this.bag.nTimesCurrentStep = this.bag.nTimesCurrentStep + 1 || 0;
                 if(this.bag.nTimesCurrentStep > Infinity ){//change this once the deprecation has been done
-                    this.dbDoc.state = ActionState.ERROR;
-                    this.dbDoc.result = {
+                    return this.breakAndReject({
                         err,
                         message : `blocked on step : ${this.bag.currentStepIndex}, ${this.bag.currentStepName} ; could not launch step.`
-                    }
+                    })
                 }
-
+                throw err;
             })
         }).then(actions=>{
             return this.dBSession!.withTransaction(()=>{
@@ -394,6 +393,7 @@ export class Workflow extends Action{
             for(let action of actions){
                 await this.declareActionEnd(action as any as ActionSchemaInterface);
             }
+            this.bag.nTimesCurrentStep = 0;
             this.internalLog('endStep')
             return ActionState.PAUSED;
         })
@@ -431,6 +431,10 @@ export class Workflow extends Action{
             }
             throw err;
         });
+    }
+
+    override onMainTimeout(): ActionState | Promise<ActionState> {
+        return ActionState.SLEEPING;//has not be launched. We relaunch
     }
 
 

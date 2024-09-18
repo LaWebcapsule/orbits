@@ -42,6 +42,22 @@ export class TestActionWithError extends Action{
     }
 } 
 
+export class TestActionMainTimeout extends Action{
+
+    static defaultDelays = { 
+        [ActionState.EXECUTING_MAIN]: 10,
+        [ActionState.IN_PROGRESS]: 1000
+    };
+
+    main(){
+        return undefined as any;
+    }
+
+    onMainTimeout(){
+        return ActionState.SUCCESS
+    }
+}
+
 
 
 export class TestAction extends Action{
@@ -235,7 +251,26 @@ export class TestActionInWorkflow extends Workflow{
             const inWorkflowAction = this.inWorkflowStepAction('inWorkflowSuccess2', ()=>{
                 return Promise.resolve();
             })
-            return [new TestAction(), inWorkflowAction, new BasicWorkflow()] 
+            return [new TestAction(), inWorkflowAction, new BasicWorkflow(), Action.reject("xyz")] 
+        })
+        .name("workflowInWorkflow")
+        .catch(()=>{
+            const workflow = new Workflow();
+            workflow.name("start").next(()=>{
+                const action = workflow.inWorkflowStepAction('error', ()=>{
+                    return Promise.reject()
+                })
+                return action;
+            })
+            .name("end")
+            .catch(()=>{
+                const action = workflow.inWorkflowStepAction('success', ()=>{
+                    return Promise.resolve();
+                })
+                return action
+            })
+            workflow.dynamiclyDefineFromWorfklowStep(this, 'wInW');
+            return workflow
         })
 
     }
@@ -244,5 +279,5 @@ export class TestActionInWorkflow extends Workflow{
 
 
 export class WorkflowApp extends ActionApp{
-    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow, TestExecutorAction, TestActionInWorkflow, Workflow]
+    declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow, TestExecutorAction, TestActionInWorkflow, TestActionMainTimeout, Workflow]
 }

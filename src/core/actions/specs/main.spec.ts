@@ -9,11 +9,11 @@ let j = new jasmin();
 j.loadConfig({
     spec_dir: '.',
     spec_files: [
-        'action-in-workflow.spec.ts',
+        //'action-in-workflow.spec.ts',
         //'action-executor.spec.ts',
         //'action.spec.ts',
         //'workflow.spec.ts'
-        //'action-job.spec.ts',
+        'action-job.spec.ts',
         //'other-action.spec.ts'
         //'./action-app.spec.ts'
     ]

@@ -89,7 +89,19 @@ export class ActionCron{
         //ce n'est pas tres grave si deux consumers tourne en parallele de temps en temps
         //par contre, on veut eviter que cela se produise trop souvent
         //d'ou le pseudo verrou : pendingCronActivity
-        const action = await Action.constructFromDb(actionDb);
+        let action: Action;
+        try{
+            action = await Action.constructFromDb(actionDb);
+        }
+        catch(err){
+            ActionApp.activeApp.logger.error(`could not construct action with id : ${actionDb._id}, ref : ${actionDb.actionRef}; got ${err} `)
+            actionDb.updateNextActivity();
+            return this.app.ActionModel.updateOne({_id : actionDb._id}, {
+                $set : {
+                    'cronActivity.nextActivity':  actionDb.cronActivity.nextActivity
+                }
+            })
+        }
         //Pour eviter d'ecraser des donnees (notamment bag), on passe directement via un update
         const previousNextActivity = action.cronActivity.nextActivity;
         const currentDate = new Date()

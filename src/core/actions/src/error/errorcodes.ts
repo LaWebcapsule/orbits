@@ -7,6 +7,7 @@ export enum errorCodes{
     INVALID_SESSION = 4,
     RESSOURCE_LOCKED = 5,
     RESSOURCE_ALREADY_EXISTS = 6,
+    TIMEOUT = 7,
     /**
      * creneau de 400 à 599 reserve au retour d'api. (proxy)
      */
