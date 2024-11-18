@@ -3,7 +3,11 @@ import { errorCodes } from './../error/errorcodes';
 import { ActionError } from './../error/error';
 
 export enum ActionState {
+    /**
+     * @deprecated use UNKNOWN
+     */
     UNKNOW = -1,
+    UNKNOWN = -1,
     SLEEPING,
     EXECUTING_MAIN,
     IN_PROGRESS,

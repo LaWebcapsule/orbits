@@ -333,7 +333,7 @@ export class Action {
         return this.changeState(ActionState.EXECUTING_MAIN)
             .catch((err) => {
                 if (err && err.code === errorCodes.RESOURCE_LOCKED) {
-                    throw new BreakingActionState(ActionState.UNKNOW); //le thread current n'est pas maitre de la workflow
+                    throw new BreakingActionState(ActionState.UNKNOWN); //le thread current n'est pas maitre de la workflow
                     //et decline donc ses responsabilites
                 }
                 throw err;
@@ -429,7 +429,7 @@ export class Action {
      */
 
     watcher() {
-        return Promise.resolve(ActionState.UNKNOW);
+        return Promise.resolve(ActionState.UNKNOWN);
     }
 
     isInitialised = false;
@@ -464,7 +464,7 @@ export class Action {
             })
             .then((actionState) => {
                 if (
-                    actionState === ActionState.UNKNOW ||
+                    actionState === ActionState.UNKNOWN ||
                     actionState === ActionState.IN_PROGRESS
                 ) {
                     if (
@@ -495,7 +495,7 @@ export class Action {
                     return this.onMainTimeout();
                 })
                 .then((actionState) => {
-                    if (actionState === ActionState.UNKNOW) {
+                    if (actionState === ActionState.UNKNOWN) {
                         this.setResult(timeoutError);
                         return ActionState.ERROR;
                     }
@@ -507,7 +507,7 @@ export class Action {
                         if (err.result) {
                             this.setResult(err.result);
                         }
-                        if (err.actionState === ActionState.UNKNOW) {
+                        if (err.actionState === ActionState.UNKNOWN) {
                             this.setResult(timeoutError);
                             return ActionState.ERROR;
                         }
@@ -519,7 +519,7 @@ export class Action {
                     }
                 });
         }
-        return Promise.resolve(ActionState.UNKNOW);
+        return Promise.resolve(ActionState.UNKNOWN);
     }
 
     /**
@@ -596,7 +596,7 @@ export class Action {
                 break;
 
             default:
-                resume = Promise.resolve(ActionState.UNKNOW);
+                resume = Promise.resolve(ActionState.UNKNOWN);
                 break;
         }
         return resume.then(this.onStateNotification.bind(this)).catch((err) => {
@@ -618,9 +618,9 @@ export class Action {
         });
     }
 
-    onStateNotification(actionState: ActionState = ActionState.UNKNOW) {
+    onStateNotification(actionState: ActionState = ActionState.UNKNOWN) {
         if (
-            actionState !== ActionState.UNKNOW &&
+            actionState !== ActionState.UNKNOWN &&
             this.dbDoc.state !== actionState
         ) {
             return this.changeState(actionState).then(this.resume.bind(this));
@@ -635,7 +635,7 @@ export class Action {
      * @returns
      */
     onMainTimeout(): ActionState | Promise<ActionState> {
-        return ActionState.UNKNOW;
+        return ActionState.UNKNOWN;
     }
 
     private end() {
@@ -649,7 +649,7 @@ export class Action {
                     this.dbDoc.stateUpdatedAt.getTime() + 24 * 60 * 60 * 1000
                 );
                 return this.dbDoc.save().then(() => {
-                    return ActionState.UNKNOW; //court circuit
+                    return ActionState.UNKNOWN; //court circuit
                 });
             } else {
                 this.dbDoc.nExecutions[this.dbDoc.state]++;
@@ -701,20 +701,20 @@ export class Action {
             //on gele l'action dans l'attente d'un futur rollback
             this.dbDoc.cronActivity.nextActivity = new Date(4022, 1, 1);
             return this.dbDoc.save().then(() => {
-                return ActionState.UNKNOW; //court circuit
+                return ActionState.UNKNOWN; //court circuit
             });
         }
         const timeFromEnd = Date.now() - this.dbDoc.stateUpdatedAt.getTime();
         if (timeFromEnd >= 24 * 60 * 60 * 1000) {
             return this.destroy().then(() => {
-                return ActionState.UNKNOW; //court circuit
+                return ActionState.UNKNOWN; //court circuit
             });
         } else {
             this.cronActivity.nextActivity = new Date(
                 this.dbDoc.stateUpdatedAt.getTime() + 24 * 60 * 60 * 1000
             );
             return this.dbDoc.save().then(() => {
-                return ActionState.UNKNOW; //court circuit
+                return ActionState.UNKNOWN; //court circuit
             });
         }
     }
@@ -829,7 +829,7 @@ export class Action {
             if (actionState !== this.dbDoc.state) {
                 return ActionState.SUCCESS;
             } else {
-                return ActionState.UNKNOW;
+                return ActionState.UNKNOWN;
             }
         });
     }

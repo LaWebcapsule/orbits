@@ -1104,7 +1104,7 @@ ___
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `actionState` | [`ActionState`](../enums/ActionState.md) | `ActionState.UNKNOW` |
+| `actionState` | [`ActionState`](../enums/ActionState.md) | `ActionState.UNKNOWN` |
 
 #### Returns
 
@@ -1228,13 +1228,13 @@ ___
 
 ### rollBackWatcher
 
-▸ **rollBackWatcher**(): `Promise`<[`UNKNOW`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
+▸ **rollBackWatcher**(): `Promise`<[`UNKNOWN`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
 
 Shortcut to configure the watcher of the rollback Action
 
 #### Returns
 
-`Promise`<[`UNKNOW`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
+`Promise`<[`UNKNOWN`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
 
 #### Inherited from
 

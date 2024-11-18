@@ -33,7 +33,7 @@ export class TestActionWithError extends Action {
     }
 
     watcher() {
-        return Promise.resolve(ActionState.UNKNOW);
+        return Promise.resolve(ActionState.UNKNOWN);
     }
 }
 
@@ -65,7 +65,7 @@ export class TestAction extends Action {
     }
 
     watcher() {
-        return Promise.resolve(ActionState.UNKNOW);
+        return Promise.resolve(ActionState.UNKNOWN);
     }
 }
 

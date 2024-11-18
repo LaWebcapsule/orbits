@@ -212,7 +212,7 @@ export class CdkAction
                 if (stackDescription.StackStatus.includes('COMPLETE')) {
                     return ActionState.SUCCESS;
                 }
-                return ActionState.UNKNOW;
+                return ActionState.UNKNOWN;
             })
             .catch((err: Error) => {
                 if (

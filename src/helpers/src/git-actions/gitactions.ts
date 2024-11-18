@@ -57,7 +57,7 @@ export class AddGitWebHookAction extends GitAction {
     watcher() {
         //pas de watch pour l'instant donc on ajoute plusiers fois le hook si erreur
         //sinon il faudrait ici verifier l'ajout du hook avec une requete http
-        return Promise.resolve(ActionState.UNKNOW);
+        return Promise.resolve(ActionState.UNKNOWN);
     }
 }
 
