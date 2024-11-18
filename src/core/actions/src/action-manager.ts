@@ -153,7 +153,7 @@ export class Action {
         if (!actionRef) {
             throw new ActionError(
                 'Please declare this action in a bootstrapped app before using it',
-                errorCodes.Not_ACCEPTABLE,
+                errorCodes.NOT_ACCEPTABLE,
                 {
                     ctrName: this.constructor.name,
                 }
@@ -220,7 +220,7 @@ export class Action {
         } catch (err) {
             throw new ActionError(
                 `The action with ref ${actionDb.actionRef} has not been registered`,
-                errorCodes.RESSOURCE_NOT_FOUND,
+                errorCodes.RESOURCE_NOT_FOUND,
                 {
                     err,
                     actionDb,
@@ -332,7 +332,7 @@ export class Action {
     private execute() {
         return this.changeState(ActionState.EXECUTING_MAIN)
             .catch((err) => {
-                if (err && err.code === errorCodes.RESSOURCE_LOCKED) {
+                if (err && err.code === errorCodes.RESOURCE_LOCKED) {
                     throw new BreakingActionState(ActionState.UNKNOW); //le thread current n'est pas maitre de la workflow
                     //et decline donc ses responsabilites
                 }
@@ -600,7 +600,7 @@ export class Action {
                 break;
         }
         return resume.then(this.onStateNotification.bind(this)).catch((err) => {
-            if (err && err.code === errorCodes.RESSOURCE_LOCKED) {
+            if (err && err.code === errorCodes.RESOURCE_LOCKED) {
                 this.internalLog('Verrou déjà pris');
             } else {
                 this.internalLogError(err);

@@ -25,7 +25,7 @@ describe('testing workflow -', () => {
         });
     });
 
-    it('should be a sucess', () => {
+    it('should be a success', () => {
         expect(basicWorkflow.dbDoc.state).toEqual(ActionState.SUCCESS);
         //expect(basicWorkflow.dbDoc.nExecutions[ActionState.SUCCESS]).toEqual(1);
     });
@@ -80,13 +80,13 @@ describe('testing rollBack -', () => {
             });
     });
 
-    it('should be a sucess', () => {
+    it('should be a success', () => {
         return t.app.ActionModel.findById(rollBack.dbDoc._id).then((tr) => {
             expect(tr.state).toEqual(ActionState.SUCCESS);
         });
     });
 
-    it('should have rollBacked ressource', () => {
+    it('should have rollBacked resource', () => {
         expect(x).toEqual(0);
     });
 

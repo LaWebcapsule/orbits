@@ -171,53 +171,10 @@ actionSchema.method('lockAndSave', function (this: ActionSchemaInterface<any>) {
         if (err instanceof mongoose.Error.VersionError) {
             throw new ActionError(
                 'Verrou déjà pris',
-                errorCodes.RESSOURCE_LOCKED
+                errorCodes.RESOURCE_LOCKED
             );
         } else {
             throw err;
         }
     });
 });
-
-//DEPRECATED:
-/* actionSchema.method('takeControl', function(this : ActionSchemaInterface<any>){
-    if(this.localLock){
-        return Promise.resolve();
-    }
-    else{
-        return this.removeLostControl().then(()=>{
-            if(!this.locked){
-                this.localLock = true;
-                this.locked = true;
-                this.increment();//on increment : equivalent d'un verrou optimiste
-                return this.save().catch((err)=>{
-                    this.localLock = false;
-                    if(err instanceof mongoose.Error.VersionError){
-                        throw new ApiError("Verrou déjà pris", errorCodes.RESSOURCE_LOCKED)
-                    }
-                    else{
-                        throw err;
-                    }
-                })
-            }
-            return Promise.reject(new ApiError("Verrou déjà pris", errorCodes.RESSOURCE_LOCKED))
-        })
-    }
-})
-
-actionSchema.method('releaseControl', function(this : any){
-    if(this.locked){
-        this.locked = false;
-        return this.save().then(()=>{
-            this.localLock = false;
-        })
-    }
-})
-
-actionSchema.method('removeLostControl', function(this : ActionSchemaInterface<any>){
-    if(this.locked && this.lockedAt <= new Date(Date.now()-10*60*1000)){
-        return this.releaseControl();
-    } 
-    return Promise.resolve();
-})
- */

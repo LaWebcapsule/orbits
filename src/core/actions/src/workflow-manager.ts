@@ -318,7 +318,7 @@ export class Workflow extends Action {
         if (stepIndex === undefined || stepIndex < 0) {
             throw new ActionError(
                 `cannot find workflow step with ${opts} ; workflowId : ${this._id.toString()} ; workflowCtr : ${this.constructor.name}`,
-                errorCodes.Not_ACCEPTABLE
+                errorCodes.NOT_ACCEPTABLE
             );
         }
         const oldResults = opts.oldResults || this.bag.oldResult;

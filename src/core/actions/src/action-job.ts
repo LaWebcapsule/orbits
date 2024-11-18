@@ -136,7 +136,7 @@ export class ActionCron {
                     //we throw an error that we catch latter
                     throw new ActionError(
                         'lock already taken',
-                        errorCodes.RESSOURCE_LOCKED
+                        errorCodes.RESOURCE_LOCKED
                     );
                 }
                 action.internalLog("cron début d'activité");
@@ -169,7 +169,7 @@ export class ActionCron {
             .catch((err) => {
                 if (
                     err instanceof ActionError &&
-                    err.code === errorCodes.RESSOURCE_LOCKED
+                    err.code === errorCodes.RESOURCE_LOCKED
                 ) {
                     return;
                 } else {
