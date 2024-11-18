@@ -9,25 +9,22 @@ You can see the result of this tutorial here:
 - Third step: create a deployAction
 
 ```typescript
-export class DeployMyStack extends CdkDeploy{
-    StackConstructor = MyStack
+export class DeployMyStack extends CdkDeploy {
+    StackConstructor = MyStack;
 }
 ```
 
 - Four step: (optional) create a workflow
 
 ```typescript
-export class MyPipeline extends Workflow{
-
-    define(){
-        this.next(()=>{
+export class MyPipeline extends Workflow {
+    define() {
+        this.next(() => {
             // ...
-        }).next(()=>{
+        }).next(() => {
             // ...
-        })
-
+        });
     }
-
 }
 ```
 

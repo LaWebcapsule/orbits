@@ -1,11 +1,10 @@
-import { Action, Workflow } from "@wbce/orbits-core";
-import { CdkHelper, WaitForNewCommits } from "@wbce/orbits-fuel";
+import { Action, Workflow } from '@wbce/orbits-core';
+import { CdkHelper, WaitForNewCommits } from '@wbce/orbits-fuel';
 
 const defaultEnv = {
-    account : '123456789',
-    region : 'eu-west-3'
-}
-
+    account: '123456789',
+    region: 'eu-west-3',
+};
 
 /* 
 

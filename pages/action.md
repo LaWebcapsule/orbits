@@ -6,6 +6,7 @@ It stores the state of an operation in a database to be able to retrieve it desp
 Moreover, it has a lock management that guarantees the consistency of the flow.
 
 # Concepts
+
 See the [conceptual documentation](./action-in-depth.md) for a better understanding on how Actions work.
 
 # Write your first Action
@@ -17,10 +18,10 @@ Let's assume we have a library; let's write an Action that launches a delivery o
 - Step 1: extend the Action class
 
 ```typescript
-import {Action} from '@orbits/core'
+import { Action } from '@orbits/core';
 
-export class MyFirstAction extends Action{
-    static permanentName: 'my-first-action'
+export class MyFirstAction extends Action {
+    static permanentName: 'my-first-action';
 }
 ```
 
@@ -29,63 +30,62 @@ The actionRef is important. When an Action document is stored in the database, t
 As a consequence, you may not want to change the `permanentName`. Think about it as an id you give to your Action - it is its only purpose.
 If you don't specify any name, the name of the class will be used as default but this is more likely to change.
 
-
 - Step 2: choose the format of your argument, bag and result
 
 ```typescript
-import {Action} from '@orbits/core'
+import { Action } from '@orbits/core';
 
-export class MyFirstAction extends Action{
-    static permanentName: 'my-first-action'
+export class MyFirstAction extends Action {
+    static permanentName: 'my-first-action';
 
-    IArgument : {
-        bookName : string
-    }
+    IArgument: {
+        bookName: string;
+    };
 
-    IBag : {
-        deliveryPerson : {
-            name : string,
-            phoneNumber : string
-        }
-    }
+    IBag: {
+        deliveryPerson: {
+            name: string;
+            phoneNumber: string;
+        };
+    };
 
-    IResult : {
-        deliveryTime : number
-    }
+    IResult: {
+        deliveryTime: number;
+    };
 }
 ```
 
 - Step 3: (optional) write the init method
 
 ```typescript
-import {Action} from '@orbits/core'
-import {LibraryApi, Book} from './my-library'
+import { Action } from '@orbits/core';
+import { LibraryApi, Book } from './my-library';
 
-export class MyFirstAction extends Action{
-    static permanentName: 'my-first-action'
+export class MyFirstAction extends Action {
+    static permanentName: 'my-first-action';
 
-    IArgument : {
-        bookName : string
-    }
+    IArgument: {
+        bookName: string;
+    };
 
-    IBag : {
-        deliveryPerson : {
-            name : string,
-            phoneNumber : string
-        }
-    }
+    IBag: {
+        deliveryPerson: {
+            name: string;
+            phoneNumber: string;
+        };
+    };
 
-    IResult : {
-        deliveryTime : number
-    }
+    IResult: {
+        deliveryTime: number;
+    };
 
-    book : Book
+    book: Book;
 
-    init(){
+    init() {
         const libraryApi = new LibraryApi();
-        return libraryApi.getBook(this.argument.bookName).then((book)=>{
+        return libraryApi.getBook(this.argument.bookName).then((book) => {
             this.book = book;
-        })
+        });
     }
 }
 ```
@@ -95,43 +95,45 @@ export class MyFirstAction extends Action{
 The main method will be called only once during the whole lifecycle of an Action
 
 ```typescript
-import {Action} from '@orbits/core'
-import {LibraryApi, Book} from './my-library'
+import { Action } from '@orbits/core';
+import { LibraryApi, Book } from './my-library';
 
-export class MyFirstAction extends Action{
-    static permanentName: 'my-first-action'
+export class MyFirstAction extends Action {
+    static permanentName: 'my-first-action';
 
-    IArgument : {
-        bookName : string
-    }
+    IArgument: {
+        bookName: string;
+    };
 
-    IBag : {
-        orderId : number
-    }
+    IBag: {
+        orderId: number;
+    };
 
-    IResult : {
-        deliveryTime : number
-    }
+    IResult: {
+        deliveryTime: number;
+    };
 
-    book : Book
+    book: Book;
 
-    init(){
+    init() {
         const libraryApi = new LibraryApi();
-        return libraryApi.getBook(this.argument.bookName).then((book)=>{
+        return libraryApi.getBook(this.argument.bookName).then((book) => {
             this.book = book;
-        })
+        });
     }
 
-    main(){
+    main() {
         const libraryApi = new LibraryApi();
-        return libraryApi.createOrder(this.book).then((orderInfo)=>{
-            this.bag = orderInfo;
-            return ActionState.IN_PROGRESS;
-        }).catch((err)=>{
-            this.result = err;
-            return ActionState.ERROR
-        })
-
+        return libraryApi
+            .createOrder(this.book)
+            .then((orderInfo) => {
+                this.bag = orderInfo;
+                return ActionState.IN_PROGRESS;
+            })
+            .catch((err) => {
+                this.result = err;
+                return ActionState.ERROR;
+            });
     }
 }
 ```
@@ -143,58 +145,58 @@ The watcher method can be called multiple times while the action is in `IN_PROGR
 To set the frequency of the call:
 
 ```typescript
-import {Action} from '@orbits/core'
-import {LibraryApi, Book} from './my-library'
+import { Action } from '@orbits/core';
+import { LibraryApi, Book } from './my-library';
 
-export class MyFirstAction extends Action{
-    static permanentName: 'my-first-action'
+export class MyFirstAction extends Action {
+    static permanentName: 'my-first-action';
 
-    IArgument : {
-        bookName : string
-    }
+    IArgument: {
+        bookName: string;
+    };
 
-    IBag : {
-        orderId : number
-    }
+    IBag: {
+        orderId: number;
+    };
 
-    IResult : {
-        deliveryTime : number
-    }
+    IResult: {
+        deliveryTime: number;
+    };
 
-    book : Book
+    book: Book;
 
-    init(){
+    init() {
         const libraryApi = new LibraryApi();
-        return libraryApi.getBook(this.argument.bookName).then((book)=>{
+        return libraryApi.getBook(this.argument.bookName).then((book) => {
             this.book = book;
-        })
+        });
     }
 
-    main(){
+    main() {
         const libraryApi = new LibraryApi();
-        return libraryApi.createOrder(this.book).then((orderInfo)=>{
-            this.bag = orderInfo;
-            return ActionState.IN_PROGRESS;
-        }).catch((err)=>{
-            this.result = err;
-            return ActionState.ERROR
-        })
-
+        return libraryApi
+            .createOrder(this.book)
+            .then((orderInfo) => {
+                this.bag = orderInfo;
+                return ActionState.IN_PROGRESS;
+            })
+            .catch((err) => {
+                this.result = err;
+                return ActionState.ERROR;
+            });
     }
 
-    watcher(){
-       const libraryApi = new LibraryApi();
-        return libraryApi.getOrderState(this.bag.orderId).then((orderState)=>{
-            if(orderState === 0){
-                return ActionState.IN_PROGRESS
+    watcher() {
+        const libraryApi = new LibraryApi();
+        return libraryApi.getOrderState(this.bag.orderId).then((orderState) => {
+            if (orderState === 0) {
+                return ActionState.IN_PROGRESS;
+            } else if (orderState === -1) {
+                return ActionState.ERROR;
+            } else if (orderState === 1) {
+                return ActionState.SUCCESS;
             }
-            else if(orderState === -1){
-                return ActionState.ERROR
-            }
-            else if(orderState === 1){
-                return ActionState.SUCCESS
-            }
-        })
+        });
     }
 }
 ```
@@ -210,10 +212,11 @@ Depending on the api consumes, there are two strategies.
 Sometimes api allow you to set an id on the resource you created. In this case, you already have the id and just need to retrieve it.
 
 Example would be:
+
 ```typescript
 // set the id
 const libraryApi = new LibraryApi();
-libraryApi.createOrder(this.argument.bookName, this.argument.id || this.bag.id)
+libraryApi.createOrder(this.argument.bookName, this.argument.id || this.bag.id);
 
 // retrieve the order
 ```
@@ -221,43 +224,43 @@ libraryApi.createOrder(this.argument.bookName, this.argument.id || this.bag.id)
 In most cases, you have to write custom logic.
 
 For example:
+
 ```typescript
-export class MyFirstAction extends Action{
+export class MyFirstAction extends Action {
     //....
-    watcher(){
-       const libraryApi = new LibraryApi();
-       if(!this.bag.orderId){
-            return libraryApi.listOrder({
-                book : this.argument.bookName,
-                after : this.dbDoc.createdAt,
-                before : this.db.stateUpdatedAt
-            }).then((orders)=>{
-                if(orders.length === 0){
-                    // no order was created
-                    return ActionState.ERROR
-                }
-                else{
-                    // here it depends on the logic of your service,
-                    // because  you cannot be 100% sure the order is the one
-                    // you think it is without more market notions
-                    // In general an order also has a name and phoneNumber,
-                    // which would make sure the order is the right one
-                    this.bag.orderId = orders[0].orderId;
-                    return ActionState.IN_PROGRESS;
-                }
-            })
-       }
-        return libraryApi.getOrderState(this.bag.orderId).then((orderState)=>{
-            if(orderState === 0){
-                return ActionState.IN_PROGRESS
+    watcher() {
+        const libraryApi = new LibraryApi();
+        if (!this.bag.orderId) {
+            return libraryApi
+                .listOrder({
+                    book: this.argument.bookName,
+                    after: this.dbDoc.createdAt,
+                    before: this.db.stateUpdatedAt,
+                })
+                .then((orders) => {
+                    if (orders.length === 0) {
+                        // no order was created
+                        return ActionState.ERROR;
+                    } else {
+                        // here it depends on the logic of your service,
+                        // because  you cannot be 100% sure the order is the one
+                        // you think it is without more market notions
+                        // In general an order also has a name and phoneNumber,
+                        // which would make sure the order is the right one
+                        this.bag.orderId = orders[0].orderId;
+                        return ActionState.IN_PROGRESS;
+                    }
+                });
+        }
+        return libraryApi.getOrderState(this.bag.orderId).then((orderState) => {
+            if (orderState === 0) {
+                return ActionState.IN_PROGRESS;
+            } else if (orderState === -1) {
+                return ActionState.ERROR;
+            } else if (orderState === 1) {
+                return ActionState.SUCCESS;
             }
-            else if(orderState === -1){
-                return ActionState.ERROR
-            }
-            else if(orderState === 1){
-                return ActionState.SUCCESS
-            }
-        })
+        });
     }
 }
 ```
@@ -267,8 +270,8 @@ export class MyFirstAction extends Action{
 Register the action in an app (see the [app documentation](./app.md))
 
 ```typescript
-export class MyFirstApp extends ActionApp{
-    declare = [MyFirstAction]
+export class MyFirstApp extends ActionApp {
+    declare = [MyFirstAction];
 }
 ```
 
@@ -310,6 +313,7 @@ If your Action belongs to a Workflow, the result object will then be available i
 The best way to set an Action in `ActionState.ERROR` state, is to return that state.
 
 However, there are cases where an error can be implicitly set:
+
 - if an error is thrown in the `main` or in the `init` function
 - if one of the delays expired (see [delays](#delays))
 
@@ -332,6 +336,7 @@ By default, the `cronActivity` get its value from the `defaultCronActivity` prop
 Delays represents the amount of time an action can spend in a certain state.
 
 You can set default delays via the `defaultDelays` property. It expects an object of type:
+
 ```typescript
 {
     [ActionState.IN_PROGRESS] : 10*60*1000,
@@ -342,9 +347,10 @@ You can set default delays via the `defaultDelays` property. It expects an objec
 # Rolling back an Action
 
 You can rollback an Action by passing:
+
 - a `rollback` method to the class
 - a `RollBackAction` to the class
-See the [api documentation](./../docs/classes/Action.md) for further information.
+    See the [api documentation](./../docs/classes/Action.md) for further information.
 
 # In depth
 
