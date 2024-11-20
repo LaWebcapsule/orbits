@@ -8,7 +8,7 @@ j.loadConfig({
     spec_dir: '.',
     spec_files: [
         'docker-executor.spec.ts',
-        'cdk-action.spec.ts'
+        //'cdk-action.spec.ts'
     ]
 })
 

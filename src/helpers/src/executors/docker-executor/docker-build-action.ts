@@ -1,4 +1,4 @@
-import {Action} from "@wbce/orbits-core";
+import {Action, ActionState} from "@wbce/orbits-core";
 import { DockerExecutor } from "./docker-executor";
 import { EcrRegistry } from "./ecr-registry";
 import Docker from "dockerode"
@@ -45,6 +45,8 @@ export class DockerBuildAction extends Action{
             }
             authInfo ? opts['authconfig'] = authInfo : null;
             return dockerClient.getImage(`${this.argument.imageName}:${this.argument.tag}`).push(opts)
+        }).then(()=>{
+            return ActionState.SUCCESS;
         })
     }
 

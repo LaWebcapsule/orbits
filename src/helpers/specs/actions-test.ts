@@ -63,7 +63,7 @@ export class BootstrapTestStack extends CdkBoostrapAction{
 @bootstrapApp({
     db: {
         mongo: {
-            url: 'mongodb://localhost:27017/test'
+            url: `mongodb+srv://${process.env.MONGO_URL}/test`
         }
     }
 })

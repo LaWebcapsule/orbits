@@ -14,9 +14,9 @@ import(params.bootstrapPath).then((test)=>{
     ActionApp.activeApp.logger.info("after bootstrap")
     const app = ActionApp.getActiveApp();
     return app.ActionModel.findById(params.actionId)
-}).then((actionDb)=>{
+}).then(async (actionDb)=>{
     ActionApp.activeApp.logger.info("finding in db")
-    const action = Action.constructFromDb(actionDb);
+    const action = await Action.constructFromDb(actionDb);
     process.chdir('/tmp');
     return action.resume();
 }).then(()=>{

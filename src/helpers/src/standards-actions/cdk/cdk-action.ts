@@ -28,7 +28,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
             [k : string] : any
         },
         cdkVersion? : string,
-        stackName: string,
+        stackName?: string,
         stackProps? : any & cdk.StackProps
     }
 
@@ -94,7 +94,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
                 default:
                     break;
             }
-            commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir, this.argument.stackName]
+            commandArguments = [...commandArguments, '--no-interactive', '--require-approval=never', '--app', this.cdkApp.outdir, this.argument.stackName || this.bag.stackName]
             let lines = [];
             let lastLine = '';
             const streamError = new Transform({
@@ -145,7 +145,7 @@ export class CdkAction extends Action implements ICloudAssemblyDirectoryProducer
         const opts = {};
         opts['region'] = this.argument.stackProps?.env.region || this.bag.env?.region;
         const cdkHelper = new CdkHelper(opts);
-        return cdkHelper.describeStackFromName(this.argument.stackName).then((stackDescription)=>{
+        return cdkHelper.describeStackFromName(this.argument.stackName || this.bag.stackName).then((stackDescription)=>{
             const lastDesployTime = stackDescription.LastUpdatedTime || stackDescription.CreationTime; //after the first deploy of a stack, there is no LastUpdatedTime
             if(lastDesployTime.getTime() <= this.dbDoc.createdAt.getTime()){
                 //it has not begin
