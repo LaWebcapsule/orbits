@@ -31,7 +31,7 @@ You can read more here :
 - [defaultDelay](ResolveAction.md#defaultdelay)
 - [defaultDelays](ResolveAction.md#defaultdelays)
 - [executor](ResolveAction.md#executor)
-- [isInitialised](ResolveAction.md#isinitialised)
+- [isInitialized](ResolveAction.md#isInitialized)
 - [permanentRef](ResolveAction.md#permanentref)
 
 ### Accessors
@@ -52,7 +52,7 @@ You can read more here :
 - [createRollBackWorkflow](ResolveAction.md#createrollbackworkflow)
 - [getLogs](ResolveAction.md#getlogs)
 - [init](ResolveAction.md#init)
-- [initialisation](ResolveAction.md#initialisation)
+- [initialization](ResolveAction.md#initialization)
 - [internalLog](ResolveAction.md#internallog)
 - [internalLogError](ResolveAction.md#internallogerror)
 - [main](ResolveAction.md#main)
@@ -183,7 +183,7 @@ ___
 
 • **cronDefaultSettings**: `Object`
 
-Configure the frequence in which a cron will cause the
+Configure the frequency in which a cron will cause the
 
 **`Link`**
 
@@ -194,7 +194,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 | Name | Type |
 | :------ | :------ |
-| `activityFrequence` | `number` |
+| `activityFrequency` | `number` |
 
 #### Inherited from
 
@@ -288,13 +288,13 @@ Specify an executor in which all actions of this class will run.
 
 ___
 
-### isInitialised
+### isInitialized
 
-• **isInitialised**: `boolean` = `false`
+• **isInitialized**: `boolean` = `false`
 
 #### Inherited from
 
-[Action](Action.md).[isInitialised](Action.md#isinitialised)
+[Action](Action.md).[isInitialized](Action.md#isInitialized)
 
 #### Defined in
 
@@ -694,9 +694,9 @@ You cannot store class object on the database. If your action use complex object
 
 ___
 
-### initialisation
+### initialization
 
-▸ **initialisation**(): `Promise`<`any`\>
+▸ **initialization**(): `Promise`<`any`\>
 
 #### Returns
 
@@ -704,7 +704,7 @@ ___
 
 #### Inherited from
 
-[Action](Action.md).[initialisation](Action.md#initialisation)
+[Action](Action.md).[initialization](Action.md#initialization)
 
 #### Defined in
 

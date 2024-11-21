@@ -430,13 +430,19 @@ export class Workflow extends Action {
         this.docsToSaveAtStepStart.push(action.dbDoc);
     }
 
+    /**
+     * @deprecated use initialization
+     */
     override initialisation() {
-        if (this.isInitialised) {
+        return this.initialization();
+    }
+
+    override initialization() {
+        // TODO: remove isInitialised
+        if (this.isInitialised || this.isInitialized) {
             return Promise.resolve();
         }
-        return super.initialisation().then(() => {
-            return this.define();
-        });
+        return super.initialization().then(() => this.define());
     }
 
     define(): Promise<void> | void {
@@ -609,7 +615,7 @@ export class RevertWorkflow<
                 this.oldAction = (await Action.constructFromDb(
                     dbDoc as any as ActionSchemaInterface
                 )) as WorkflowToRevert;
-                return this.oldAction.initialisation();
+                return this.oldAction.initialization();
             }
         );
     }
@@ -683,7 +689,7 @@ export class RevertAction<ActionToRevert extends Action> extends Workflow {
                 this.oldAction = (await Action.constructFromDb(
                     dbDoc as any as ActionSchemaInterface
                 )) as ActionToRevert;
-                return this.oldAction.initialisation();
+                return this.oldAction.initialization();
             }
         );
     }

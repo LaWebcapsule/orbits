@@ -59,7 +59,11 @@ export interface ActionSchemaInterface<
         pending: Boolean;
         lastActivity: Date;
         nextActivity: Date;
-        frequence: number;
+        /**
+         * @deprecated use frequency
+         */
+        frequence?: number;
+        frequency: number;
     };
     updatedAt: Date;
     createdAt: Date;
@@ -156,7 +160,10 @@ actionSchema.method(
     'updateNextActivity',
     function (this: ActionSchemaInterface<any>) {
         const delay = this.delays[this.state] || Infinity;
-        const interval = Math.min(this.cronActivity.frequence, delay);
+        const interval = Math.min(
+            this.cronActivity.frequence || this.cronActivity.frequency,
+            delay
+        );
         this.cronActivity.nextActivity = new Date(Date.now() + interval);
         this.markModified('cronActivity');
     }

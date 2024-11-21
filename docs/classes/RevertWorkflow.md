@@ -39,7 +39,7 @@ You can read more here :
 - [defaultDelays](RevertWorkflow.md#defaultdelays)
 - [docsToSaveAtStepStart](RevertWorkflow.md#docstosaveatstepstart)
 - [executor](RevertWorkflow.md#executor)
-- [isInitialised](RevertWorkflow.md#isinitialised)
+- [isInitialized](RevertWorkflow.md#isInitialized)
 - [oldAction](RevertWorkflow.md#oldaction)
 - [steps](RevertWorkflow.md#steps)
 - [permanentRef](RevertWorkflow.md#permanentref)
@@ -71,7 +71,7 @@ You can read more here :
 - [goTo](RevertWorkflow.md#goto)
 - [goToStep](RevertWorkflow.md#gotostep)
 - [init](RevertWorkflow.md#init)
-- [initialisation](RevertWorkflow.md#initialisation)
+- [initialization](RevertWorkflow.md#initialization)
 - [internalLog](RevertWorkflow.md#internallog)
 - [internalLogError](RevertWorkflow.md#internallogerror)
 - [isActionActive](RevertWorkflow.md#isactionactive)
@@ -234,7 +234,7 @@ ___
 
 • **cronDefaultSettings**: `Object`
 
-Configure the frequence in which a cron will cause the
+Configure the frequency in which a cron will cause the
 
 **`Link`**
 
@@ -245,7 +245,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 | Name | Type |
 | :------ | :------ |
-| `activityFrequence` | `number` |
+| `activityFrequency` | `number` |
 
 #### Inherited from
 
@@ -367,13 +367,13 @@ Specify an executor in which all actions of this class will run.
 
 ___
 
-### isInitialised
+### isInitialized
 
-• **isInitialised**: `boolean` = `false`
+• **isInitialized**: `boolean` = `false`
 
 #### Inherited from
 
-[Workflow](Workflow.md).[isInitialised](Workflow.md#isinitialised)
+[Workflow](Workflow.md).[isInitialized](Workflow.md#isInitialized)
 
 #### Defined in
 
@@ -1000,9 +1000,9 @@ You cannot store class object on the database. If your action use complex object
 
 ___
 
-### initialisation
+### initialization
 
-▸ **initialisation**(): `Promise`<`void`\>
+▸ **initialization**(): `Promise`<`void`\>
 
 #### Returns
 
@@ -1010,7 +1010,7 @@ ___
 
 #### Inherited from
 
-[Workflow](Workflow.md).[initialisation](Workflow.md#initialisation)
+[Workflow](Workflow.md).[initialization](Workflow.md#initialization)
 
 #### Defined in
 

@@ -187,7 +187,7 @@ export class DockerExecutor extends Executor {
             0,
             stackPaths[0].indexOf('node_modules')
         );
-        const bootstrapPath = ActionApp.boostrapPath;
+        const bootstrapPath = ActionApp.bootstrapPath;
         const relativeEntrypointPathFromRoot = __dirname.replace(
             rootFolder,
             ''

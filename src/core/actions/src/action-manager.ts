@@ -63,9 +63,17 @@ export class Action {
      * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
      */
     static cronDefaultSettings: {
-        activityFrequence: number;
+        /**
+         * @deprecated use activityFrequency
+         */
+        activityFrequence?: number;
+        /**
+         * TODO: set this as required after activityFrequence removal
+         */
+        activityFrequency?: number;
     } = {
         activityFrequence: 10 * 60 * 1000,
+        activityFrequency: 10 * 60 * 1000,
     };
 
     /**
@@ -147,7 +155,7 @@ export class Action {
     }
 
     constructor() {
-        const actionRef = this.app.inversedActionsRegistry.get(
+        const actionRef = this.app.invertedActionsRegistry.get(
             this.constructor as any
         );
         if (!actionRef) {
@@ -199,8 +207,10 @@ export class Action {
             state: ActionState.SLEEPING,
             bag: {},
         }) as any;
-        this.dbDoc.cronActivity.frequence =
-            cronDefaultSettings.activityFrequence;
+        this.dbDoc.cronActivity.frequency =
+            // TODO: only use activityFrequency once activityFrequence is removed
+            cronDefaultSettings.activityFrequence ||
+            cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
 
         this.app = ActionApp.getActiveApp();
@@ -249,7 +259,7 @@ export class Action {
             const workflow = (await Action.constructFromDb(
                 workflowDoc
             )) as Workflow;
-            await workflow.initialisation();
+            await workflow.initialization();
             const stepsActions = await workflow.getActionsOfStep(
                 dbDoc.definitionFrom.workflow
             );
@@ -338,9 +348,7 @@ export class Action {
                 }
                 throw err;
             })
-            .then(() => {
-                return this.initialisation();
-            })
+            .then(() => this.initialization())
             .then(() => {
                 this.internalLog('main');
                 return this.main();
@@ -432,17 +440,34 @@ export class Action {
         return Promise.resolve(ActionState.UNKNOWN);
     }
 
+    /**
+     * @deprecated use isInitialized
+     */
     isInitialised = false;
+    isInitialized = false;
+
+    /**
+     * @deprecated use initialization
+     */
     initialisation() {
-        //principalement la pour les workflows
-        //on peut ainsi ajouter un complement a init.
-        //si se complexifie, fonctionner par hook (tableau)
-        if (this.isInitialised) {
+        return this.initialization();
+    }
+
+    /**
+     * Mainly used for workflows.
+     * Can also complement init().
+     * If it gets too complex, use hooks.
+     */
+    initialization() {
+        // TODO: remove isInitialised
+        if (this.isInitialised || this.isInitialized) {
             return Promise.resolve();
         }
         this.internalLog('init');
         return this.init().then(() => {
+            // TODO: remove isInitialised
             this.isInitialised = true;
+            this.isInitialized = true;
         });
     }
 
@@ -457,7 +482,7 @@ export class Action {
     }
 
     private watch() {
-        return this.initialisation()
+        return this.initialization()
             .then(() => {
                 this.internalLog('watcher');
                 return this.watcher();
@@ -479,7 +504,7 @@ export class Action {
             });
     }
 
-    private checkExecutionDelay() {
+    private checkMainExecutionDelay() {
         if (
             Date.now() - this.dbDoc.stateUpdatedAt.getTime() >=
             this.dbDoc.delays[ActionState.EXECUTING_MAIN]
@@ -489,7 +514,7 @@ export class Action {
                 'main function has timed out',
                 errorCodes.TIMEOUT
             );
-            return this.initialisation()
+            return this.initialization()
                 .then(() => {
                     this.internalLog('onMainTimeout');
                     return this.onMainTimeout();
@@ -578,7 +603,7 @@ export class Action {
                 break;
 
             case ActionState.EXECUTING_MAIN:
-                resume = this.checkExecutionDelay();
+                resume = this.checkMainExecutionDelay();
                 break;
 
             case ActionState.IN_PROGRESS:
@@ -895,7 +920,7 @@ export class RollBackAction<A extends Action> extends Action {
                 this.oldAction = (await Action.constructFromDb(
                     dbDoc as any
                 )) as A;
-                return this.oldAction.initialisation();
+                return this.oldAction.initialization();
             }
         );
     }

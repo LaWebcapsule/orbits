@@ -37,7 +37,7 @@ You can read more here :
 - [defaultDelay](RollBackAction.md#defaultdelay)
 - [defaultDelays](RollBackAction.md#defaultdelays)
 - [executor](RollBackAction.md#executor)
-- [isInitialised](RollBackAction.md#isinitialised)
+- [isInitialized](RollBackAction.md#isInitialized)
 - [oldAction](RollBackAction.md#oldaction)
 - [permanentRef](RollBackAction.md#permanentref)
 
@@ -59,7 +59,7 @@ You can read more here :
 - [createRollBackWorkflow](RollBackAction.md#createrollbackworkflow)
 - [getLogs](RollBackAction.md#getlogs)
 - [init](RollBackAction.md#init)
-- [initialisation](RollBackAction.md#initialisation)
+- [initialization](RollBackAction.md#initialization)
 - [internalLog](RollBackAction.md#internallog)
 - [internalLogError](RollBackAction.md#internallogerror)
 - [main](RollBackAction.md#main)
@@ -202,7 +202,7 @@ ___
 
 • **cronDefaultSettings**: `Object`
 
-Configure the frequence in which a cron will cause the
+Configure the frequency in which a cron will cause the
 
 **`Link`**
 
@@ -213,7 +213,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 | Name | Type |
 | :------ | :------ |
-| `activityFrequence` | `number` |
+| `activityFrequency` | `number` |
 
 #### Inherited from
 
@@ -307,13 +307,13 @@ Specify an executor in which all actions of this class will run.
 
 ___
 
-### isInitialised
+### isInitialized
 
-• **isInitialised**: `boolean` = `false`
+• **isInitialized**: `boolean` = `false`
 
 #### Inherited from
 
-[Action](Action.md).[isInitialised](Action.md#isinitialised)
+[Action](Action.md).[isInitialized](Action.md#isInitialized)
 
 #### Defined in
 
@@ -723,9 +723,9 @@ You cannot store class object on the database. If your action use complex object
 
 ___
 
-### initialisation
+### initialization
 
-▸ **initialisation**(): `Promise`<`any`\>
+▸ **initialization**(): `Promise`<`any`\>
 
 #### Returns
 
@@ -733,7 +733,7 @@ ___
 
 #### Inherited from
 
-[Action](Action.md).[initialisation](Action.md#initialisation)
+[Action](Action.md).[initialization](Action.md#initialization)
 
 #### Defined in
 

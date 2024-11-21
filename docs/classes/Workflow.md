@@ -37,7 +37,7 @@ You can read more here :
 - [defaultDelays](Workflow.md#defaultdelays)
 - [docsToSaveAtStepStart](Workflow.md#docstosaveatstepstart)
 - [executor](Workflow.md#executor)
-- [isInitialised](Workflow.md#isinitialised)
+- [isInitialized](Workflow.md#isInitialized)
 - [steps](Workflow.md#steps)
 - [permanentRef](Workflow.md#permanentref)
 
@@ -68,7 +68,7 @@ You can read more here :
 - [goTo](Workflow.md#goto)
 - [goToStep](Workflow.md#gotostep)
 - [init](Workflow.md#init)
-- [initialisation](Workflow.md#initialisation)
+- [initialization](Workflow.md#initialization)
 - [internalLog](Workflow.md#internallog)
 - [internalLogError](Workflow.md#internallogerror)
 - [isActionActive](Workflow.md#isactionactive)
@@ -218,7 +218,7 @@ ___
 
 • **cronDefaultSettings**: `Object`
 
-Configure the frequence in which a cron will cause the
+Configure the frequency in which a cron will cause the
 
 **`Link`**
 
@@ -229,7 +229,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 | Name | Type |
 | :------ | :------ |
-| `activityFrequence` | `number` |
+| `activityFrequency` | `number` |
 
 #### Inherited from
 
@@ -343,13 +343,13 @@ Specify an executor in which all actions of this class will run.
 
 ___
 
-### isInitialised
+### isInitialized
 
-• **isInitialised**: `boolean` = `false`
+• **isInitialized**: `boolean` = `false`
 
 #### Inherited from
 
-[Action](Action.md).[isInitialised](Action.md#isinitialised)
+[Action](Action.md).[isInitialized](Action.md#isInitialized)
 
 #### Defined in
 
@@ -926,9 +926,9 @@ You cannot store class object on the database. If your action use complex object
 
 ___
 
-### initialisation
+### initialization
 
-▸ **initialisation**(): `Promise`<`void`\>
+▸ **initialization**(): `Promise`<`void`\>
 
 #### Returns
 
@@ -936,7 +936,7 @@ ___
 
 #### Overrides
 
-[Action](Action.md).[initialisation](Action.md#initialisation)
+[Action](Action.md).[initialization](Action.md#initialization)
 
 #### Defined in
 

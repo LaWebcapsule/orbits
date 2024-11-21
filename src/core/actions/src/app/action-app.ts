@@ -39,10 +39,10 @@ export class ActionApp {
         ActionApp.resolveBootstrap = resolve;
         ActionApp.rejectBootstrap = reject;
     });
-    static boostrapPath: string;
+    static bootstrapPath: string;
 
     actionsRegistry = new Map<string, typeof Action>();
-    inversedActionsRegistry = new Map<typeof Action, string>();
+    invertedActionsRegistry = new Map<typeof Action, string>();
 
     logger = defaultLogger;
 
@@ -58,6 +58,26 @@ export class ActionApp {
     };
 
     ActionModel: mongoose.Model<ActionSchemaInterface>;
+
+    /**
+     * @deprecated use bootstrapPath
+     */
+    static get boostrapPath() {
+        return ActionApp.bootstrapPath;
+    }
+
+    /**
+     * @deprecated use invertedActionsRegistry
+     */
+    get inversedActionsRegistry() {
+        return this.invertedActionsRegistry;
+    }
+    /**
+     * @deprecated use invertedActionsRegistry
+     */
+    set inversedActionsRegistry(actionRegistry: Map<typeof Action, string>) {
+        this.invertedActionsRegistry = actionRegistry;
+    }
 
     constructor(opts?: ActionAppConfig) {
         if (opts?.logger) {
@@ -91,7 +111,7 @@ export class ActionApp {
             for (const ref of refs) {
                 this.actionsRegistry.set(ref, actionCtr);
             }
-            this.inversedActionsRegistry.set(actionCtr, refs[0]);
+            this.invertedActionsRegistry.set(actionCtr, refs[0]);
         }
         ActionApp.activeApp = this;
         setLogger(this);
@@ -153,7 +173,7 @@ export function bootstrapApp(
         if (bootstrapPath.includes('tslib')) {
             bootstrapPath = stackPaths[3];
         }
-        ActionApp.boostrapPath = bootstrapPath;
+        ActionApp.bootstrapPath = bootstrapPath;
         ActionApp.activeApp = new classTargetConstructor(opts);
         ActionApp.activeApp.bootstrap().then(() => {
             ActionApp.resolveBootstrap();
