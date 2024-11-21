@@ -10,20 +10,22 @@ import {
 
 let j = new jasmin();
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
+
+// cannot be run with an already bootstrapped app
+// j.execute(['./action-app.spec.ts']);
+
 j.loadConfig({
     spec_dir: '.',
     spec_files: [
-        //'action-in-workflow.spec.ts',
-        //'action-executor.spec.ts',
-        //'action.spec.ts',
-        //'workflow.spec.ts'
+        'action-executor.spec.ts',
+        'action-in-workflow.spec.ts',
         'action-job.spec.ts',
-        //'other-action.spec.ts'
-        //'./action-app.spec.ts'
+        'action.spec.ts',
+        'workflow.spec.ts',
+        'other-action.spec.ts'
     ],
 });
-
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 
 const db = {
     protocol: 'mongodb+srv',

@@ -22,7 +22,7 @@ describe('action job with empty db', () => {
     it('should manage pause', () => {
         expect(actionJob.nDatabaseEmpty).toBeGreaterThanOrEqual(2);
         expect(actionJob.cycle).toHaveBeenCalledTimes(
-            actionJob.nDatabaseEmpty - 1
+            actionJob.nDatabaseEmpty
         );
     });
 });

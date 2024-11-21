@@ -6,7 +6,10 @@ let j = new jasmin();
 
 j.loadConfig({
     spec_dir: '.',
-    spec_files: ['docker-executor.spec.ts'],
+    spec_files: [
+        'cdk-action.spec.ts',
+        'docker-executor.spec.ts',
+    ],
 });
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
