@@ -1,4 +1,4 @@
-import { o } from '@wbce/services';
+import { utils } from '@wbce/services';
 import { gitProviders } from './gitcenter';
 
 export interface Commit {
@@ -27,7 +27,7 @@ export class GitRepo {
         serviceId?;
         hooks?;
     }) {
-        o.deepCopy(obj, this);
+        utils.deepCopy(obj, this);
         if (obj.url instanceof URL) {
             this.url = obj.url; //le deep copy n'est pas bon ici.
         } else if (obj.url) {

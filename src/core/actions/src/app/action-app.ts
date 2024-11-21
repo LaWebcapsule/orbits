@@ -1,4 +1,4 @@
-import { o } from '@wbce/services';
+import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
 import * as winston from 'winston';
 import { ActionCron } from '../action-job';
@@ -168,8 +168,7 @@ export function bootstrapApp(
                 'Only one app by process can be bootstrapped. Please merge your second app with the first.'
             );
         }
-        const stackPaths = o.getStackTracePaths();
-        let bootstrapPath = stackPaths[2]; //c'est ni cette function ni la precedente
+        const stackPaths = utils.getStackTracePaths();
         if (bootstrapPath.includes('tslib')) {
             bootstrapPath = stackPaths[3];
         }

@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'async_hooks';
-import { o } from './outils';
+import * as utils from './utils';
 
 export interface StorageObject {
     logInfo?: any;
@@ -17,8 +17,8 @@ export class WBCEAsyncStorage extends AsyncLocalStorage<StorageObject> {
         const currentStorage = this.getStore();
         return new Promise<Type>((resolve, reject) => {
             const newStorage = {};
-            o.deepCopy(currentStorage, newStorage);
-            o.deepCopy(info, newStorage);
+            utils.deepCopy(currentStorage, newStorage);
+            utils.deepCopy(info, newStorage);
             this.run(newStorage, () => {
                 cb().then(resolve, reject);
             });
@@ -28,7 +28,7 @@ export class WBCEAsyncStorage extends AsyncLocalStorage<StorageObject> {
     addToStorage(info: StorageObject) {
         //storage is added for the main zone :
         const currentStorage = this.getStore();
-        o.deepCopy(info, currentStorage);
+        utils.deepCopy(info, currentStorage);
     }
 }
 

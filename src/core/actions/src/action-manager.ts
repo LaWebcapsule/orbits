@@ -1,7 +1,7 @@
 import { errorCodes } from './error/errorcodes';
 import { ActionSchemaInterface, ActionState } from './models/action';
 import { Workflow, ActionApp, RevertAction } from './../index';
-import { o, wbceAsyncStorage } from '@wbce/services';
+import { utils, wbceAsyncStorage } from '@wbce/services';
 import { ActionError, BreakingActionState } from './error/error';
 import { Executor } from './action-executor';
 
@@ -173,9 +173,9 @@ export class Action {
         let cronDefaultSettings, defaultDelays, defaultDelay;
         let ctr = this.constructor as typeof Action;
         cronDefaultSettings = {};
-        o.deepCopy(ctr.cronDefaultSettings, cronDefaultSettings);
+        utils.deepCopy(ctr.cronDefaultSettings, cronDefaultSettings);
         defaultDelays = {};
-        o.deepCopy(ctr.defaultDelays, defaultDelays);
+        utils.deepCopy(ctr.defaultDelays, defaultDelays);
         defaultDelay = ctr.defaultDelay;
         let nInheritanceForDefaultDelay = Infinity;
         let nInheritanceForDefaultDelays = Infinity;

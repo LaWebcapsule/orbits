@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { ActionError, BreakingActionState } from './error/error';
-import { o } from '@wbce/services';
+import { utils } from '@wbce/services';
 import { ActionState, ActionSchemaInterface } from './models/action';
 import { Action } from '../index';
 import { errorCodes } from './error/errorcodes';
@@ -194,7 +194,7 @@ export class Workflow extends Action {
     }
 
     isActionActive(action: Action) {
-        return o.testPath(
+        return utils.testPath(
             this.dbDoc,
             'bag',
             'actions',

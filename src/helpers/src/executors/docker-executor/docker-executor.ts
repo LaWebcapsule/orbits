@@ -182,7 +182,7 @@ export class DockerExecutor extends Executor {
         relativeEntrypointPathFromRoot: string; //how to pass to 'rootFolder' until 'entrypoint'
         relativeImportPathFromEntrypoint: string; //how to pass to 'entrypoint' to bootstap path
     }> {
-        const stackPaths = o.getStackTracePaths();
+        const stackPaths = utils.getStackTracePaths();
         const rootFolder = stackPaths[0].substring(
             0,
             stackPaths[0].indexOf('node_modules')
