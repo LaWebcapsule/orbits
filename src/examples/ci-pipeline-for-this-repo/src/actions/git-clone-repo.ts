@@ -24,22 +24,22 @@ export class GitCloneAction extends Action {
                 'user.name',
                 process.env['git_user']!,
             ])
-            .then(() => {
-                return this.cli.command('git', [
+            .then(() =>
+                this.cli.command('git', [
                     'config',
                     '--global',
                     'user.password',
                     process.env['git_pwd']!,
-                ]);
-            })
-            .then(() => {
-                return this.cli.command('git', [
+                ])
+            )
+            .then(() =>
+                this.cli.command('git', [
                     'config',
                     '--global',
                     'user.email',
                     'ci_wbce@ci.com',
-                ]);
-            });
+                ])
+            );
     }
 
     gitClone() {
@@ -49,8 +49,6 @@ export class GitCloneAction extends Action {
                 `https://${process.env['git_user']}:${process.env['git_pwd']}@github.com/LaWebcapsule/orbits-fork.git`,
                 '/tmp/orbits',
             ])
-            .then(() => {
-                return process.chdir(`/tmp/orbits/`);
-            });
+            .then(() => process.chdir(`/tmp/orbits/`));
     }
 }

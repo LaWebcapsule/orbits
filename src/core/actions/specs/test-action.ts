@@ -12,7 +12,6 @@ export class TestActionWithWatcherEnding extends Action {
 }
 
 export class TestActionWithError extends Action {
-    //cette fonction ajoute 9 à un nombre en 30 secondes
     IBag: {
         x: number;
     };
@@ -54,7 +53,6 @@ export class TestActionMainTimeout extends Action {
 }
 
 export class TestAction extends Action {
-    //cette fonction ajoute 9 à un nombre en 30 secondes
     IBag: {
         x: number;
     };
@@ -101,25 +99,19 @@ export class BasicWorkflow extends Workflow {
                 const b = new TestActionWithError();
                 return [a, b];
             })
-            .next(() => {
-                return Action.resolve('ok');
-            })
+            .next(() => Action.resolve('ok'))
             .catch(() => {
                 const a = new TestAction();
                 return [a];
             })
-            .next(() => {
-                return new Promise<void>((resolve) => {
-                    setTimeout(() => {
-                        resolve();
-                    }, 1000);
-                });
-            });
-        /*     .checkPoint("end")
-      .next(() => {
-  
-      })
-      .onSuccessGoTo("end"); */
+            .next(
+                () =>
+                    new Promise<void>((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 1000);
+                    })
+            );
     }
 }
 
@@ -169,9 +161,7 @@ export class TestRollBack extends Workflow {
                     return new TestRollBack();
                 }
             })
-            .next(() => {
-                return new TestActionWithRollBack();
-            });
+            .next(() => new TestActionWithRollBack());
     }
 }
 
@@ -185,18 +175,13 @@ export class TestExecutorAction extends Action {
     cli = new Cli();
 
     defineExecutor(): Promise<undefined> | undefined {
-        //this.executor = new TestExecutor();
         return;
     }
 
     main() {
         return this.cli.command('node', ['-v']).then(
-            () => {
-                return ActionState.SUCCESS;
-            },
-            () => {
-                return ActionState.ERROR;
-            }
+            () => ActionState.SUCCESS,
+            () => ActionState.ERROR
         );
     }
 }
@@ -205,22 +190,16 @@ export class TestActionInWorkflow extends Workflow {
     static permanentRef: string | string[] = ['xx', 'xxx'];
 
     define(): Promise<void> | void {
-        this.next(() => {
-            return Action.resolve();
-        })
+        this.next(() => Action.resolve())
             .name('actionInWorkflow')
             .next(async () => {
                 const inWorkflowAction = this.inWorkflowStepAction(
                     'inWorkflowSuccess',
-                    () => {
-                        return Promise.resolve({ x: 1 });
-                    }
+                    () => Promise.resolve({ x: 1 })
                 );
                 const inWorkflowError = this.inWorkflowStepAction(
                     'inWorkflowError',
-                    () => {
-                        return Promise.reject(new Error('test'));
-                    }
+                    () => Promise.reject(new Error('test'))
                 );
                 const modifiedInWorkflowAction = this.inWorkflowRedefineAction(
                     'inWorkflowRedefine',
@@ -245,9 +224,7 @@ export class TestActionInWorkflow extends Workflow {
             .catch(() => {
                 const inWorkflowAction = this.inWorkflowStepAction(
                     'inWorkflowSuccess2',
-                    () => {
-                        return Promise.resolve();
-                    }
+                    () => Promise.resolve()
                 );
                 return [
                     new TestAction(),
@@ -264,9 +241,7 @@ export class TestActionInWorkflow extends Workflow {
                     .next(() => {
                         const action = workflow.inWorkflowStepAction(
                             'error',
-                            () => {
-                                return Promise.reject();
-                            }
+                            () => Promise.reject()
                         );
                         return action;
                     })
@@ -274,13 +249,11 @@ export class TestActionInWorkflow extends Workflow {
                     .catch(() => {
                         const action = workflow.inWorkflowStepAction(
                             'success',
-                            () => {
-                                return Promise.resolve();
-                            }
+                            () => Promise.resolve()
                         );
                         return action;
                     });
-                workflow.dynamiclyDefineFromWorfklowStep(this, 'wInW');
+                workflow.dynamicallyDefineFromWorkflowStep(this, 'wInW');
                 return workflow;
             });
     }

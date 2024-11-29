@@ -1,10 +1,8 @@
 import { Octokit } from 'octokit';
-import { createTokenAuth } from '@octokit/auth-token';
 import { GitProvider, gitProviders } from './gitcenter';
 import { Commit } from './gitrepo';
 
 export interface GithubRepoResponse {
-    //d'autres params non indiques ici
     id: number;
     default_branch: string;
     ssh_url: string;
@@ -29,13 +27,6 @@ export class GithubApi implements GitProvider {
             octokitAuth = {
                 auth: authConfig.token,
             };
-        } else {
-            /**
-             * octokitAuth = {
-             *  authStategy : ...,
-             *  auth : ...(an object)
-             * }
-             */
         }
 
         this.octokit = new Octokit({
@@ -66,39 +57,35 @@ export class GithubApi implements GitProvider {
                 repoName: repoData[1],
             });
         } else {
-            return this.getCurrentUser().then((user) => {
-                return {
-                    owner: user.data.login,
-                    repoName: repo,
-                };
-            });
+            return this.getCurrentUser().then((user) => ({
+                owner: user.data.login,
+                repoName: repo,
+            }));
         }
     }
 
     getDateOfCommit(repo: string, sha: string) {
-        return this.getOwnerAndRepoName(repo).then((repoInfo) => {
-            return this.octokit.rest.repos
+        return this.getOwnerAndRepoName(repo).then((repoInfo) =>
+            this.octokit.rest.repos
                 .listCommits({
                     owner: repoInfo.owner,
                     repo: repoInfo.repoName,
                     sha,
                 })
-                .then((res) => {
-                    return res.data[0].commit.author.date;
-                });
-        });
+                .then((res) => res.data[0].commit.author.date)
+        );
     }
 
     getLastCommitsOnBranch(repo: string, branch: string, since: Date) {
         return this.getOwnerAndRepoName(repo)
-            .then((repoInfo) => {
-                return this.octokit.rest.repos.listCommits({
+            .then((repoInfo) =>
+                this.octokit.rest.repos.listCommits({
                     owner: repoInfo.owner,
                     repo: repoInfo.repoName,
                     sha: branch,
                     since: since.toISOString(),
-                });
-            })
+                })
+            )
             .then((res) => {
                 const result: Commit[] = [];
                 for (const commit of res.data) {
@@ -113,24 +100,22 @@ export class GithubApi implements GitProvider {
 
     isPrOpened(repo: string, branchId: string): Promise<boolean> {
         return this.getOwnerAndRepoName(repo)
-            .then((repoInfo) => {
-                return this.octokit.rest.pulls.list({
+            .then((repoInfo) =>
+                this.octokit.rest.pulls.list({
                     owner: repoInfo.owner,
                     repo: repoInfo.repoName,
                     query: {
                         head: branchId,
                         state: 'open',
                     },
-                });
-            })
-            .then((infos) => {
-                return infos.data.length ? true : false;
-            });
+                })
+            )
+            .then((infos) => (infos.data.length ? true : false));
     }
 
     addWebHook(repo: string, targetUrl: string, events: string[]) {
-        return this.getOwnerAndRepoName(repo).then((repoInfo) => {
-            return this.octokit.rest.repos.createWebhook({
+        return this.getOwnerAndRepoName(repo).then((repoInfo) =>
+            this.octokit.rest.repos.createWebhook({
                 owner: repoInfo.owner,
                 repo: repoInfo.repoName,
                 name: 'web',
@@ -138,7 +123,7 @@ export class GithubApi implements GitProvider {
                 config: {
                     url: targetUrl,
                 },
-            });
-        });
+            })
+        );
     }
 }

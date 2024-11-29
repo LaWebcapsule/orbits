@@ -1,8 +1,4 @@
-import {
-    BootstrapTestStack,
-    DeployTestStack,
-    DockerAction,
-} from './actions-test';
+import { DeployTestStack } from './actions-test';
 import { ActionState } from '@wbce/orbits-core';
 
 describe('Test action', () => {
@@ -23,19 +19,18 @@ describe('Test action', () => {
         spyOn(testAction, 'init');
         return testAction.dbDoc
             .save()
-            .then(() => {
-                return new Promise<void>((resolve) => {
-                    setTimeout(
-                        () => {
-                            resolve();
-                        },
-                        2 * 60 * 1000
-                    );
-                });
-            })
-            .then(() => {
-                return testAction.resyncWithDb();
-            });
+            .then(
+                () =>
+                    new Promise<void>((resolve) => {
+                        setTimeout(
+                            () => {
+                                resolve();
+                            },
+                            2 * 60 * 1000
+                        );
+                    })
+            )
+            .then(() => testAction.resyncWithDb());
     });
 
     it('should  be a success', () => {

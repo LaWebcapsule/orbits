@@ -39,9 +39,7 @@ export class ActionApi {
                 newAction.setFilter(filter);
                 return newAction.dbDoc.save();
             })
-            .then(() => {
-                return newAction;
-            });
+            .then(() => newAction);
     }
 
     resumeOne(query: any) {

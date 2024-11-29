@@ -53,12 +53,8 @@ export class UpdateNpmVersions extends GitCloneAction {
                     commitMessage,
                 ]);
             })
-            .then(() => {
-                return this.cli.command('git', ['push']);
-            })
-            .then(() => {
-                return this.getLastCommit();
-            })
+            .then(() => this.cli.command('git', ['push']))
+            .then(() => this.getLastCommit())
             .then((commit) => {
                 this.result = commit;
                 return ActionState.SUCCESS;
@@ -88,21 +84,4 @@ export class UpdateNpmVersions extends GitCloneAction {
             );
         });
     }
-
-    /* watcher() {
-        //this action is never in progress.
-        //So the watcher will be called if and only if the main() method didn't quit programatically
-        //(i.e. some process interruptions).
-        //So this watcher only has to check if the preceding commit was pushed or not. 
-        
-        return this.githubApi.getLastCommitsOnBranch().then((commits)=>{
-            for(const commit of commits){
-                if(commit.message === ...){
-                    return true;
-                }
-            }
-        }).then((isPushed)=>{
-            return isPushed ? ActionState.SUCCESS : ActionState.SLEEPING;
-        });
-    } */
 }

@@ -1,5 +1,5 @@
-import { spawn, SpawnOptions, SpawnOptionsWithoutStdio } from 'child_process';
-import { Stream, Writable } from 'stream';
+import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
+import { Writable } from 'stream';
 
 export class Cli {
     command(
@@ -16,9 +16,6 @@ export class Cli {
             childProcess.on('error', (err) => {
                 error = new Error();
                 error.message = String(err);
-                /* if((err as any).code  === 'ENOENT'){
-                    error = 'command not found!'
-                } */
             });
             childProcess.stderr.pipe(options.stderr || process.stderr);
             childProcess.stdout.pipe(options.stdout || process.stdout);
@@ -29,7 +26,6 @@ export class Cli {
                 } else if (code === 0) {
                     resolve();
                 } else {
-                    //on pourrait faire une liste des erreurs standards
                     error = new Error();
                     error.message = `Process ${command} exited with code ${code}`;
                     reject(error);

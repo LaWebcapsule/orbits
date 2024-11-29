@@ -14,7 +14,7 @@ export class GitRepo {
     projectName: string;
     description: string;
     hooks: string[] = [];
-    loaded: boolean = false; //internal : pour savoir si info a jour ou non
+    loaded: boolean = false; // internal to know whether info is up to date
 
     constructor(obj: {
         providerName;
@@ -29,7 +29,7 @@ export class GitRepo {
     }) {
         utils.deepCopy(obj, this);
         if (obj.url instanceof URL) {
-            this.url = obj.url; //le deep copy n'est pas bon ici.
+            this.url = obj.url; // deep copy is not correct here
         } else if (obj.url) {
             this.url = new URL(obj.url);
         }

@@ -32,9 +32,7 @@ export class GitAction extends Action {
     }
 
     init() {
-        return Promise.resolve().then(() => {
-            return this.initGitProvider();
-        });
+        return Promise.resolve().then(() => this.initGitProvider());
     }
 }
 
@@ -55,14 +53,14 @@ export class AddGitWebHookAction extends GitAction {
     }
 
     watcher() {
-        //pas de watch pour l'instant donc on ajoute plusiers fois le hook si erreur
-        //sinon il faudrait ici verifier l'ajout du hook avec une requete http
+        // no watcher for now so hook is added several times in case of error
+        // hook addition should be checked here
         return Promise.resolve(ActionState.UNKNOWN);
     }
 }
 
 export class WaitForNewCommits extends GitAction {
-    static defaultDelay = Infinity; //potentiellement infini
+    static defaultDelay = Infinity;
 
     IArgument: {
         branches: {
@@ -79,7 +77,7 @@ export class WaitForNewCommits extends GitAction {
     };
 
     static cronDefaultSettings = {
-        activityFrequence: 24 * 60 * 60 * 1000,
+        activityFrequency: 24 * 60 * 60 * 1000,
     };
 
     init() {
@@ -100,17 +98,17 @@ export class WaitForNewCommits extends GitAction {
         for (const branch of this.argument.branches) {
             const since = branch.lastCommit?.createdAt.getTime() || 0;
             p = p
-                .then(() => {
-                    return this.gitProvider.getLastCommitsOnBranch(
+                .then(() =>
+                    this.gitProvider.getLastCommitsOnBranch(
                         this.argument.repoName,
                         branch.name,
                         new Date(since)
-                    );
-                })
+                    )
+                )
                 .then((commits) => {
-                    commits = commits.filter((c) => {
-                        return c.sha !== branch.lastCommit?.sha;
-                    });
+                    commits = commits.filter(
+                        (c) => c.sha !== branch.lastCommit?.sha
+                    );
                     if (commits.length > 0) {
                         hasNewCommits = true;
                         this.result.branches.push({

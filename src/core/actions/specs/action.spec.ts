@@ -7,9 +7,7 @@ describe('Test action', () => {
     const testAction = new TestAction();
     testAction.setArgument({ y: 1 });
 
-    beforeAll(() => {
-        return testAction.resume();
-    });
+    beforeAll(() => testAction.resume());
 
     it('should  be a success', () => {
         expect(testAction.dbDoc.bag).toEqual({
@@ -18,15 +16,12 @@ describe('Test action', () => {
         expect(testAction.dbDoc.state).toEqual(ActionState.SUCCESS);
     });
 
-    it('should be written in database', () => {
-        return testAction.app.ActionModel.findById(testAction.dbDoc._id).then(
+    it('should be written in database', () =>
+        testAction.app.ActionModel.findById(testAction.dbDoc._id).then(
             (dbDoc) => {
                 expect(dbDoc).not.toBeUndefined();
             }
-        );
-    });
+        ));
 
-    afterAll(() => {
-        return testAction.dbDoc.remove();
-    });
+    afterAll(() => testAction.dbDoc.remove());
 });

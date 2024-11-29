@@ -21,9 +21,7 @@ describe('action job with empty db', () => {
 
     it('should manage pause', () => {
         expect(actionJob.nDatabaseEmpty).toBeGreaterThanOrEqual(2);
-        expect(actionJob.cycle).toHaveBeenCalledTimes(
-            actionJob.nDatabaseEmpty
-        );
+        expect(actionJob.cycle).toHaveBeenCalledTimes(actionJob.nDatabaseEmpty);
     });
 });
 
@@ -35,36 +33,31 @@ describe('actionCron with two actions to manage', () => {
         wrongDefAction = new TestActionWithWatcherEnding();
         wrongDefAction.dbDoc.definitionFrom.workflow._id = 'xyz';
         actionJob.nDatabaseEmpty = 0;
-        return ActionApp.activeApp.ActionModel.deleteMany({}).then(() => {
-            return new Promise<void>((resolve) => {
-                a1.save()
-                    .then(() => {
-                        return a2.save();
-                    })
-                    .then(() => {
-                        return wrongDefAction.save();
-                    })
-                    .then(() => {
-                        setTimeout(() => {
-                            resolve();
-                        }, 1000);
-                    });
-            });
-        });
+        return ActionApp.activeApp.ActionModel.deleteMany({}).then(
+            () =>
+                new Promise<void>((resolve) => {
+                    a1.save()
+                        .then(() => a2.save())
+                        .then(() => wrongDefAction.save())
+                        .then(() => {
+                            setTimeout(() => {
+                                resolve();
+                            }, 1000);
+                        });
+                })
+        );
     });
 
-    it('- actions should be a success', () => {
-        return ActionApp.activeApp.ActionModel.find({}).then((actions) => {
+    it('- actions should be a success', () =>
+        ActionApp.activeApp.ActionModel.find({}).then((actions) => {
             expect(actions.length).toEqual(3);
             expect(
                 actions.filter((a) => a.state === ActionState.SUCCESS).length
             ).toEqual(2);
-        });
-    });
+        }));
 
-    it(' - wrongly defined action should be still pending', () => {
-        return wrongDefAction.resyncWithDb().then(() => {
+    it(' - wrongly defined action should be still pending', () =>
+        wrongDefAction.resyncWithDb().then(() => {
             expect(wrongDefAction.dbDoc.state).toEqual(ActionState.SLEEPING);
-        });
-    });
+        }));
 });

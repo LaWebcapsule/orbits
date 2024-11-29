@@ -14,7 +14,7 @@ export enum ActionState {
     PAUSED,
     SUCCESS,
     ERROR,
-    CLOSED, //nothing more can happen, except a rollback
+    CLOSED, // nothing more can happen except a rollback
     REVERTING,
     REVERTED,
 }
@@ -109,6 +109,7 @@ export const actionSchema = new mongoose.Schema(
         lockedAt: Date,
         cronActivity: {
             frequence: Number,
+            frequency: Number,
             pending: { type: Boolean, default: false },
             lastActivity: Date,
             nextActivity: Date,
@@ -144,13 +145,14 @@ actionSchema.pre('save', function (this: any, next) {
     if (this.isModified('locked') || this.isNew) {
         this.lockedAt = new Date();
     }
-    this.markModified('bag'); //on resauvegarde a chaque fois les mixin pour eviter d'avoir a appeler markModified.
+    // we save mixins every time to avoid having to call markModified
+    this.markModified('bag');
     this.markModified('argument');
     this.markModified('result');
     this.markModified('filter');
 
     if (this.isNew) {
-        //first launch
+        // first launch
         this.cronActivity.nextActivity = new Date();
     }
     next();
@@ -172,7 +174,8 @@ actionSchema.method(
 actionSchema.method(
     'optimisticLock',
     function (this: ActionSchemaInterface<any>) {
-        this.increment(); //on increment : equivalent d'un verrou optimiste
+        // equivalent of an optimistic lock
+        this.increment();
     }
 );
 
@@ -181,7 +184,7 @@ actionSchema.method('lockAndSave', function (this: ActionSchemaInterface<any>) {
     return this.save().catch((err) => {
         if (err instanceof mongoose.Error.VersionError) {
             throw new ActionError(
-                'Verrou déjà pris',
+                'Lock already acquired',
                 errorCodes.RESOURCE_LOCKED
             );
         } else {

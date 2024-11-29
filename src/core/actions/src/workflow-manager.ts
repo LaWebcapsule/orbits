@@ -29,8 +29,9 @@ export interface Step {
 }
 
 export class Workflow extends Action {
-    static defaultDelay = Infinity; //une workflow n'est jamais considéré en erreur, meme au bout de x temps:
-    //en effet, les actions sous-jacentes sont mieux aptes à témoigner de l'erreur ou non
+    // a workflow will never be in ERROR state
+    // ERROR state will be reported by its actions
+    static defaultDelay = Infinity;
 
     dBSession?: mongoose.ClientSession;
 
@@ -53,6 +54,9 @@ export class Workflow extends Action {
         stepsHistory: number[];
         oldResult: StepResult[];
         preserveOldResult: StepResult[];
+        /**
+         * @deprecated
+         */
         getNextStepAttemp: number;
         isRollBackPossible: boolean;
     };
@@ -88,16 +92,19 @@ export class Workflow extends Action {
     }
 
     onComplete(cb: Step['cb'], opts?: Step['opts']) {
-        //finally en promise :
-        //ex : then(throw err).finally(...).finally(...).cactch(//on passe ici !)
-        //mais aussi then(throw err).finally(throw err2).finally(...).catch(//on reçoit err2)
-        //soit donc, finally ne change pas l'etat de la promise
-        //si succes, renvoie le premier resultat
-        //si erreur, renvoie la dernière erreur
-        //pour imiter le comportement et plutot que typer les steps, on ajoute trois étapes
-        //--> stocke les arguments --> execute le finally --> depile les anciens arguments
+        /*
+        about finally behavior:
+            - then(throw err).finally(...).finally(...).catch(>> goes through here << )
+            - then(throw err).finally(throw err2).finally(...).catch(>> goes through here and receive err2 << )
+        so finally doesn't change promise state
+        - on success, return first result
+        - on error, return last error
+        
+        to mimic this behavior and not type steps, add three steps:
+        save args -> execute finally -> unstack previous args 
+        */
 
-        const transfertArgumentActions = (...args: StepResult[]) => {
+        const transferActionsResults = (...args: StepResult[]) => {
             const actions: any[] = [];
             for (const result of args) {
                 if (result.isError) {
@@ -114,7 +121,7 @@ export class Workflow extends Action {
             [ActionState.ERROR]: true,
             cb: (...args: any[]) => {
                 this.bag.preserveOldResult = args;
-                return transfertArgumentActions(...args);
+                return transferActionsResults(...args);
             },
             opts,
         });
@@ -128,9 +135,8 @@ export class Workflow extends Action {
 
         this.steps.push({
             [ActionState.SUCCESS]: true,
-            cb: (...args: any[]) => {
-                return transfertArgumentActions(...this.bag.preserveOldResult);
-            },
+            cb: (...args: any[]) =>
+                transferActionsResults(...this.bag.preserveOldResult),
             opts,
         });
         return this;
@@ -242,7 +248,6 @@ export class Workflow extends Action {
 
     getNextStep() {
         if (this.bag.currentStepIndex === undefined) {
-            //initialisation
             this.bag.currentStepIndex = -1;
             this.bag.actions = {};
             this.bag.stepsHistory = [];
@@ -274,18 +279,16 @@ export class Workflow extends Action {
         }
         oldStepState = isStepSuccess ? ActionState.SUCCESS : ActionState.ERROR;
 
-        const newIndex = this.steps.findIndex((step, i) => {
-            return i > this.bag!.currentStepIndex! && step[oldStepState];
-        });
+        const newIndex = this.steps.findIndex(
+            (step, i) => i > this.bag!.currentStepIndex! && step[oldStepState]
+        );
         this.bag.currentStepIndex = newIndex;
         this.bag.currentStepName = this.steps[newIndex - 1]?.name;
         this.bag.actions = {};
         this.dbDoc.markModified('bag');
         this.dbDoc.markModified('bag.actions');
         if (this.bag.currentStepIndex >= 0) {
-            this.bag.stepsHistory.push(
-                newIndex //on historise en debut d'action
-            );
+            this.bag.stepsHistory.push(newIndex);
             if (this.bag.stepsHistory.length > 200) {
                 this.bag.stepsHistory.shift();
             }
@@ -294,7 +297,6 @@ export class Workflow extends Action {
                 this.steps[this.bag.currentStepIndex]!['cb']!(...oldResults)
             );
         } else {
-            //c'est fini:
             this.result = oldResults;
             throw new BreakingActionState(oldStepState);
         }
@@ -334,7 +336,7 @@ export class Workflow extends Action {
                     this.bag.nTimesCurrentStep =
                         this.bag.nTimesCurrentStep + 1 || 0;
                     if (this.bag.nTimesCurrentStep > Infinity) {
-                        //change this once the deprecation has been done
+                        // change this once the deprecation has been done
                         return this.breakAndReject({
                             err,
                             message: `blocked on step : ${this.bag.currentStepIndex}, ${this.bag.currentStepName} ; could not launch step.`,
@@ -343,12 +345,11 @@ export class Workflow extends Action {
                     throw err;
                 });
             })
-            .then((actions) => {
-                return this.dBSession!.withTransaction(() => {
-                    //attention : cette fonction est souvent retry :
-                    //en effet TransientErrorFrequente
-                    //ne rien mettre a l'interieur qui soit cumulatif
-                    //genre : this.x ++ ; car finirait à : +++++...
+            .then((actions) =>
+                this.dBSession!.withTransaction(() => {
+                    // beware: this function is often retried because of frequent TransientError
+                    // do not put anything in this block that would accumulate
+                    // (like this.x++)
                     if (!actions) {
                         actions = [];
                     }
@@ -361,33 +362,33 @@ export class Workflow extends Action {
                     this.dbDoc.$session(this.dBSession);
                     this.dbDoc.state = ActionState.IN_PROGRESS;
                     this.dbDoc.markModified('bag');
-                    this.dbDoc.markModified('state'); //necessaire en cas de retry
-                    //pq on procede en deux temps pour les sauvegardes :
-                    //https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
-                    //la premiere requete d'une workflow doit arriver avant les autres. Sinon pbme.
+                    this.dbDoc.markModified('state');
+                    // necessary in case of retry
+                    // because we proceed in two passes
+                    // https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
+                    // first request from workflow must arrive before the others else there would be troubles
                     return this.dbDoc
                         .save()
                         .then(() => {
-                            const svgdsPromise: any[] = [];
+                            const promises: any[] = [];
                             for (let action of actions as Action[]) {
-                                action.dbDoc.isNew = true; //necessaire ?
-                                //semble resoudre un bug, ou : transientError et donc retry du withTransaction
-                                //mais isNew false et donc DocumentNotFoundError
-                                //a confirmer
+                                action.dbDoc.isNew = true; // necessary ?
+                                // looks like it solves a bug that causes transientError
+                                // et then withTransaction retry
+                                // but isNew is false and then it errors out with DocumentNotFoundError
+                                // to be confirmed
                                 action.dbDoc.$session(this.dBSession);
-                                svgdsPromise.push(action.dbDoc.save());
+                                promises.push(action.dbDoc.save());
                             }
                             for (let doc of this.docsToSaveAtStepStart) {
                                 doc.$session(this.dBSession);
-                                svgdsPromise.push(doc.save());
+                                promises.push(doc.save());
                             }
-                            return Promise.all(svgdsPromise);
+                            return Promise.all(promises);
                         })
-                        .then(() => Promise.resolve()); //le then est une question de typage pour conformite mongoose
-                }).finally(() => {
-                    return this.resyncWithDb();
-                });
-            })
+                        .then(() => Promise.resolve()); // for typing
+                }).finally(() => this.resyncWithDb())
+            )
             .finally(() => {
                 this.docsToSaveAtStepStart = [];
                 if (this.dBSession) {
@@ -399,8 +400,8 @@ export class Workflow extends Action {
                 this.internalLog(
                     `step started : ${this.dbDoc.bag.currentStepIndex}`
                 );
-                //on a change directement l'etat dans la workflow
-                //on peut appeler directement resume
+                // state is changed directly in the workflow
+                // so call resume directly
                 return this.resume();
             });
     }
@@ -452,18 +453,18 @@ export class Workflow extends Action {
     override main() {
         return this.startStep().catch((err) => {
             if (!(err instanceof BreakingActionState)) {
-                //si une erreur survient lors de l'appel à l'étape
-                //on reste bloque sur l'étape mais la workflow ne passe pas en erreur
-                //c'est a dire que la workflow reste en meme etat : executing_main
+                // if an error occurs during this step, block on this step
+                // but workflow stays in EXECUTING_MAIN state and does not error out
                 this.internalLogError(err);
-                throw new BreakingActionState(this.dbDoc.state); //on fait donc croire que rien n'a changé
+                throw new BreakingActionState(this.dbDoc.state);
             }
             throw err;
         });
     }
 
     override onMainTimeout(): ActionState | Promise<ActionState> {
-        return ActionState.SLEEPING; //has not be launched. We relaunch
+        // workflow hasn't been launched yet, launch again.
+        return ActionState.SLEEPING;
     }
 
     override watcher() {
@@ -484,18 +485,18 @@ export class Workflow extends Action {
             ],
         }).then((actions) => {
             if (actions.length === 0) {
-                //deux cas :
-                //si state === executing-main ; c'est qu'il y a eu un pbme dans le main de l'etape et on doit retry l'etape
-                //sinon c'est que l'etape est finie
+                // two cases:
+                // if state === EXECUTING_MAIN: there was a problem in the step main and it must be tried again
+                // else step is done
                 if (this.dbDoc.state === ActionState.EXECUTING_MAIN) {
                     return ActionState.PAUSED;
                 }
                 return this.endStep();
             } else {
                 if (!this.dbDoc.cronActivity.pending) {
-                    //pas de // dans le cron
-                    //sinon declenche un watch ou un execute dans toutes les actions non finies
-                    //le watch se fait en //
+                    // no parallelism in cron
+                    // else it would trigger a watch or an execute for all non terminated actions
+                    // watch is done in parallel
                     actions.map(async (a) => {
                         const action = await Action.constructFromDb(
                             a as any as ActionSchemaInterface
@@ -539,7 +540,7 @@ export class Workflow extends Action {
             };
         }
         const action = new Action();
-        action.dynamiclyDefineFromWorfklowStep(this, marker);
+        action.dynamicallyDefineFromWorkflowStep(this, marker);
         action.main = opts['main'];
         if (cb['init']) {
             action.init = opts['init'];
@@ -566,7 +567,7 @@ export class Workflow extends Action {
         if (typeof action === 'function') {
             action = await Promise.resolve(action());
         }
-        action.dynamiclyDefineFromWorfklowStep(this, marker);
+        action.dynamicallyDefineFromWorkflowStep(this, marker);
         return action;
     }
 
@@ -622,10 +623,9 @@ export class RevertWorkflow<
 
     override define() {
         this.next(() => {
-            //mettre un verrou
             const tToRevert = this.oldAction;
             tToRevert.bag.currentStepIndex = Infinity;
-            tToRevert.dbDoc.bag.currentStepIndex = Infinity; //rien apres
+            tToRevert.dbDoc.bag.currentStepIndex = Infinity;
             tToRevert.dbDoc.state = ActionState.REVERTING;
             this.registerDocToSaveAtStepStart(tToRevert.dbDoc);
             return Action.resolve({});
@@ -633,7 +633,7 @@ export class RevertWorkflow<
         const stepsHistory = this.oldAction.bag.stepsHistory;
         const nSteps = stepsHistory.length;
         for (let i = 0; i < nSteps; i++) {
-            const stepIndex = stepsHistory[nSteps - 1 - i]!; //on part de la fin
+            const stepIndex = stepsHistory[nSteps - 1 - i]!;
             const step = this.oldAction.steps[stepIndex]!;
             if (step.rollback) {
                 this.finally(step.rollback.bind(this));
@@ -696,35 +696,35 @@ export class RevertAction<ActionToRevert extends Action> extends Workflow {
 
     override define() {
         this.next(() => {
-            //on commence par attendre la fin de l'action
-            //donc on attache l'ancienne action a la workflow
-            const aToRevert = this.oldAction;
-            if (aToRevert.dbDoc.state < ActionState.SUCCESS) {
-                this.declareActionStart(aToRevert.dbDoc, 0);
-                aToRevert.setRepeat({
+            // first wait for action end
+            // so action is 'attached' to workflow
+            const actionToRevert = this.oldAction;
+            if (actionToRevert.dbDoc.state < ActionState.SUCCESS) {
+                this.declareActionStart(actionToRevert.dbDoc, 0);
+                actionToRevert.setRepeat({
                     [ActionState.SUCCESS]: 0,
                     [ActionState.ERROR]: 0,
                 });
-                aToRevert.dbDoc.optimisticLock();
-                this.registerDocToSaveAtStepStart(aToRevert.dbDoc);
+                actionToRevert.dbDoc.optimisticLock();
+                this.registerDocToSaveAtStepStart(actionToRevert.dbDoc);
             }
         })
             .next(() => {
-                //puis on rollback l'action
-                const aToRevert = this.oldAction;
-                const revert = new aToRevert.RollBackAction();
+                // then we rollback the action
+                const actionToRevert = this.oldAction;
+                const revert = new actionToRevert.RollBackAction();
                 revert.setArgument({
-                    actionId: aToRevert.dbDoc._id.toString(),
+                    actionId: actionToRevert.dbDoc._id.toString(),
                 });
                 const nSuccess =
                     this.oldAction.dbDoc.nExecutions[ActionState.SUCCESS];
                 revert.setRepeat({
-                    [ActionState.SUCCESS]: nSuccess - 1, //le premier est gratuit
+                    [ActionState.SUCCESS]: nSuccess - 1,
                 });
                 return revert;
             })
             .next(() => {
-                //terminer proprement l'action (a reviser/clarifier)
+                // properly terminate the action
                 this.oldAction.dbDoc.cronActivity.nextActivity = new Date(
                     Date.now() + 10 * 60 * 1000
                 );

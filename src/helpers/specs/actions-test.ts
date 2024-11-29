@@ -5,10 +5,10 @@ import {
     bootstrapApp,
 } from '@wbce/orbits-core';
 import { Cli } from '@wbce/services';
-import { DockerExecutor, EcrRegistry, PublicRegistry } from './../index';
+import { DockerExecutor, PublicRegistry } from './../index';
 import * as cdk from 'aws-cdk-lib';
 import {
-    CdkBoostrapAction,
+    CdkBootstrapAction,
     CdkDeployAction,
 } from '../src/standards-actions/cdk/cdk-action';
 
@@ -29,9 +29,7 @@ export class DockerAction extends Action {
                 this.result.z = 10;
                 return ActionState.SUCCESS;
             },
-            () => {
-                return ActionState.ERROR;
-            }
+            () => ActionState.ERROR
         );
     }
 }
@@ -66,7 +64,7 @@ export class DeployTestStack extends CdkDeployAction {
     });
 }
 
-export class BootstrapTestStack extends CdkBoostrapAction {
+export class BootstrapTestStack extends CdkBootstrapAction {
     StackConstructor: typeof cdk.Stack = TestStack;
 }
 

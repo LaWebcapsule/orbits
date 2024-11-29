@@ -14,9 +14,7 @@ j.loadConfig({
 
 process.env['mongo_db'] = 'example-test';
 import('./..')
-    .then((main) => {
-        return ActionApp.waitForActiveApp;
-    })
+    .then((main) => ActionApp.waitForActiveApp)
     .then(() => {
         const activeApp = ActionApp.getActiveApp();
         activeApp.ActionModel.remove({});

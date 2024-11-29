@@ -57,9 +57,7 @@ export class CiPipeline extends Workflow {
                         });
                         return s3Client.send(command);
                     })
-                    .then(() => {
-                        return Action.resolve();
-                    })
+                    .then(() => Action.resolve())
                     .catch((err) => {
                         console.log(err);
                         throw err;

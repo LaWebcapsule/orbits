@@ -1,4 +1,4 @@
-import { Action, ActionApp } from '@wbce/orbits-core';
+import { Action } from '@wbce/orbits-core';
 import * as express from 'express';
 import { ActionApi } from './rest-skeleton';
 
@@ -32,12 +32,12 @@ export class ExpressRouterGenerator {
     }
 
     setActionMiddlewares() {
-        this.router.get('/?', (req, res, next) => {
-            return this.actionApi.list(req.query).then((actions) => {
+        this.router.get('/?', (req, res, next) =>
+            this.actionApi.list(req.query).then((actions) => {
                 res.locals.actions = actions.map(this.formatAction.bind(this));
                 next();
-            });
-        });
+            })
+        );
 
         this.router.get('/:id', (req, res, next) => {
             const query = {
@@ -58,13 +58,13 @@ export class ExpressRouterGenerator {
             return this.actionApi.resumeOne(query);
         });
 
-        this.router.post('/:ctrName', (req, res, next) => {
-            return this.actionApi
+        this.router.post('/:ctrName', (req, res, next) =>
+            this.actionApi
                 .createOne(req.params.ctrName, req.body, req.query.filter)
                 .then((action) => {
                     res.locals.action = this.formatAction(action);
-                });
-        });
+                })
+        );
     }
 
     getResumeUrl(action: Action) {

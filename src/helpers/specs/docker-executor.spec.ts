@@ -9,19 +9,18 @@ describe('Test action', () => {
         spyOn(testAction, 'init');
         return testAction.dbDoc
             .save()
-            .then(() => {
-                return new Promise<void>((resolve) => {
-                    setTimeout(
-                        () => {
-                            resolve();
-                        },
-                        2 * 60 * 1000
-                    );
-                });
-            })
-            .then(() => {
-                return testAction.resyncWithDb();
-            });
+            .then(
+                () =>
+                    new Promise<void>((resolve) => {
+                        setTimeout(
+                            () => {
+                                resolve();
+                            },
+                            2 * 60 * 1000
+                        );
+                    })
+            )
+            .then(() => testAction.resyncWithDb());
     });
 
     it('should  be a success', () => {
@@ -29,7 +28,5 @@ describe('Test action', () => {
         expect(testAction.result.z).toEqual(10);
     });
 
-    afterAll(() => {
-        return testAction.dbDoc.remove();
-    });
+    afterAll(() => testAction.dbDoc.remove());
 });

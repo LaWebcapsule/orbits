@@ -2,7 +2,10 @@ import { Action } from './action-manager';
 import { ActionState } from './models/action';
 
 export class Executor {
-    scope?: ActionState[]; //default is undefined => all ActionStates.
+    /**
+     * @default undefined all ActionStates
+     */
+    scope?: ActionState[];
 
     createInstallAction(): Action | Promise<Action> {
         return Action.resolve();

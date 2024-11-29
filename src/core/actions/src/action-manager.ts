@@ -5,18 +5,17 @@ import { utils, wbceAsyncStorage } from '@wbce/services';
 import { ActionError, BreakingActionState } from './error/error';
 import { Executor } from './action-executor';
 
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
 /**
- * Action is the class to structure actions
- * Extends this class to build new actions behaviours.
- * You can read more here :
+ * Structure actions.
  *
- *
+ * Extends this class to build new actions behaviors.
  */
 export class Action {
     /**
-     * The id of the action we store in database.
-     * This should be a permanent id that designates your instance.
-     *
+     * Id of the action stored in database.
+     * It should be a permanent id that designates the action instance.
      */
     static permanentRef: string | string[];
 
@@ -28,26 +27,30 @@ export class Action {
     app: ActionApp = ActionApp.getActiveApp();
 
     /**
-     * Shorcut to @link Action.defaultDelays[ActionState.IN_PROGRESS]
-     * Note that if defaultDelay is not set, this property will be 'inherited' from parent classes
-     * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
+     * Shortcut to {@link Action.defaultDelays[ActionState.IN_PROGRESS]}.
+     *
+     * If not set, this property will be 'inherited' from the first parent class where it is.
      */
     static defaultDelay: number = 10 * 60 * 1000;
 
     /**
+     * For the states `ActionState.EXECUTING_MAIN` and `ActionState.IN_PROGRESS`,
+     * this object configures the time after which, if no change happened, an action is considered in error.
      *
-     * For the state ActionState.EXECUTING_MAIN and ActionState.IN_PROGRESS,
-     * this object configure the time after which, if no change happened, an action is considered in error.
-     * For example, an action can only be in the ActionState.IN_PROGRESS state for as long as
-     * defaultDelays[ActionState.IN_PROGRESS] time.
-     * @defaultValue {
+     * For example, an action can only be in the `ActionState.IN_PROGRESS` state for as long as
+     * `defaultDelays[ActionState.IN_PROGRESS]` time.
+     *
+     * @defaultValue
+     * ```
+     * {
      *    [ActionState.IN_PROGRESS] : this.defaultDelay,
-     *    [ActionState.EXECUTING_MAIN] : 2*60*1000
+     *    [ActionState.EXECUTING_MAIN] : 2*60*1000,
      * }
+     * ```
      *
      * You should configure this if your actions have longer timeouts.
-     * Note that if defaultDelays is not set, this property will be 'inherited' from parent classes
-     * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
+     *
+     * If not set, this property will be 'inherited' from the first parent class where it is.
      */
     static defaultDelays: {
         [k in ActionState.IN_PROGRESS | ActionState.EXECUTING_MAIN]?: number;
@@ -57,10 +60,9 @@ export class Action {
     };
 
     /**
-     * Configure the frequence in which a cron will cause the @link Action.resume method.
-     * You can also dinamically modify the dbDoc.cronActivity property to modify the call to a cron.
-     * Note that if cronDefaultSettings are not set, this property will be 'inherited' from parent classes
-     * Indeed, Orbits have a mechanism to go through the parent classes to find the first parent constructor where this property is set.
+     * Configure the frequency at which a cron will launch {@link Action.resume}.
+     * It is also possible to dynamically modify the dbDoc.cronActivity property to modify the call to a cron.
+     * If not set, this property will be 'inherited' from the first parent class where it is.
      */
     static cronDefaultSettings: {
         /**
@@ -77,23 +79,22 @@ export class Action {
     };
 
     /**
-     * Interface of the argument of the action
+     * Action argument
      */
     IArgument: {};
 
     /**
-     * Interface of the bag of the action
+     * Action bag
      */
     IBag: {};
 
     /**
-     * Interface of the result of the action
+     * Action result
      */
     IResult: {};
 
     /**
-     * The database document of this action.
-     *
+     * Action Database Document
      */
     dbDoc: ActionSchemaInterface<
         this['IArgument'],
@@ -167,9 +168,9 @@ export class Action {
                 }
             );
         }
-        //we copy the static properties to form the dynamic one
-        //and we verify that defaultDelay has priority over defaultDelays[ActionState.Success]
-        //if and only if it was setted before in the inheritance chain
+        // Copy the static properties to create the dynamic ones
+        // Check whether defaultDelay has priority over defaultDelays[ActionState.SUCCESS]
+        // (if and only if it was set before in the inheritance chain)
         let cronDefaultSettings, defaultDelays, defaultDelay;
         let ctr = this.constructor as typeof Action;
         cronDefaultSettings = {};
@@ -217,7 +218,7 @@ export class Action {
     }
 
     /**
-     * Permit to construct an action from a document stored in the database.
+     * Construct an action from a document stored in the database.
      * @param actionDb a document coming from the database
      * @returns an action for which dbDoc property is equal to actionDb
      */
@@ -286,7 +287,14 @@ export class Action {
         }
     }
 
+    /**
+     * @deprecated use dynamicallyDefineFromWorkflowStep
+     */
     dynamiclyDefineFromWorfklowStep(workflow: Workflow, marker: string) {
+        this.dynamicallyDefineFromWorkflowStep(workflow, marker);
+    }
+
+    dynamicallyDefineFromWorkflowStep(workflow: Workflow, marker: string) {
         this.dbDoc.definitionFrom.workflow = {
             _id: workflow._id.toString(),
             ref: workflow.dbDoc.actionRef,
@@ -298,9 +306,8 @@ export class Action {
     }
 
     /**
-     * This function will update the current instance of the model with the latest data from the
-     * database
-     * @returns A promise that resolves when the last document version has be loaded
+     * Update the current model instance with latest data from database
+     * @returns a promise that resolves when the document has been loaded
      */
     resyncWithDb() {
         return this.app.ActionModel.findById(this.dbDoc._id.toString()).then(
@@ -315,9 +322,9 @@ export class Action {
     }
 
     /**
-     * It returns a new ResolveAction object.
-     * @param [result] - The result of the action.
-     * @returns A new instance of the ResolveAction class.
+     * Return a new {@link ResolveAction} object.
+     * @param result action result
+     * @returns new `ResolveAction`instance
      */
     static resolve(result?) {
         const success = new ResolveAction();
@@ -326,12 +333,9 @@ export class Action {
     }
 
     /**
-     * `static reject(result?){`
-     *
-     * The above function is a static function that returns a new RejectAction object. The function
-     * takes an optional parameter called result
-     * @param [result] - The result of the action.
-     * @returns A new instance of the RejectAction class.
+     * Return a new {@link RejectAction} object.
+     * @param result action result
+     * @returns new `RejectAction`instance
      */
     static reject(result?) {
         const error = new RejectAction();
@@ -343,8 +347,8 @@ export class Action {
         return this.changeState(ActionState.EXECUTING_MAIN)
             .catch((err) => {
                 if (err && err.code === errorCodes.RESOURCE_LOCKED) {
-                    throw new BreakingActionState(ActionState.UNKNOWN); //le thread current n'est pas maitre de la workflow
-                    //et decline donc ses responsabilites
+                    // current thread is not handling the workflow
+                    throw new BreakingActionState(ActionState.UNKNOWN);
                 }
                 throw err;
             })
@@ -354,15 +358,12 @@ export class Action {
                 return this.main();
             })
             .catch((err) => {
-                //pour courcircuiter les étapes, on peut retourner un etat par le throw/catch.
-                //notamment en cas d'erreur
                 if (err instanceof BreakingActionState) {
                     if (err.result) {
                         this.setResult(err.result);
                     }
                     return err.actionState;
                 }
-                //c'est une autre erreur qu'on a attrapé
                 this.internalLogError(err);
                 this.result = err;
                 return ActionState.ERROR;
@@ -371,9 +372,13 @@ export class Action {
 
     /**
      * Initialize the action from the action stored in the database.
-     * @example In order to not store secrets in the database, you can set a vault id in the argument and retrieve the secret at the initialization of the action
-     * @example You cannot store class object on the database. If your action use complex object, they can be initialized here
-     * @returns
+     *
+     * Example: In order to not store secrets in the database,
+     * you can set a vault id in the argument
+     * and retrieve the secret at the initialization of the action.
+     *
+     * Example: You cannot store class object on the database.
+     * If your action use complex object, they can be initialized here.
      */
     init(): Promise<any> {
         return Promise.resolve();
@@ -384,10 +389,9 @@ export class Action {
     }
 
     /**
-     * It takes an object of type `IArgument` and sets the `argument`
-     * that will be stored in the database.
+     * Set the `argument` that will be stored in the database.
      * Once set, the argument of an action should not be modified.
-     * @param args - The arguments that you want to set.
+     * @param args - The argument to set.
      */
     setArgument(args: this['IArgument']) {
         this.argument = { ...this.argument, ...args };
@@ -407,8 +411,9 @@ export class Action {
     }
 
     /**
-     * To make filtering easier, you can pass filter to an action.
-     * This filters are stored on the database with the `filter` property and allow you to search for
+     * Make filtering actions easier with the `filter` property.
+     * These filters are stored in database with
+     * the `filter` property and allow to search for
      * an action or a group of actions
      * @param filter
      */
@@ -419,23 +424,22 @@ export class Action {
     }
 
     /**
-     * Set the result of the action.
+     * Set the action result.
      * @param result
      */
-
     setResult(result: Object) {
         this.dbDoc.result = { ...this.dbDoc.result, ...result };
         this.dbDoc.markModified('result');
     }
 
     /**
-     * This method should calculate the current state of the action.
+     * Watch the action state.
+     *
      * It is called :
-     * - potentially many times, when the action is in IN_PROGRESS state
-     * - once time, if the action is in EXECUTING_MAIN state and the executing_main delay has expired
-     * @returns
+     * - potentially many times when the action is in `IN_PROGRESS` state
+     * - one time if the action is in `EXECUTING_MAIN` state and the executing_main delay has expired.
+     * @returns promise
      */
-
     watcher() {
         return Promise.resolve(ActionState.UNKNOWN);
     }
@@ -528,7 +532,7 @@ export class Action {
                 })
                 .catch((err) => {
                     if (err instanceof BreakingActionState) {
-                        //court circuit
+                        // short circuit
                         if (err.result) {
                             this.setResult(err.result);
                         }
@@ -548,7 +552,7 @@ export class Action {
     }
 
     /**
-     * This method should launched the main action processus
+     * This method should launched the main action process
      * It is called only one time.
      * It returns a state value.
      * @returns
@@ -626,7 +630,7 @@ export class Action {
         }
         return resume.then(this.onStateNotification.bind(this)).catch((err) => {
             if (err && err.code === errorCodes.RESOURCE_LOCKED) {
-                this.internalLog('Verrou déjà pris');
+                this.internalLog('Lock already acquired');
             } else {
                 this.internalLogError(err);
             }
@@ -654,10 +658,12 @@ export class Action {
     }
 
     /**
-     * This method is called when timeout for ActionState.EXECUTING_MAIN state is exhausted.
-     * It returns a state value.
-     * It can return ActionState.SLEEPING if the process infers that main() has not run and if the action has to be retried.
-     * @returns
+     * Called in case of timeout in `ActionState.EXECUTING_MAIN` state.
+     *
+     * It can return `ActionState.SLEEPING` if the process infers
+     * that `main()` has not run and the action must be retried.
+     *
+     * @returns a `ActionState` value.
      */
     onMainTimeout(): ActionState | Promise<ActionState> {
         return ActionState.UNKNOWN;
@@ -665,17 +671,14 @@ export class Action {
 
     private end() {
         const markAsClosed = () => {
-            //on attend une journée avant de mettre l'action en closed;
-            if (
-                Date.now() - this.dbDoc.stateUpdatedAt.getTime() <
-                24 * 60 * 60 * 1000
-            ) {
+            // wait for a day before marking the action as closed
+            if (Date.now() - this.dbDoc.stateUpdatedAt.getTime() < ONE_DAY_MS) {
                 this.cronActivity.nextActivity = new Date(
-                    this.dbDoc.stateUpdatedAt.getTime() + 24 * 60 * 60 * 1000
+                    this.dbDoc.stateUpdatedAt.getTime() + ONE_DAY_MS
                 );
-                return this.dbDoc.save().then(() => {
-                    return ActionState.UNKNOWN; //court circuit
-                });
+                return this.dbDoc.save().then(
+                    () => ActionState.UNKNOWN // short circuit
+                );
             } else {
                 this.dbDoc.nExecutions[this.dbDoc.state]++;
                 return ActionState.CLOSED;
@@ -686,10 +689,8 @@ export class Action {
             this.repeat[this.dbDoc.state]--;
             this.bag = {};
             this.result = {};
-            //!note : pas de "return" d'état ici
-            //on se contente de changer d'état et
-            //on ne continue pas derrière, la prochaine iteration a lieu à la frequence du cron (min. 10 minutes)
-            //comportement a confirmer
+            // no state return here
+            // change state and wait for next iteration when cron runs again (min 10min)
             this.dbDoc.nExecutions[this.dbDoc.state]++;
             if (
                 this.dbDoc.cronActivity.nextActivity.getTime() - Date.now() <
@@ -723,24 +724,24 @@ export class Action {
             this.isRollBackPossible &&
             !(this.dbDoc.state === ActionState.REVERTED)
         ) {
-            //on gele l'action dans l'attente d'un futur rollback
+            // freeze action waiting for a future rollback
             this.dbDoc.cronActivity.nextActivity = new Date(4022, 1, 1);
-            return this.dbDoc.save().then(() => {
-                return ActionState.UNKNOWN; //court circuit
-            });
+            return this.dbDoc.save().then(
+                () => ActionState.UNKNOWN // short circuit
+            );
         }
         const timeFromEnd = Date.now() - this.dbDoc.stateUpdatedAt.getTime();
-        if (timeFromEnd >= 24 * 60 * 60 * 1000) {
-            return this.destroy().then(() => {
-                return ActionState.UNKNOWN; //court circuit
-            });
+        if (timeFromEnd >= ONE_DAY_MS) {
+            return this.destroy().then(
+                () => ActionState.UNKNOWN // short circuit
+            );
         } else {
             this.cronActivity.nextActivity = new Date(
-                this.dbDoc.stateUpdatedAt.getTime() + 24 * 60 * 60 * 1000
+                this.dbDoc.stateUpdatedAt.getTime() + ONE_DAY_MS
             );
-            return this.dbDoc.save().then(() => {
-                return ActionState.UNKNOWN; //court circuit
-            });
+            return this.dbDoc.save().then(
+                () => ActionState.UNKNOWN // short circuit
+            );
         }
     }
 
@@ -753,32 +754,31 @@ export class Action {
     }
 
     getLogs(options: { endTime?: number } = {}) {
-        let message;
+        let state;
         if (!options.endTime) {
-            message = `${this.dbDoc._id.toString()}- ${this.dbDoc.actionRef} `;
             switch (this.dbDoc.state) {
                 case ActionState.SLEEPING:
-                    message += '- est endormie';
+                    state = 'SLEEPING';
                     break;
 
                 case ActionState.PAUSED:
-                    message += '- est en pause';
+                    state = 'PAUSED';
                     break;
 
                 case ActionState.IN_PROGRESS:
-                    message += '- est en cours';
+                    state = 'IN_PROGRESS';
                     break;
 
                 case ActionState.SUCCESS:
-                    message += '- est un succès';
+                    state = 'SUCCESS';
                     break;
 
                 case ActionState.ERROR:
-                    message += '- est un échec';
+                    state = 'ERROR';
                     break;
 
                 case ActionState.CLOSED:
-                    message += '- est cloturee';
+                    state = 'CLOSED';
                     break;
 
                 default:
@@ -786,8 +786,12 @@ export class Action {
             }
         }
         return Promise.resolve(this.activityLogs(options)).then((logs) => {
-            if (message) {
-                logs.push(message);
+            if (state) {
+                logs.push(
+                    `${this.dbDoc._id.toString()}-${
+                        this.dbDoc.actionRef
+                    } is in ${state} state`
+                );
             }
             return logs;
         });
@@ -823,7 +827,7 @@ export class Action {
     }
 
     get isRollBackPossible() {
-        //on check si une des quatres proprietes a ete modifie par rapport au comportement par defaut
+        // check that at least one of the properties has changed from default ones
         const mockAction = new Action();
         if (
             this.RollBackAction !== mockAction.RollBackAction ||
@@ -837,16 +841,15 @@ export class Action {
     }
 
     /**
-     * Shortcut to configure a rollback. Will be encapsulated in a larger action
-     * @returns
+     * Shortcut to configure a rollback.
+     * Will be encapsulated in a larger action
      */
-
     rollBack() {
         return Promise.resolve(ActionState.SUCCESS);
-    } //confusion sur les etats : si renvoie success, = succes du rollback. a changer ?
+    }
 
     /**
-     * Shortcut to configure the watcher of the rollback Action
+     * Shortcut to configure the watcher for the rollback.
      * @returns
      */
     rollBackWatcher() {
@@ -862,23 +865,31 @@ export class Action {
     /**
      * The action that rollback this action.
      */
-    RollBackAction: typeof Action = RollBackAction; //se contente d'un rollback
-    RollBackWorkflow: typeof Workflow = RevertAction; //attend la fin de l'action, puis declenche le rollback --> cycle complet
+    RollBackAction: typeof Action = RollBackAction;
 
     /**
+     * Workflow that rollbacks the action.
      *
-     * @returns The workflow that wait for the end of this action if needed and then rollback this action.
+     * Wait for action end then rollback.
+     * Will use {@link RollBackAction}.
+     */
+    RollBackWorkflow: typeof Workflow = RevertAction;
+
+    /**
+     * Instantiate workflow that will rollback this action.
      */
     createRollBackWorkflow() {
-        const t = new this.RollBackWorkflow();
-        t.setArgument({
+        const workflow = new this.RollBackWorkflow();
+        workflow.setArgument({
             actionId: this.dbDoc._id.toString(),
         });
-        return t;
+        return workflow;
     }
 }
 
-/* > The ResolveAction class is a subclass of the Action class. It is used to create an Action that resolve in SUCCESS state */
+/**
+ * Action that resolves in SUCCESS state.
+ */
 export class ResolveAction extends Action {
     main() {
         return Promise.resolve(ActionState.SUCCESS);
@@ -889,7 +900,9 @@ export class ResolveAction extends Action {
     }
 }
 
-/* > The RejectAction class is a subclass of the Action class. It is used to create an Action that resolve in ERROR state */
+/**
+ * Action that resolve in ERROR state
+ */
 export class RejectAction extends Action {
     IBag: Object;
     IArgument: Object;
@@ -903,7 +916,9 @@ export class RejectAction extends Action {
     }
 }
 
-/* > RollBackAction is an Action that rolls back another Action */
+/**
+ * Action that rolls back another Action
+ */
 export class RollBackAction<A extends Action> extends Action {
     IArgument: {
         actionId: string;

@@ -40,9 +40,7 @@ export class CiPipeline extends Workflow {
                 this.bag.counter += 1;
                 return printAction;
             })
-            .next(() => {
-                return new WaitAction();
-            })
+            .next(() => new WaitAction())
             .next(() => {
                 console.log(this.bag.counter);
                 if (this.bag.counter < 30) {

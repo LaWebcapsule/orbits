@@ -16,20 +16,20 @@ export class ActionCron {
     nDatabaseEmpty = 0;
     wait() {
         return new Promise<void>((resolve) => {
-            const timingCreneau = {
+            const timingSlots = {
                 1: 1 * 1000,
                 2: 5 * 1000,
                 6: 10 * 1000,
                 12: 30 * 1000,
                 24: 60 * 1000,
             };
-            const timingSteps = Object.keys(timingCreneau)
+            const timingSteps = Object.keys(timingSlots)
                 .map((k) => Number(k))
                 .sort((a, b) => a - b);
-            const waitingStep = timingSteps.find((step) => {
-                return step <= this.nDatabaseEmpty;
-            }) as number;
-            const waitingTime = timingCreneau[waitingStep];
+            const waitingStep = timingSteps.find(
+                (step) => step <= this.nDatabaseEmpty
+            ) as number;
+            const waitingTime = timingSlots[waitingStep];
             if (waitingStep === -1) {
                 resolve();
             } else {
@@ -41,14 +41,10 @@ export class ActionCron {
     }
 
     cycle() {
-        //cycle infini
+        // infinite cycle
         return this.oneActionCycle()
-            .then(() => {
-                return this.wait();
-            })
-            .then(() => {
-                return this.cycle();
-            });
+            .then(() => this.wait())
+            .then(() => this.cycle());
     }
 
     oneActionCycle() {
@@ -76,24 +72,23 @@ export class ActionCron {
                     },
                 },
                 {
-                    //blocked lock
+                    // blocked lock
                     'cronActivity.pending': true,
                     'cronActivity.lastActivity': {
-                        $lt: new Date(Date.now() - 10 * 60 * 1000),
+                        $lt: new Date(
+                            Date.now() - this.maxTimeToConsumeAnAction
+                        ),
                     },
                 },
             ],
         })
             .sort('cronActivity.lastActivity')
-            .then((action) => {
-                return action;
-            });
+            .then((action) => action);
     }
 
     async consumeAction(actionDb: ActionSchemaInterface<any>) {
-        //ce n'est pas tres grave si deux consumers tourne en parallele de temps en temps
-        //par contre, on veut eviter que cela se produise trop souvent
-        //d'ou le pseudo verrou : pendingCronActivity
+        // It is okay if two consumers run in parallel from time to time
+        // but we want to avoid it happening too often
         let action: Action;
         try {
             action = await Action.constructFromDb(actionDb);
@@ -112,7 +107,7 @@ export class ActionCron {
                 }
             );
         }
-        //Pour eviter d'ecraser des donnees (notamment bag), on passe directement via un update
+        // Use a direct update to avoid overwriting data (especially bag)
         const previousNextActivity = action.cronActivity.nextActivity;
         const currentDate = new Date();
         return this.app.ActionModel.updateOne(
@@ -124,26 +119,24 @@ export class ActionCron {
                 },
             }
         )
-            .then(() => {
-                return action.resyncWithDb();
-            })
+            .then(() => action.resyncWithDb())
             .then(() => {
                 if (
                     action.cronActivity.lastActivity?.getTime() !==
                     currentDate.getTime()
                 ) {
-                    //another cron took the action
-                    //we throw an error that we catch latter
+                    // another cron took the action,
+                    // throw an error that we will catch later
                     throw new ActionError(
                         'lock already taken',
                         errorCodes.RESOURCE_LOCKED
                     );
                 }
-                action.internalLog("cron début d'activité");
+                action.internalLog('CRON action processing started');
                 return action.resume();
             })
             .then(() => {
-                action.internalLog("cron fin d'activité");
+                action.internalLog('CRON action processing ended');
                 if (action.dbDoc.$isDeleted()) {
                     return Promise.resolve();
                 }
@@ -151,8 +144,8 @@ export class ActionCron {
                     action.cronActivity.nextActivity.getTime() ===
                     previousNextActivity.getTime()
                 ) {
-                    //si nextActivity est modifie a l'interieur du resume
-                    //on n'ecrase pas la modification
+                    // if nextActivity was changed inside resume
+                    // do not overwrite the change
                     action.dbDoc.updateNextActivity();
                 }
                 return this.app.ActionModel.updateOne(

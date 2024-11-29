@@ -1,9 +1,8 @@
-import { GitProvider, gitProviders } from './gitcenter';
 import { Gitlab } from '@gitbeaker/node';
+import { GitProvider, gitProviders } from './gitcenter';
 import { Commit } from './gitrepo';
-/**
- * documentation de l'api : https://docs.gitlab.com/ee/api/projects.html
- */
+
+// API documentation: https://docs.gitlab.com/ee/api/projects.html
 
 export class GitlabApi implements GitProvider {
     url = 'gitlab.com';

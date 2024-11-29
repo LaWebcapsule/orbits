@@ -1,7 +1,6 @@
 import { Executor, Action, ActionApp, ActionState } from '@wbce/orbits-core';
-import { Cli, o } from '@wbce/services';
+import { utils } from '@wbce/services';
 import { exec } from 'child_process';
-import Dockerode from 'dockerode';
 import Docker from 'dockerode';
 import path from 'path';
 
@@ -27,29 +26,7 @@ export class DockerExecutor extends Executor {
         this.dockerConfig = opts.dockerConfig || this.dockerConfig;
     }
 
-    install() {
-        const docker = new Docker();
-        /* return this.getHashFile().then((hash: string)=>{
-            this.imageName = hash;
-            return new Promise((resolve, reject)=>{
-                docker.buildImage(this.dockerfile, {t: this.imageName}, function(err, response){
-                    if(err){
-                        reject(err)
-                    }
-                    else{
-                        docker.modem.followProgress(response, (err, res) => err ? reject(err) : resolve(res))
-                    }
-                })
-            })
-        }).then(()=>{
-            return this.registry.getCredentials()
-        }).then((credentials)=>{
-            docker.getImage(this.imageName).push({
-                tag: this.imageName,
-                authconfig : credentials
-            })
-        }) */
-    }
+    install() {}
 
     scope = [ActionState.SLEEPING, ActionState.PAUSED];
 
@@ -61,35 +38,35 @@ export class DockerExecutor extends Executor {
             return action._resume();
         }
         const docker = new Docker({ socketPath: '/var/run/docker.sock' });
-        let imageName: string;
         return this.registry
             .getCredentials()
-            .then((credentials) => {
-                return new Promise((resolve, reject) => {
-                    const opts = {};
-                    credentials ? (opts['authconfig'] = credentials) : null;
-                    docker.pull(
-                        `${this.registry.url}:${this.registry.tag}`,
-                        opts,
-                        (err, res) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                docker.modem.followProgress(
-                                    res,
-                                    (err, res) =>
-                                        err ? reject(err) : resolve(res),
-                                    (event) =>
-                                        ActionApp.activeApp.logger.info(event)
-                                );
+            .then(
+                (credentials) =>
+                    new Promise((resolve, reject) => {
+                        const opts = {};
+                        credentials ? (opts['authconfig'] = credentials) : null;
+                        docker.pull(
+                            `${this.registry.url}:${this.registry.tag}`,
+                            opts,
+                            (err, res) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    docker.modem.followProgress(
+                                        res,
+                                        (err, res) =>
+                                            err ? reject(err) : resolve(res),
+                                        (event) =>
+                                            ActionApp.activeApp.logger.info(
+                                                event
+                                            )
+                                    );
+                                }
                             }
-                        }
-                    );
-                });
-            })
-            .then((image) => {
-                return this.calculatePath();
-            })
+                        );
+                    })
+            )
+            .then(() => this.calculatePath())
             .then((appPaths) => {
                 const envVariables = [];
                 for (const k in this.dockerConfig.env) {
@@ -103,26 +80,42 @@ export class DockerExecutor extends Executor {
                     WorkingDir: `/app`,
                     NetworkMode: 'host',
                     Env: envVariables,
-                    User: '1000:0', //we belong to the lords!... and also we are not the king because of:
-                    //https://docs.npmjs.com/cli/v7/using-npm/scripts#user
-                    //maybe use AddGroup ?
-                    //or maybe we should be a simple and normal user... But which one ?
-                    //maybe node would not work with all images
+                    User: '1000:0',
+                    // we belong to the lords!... and also we are not the king because of:
+                    // https://docs.npmjs.com/cli/v7/using-npm/scripts#user
+                    // maybe use AddGroup ?
+                    // or maybe we should be a simple and normal user... But which one ?
+                    // maybe node would not work with all images
                     Binds: [
                         '/var/run/docker.sock:/var/run/docker.sock',
-                        `${appPaths.primaryRootFolder || appPaths.rootFolder}:/app:ro`,
-                        `${appPaths.primaryCurrentFolder || appPaths.currentFolder}/${executionContext.entrypoint}:/${executionContext.entrypoint}:ro`,
+                        `${
+                            appPaths.primaryRootFolder || appPaths.rootFolder
+                        }:/app:ro`,
+                        `${
+                            appPaths.primaryCurrentFolder ||
+                            appPaths.currentFolder
+                        }/${executionContext.entrypoint}:/${
+                            executionContext.entrypoint
+                        }:ro`,
                     ], //deprecated
                     HostConfig: {
                         Binds: [
                             '/var/run/docker.sock:/var/run/docker.sock',
-                            `${appPaths.primaryRootFolder || appPaths.rootFolder}:/app:ro`,
-                            `${appPaths.primaryCurrentFolder || appPaths.currentFolder}/${executionContext.entrypoint}:/${executionContext.entrypoint}:ro`,
+                            `${
+                                appPaths.primaryRootFolder ||
+                                appPaths.rootFolder
+                            }:/app:ro`,
+                            `${
+                                appPaths.primaryCurrentFolder ||
+                                appPaths.currentFolder
+                            }/${executionContext.entrypoint}:/${
+                                executionContext.entrypoint
+                            }:ro`,
                         ],
                     },
                     ...this.dockerConfig,
                 };
-                dockerConfig['env'] = undefined; //'env' is a shorcut to construct Env. So we delete if after
+                dockerConfig['env'] = undefined; //'env' is a shortcut to construct Env. So we delete if after
                 let cmd = [
                     ...executionContext.command,
                     `/app/${appPaths.relativeEntrypointPathFromRoot}/${executionContext.entrypoint}`,
@@ -142,7 +135,7 @@ export class DockerExecutor extends Executor {
                 return container.remove();
             })
             .catch((err) => {
-                //note : we do not manage here the error, we just quit properly
+                // note : we do not manage here the error, we just quit properly
                 action.internalLogError(err);
             });
     }
@@ -153,7 +146,7 @@ export class DockerExecutor extends Executor {
         if (!isTsNode) {
             for (const arg of process.argv) {
                 if (arg.slice(-3) === '.ts') {
-                    //can be tricky. We don't have better for now. Maybe force to use an env variable ?
+                    // can be tricky. We don't have better for now. Maybe force to use an env variable ?
                     isTsNode = true;
                 }
             }
@@ -256,9 +249,7 @@ export class DockerExecutor extends Executor {
                 const container = docker.getContainer(res);
                 return docker.getContainer(res).inspect();
             })
-            .then((data) => {
-                return data.Mounts;
-            })
+            .then((data) => data.Mounts)
             .catch((err) => {
                 //we don't care of an error in this case
                 return;

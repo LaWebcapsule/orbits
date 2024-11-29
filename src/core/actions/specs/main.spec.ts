@@ -5,7 +5,6 @@ import {
     TestAction,
     TestActionWithWatcherEnding,
     WorkflowApp,
-    TestActionInWorkflow,
 } from './test-action';
 
 let j = new jasmin();
@@ -23,7 +22,7 @@ j.loadConfig({
         'action-job.spec.ts',
         'action.spec.ts',
         'workflow.spec.ts',
-        'other-action.spec.ts'
+        'other-action.spec.ts',
     ],
 });
 

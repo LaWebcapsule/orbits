@@ -1,15 +1,11 @@
 console.log('inside main spec 1 !!!');
 import jasmin from 'jasmine';
-import { bootstrapApp, ActionApp } from '@wbce/orbits-core';
-import { DockerAction } from './actions-test';
+import { ActionApp } from '@wbce/orbits-core';
 let j = new jasmin();
 
 j.loadConfig({
     spec_dir: '.',
-    spec_files: [
-        'cdk-action.spec.ts',
-        'docker-executor.spec.ts',
-    ],
+    spec_files: ['cdk-action.spec.ts', 'docker-executor.spec.ts'],
 });
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;

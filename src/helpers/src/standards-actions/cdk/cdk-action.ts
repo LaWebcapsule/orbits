@@ -8,7 +8,7 @@ import * as cdk from 'aws-cdk-lib';
 import { existsSync, readFileSync } from 'fs';
 import { DockerExecutor, PublicRegistry } from '../../executors';
 import { CdkHelper } from './cdk-helper';
-import { Duplex, Transform, Writable } from 'stream';
+import { Transform } from 'stream';
 
 export class CdkAction
     extends Action
@@ -20,7 +20,7 @@ export class CdkAction
     stack: cdk.Stack;
 
     static cronDefaultSettings = {
-        activityFrequence: 60 * 1000,
+        activityFrequency: 60 * 1000,
     };
 
     commandName: 'deploy' | 'bootstrap' | 'destroy';
@@ -153,9 +153,9 @@ export class CdkAction
                     cdkError.includes('ValidationError') &&
                     cdkError.includes('No updates are to be performed')
                 ) {
-                    //we consider this is a success
+                    // we consider this is a success
                     this.internalLog(
-                        'catched error, not considered as a real error'
+                        'caught error, not considered as a real error'
                     );
                     return;
                 }
@@ -226,7 +226,14 @@ export class CdkAction
     }
 }
 
+/**
+ * @deprecated use CdkBootstrapAction
+ */
 export class CdkBoostrapAction extends CdkAction {
+    commandName = 'bootstrap' as 'bootstrap';
+}
+
+export class CdkBootstrapAction extends CdkAction {
     commandName = 'bootstrap' as 'bootstrap';
 }
 
@@ -248,5 +255,10 @@ export class CdkDestroyAction extends CdkAction {
 }
 
 export class CdkHelperApp extends ActionApp {
-    declare = [CdkBoostrapAction, CdkDeployAction, CdkDestroyAction];
+    declare = [
+        CdkBoostrapAction,
+        CdkBootstrapAction,
+        CdkDeployAction,
+        CdkDestroyAction,
+    ];
 }

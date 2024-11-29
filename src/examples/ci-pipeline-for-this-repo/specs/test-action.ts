@@ -89,25 +89,19 @@ export class BasicWorkflow extends Workflow {
                 const b = new TestActionWithError();
                 return [a, b];
             })
-            .next(() => {
-                return Action.resolve('ok');
-            })
+            .next(() => Action.resolve('ok'))
             .catch(() => {
                 const a = new TestAction();
                 return [a];
             })
-            .next(() => {
-                return new Promise<void>((resolve) => {
-                    setTimeout(() => {
-                        resolve();
-                    }, 1000);
-                });
-            });
-        /*     .checkPoint("end")
-      .next(() => {
-  
-      })
-      .onSuccessGoTo("end"); */
+            .next(
+                () =>
+                    new Promise<void>((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 1000);
+                    })
+            );
     }
 }
 
@@ -157,9 +151,7 @@ export class TestRollBack extends Workflow {
                     return new TestRollBack();
                 }
             })
-            .next(() => {
-                return new TestActionWithRollBack();
-            });
+            .next(() => new TestActionWithRollBack());
     }
 }
 

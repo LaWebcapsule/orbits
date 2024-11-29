@@ -32,20 +32,16 @@ export class PublishNpmPackage extends GitCloneAction {
                 process.chdir(this.argument.packagePath);
                 return this.cli.command('npm', ['install']);
             })
-            .then(() => {
-                return this.cli.command('npm', [
+            .then(() =>
+                this.cli.command('npm', [
                     'config',
                     'set',
                     '_authToken',
                     process.env['NPM_TOKEN']!,
-                ]);
-            })
-            .then(() => {
-                return this.cli.command('npm', ['run', 'publish-package']);
-            })
-            .then(() => {
-                return ActionState.SUCCESS;
-            });
+                ])
+            )
+            .then(() => this.cli.command('npm', ['run', 'publish-package']))
+            .then(() => ActionState.SUCCESS);
     }
 
     /* watcher() {
@@ -60,8 +56,6 @@ export class PublishNpmPackage extends GitCloneAction {
                     return true;
                 }
             }
-        }).then((isPushed)=>{
-            return isPushed ? ActionState.SUCCESS : ActionState.SLEEPING;
-        });
+        }).then((isPushed) => isPushed ? ActionState.SUCCESS : ActionState.SLEEPING);
     } */
 }
