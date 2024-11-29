@@ -4,5 +4,4 @@
 /dist-*
 /dist
 *.tsbuildinfo
-package-lock.json
 !karma.conf.js
