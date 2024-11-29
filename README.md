@@ -32,13 +32,19 @@ You can use the `docker-compose.yml` file in order to run your app.
 - launch a docker-compose process with the `docker compose up` command.
 If you opt for this way of working, you still need to [install the dependencies](#standard-installation)
 
-### Standard installation
+### Standard install
+
+```bash
+pnpm install
+```
+
+### Standard installation in your project
 
 ```bash
 npm install @wbce/orbits-core @wbce/orbits-fuel
 ```
 
-### Minimal installation
+### Minimal installation in your project
 ```bash
 npm install @wbce/orbits-core
 ```
