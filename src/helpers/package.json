@@ -23,6 +23,7 @@
   },
   "homepage": "https://gitlab.com/webcapsule/actions#readme",
   "devDependencies": {
+    "@octokit/types": "^13.6.2",
     "@tsconfig/node14": "^1.0.3",
     "@tsconfig/node16": "^1.0.3",
     "@tsconfig/node16-strictest-esm": "^1.0.3",
