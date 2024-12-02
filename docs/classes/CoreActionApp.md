@@ -21,7 +21,7 @@
 - [db](CoreActionApp.md#db)
 - [declare](CoreActionApp.md#declare)
 - [imports](CoreActionApp.md#imports)
-- [invertedActionsRegistry](CoreActionApp.md#invertedActionsRegistry)
+- [invertedActionsRegistry](CoreActionApp.md#invertedactionsregistry)
 - [logger](CoreActionApp.md#logger)
 - [numberOfWorker](CoreActionApp.md#numberofworker)
 - [activeApp](CoreActionApp.md#activeapp)
@@ -30,6 +30,11 @@
 - [rejectBootstrap](CoreActionApp.md#rejectbootstrap)
 - [resolveBootstrap](CoreActionApp.md#resolvebootstrap)
 - [waitForActiveApp](CoreActionApp.md#waitforactiveapp)
+
+### Accessors
+
+- [inversedActionsRegistry](CoreActionApp.md#inversedactionsregistry)
+- [boostrapPath](CoreActionApp.md#boostrappath)
 
 ### Methods
 
@@ -46,9 +51,7 @@
 
 | Name | Type |
 | :------ | :------ |
-| `opts?` | `Object` |
-| `opts.db?` | `AppDb` |
-| `opts.logger?` | `Logger` |
+| `opts?` | [`ActionAppConfig`](../interfaces/ActionAppConfig.md) |
 
 #### Inherited from
 
@@ -56,7 +59,7 @@
 
 #### Defined in
 
-[src/app/action-app.ts:56](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L56)
+[src/core/actions/src/app/action-app.ts:82](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L82)
 
 ## Properties
 
@@ -70,7 +73,7 @@
 
 #### Defined in
 
-[src/app/action-app.ts:54](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L54)
+[src/core/actions/src/app/action-app.ts:60](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L60)
 
 ___
 
@@ -84,13 +87,13 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:36](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L36)
+[src/core/actions/src/app/action-app.ts:44](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L44)
 
 ___
 
 ### db
 
-• **db**: `AppDb`
+• **db**: [`AppDb`](../interfaces/AppDb.md)
 
 #### Inherited from
 
@@ -98,13 +101,13 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:48](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L48)
+[src/core/actions/src/app/action-app.ts:54](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L54)
 
 ___
 
 ### declare
 
-• **declare**: typeof [`Action`](Action.md)[]
+• **declare**: (typeof [`Action`](Action.md) \| typeof [`Workflow`](Workflow.md))[]
 
 #### Overrides
 
@@ -112,7 +115,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:147](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L147)
+[src/core/actions/src/app/action-app.ts:181](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L181)
 
 ___
 
@@ -126,7 +129,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:43](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L43)
+[src/core/actions/src/app/action-app.ts:49](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L49)
 
 ___
 
@@ -136,11 +139,11 @@ ___
 
 #### Inherited from
 
-[ActionApp](ActionApp.md).[invertedActionsRegistry](ActionApp.md#invertedActionsRegistry)
+[ActionApp](ActionApp.md).[invertedActionsRegistry](ActionApp.md#invertedactionsregistry)
 
 #### Defined in
 
-[src/app/action-app.ts:37](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L37)
+[src/core/actions/src/app/action-app.ts:45](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L45)
 
 ___
 
@@ -154,7 +157,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:39](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L39)
+[src/core/actions/src/app/action-app.ts:47](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L47)
 
 ___
 
@@ -168,7 +171,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:46](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L46)
+[src/core/actions/src/app/action-app.ts:52](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L52)
 
 ___
 
@@ -182,7 +185,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:24](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L24)
+[src/core/actions/src/app/action-app.ts:32](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L32)
 
 ___
 
@@ -196,7 +199,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:26](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L26)
+[src/core/actions/src/app/action-app.ts:34](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L34)
 
 ___
 
@@ -210,7 +213,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:34](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L34)
+[src/core/actions/src/app/action-app.ts:42](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L42)
 
 ___
 
@@ -224,7 +227,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:29](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L29)
+[src/core/actions/src/app/action-app.ts:37](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L37)
 
 ___
 
@@ -238,7 +241,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:28](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L28)
+[src/core/actions/src/app/action-app.ts:36](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L36)
 
 ___
 
@@ -252,7 +255,75 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:30](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L30)
+[src/core/actions/src/app/action-app.ts:38](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L38)
+
+## Accessors
+
+### inversedActionsRegistry
+
+• `get` **inversedActionsRegistry**(): `Map`<typeof [`Action`](Action.md), `string`\>
+
+**`Deprecated`**
+
+use invertedActionsRegistry
+
+#### Returns
+
+`Map`<typeof [`Action`](Action.md), `string`\>
+
+#### Inherited from
+
+ActionApp.inversedActionsRegistry
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:72](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L72)
+
+• `set` **inversedActionsRegistry**(`actionRegistry`): `void`
+
+**`Deprecated`**
+
+use invertedActionsRegistry
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `actionRegistry` | `Map`<typeof [`Action`](Action.md), `string`\> |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+ActionApp.inversedActionsRegistry
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:78](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L78)
+
+___
+
+### boostrapPath
+
+• `Static` `get` **boostrapPath**(): `string`
+
+**`Deprecated`**
+
+use bootstrapPath
+
+#### Returns
+
+`string`
+
+#### Inherited from
+
+ActionApp.boostrapPath
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:65](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L65)
 
 ## Methods
 
@@ -270,7 +341,7 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:68](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L68)
+[src/core/actions/src/app/action-app.ts:94](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L94)
 
 ___
 
@@ -288,4 +359,4 @@ ___
 
 #### Defined in
 
-[src/app/action-app.ts:101](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L101)
+[src/core/actions/src/app/action-app.ts:137](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L137)

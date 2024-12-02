@@ -2,7 +2,7 @@
 
 # Interface: ActionAppConfig
 
-An interface that describes how the app can be configured.
+Describes how the app can be configured.
 
 ## Table of contents
 
@@ -10,18 +10,19 @@ An interface that describes how the app can be configured.
 
 - [db](ActionAppConfig.md#db)
 - [logger](ActionAppConfig.md#logger)
+- [workers](ActionAppConfig.md#workers)
 
 ## Properties
 
 ### db
 
-• `Optional` **db**: `AppDb`
+• `Optional` **db**: [`AppDb`](AppDb.md)
 
 db configuration
 
 #### Defined in
 
-[src/app/action-app.ts:17](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L17)
+[src/core/actions/src/app/action-app.ts:23](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L23)
 
 ___
 
@@ -33,4 +34,20 @@ log driver configuration
 
 #### Defined in
 
-[src/app/action-app.ts:19](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/app/action-app.ts#L19)
+[src/core/actions/src/app/action-app.ts:25](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L25)
+
+___
+
+### workers
+
+• `Optional` **workers**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `quantity` | `number` |
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:26](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L26)

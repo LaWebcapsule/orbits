@@ -32,7 +32,7 @@
 
 #### Defined in
 
-[src/action-job.ts:14](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L14)
+[src/core/actions/src/action-job.ts:12](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L12)
 
 ## Properties
 
@@ -42,7 +42,7 @@
 
 #### Defined in
 
-[src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L10)
+[src/core/actions/src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L9)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L11)
+[src/core/actions/src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L10)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L9)
+[src/core/actions/src/action-job.ts:8](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L8)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:18](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L18)
+[src/core/actions/src/action-job.ts:16](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L16)
 
 ## Methods
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:88](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L88)
+[src/core/actions/src/action-job.ts:89](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L89)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:46](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L46)
+[src/core/actions/src/action-job.ts:43](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L43)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:69](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L69)
+[src/core/actions/src/action-job.ts:64](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L64)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:56](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L56)
+[src/core/actions/src/action-job.ts:50](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L50)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:135](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L135)
+[src/core/actions/src/action-job.ts:174](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L174)
 
 ___
 
@@ -168,4 +168,4 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:19](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L19)
+[src/core/actions/src/action-job.ts:17](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-job.ts#L17)

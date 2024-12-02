@@ -1,3 +1,5 @@
+export type { AppDb } from './src/app/db-connection';
+export type { errorCodes } from './src/error/errorcodes';
 export * from './src/app/action-app';
 export * from './src/action-manager';
 export * from './src/workflow-manager';

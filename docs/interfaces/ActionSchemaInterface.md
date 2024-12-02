@@ -33,6 +33,7 @@
 - [createdAt](ActionSchemaInterface.md#createdat)
 - [cronActivity](ActionSchemaInterface.md#cronactivity)
 - [db](ActionSchemaInterface.md#db)
+- [definitionFrom](ActionSchemaInterface.md#definitionfrom)
 - [delay](ActionSchemaInterface.md#delay)
 - [delays](ActionSchemaInterface.md#delays)
 - [errors](ActionSchemaInterface.md#errors)
@@ -53,6 +54,7 @@
 - [updateNextActivity](ActionSchemaInterface.md#updatenextactivity)
 - [updatedAt](ActionSchemaInterface.md#updatedat)
 - [workflowId](ActionSchemaInterface.md#workflowid)
+- [workflowStack](ActionSchemaInterface.md#workflowstack)
 - [workflowStep](ActionSchemaInterface.md#workflowstep)
 
 ### Methods
@@ -120,7 +122,7 @@ mongoose.Document.$locals
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:71
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:71
 
 ___
 
@@ -137,7 +139,7 @@ mongoose.Document.$op
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:83
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:83
 
 ___
 
@@ -153,7 +155,7 @@ mongoose.Document.$where
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:98
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:98
 
 ___
 
@@ -169,7 +171,7 @@ mongoose.Document.\_\_v
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:26
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:26
 
 ___
 
@@ -185,7 +187,7 @@ mongoose.Document.\_id
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:23
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:23
 
 ___
 
@@ -195,7 +197,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:25](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L25)
+[src/core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L32)
 
 ___
 
@@ -205,7 +207,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:22](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L22)
+[src/core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L29)
 
 ___
 
@@ -215,7 +217,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:23](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L23)
+[src/core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L30)
 
 ___
 
@@ -231,7 +233,7 @@ mongoose.Document.baseModelName
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:101
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:101
 
 ___
 
@@ -247,7 +249,7 @@ mongoose.Document.collection
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:104
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:104
 
 ___
 
@@ -257,7 +259,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:52](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L52)
+[src/core/actions/src/models/action.ts:69](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L69)
 
 ___
 
@@ -267,16 +269,17 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `frequency` | `number` |
-| `lastActivity` | `Date` |
-| `nextActivity` | `Date` |
-| `pending` | `Boolean` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `frequence?` | `number` | **`Deprecated`** use frequency |
+| `frequency` | `number` | - |
+| `lastActivity` | `Date` | - |
+| `nextActivity` | `Date` | - |
+| `pending` | `Boolean` | - |
 
 #### Defined in
 
-[src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L45)
+[src/core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L58)
 
 ___
 
@@ -292,7 +295,28 @@ mongoose.Document.db
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:107
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:107
+
+___
+
+### definitionFrom
+
+• `Optional` **definitionFrom**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `workflow` | { `_id`: `string` ; `marker`: `string` ; `ref`: `string` ; `stepIndex`: `number` ; `stepName`: `string`  } |
+| `workflow._id` | `string` |
+| `workflow.marker` | `string` |
+| `workflow.ref` | `string` |
+| `workflow.stepIndex` | `number` |
+| `workflow.stepName` | `string` |
+
+#### Defined in
+
+[src/core/actions/src/models/action.ts:70](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L70)
 
 ___
 
@@ -302,7 +326,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:40](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L40)
+[src/core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L53)
 
 ___
 
@@ -319,7 +343,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:41](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L41)
+[src/core/actions/src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L54)
 
 ___
 
@@ -335,7 +359,7 @@ mongoose.Document.errors
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:142
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:142
 
 ___
 
@@ -345,7 +369,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:26](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L26)
+[src/core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L33)
 
 ___
 
@@ -361,7 +385,7 @@ mongoose.Document.id
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:154
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:154
 
 ___
 
@@ -377,7 +401,7 @@ mongoose.Document.isNew
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:185
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:185
 
 ___
 
@@ -395,7 +419,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:55](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L55)
+[src/core/actions/src/models/action.ts:81](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L81)
 
 ___
 
@@ -405,7 +429,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L30)
+[src/core/actions/src/models/action.ts:43](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L43)
 
 ___
 
@@ -415,7 +439,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L31)
+[src/core/actions/src/models/action.ts:44](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L44)
 
 ___
 
@@ -432,7 +456,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L36)
+[src/core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L49)
 
 ___
 
@@ -442,7 +466,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L29)
+[src/core/actions/src/models/action.ts:42](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L42)
 
 ___
 
@@ -460,7 +484,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L54)
+[src/core/actions/src/models/action.ts:80](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L80)
 
 ___
 
@@ -477,7 +501,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L32)
+[src/core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L45)
 
 ___
 
@@ -487,7 +511,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:24](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L24)
+[src/core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L31)
 
 ___
 
@@ -503,7 +527,7 @@ mongoose.Document.schema
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:232
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:232
 
 ___
 
@@ -513,7 +537,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:20](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L20)
+[src/core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L27)
 
 ___
 
@@ -523,7 +547,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:21](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L21)
+[src/core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L28)
 
 ___
 
@@ -541,7 +565,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L53)
+[src/core/actions/src/models/action.ts:79](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L79)
 
 ___
 
@@ -551,7 +575,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:51](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L51)
+[src/core/actions/src/models/action.ts:68](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L68)
 
 ___
 
@@ -561,7 +585,17 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L27)
+[src/core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L34)
+
+___
+
+### workflowStack
+
+• **workflowStack**: { `_id`: `string` ; `ref`: `string` ; `stepIndex`: `number` ; `stepName`: `string`  }[]
+
+#### Defined in
+
+[src/core/actions/src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L36)
 
 ___
 
@@ -571,7 +605,7 @@ ___
 
 #### Defined in
 
-[src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/models/action.ts#L28)
+[src/core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L35)
 
 ## Methods
 
@@ -604,7 +638,7 @@ mongoose.Document.$assertPopulated
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:29
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:29
 
 ___
 
@@ -624,7 +658,7 @@ mongoose.Document.$clone
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:32
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:32
 
 ___
 
@@ -642,7 +676,7 @@ mongoose.Document.$getAllSubdocs
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:35
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:35
 
 ___
 
@@ -662,7 +696,7 @@ mongoose.Document.$getPopulatedDocs
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:47
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:47
 
 ___
 
@@ -688,7 +722,7 @@ mongoose.Document.$ignore
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:38
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:38
 
 ___
 
@@ -717,7 +751,7 @@ mongoose.Document.$inc
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:54
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:54
 
 ___
 
@@ -743,7 +777,7 @@ mongoose.Document.$isDefault
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:41
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:41
 
 ___
 
@@ -769,7 +803,7 @@ mongoose.Document.$isDeleted
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:44
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:44
 
 ___
 
@@ -797,7 +831,7 @@ mongoose.Document.$isEmpty
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:61
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:61
 
 ___
 
@@ -823,7 +857,7 @@ mongoose.Document.$isValid
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:64
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:64
 
 ___
 
@@ -849,7 +883,7 @@ mongoose.Document.$markValid
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:74
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:74
 
 ___
 
@@ -881,7 +915,7 @@ mongoose.Document.$model
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:77
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:77
 
 ___
 
@@ -902,7 +936,7 @@ mongoose.Document.$parent
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:207
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:207
 
 ___
 
@@ -930,7 +964,7 @@ mongoose.Document.$session
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:90
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:90
 
 ___
 
@@ -959,7 +993,7 @@ mongoose.Document.$set
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:93
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:93
 
 ▸ **$set**(`path`, `val`, `options?`): [`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>
 
@@ -981,7 +1015,7 @@ mongoose.Document.$set
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:94
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:94
 
 ▸ **$set**(`value`): [`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>
 
@@ -1001,7 +1035,7 @@ mongoose.Document.$set
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:95
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:95
 
 ___
 
@@ -1028,7 +1062,7 @@ mongoose.Document.delete
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:110
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:110
 
 ▸ **delete**(`callback`): `void`
 
@@ -1048,7 +1082,7 @@ mongoose.Document.delete
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:111
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:111
 
 ▸ **delete**(`options?`): `any`
 
@@ -1068,7 +1102,7 @@ mongoose.Document.delete
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:112
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:112
 
 ___
 
@@ -1095,7 +1129,7 @@ mongoose.Document.deleteOne
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:115
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:115
 
 ▸ **deleteOne**(`callback`): `void`
 
@@ -1115,7 +1149,7 @@ mongoose.Document.deleteOne
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:116
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:116
 
 ▸ **deleteOne**(`options?`): `any`
 
@@ -1135,7 +1169,7 @@ mongoose.Document.deleteOne
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:117
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:117
 
 ___
 
@@ -1162,7 +1196,7 @@ mongoose.Document.depopulate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:123
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:123
 
 ___
 
@@ -1184,7 +1218,7 @@ mongoose.Document.directModifiedPaths
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:130
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:130
 
 ___
 
@@ -1214,7 +1248,7 @@ mongoose.Document.equals
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:139
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:139
 
 ___
 
@@ -1242,7 +1276,7 @@ mongoose.Document.get
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:145
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:145
 
 ___
 
@@ -1263,7 +1297,7 @@ mongoose.Document.getChanges
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:151
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:151
 
 ___
 
@@ -1283,7 +1317,7 @@ mongoose.Document.increment
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:157
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:157
 
 ___
 
@@ -1313,7 +1347,7 @@ mongoose.Document.init
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:164
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:164
 
 ___
 
@@ -1342,7 +1376,7 @@ mongoose.Document.invalidate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:167
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:167
 
 ___
 
@@ -1368,7 +1402,7 @@ mongoose.Document.isDirectModified
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:170
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:170
 
 ___
 
@@ -1394,7 +1428,7 @@ mongoose.Document.isDirectSelected
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:173
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:173
 
 ___
 
@@ -1420,13 +1454,13 @@ mongoose.Document.isInit
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:176
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:176
 
 ___
 
 ### isModified
 
-▸ **isModified**(`path?`): `boolean`
+▸ **isModified**(`path?`, `options?`): `boolean`
 
 Returns true if any of the given paths are modified, else false. If no arguments, returns `true` if any path
 in this document is modified.
@@ -1436,6 +1470,8 @@ in this document is modified.
 | Name | Type |
 | :------ | :------ |
 | `path?` | `string` \| `string`[] |
+| `options?` | `Object` |
+| `options.ignoreAtomics?` | `boolean` |
 
 #### Returns
 
@@ -1447,7 +1483,7 @@ mongoose.Document.isModified
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:182
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:182
 
 ___
 
@@ -1473,7 +1509,7 @@ mongoose.Document.isSelected
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:188
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:188
 
 ___
 
@@ -1500,7 +1536,7 @@ mongoose.Document.markModified
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:191
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:191
 
 ___
 
@@ -1527,7 +1563,7 @@ mongoose.Document.modifiedPaths
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:194
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:194
 
 ___
 
@@ -1555,7 +1591,7 @@ mongoose.Document.overwrite
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:201
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:201
 
 ___
 
@@ -1587,7 +1623,7 @@ mongoose.Document.populate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:210
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:210
 
 ▸ **populate**<`Paths`\>(`path`, `callback`): `void`
 
@@ -1614,7 +1650,7 @@ mongoose.Document.populate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:211
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:211
 
 ▸ **populate**<`Paths`\>(`path`, `select?`, `model?`, `match?`, `options?`): `Promise`<`MergeType`<[`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>, `Paths`\>\>
 
@@ -1644,7 +1680,7 @@ mongoose.Document.populate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:212
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:212
 
 ▸ **populate**<`Paths`\>(`path`, `select?`, `model?`, `match?`, `options?`, `callback?`): `void`
 
@@ -1675,7 +1711,7 @@ mongoose.Document.populate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:213
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:213
 
 ___
 
@@ -1701,7 +1737,7 @@ mongoose.Document.populated
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:216
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:216
 
 ___
 
@@ -1728,7 +1764,7 @@ mongoose.Document.remove
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:219
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:219
 
 ▸ **remove**(`callback`): `void`
 
@@ -1748,7 +1784,7 @@ mongoose.Document.remove
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:220
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:220
 
 ▸ **remove**(`options?`): `Promise`<[`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>\>
 
@@ -1768,7 +1804,7 @@ mongoose.Document.remove
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:221
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:221
 
 ___
 
@@ -1796,7 +1832,7 @@ mongoose.Document.replaceOne
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:224
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:224
 
 ___
 
@@ -1823,7 +1859,7 @@ mongoose.Document.save
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:227
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:227
 
 ▸ **save**(`callback`): `void`
 
@@ -1843,7 +1879,7 @@ mongoose.Document.save
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:228
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:228
 
 ▸ **save**(`options?`): `Promise`<[`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>\>
 
@@ -1863,7 +1899,7 @@ mongoose.Document.save
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:229
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:229
 
 ___
 
@@ -1892,7 +1928,7 @@ mongoose.Document.set
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:235
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:235
 
 ▸ **set**(`path`, `val`, `options?`): [`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>
 
@@ -1914,7 +1950,7 @@ mongoose.Document.set
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:236
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:236
 
 ▸ **set**(`value`): [`ActionSchemaInterface`](ActionSchemaInterface.md)<`TArgument`, `TBag`, `TResult`\>
 
@@ -1934,7 +1970,7 @@ mongoose.Document.set
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:237
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:237
 
 ___
 
@@ -1966,7 +2002,7 @@ mongoose.Document.toJSON
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:240
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:240
 
 ▸ **toJSON**<`T`\>(`options`): `T`
 
@@ -1992,7 +2028,7 @@ mongoose.Document.toJSON
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:241
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:241
 
 ___
 
@@ -2024,7 +2060,7 @@ mongoose.Document.toObject
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:244
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:244
 
 ___
 
@@ -2050,7 +2086,7 @@ mongoose.Document.unmarkModified
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:247
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:247
 
 ___
 
@@ -2078,7 +2114,7 @@ mongoose.Document.update
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:250
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:250
 
 ___
 
@@ -2106,7 +2142,7 @@ mongoose.Document.updateOne
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:253
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:253
 
 ___
 
@@ -2134,7 +2170,7 @@ mongoose.Document.validate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:256
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:256
 
 ▸ **validate**(`pathsToValidate`, `callback`): `void`
 
@@ -2155,7 +2191,7 @@ mongoose.Document.validate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:257
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:257
 
 ▸ **validate**(`callback`): `void`
 
@@ -2175,7 +2211,7 @@ mongoose.Document.validate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:258
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:258
 
 ▸ **validate**(`pathsToValidate?`, `options?`): `Promise`<`void`\>
 
@@ -2196,7 +2232,7 @@ mongoose.Document.validate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:259
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:259
 
 ▸ **validate**(`options`): `Promise`<`void`\>
 
@@ -2217,7 +2253,7 @@ mongoose.Document.validate
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:260
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:260
 
 ___
 
@@ -2244,7 +2280,7 @@ mongoose.Document.validateSync
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:263
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:263
 
 ▸ **validateSync**(`pathsToValidate?`, `options?`): `ValidationError`
 
@@ -2265,4 +2301,4 @@ mongoose.Document.validateSync
 
 #### Defined in
 
-node_modules/mongoose/types/document.d.ts:264
+node_modules/.pnpm/mongoose@6.13.5_@aws-sdk+client-sso-oidc@3.699.0_@aws-sdk+client-sts@3.699.0_/node_modules/mongoose/types/document.d.ts:264
