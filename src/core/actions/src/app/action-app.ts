@@ -41,8 +41,8 @@ export class ActionApp {
     });
     static bootstrapPath: string;
 
-    actionsRegistry = new Map<string, typeof Action>();
-    invertedActionsRegistry = new Map<typeof Action, string>();
+    private actionsRegistry = new Map<string, typeof Action>();
+    private invertedActionsRegistry = new Map<typeof Action, string>();
 
     logger = defaultLogger;
 
@@ -66,19 +66,6 @@ export class ActionApp {
         return ActionApp.bootstrapPath;
     }
 
-    /**
-     * @deprecated use invertedActionsRegistry
-     */
-    get inversedActionsRegistry() {
-        return this.invertedActionsRegistry;
-    }
-    /**
-     * @deprecated use invertedActionsRegistry
-     */
-    set inversedActionsRegistry(actionRegistry: Map<typeof Action, string>) {
-        this.invertedActionsRegistry = actionRegistry;
-    }
-
     constructor(opts?: ActionAppConfig) {
         if (opts?.logger) {
             this.logger = opts.logger;
@@ -91,6 +78,29 @@ export class ActionApp {
         }
     }
 
+    /**
+     * Register action in App registries.
+     *
+     * @param action
+     */
+    private registerAction(action: typeof Action) {
+        let [ref, ...previousRefs] = Array.isArray(action.permanentRef)
+            ? action.permanentRef
+            : [action.permanentRef];
+        [ref, ...previousRefs, action.name].map(
+            (ref) => ref && this.actionsRegistry.set(ref, action)
+        );
+        this.invertedActionsRegistry.set(action, ref || action.name);
+    }
+
+    getActionFromRegistry(actionRef: string) {
+        return this.actionsRegistry.get(actionRef);
+    }
+
+    getActionRefFromRegistry(action: typeof Action) {
+        return this.invertedActionsRegistry.get(action);
+    }
+
     bootstrap() {
         if (ActionApp.activeApp && ActionApp.activeApp !== this) {
             throw new ActionError(
@@ -99,19 +109,8 @@ export class ActionApp {
         }
         this.imports.push(CoreActionApp);
         this.import();
-        for (const actionCtr of this.declare) {
-            let refs = [];
-            const actionRef = actionCtr.permanentRef;
-            if (Array.isArray(actionRef)) {
-                refs = actionRef;
-            } else if (actionRef) {
-                refs.push(actionRef);
-            }
-            refs.push(actionCtr.name);
-            for (const ref of refs) {
-                this.actionsRegistry.set(ref, actionCtr);
-            }
-            this.invertedActionsRegistry.set(actionCtr, refs[0]);
+        for (const action of this.declare) {
+            this.registerAction(action);
         }
         ActionApp.activeApp = this;
         setLogger(this);
