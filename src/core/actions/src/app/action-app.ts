@@ -178,9 +178,14 @@ export function bootstrapApp(
         }
         ActionApp.bootstrapPath = bootstrapPath;
         ActionApp.activeApp = new classTargetConstructor(opts);
-        ActionApp.activeApp.bootstrap().then(() => {
-            ActionApp.resolveBootstrap();
-        });
+        ActionApp.activeApp
+            .bootstrap()
+            .then(() => {
+                ActionApp.resolveBootstrap();
+            })
+            .catch((err) => {
+                ActionApp.rejectBootstrap(err);
+            });
     };
 }
 
