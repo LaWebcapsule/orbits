@@ -29,7 +29,7 @@ Either `url` or `conn` should be present.
 
 #### Defined in
 
-[src/core/actions/src/app/db-connection.ts:11](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/db-connection.ts#L11)
+[src/core/actions/src/app/db-connection.ts:11](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/db-connection.ts#L11)
 
 ___
 
@@ -39,4 +39,4 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/db-connection.ts:16](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/db-connection.ts#L16)
+[src/core/actions/src/app/db-connection.ts:16](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/db-connection.ts#L16)

@@ -197,7 +197,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L32)
+[src/core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L32)
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L29)
+[src/core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L29)
 
 ___
 
@@ -217,7 +217,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L30)
+[src/core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L30)
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:69](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L69)
+[src/core/actions/src/models/action.ts:69](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L69)
 
 ___
 
@@ -279,7 +279,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L58)
+[src/core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L58)
 
 ___
 
@@ -316,7 +316,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:70](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L70)
+[src/core/actions/src/models/action.ts:70](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L70)
 
 ___
 
@@ -326,7 +326,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L53)
+[src/core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L53)
 
 ___
 
@@ -343,7 +343,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L54)
+[src/core/actions/src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L54)
 
 ___
 
@@ -369,7 +369,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L33)
+[src/core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L33)
 
 ___
 
@@ -419,7 +419,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:81](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L81)
+[src/core/actions/src/models/action.ts:81](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L81)
 
 ___
 
@@ -429,7 +429,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:43](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L43)
+[src/core/actions/src/models/action.ts:43](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L43)
 
 ___
 
@@ -439,7 +439,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:44](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L44)
+[src/core/actions/src/models/action.ts:44](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L44)
 
 ___
 
@@ -456,7 +456,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L49)
+[src/core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L49)
 
 ___
 
@@ -466,7 +466,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:42](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L42)
+[src/core/actions/src/models/action.ts:42](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L42)
 
 ___
 
@@ -484,7 +484,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:80](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L80)
+[src/core/actions/src/models/action.ts:80](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L80)
 
 ___
 
@@ -501,7 +501,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L45)
+[src/core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L45)
 
 ___
 
@@ -511,7 +511,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L31)
+[src/core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L31)
 
 ___
 
@@ -537,7 +537,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L27)
+[src/core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L27)
 
 ___
 
@@ -547,7 +547,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L28)
+[src/core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L28)
 
 ___
 
@@ -565,7 +565,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:79](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L79)
+[src/core/actions/src/models/action.ts:79](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L79)
 
 ___
 
@@ -575,7 +575,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:68](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L68)
+[src/core/actions/src/models/action.ts:68](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L68)
 
 ___
 
@@ -585,7 +585,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L34)
+[src/core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L34)
 
 ___
 
@@ -595,7 +595,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L36)
+[src/core/actions/src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L36)
 
 ___
 
@@ -605,7 +605,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L35)
+[src/core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L35)
 
 ## Methods
 

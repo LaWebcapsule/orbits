@@ -22,7 +22,7 @@ db configuration
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:23](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L23)
+[src/core/actions/src/app/action-app.ts:23](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L23)
 
 ___
 
@@ -34,7 +34,7 @@ log driver configuration
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:25](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L25)
+[src/core/actions/src/app/action-app.ts:25](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L25)
 
 ___
 
@@ -46,8 +46,9 @@ ___
 
 | Name | Type |
 | :------ | :------ |
+| `filter?` | `Object` |
 | `quantity` | `number` |
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:26](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L26)
+[src/core/actions/src/app/action-app.ts:26](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L26)

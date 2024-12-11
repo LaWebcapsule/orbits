@@ -17,6 +17,7 @@
 ### Properties
 
 - [ActionModel](ActionApp.md#actionmodel)
+- [actionFilter](ActionApp.md#actionfilter)
 - [actionsRegistry](ActionApp.md#actionsregistry)
 - [db](ActionApp.md#db)
 - [declare](ActionApp.md#declare)
@@ -33,13 +34,15 @@
 
 ### Accessors
 
-- [inversedActionsRegistry](ActionApp.md#inversedactionsregistry)
 - [boostrapPath](ActionApp.md#boostrappath)
 
 ### Methods
 
 - [bootstrap](ActionApp.md#bootstrap)
+- [getActionFromRegistry](ActionApp.md#getactionfromregistry)
+- [getActionRefFromRegistry](ActionApp.md#getactionreffromregistry)
 - [import](ActionApp.md#import)
+- [registerAction](ActionApp.md#registeraction)
 - [getActiveApp](ActionApp.md#getactiveapp)
 
 ## Constructors
@@ -56,7 +59,7 @@
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:82](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L82)
+[src/core/actions/src/app/action-app.ts:76](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L76)
 
 ## Properties
 
@@ -66,17 +69,30 @@
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:60](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L60)
+[src/core/actions/src/app/action-app.ts:67](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L67)
+
+___
+
+### actionFilter
+
+• `Optional` **actionFilter**: `Object`
+
+Used by ActionCron to
+filter actions using their `filter` field
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:59](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L59)
 
 ___
 
 ### actionsRegistry
 
-• **actionsRegistry**: `Map`<`string`, typeof [`Action`](Action.md)\>
+• `Private` **actionsRegistry**: `Map`<`string`, typeof [`Action`](Action.md)\>
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:44](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L44)
+[src/core/actions/src/app/action-app.ts:45](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L45)
 
 ___
 
@@ -86,7 +102,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:54](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L54)
+[src/core/actions/src/app/action-app.ts:61](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L61)
 
 ___
 
@@ -96,7 +112,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:50](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L50)
+[src/core/actions/src/app/action-app.ts:51](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L51)
 
 ___
 
@@ -106,17 +122,17 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:49](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L49)
+[src/core/actions/src/app/action-app.ts:50](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L50)
 
 ___
 
 ### invertedActionsRegistry
 
-• **invertedActionsRegistry**: `Map`<typeof [`Action`](Action.md), `string`\>
+• `Private` **invertedActionsRegistry**: `Map`<typeof [`Action`](Action.md), `string`\>
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:45](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L45)
+[src/core/actions/src/app/action-app.ts:46](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L46)
 
 ___
 
@@ -126,7 +142,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:47](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L47)
+[src/core/actions/src/app/action-app.ts:48](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L48)
 
 ___
 
@@ -136,7 +152,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:52](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L52)
+[src/core/actions/src/app/action-app.ts:53](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L53)
 
 ___
 
@@ -146,7 +162,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:32](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L32)
+[src/core/actions/src/app/action-app.ts:33](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L33)
 
 ___
 
@@ -156,7 +172,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:34](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L34)
+[src/core/actions/src/app/action-app.ts:35](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L35)
 
 ___
 
@@ -166,7 +182,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:42](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L42)
+[src/core/actions/src/app/action-app.ts:43](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L43)
 
 ___
 
@@ -176,7 +192,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:37](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L37)
+[src/core/actions/src/app/action-app.ts:38](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L38)
 
 ___
 
@@ -186,7 +202,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:36](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L36)
+[src/core/actions/src/app/action-app.ts:37](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L37)
 
 ___
 
@@ -196,47 +212,9 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:38](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L38)
+[src/core/actions/src/app/action-app.ts:39](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L39)
 
 ## Accessors
-
-### inversedActionsRegistry
-
-• `get` **inversedActionsRegistry**(): `Map`<typeof [`Action`](Action.md), `string`\>
-
-**`Deprecated`**
-
-use invertedActionsRegistry
-
-#### Returns
-
-`Map`<typeof [`Action`](Action.md), `string`\>
-
-#### Defined in
-
-[src/core/actions/src/app/action-app.ts:72](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L72)
-
-• `set` **inversedActionsRegistry**(`actionRegistry`): `void`
-
-**`Deprecated`**
-
-use invertedActionsRegistry
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `actionRegistry` | `Map`<typeof [`Action`](Action.md), `string`\> |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[src/core/actions/src/app/action-app.ts:78](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L78)
-
-___
 
 ### boostrapPath
 
@@ -252,7 +230,7 @@ use bootstrapPath
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:65](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L65)
+[src/core/actions/src/app/action-app.ts:72](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L72)
 
 ## Methods
 
@@ -266,7 +244,47 @@ use bootstrapPath
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:94](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L94)
+[src/core/actions/src/app/action-app.ts:112](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L112)
+
+___
+
+### getActionFromRegistry
+
+▸ **getActionFromRegistry**(`actionRef`): typeof [`Action`](Action.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `actionRef` | `string` |
+
+#### Returns
+
+typeof [`Action`](Action.md)
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:104](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L104)
+
+___
+
+### getActionRefFromRegistry
+
+▸ **getActionRefFromRegistry**(`action`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `action` | typeof [`Action`](Action.md) |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:108](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L108)
 
 ___
 
@@ -280,7 +298,29 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:125](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L125)
+[src/core/actions/src/app/action-app.ts:132](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L132)
+
+___
+
+### registerAction
+
+▸ `Private` **registerAction**(`action`): `void`
+
+Register action in App registries.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `action` | typeof [`Action`](Action.md) |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/core/actions/src/app/action-app.ts:94](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L94)
 
 ___
 
@@ -294,4 +334,4 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:137](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L137)
+[src/core/actions/src/app/action-app.ts:144](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L144)

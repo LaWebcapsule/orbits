@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:19](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L19)
+[src/core/actions/src/workflow-manager.ts:19](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L19)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L20)
+[src/core/actions/src/workflow-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L20)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:21](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L21)
+[src/core/actions/src/workflow-manager.ts:21](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L21)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:24](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L24)
+[src/core/actions/src/workflow-manager.ts:24](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L24)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L25)
+[src/core/actions/src/workflow-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L25)
 
 ___
 
@@ -105,4 +105,4 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:28](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L28)
+[src/core/actions/src/workflow-manager.ts:28](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L28)

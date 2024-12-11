@@ -2,8 +2,6 @@
 
 # Enumeration: errorCodes
 
-Error codes
-
 ## Table of contents
 
 ### Enumeration Members
@@ -35,7 +33,7 @@ Error codes
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:6](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L6)
+[src/core/actions/src/error/errorcodes.ts:3](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L3)
 
 ___
 
@@ -45,7 +43,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:18](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L18)
+[src/core/actions/src/error/errorcodes.ts:15](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L15)
 
 ___
 
@@ -55,7 +53,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:16](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L16)
+[src/core/actions/src/error/errorcodes.ts:13](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L13)
 
 ___
 
@@ -69,7 +67,7 @@ use NOT_ACCEPTABLE
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:15](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L15)
+[src/core/actions/src/error/errorcodes.ts:12](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L12)
 
 ___
 
@@ -79,7 +77,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:5](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L5)
+[src/core/actions/src/error/errorcodes.ts:2](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L2)
 
 ___
 
@@ -91,7 +89,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:33](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L33)
+[src/core/actions/src/error/errorcodes.ts:30](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L30)
 
 ___
 
@@ -101,7 +99,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:34](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L34)
+[src/core/actions/src/error/errorcodes.ts:31](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L31)
 
 ___
 
@@ -111,7 +109,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:35](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L35)
+[src/core/actions/src/error/errorcodes.ts:32](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L32)
 
 ___
 
@@ -121,7 +119,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:36](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L36)
+[src/core/actions/src/error/errorcodes.ts:33](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L33)
 
 ___
 
@@ -131,7 +129,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:37](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L37)
+[src/core/actions/src/error/errorcodes.ts:34](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L34)
 
 ___
 
@@ -141,7 +139,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:28](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L28)
+[src/core/actions/src/error/errorcodes.ts:25](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L25)
 
 ___
 
@@ -151,7 +149,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:23](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L23)
+[src/core/actions/src/error/errorcodes.ts:20](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L20)
 
 ___
 
@@ -161,7 +159,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:11](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L11)
+[src/core/actions/src/error/errorcodes.ts:8](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L8)
 
 ___
 
@@ -175,7 +173,7 @@ use RESOURCE_ALREADY_EXISTS
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:27](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L27)
+[src/core/actions/src/error/errorcodes.ts:24](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L24)
 
 ___
 
@@ -189,7 +187,7 @@ use RESOURCE_LOCKED
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:22](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L22)
+[src/core/actions/src/error/errorcodes.ts:19](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L19)
 
 ___
 
@@ -203,7 +201,7 @@ use RESOURCE_NOT_FOUND
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:10](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L10)
+[src/core/actions/src/error/errorcodes.ts:7](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L7)
 
 ___
 
@@ -213,7 +211,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:29](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L29)
+[src/core/actions/src/error/errorcodes.ts:26](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L26)
 
 ___
 
@@ -223,4 +221,4 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/errorcodes.ts:17](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/errorcodes.ts#L17)
+[src/core/actions/src/error/errorcodes.ts:14](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/errorcodes.ts#L14)

@@ -49,7 +49,7 @@
 
 #### Defined in
 
-[src/core/actions/src/models/action.ts:84](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/models/action.ts#L84)
+[src/core/actions/src/models/action.ts:84](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/models/action.ts#L84)
 
 ## Functions
 
@@ -83,4 +83,4 @@ Bootstrap an app, used as decorator.
 
 #### Defined in
 
-[src/core/actions/src/app/action-app.ts:150](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/app/action-app.ts#L150)
+[src/core/actions/src/app/action-app.ts:157](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/app/action-app.ts#L157)

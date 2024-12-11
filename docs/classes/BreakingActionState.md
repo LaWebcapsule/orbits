@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:15](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L15)
+[src/core/actions/src/error/error.ts:15](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L15)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:16](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L16)
+[src/core/actions/src/error/error.ts:16](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L16)
 
 ___
 
@@ -48,4 +48,4 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:17](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L17)
+[src/core/actions/src/error/error.ts:17](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L17)

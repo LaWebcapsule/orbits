@@ -48,7 +48,7 @@ Error.constructor
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:5](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L5)
+[src/core/actions/src/error/error.ts:5](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L5)
 
 ## Properties
 
@@ -58,7 +58,7 @@ Error.constructor
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:7](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L7)
+[src/core/actions/src/error/error.ts:7](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L7)
 
 ___
 
@@ -72,7 +72,7 @@ Error.message
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:6](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L6)
+[src/core/actions/src/error/error.ts:6](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L6)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/error/error.ts:8](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/error/error.ts#L8)
+[src/core/actions/src/error/error.ts:8](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/error/error.ts#L8)
 
 ___
 

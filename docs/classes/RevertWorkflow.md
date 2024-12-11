@@ -134,7 +134,7 @@ Extends this class to build new actions behaviors.
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:64](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L64)
+[src/core/actions/src/workflow-manager.ts:64](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L64)
 
 ## Properties
 
@@ -156,7 +156,7 @@ Action argument
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:604](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L604)
+[src/core/actions/src/workflow-manager.ts:604](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L604)
 
 ___
 
@@ -186,7 +186,7 @@ Action bag
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:42](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L42)
+[src/core/actions/src/workflow-manager.ts:42](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L42)
 
 ___
 
@@ -202,7 +202,7 @@ Action result
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:94](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L94)
+[src/core/actions/src/action-manager.ts:94](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L94)
 
 ___
 
@@ -218,7 +218,7 @@ The action that rollback this action.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:868](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L868)
+[src/core/actions/src/action-manager.ts:868](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L868)
 
 ___
 
@@ -237,7 +237,7 @@ Will use [RollBackAction](RollBackAction.md).
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:598](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L598)
+[src/core/actions/src/workflow-manager.ts:598](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L598)
 
 ___
 
@@ -251,7 +251,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:27](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L27)
+[src/core/actions/src/action-manager.ts:27](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L27)
 
 ___
 
@@ -265,7 +265,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:36](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L36)
+[src/core/actions/src/workflow-manager.ts:36](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L36)
 
 ___
 
@@ -281,7 +281,7 @@ Action Database Document
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:99](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L99)
+[src/core/actions/src/action-manager.ts:99](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L99)
 
 ___
 
@@ -295,7 +295,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:38](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L38)
+[src/core/actions/src/workflow-manager.ts:38](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L38)
 
 ___
 
@@ -311,7 +311,7 @@ Specify an executor in which all actions of this class will run.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L25)
+[src/core/actions/src/action-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L25)
 
 ___
 
@@ -325,7 +325,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:478](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L478)
+[src/core/actions/src/action-manager.ts:478](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L478)
 
 ___
 
@@ -343,7 +343,7 @@ use isInitialized
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:450](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L450)
+[src/core/actions/src/action-manager.ts:450](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L450)
 
 ___
 
@@ -357,7 +357,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:451](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L451)
+[src/core/actions/src/action-manager.ts:451](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L451)
 
 ___
 
@@ -367,7 +367,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:608](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L608)
+[src/core/actions/src/workflow-manager.ts:608](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L608)
 
 ___
 
@@ -381,7 +381,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:40](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L40)
+[src/core/actions/src/workflow-manager.ts:40](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L40)
 
 ___
 
@@ -406,7 +406,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:67](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L67)
+[src/core/actions/src/action-manager.ts:67](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L67)
 
 ___
 
@@ -424,7 +424,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:34](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L34)
+[src/core/actions/src/workflow-manager.ts:34](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L34)
 
 ___
 
@@ -464,7 +464,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:55](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L55)
+[src/core/actions/src/action-manager.ts:55](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L55)
 
 ___
 
@@ -481,7 +481,7 @@ It should be a permanent id that designates the action instance.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L20)
+[src/core/actions/src/action-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L20)
 
 ## Accessors
 
@@ -499,7 +499,7 @@ Workflow.\_id
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:150](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L150)
+[src/core/actions/src/action-manager.ts:150](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L150)
 
 ___
 
@@ -517,7 +517,7 @@ Workflow.argument
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:114](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L114)
+[src/core/actions/src/action-manager.ts:114](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L114)
 
 • `set` **argument**(`argument`): `void`
 
@@ -537,7 +537,7 @@ Workflow.argument
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:118](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L118)
+[src/core/actions/src/action-manager.ts:118](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L118)
 
 ___
 
@@ -555,7 +555,7 @@ Workflow.bag
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:105](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L105)
+[src/core/actions/src/action-manager.ts:105](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L105)
 
 • `set` **bag**(`bag`): `void`
 
@@ -575,7 +575,7 @@ Workflow.bag
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:109](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L109)
+[src/core/actions/src/action-manager.ts:109](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L109)
 
 ___
 
@@ -593,7 +593,7 @@ Workflow.cronActivity
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:141](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L141)
+[src/core/actions/src/action-manager.ts:141](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L141)
 
 • `set` **cronActivity**(`cronActivity`): `void`
 
@@ -613,7 +613,7 @@ Workflow.cronActivity
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:145](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L145)
+[src/core/actions/src/action-manager.ts:145](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L145)
 
 ___
 
@@ -631,7 +631,7 @@ Workflow.isRollBackPossible
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:585](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L585)
+[src/core/actions/src/workflow-manager.ts:585](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L585)
 
 ___
 
@@ -649,7 +649,7 @@ Workflow.repeat
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:132](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L132)
+[src/core/actions/src/action-manager.ts:132](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L132)
 
 • `set` **repeat**(`repeat`): `void`
 
@@ -669,7 +669,7 @@ Workflow.repeat
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:136](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L136)
+[src/core/actions/src/action-manager.ts:136](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L136)
 
 ___
 
@@ -687,7 +687,7 @@ Workflow.result
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:123](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L123)
+[src/core/actions/src/action-manager.ts:123](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L123)
 
 • `set` **result**(`result`): `void`
 
@@ -707,7 +707,7 @@ Workflow.result
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:127](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L127)
+[src/core/actions/src/action-manager.ts:127](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L127)
 
 ## Methods
 
@@ -730,7 +730,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:601](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L601)
+[src/core/actions/src/action-manager.ts:601](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L601)
 
 ___
 
@@ -754,7 +754,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:752](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L752)
+[src/core/actions/src/action-manager.ts:752](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L752)
 
 ___
 
@@ -778,7 +778,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:185](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L185)
+[src/core/actions/src/workflow-manager.ts:185](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L185)
 
 ___
 
@@ -802,7 +802,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:178](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L178)
+[src/core/actions/src/workflow-manager.ts:178](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L178)
 
 ___
 
@@ -828,7 +828,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:77](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L77)
+[src/core/actions/src/workflow-manager.ts:77](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L77)
 
 ___
 
@@ -852,7 +852,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:640](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L640)
+[src/core/actions/src/action-manager.ts:640](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L640)
 
 ___
 
@@ -872,7 +872,7 @@ Instantiate workflow that will rollback this action.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:881](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L881)
+[src/core/actions/src/action-manager.ts:881](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L881)
 
 ___
 
@@ -896,7 +896,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:238](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L238)
+[src/core/actions/src/workflow-manager.ts:238](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L238)
 
 ___
 
@@ -921,7 +921,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:213](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L213)
+[src/core/actions/src/workflow-manager.ts:213](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L213)
 
 ___
 
@@ -939,7 +939,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:624](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L624)
+[src/core/actions/src/workflow-manager.ts:624](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L624)
 
 ___
 
@@ -957,7 +957,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:387](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L387)
+[src/core/actions/src/action-manager.ts:387](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L387)
 
 ___
 
@@ -982,7 +982,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:297](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L297)
+[src/core/actions/src/action-manager.ts:297](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L297)
 
 ___
 
@@ -1011,7 +1011,7 @@ use dynamicallyDefineFromWorkflowStep
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:293](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L293)
+[src/core/actions/src/action-manager.ts:293](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L293)
 
 ___
 
@@ -1029,7 +1029,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:409](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L409)
+[src/core/actions/src/workflow-manager.ts:409](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L409)
 
 ___
 
@@ -1055,7 +1055,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:90](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L90)
+[src/core/actions/src/workflow-manager.ts:90](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L90)
 
 ___
 
@@ -1082,7 +1082,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:305](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L305)
+[src/core/actions/src/workflow-manager.ts:305](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L305)
 
 ___
 
@@ -1107,7 +1107,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:756](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L756)
+[src/core/actions/src/action-manager.ts:756](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L756)
 
 ___
 
@@ -1125,7 +1125,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:249](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L249)
+[src/core/actions/src/workflow-manager.ts:249](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L249)
 
 ___
 
@@ -1150,7 +1150,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:170](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L170)
+[src/core/actions/src/workflow-manager.ts:170](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L170)
 
 ___
 
@@ -1174,7 +1174,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:161](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L161)
+[src/core/actions/src/workflow-manager.ts:161](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L161)
 
 ___
 
@@ -1199,7 +1199,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:554](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L554)
+[src/core/actions/src/workflow-manager.ts:554](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L554)
 
 ▸ **inWorkflowRedefineAction**(`marker`, `actions`): `Promise`<[`Action`](Action.md)\>
 
@@ -1220,7 +1220,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:555](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L555)
+[src/core/actions/src/workflow-manager.ts:555](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L555)
 
 ▸ **inWorkflowRedefineAction**(`marker`, `actions`): `Promise`<[`Action`](Action.md)\>
 
@@ -1241,7 +1241,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:559](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L559)
+[src/core/actions/src/workflow-manager.ts:559](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L559)
 
 ___
 
@@ -1269,7 +1269,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:512](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L512)
+[src/core/actions/src/workflow-manager.ts:512](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L512)
 
 ▸ **inWorkflowStepAction**(`marker`, `cb`): [`Action`](Action.md)
 
@@ -1290,7 +1290,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:520](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L520)
+[src/core/actions/src/workflow-manager.ts:520](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L520)
 
 ___
 
@@ -1317,7 +1317,7 @@ If your action use complex object, they can be initialized here.
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:610](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L610)
+[src/core/actions/src/workflow-manager.ts:610](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L610)
 
 ___
 
@@ -1339,7 +1339,7 @@ use initialization
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:437](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L437)
+[src/core/actions/src/workflow-manager.ts:437](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L437)
 
 ___
 
@@ -1361,7 +1361,7 @@ If it gets too complex, use hooks.
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:441](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L441)
+[src/core/actions/src/workflow-manager.ts:441](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L441)
 
 ___
 
@@ -1385,7 +1385,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:800](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L800)
+[src/core/actions/src/action-manager.ts:800](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L800)
 
 ___
 
@@ -1409,7 +1409,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:574](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L574)
+[src/core/actions/src/workflow-manager.ts:574](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L574)
 
 ___
 
@@ -1433,7 +1433,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:202](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L202)
+[src/core/actions/src/workflow-manager.ts:202](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L202)
 
 ___
 
@@ -1455,7 +1455,7 @@ It returns a state value.
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:453](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L453)
+[src/core/actions/src/workflow-manager.ts:453](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L453)
 
 ___
 
@@ -1479,7 +1479,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:154](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L154)
+[src/core/actions/src/workflow-manager.ts:154](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L154)
 
 ___
 
@@ -1505,7 +1505,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:68](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L68)
+[src/core/actions/src/workflow-manager.ts:68](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L68)
 
 ___
 
@@ -1531,7 +1531,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:94](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L94)
+[src/core/actions/src/workflow-manager.ts:94](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L94)
 
 ___
 
@@ -1557,7 +1557,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:81](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L81)
+[src/core/actions/src/workflow-manager.ts:81](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L81)
 
 ___
 
@@ -1581,7 +1581,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:197](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L197)
+[src/core/actions/src/workflow-manager.ts:197](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L197)
 
 ___
 
@@ -1606,7 +1606,7 @@ a `ActionState` value.
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:465](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L465)
+[src/core/actions/src/workflow-manager.ts:465](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L465)
 
 ___
 
@@ -1630,7 +1630,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:650](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L650)
+[src/core/actions/src/action-manager.ts:650](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L650)
 
 ___
 
@@ -1654,7 +1654,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:192](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L192)
+[src/core/actions/src/workflow-manager.ts:192](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L192)
 
 ___
 
@@ -1678,7 +1678,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:430](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L430)
+[src/core/actions/src/workflow-manager.ts:430](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L430)
 
 ___
 
@@ -1702,7 +1702,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:426](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L426)
+[src/core/actions/src/workflow-manager.ts:426](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L426)
 
 ___
 
@@ -1725,7 +1725,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:570](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L570)
+[src/core/actions/src/action-manager.ts:570](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L570)
 
 ___
 
@@ -1747,7 +1747,7 @@ a promise that resolves when the document has been loaded
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:312](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L312)
+[src/core/actions/src/action-manager.ts:312](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L312)
 
 ___
 
@@ -1767,7 +1767,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:652](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L652)
+[src/core/actions/src/workflow-manager.ts:652](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L652)
 
 ___
 
@@ -1788,7 +1788,7 @@ Will be encapsulated in a larger action
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:847](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L847)
+[src/core/actions/src/action-manager.ts:847](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L847)
 
 ___
 
@@ -1808,7 +1808,7 @@ Shortcut to configure the watcher for the rollback.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:855](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L855)
+[src/core/actions/src/action-manager.ts:855](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L855)
 
 ___
 
@@ -1834,7 +1834,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:145](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L145)
+[src/core/actions/src/workflow-manager.ts:145](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L145)
 
 ___
 
@@ -1852,7 +1852,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:154](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L154)
+[src/core/actions/src/action-manager.ts:154](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L154)
 
 ___
 
@@ -1880,7 +1880,7 @@ Once set, the argument of an action should not be modified.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:396](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L396)
+[src/core/actions/src/action-manager.ts:396](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L396)
 
 ___
 
@@ -1909,7 +1909,7 @@ an action or a group of actions
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:421](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L421)
+[src/core/actions/src/action-manager.ts:421](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L421)
 
 ___
 
@@ -1937,7 +1937,7 @@ Configure the number of times an action is repeated.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:406](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L406)
+[src/core/actions/src/action-manager.ts:406](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L406)
 
 ___
 
@@ -1963,7 +1963,7 @@ Set the action result.
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:430](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L430)
+[src/core/actions/src/action-manager.ts:430](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L430)
 
 ___
 
@@ -1981,7 +1981,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:330](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L330)
+[src/core/actions/src/workflow-manager.ts:330](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L330)
 
 ___
 
@@ -2007,7 +2007,7 @@ promise
 
 #### Defined in
 
-[src/core/actions/src/workflow-manager.ts:470](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/workflow-manager.ts#L470)
+[src/core/actions/src/workflow-manager.ts:470](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L470)
 
 ___
 
@@ -2035,7 +2035,7 @@ an action for which dbDoc property is equal to actionDb
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:225](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L225)
+[src/core/actions/src/action-manager.ts:225](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L225)
 
 ___
 
@@ -2059,7 +2059,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:245](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L245)
+[src/core/actions/src/action-manager.ts:245](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L245)
 
 ___
 
@@ -2083,7 +2083,7 @@ ___
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:253](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L253)
+[src/core/actions/src/action-manager.ts:253](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L253)
 
 ___
 
@@ -2111,7 +2111,7 @@ new `RejectAction`instance
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:340](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L340)
+[src/core/actions/src/action-manager.ts:340](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L340)
 
 ___
 
@@ -2139,4 +2139,4 @@ new `ResolveAction`instance
 
 #### Defined in
 
-[src/core/actions/src/action-manager.ts:329](https://github.com/LaWebcapsule/orbits/blob/fea9124/src/core/actions/src/action-manager.ts#L329)
+[src/core/actions/src/action-manager.ts:329](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-manager.ts#L329)
