@@ -25,6 +25,7 @@ export interface ActionAppConfig {
     logger?: winston.Logger;
     workers?: {
         quantity: number;
+        filter?: Object;
     };
 }
 
@@ -51,6 +52,12 @@ export class ActionApp {
 
     numberOfWorker = 3;
 
+    /**
+     * Used by ActionCron to
+     * filter actions using their `filter` field
+     */
+    actionFilter?: Object;
+
     db: AppDb = {
         mongo: {
             url: 'mongodb://localhost:27017/actions',
@@ -75,6 +82,7 @@ export class ActionApp {
         }
         if (opts?.workers) {
             this.numberOfWorker = opts?.workers.quantity;
+            this.actionFilter = opts?.workers.filter;
         }
     }
 
@@ -116,7 +124,7 @@ export class ActionApp {
         setLogger(this);
         return setDbConnection(this).then(() => {
             for (let i = 0; i < this.numberOfWorker; i++) {
-                new ActionCron();
+                new ActionCron(this.actionFilter);
             }
         });
     }
