@@ -1,0 +1,43 @@
+{
+    "name": "@wbce/orbits-cli",
+    "version": "0.0.1",
+    "description": "Cli to run your Orbits App",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LaWebcapsule/orbits"
+    },
+    "author": "la webcapsule",
+    "license": "ISC",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "prettier --write --ignore-unknown **/*.ts",
+        "build": "tsc",
+		"dev": "tsc --watch",
+        "publish-package": "pnpm run build && pnpm publish --access public"
+    },
+    "dependencies": {
+        "@wbce/orbits-core": "workspace:",
+        "blessed": "^0.1.81",
+        "colors": "^1.4.0",
+        "commander": "^12.1.0",
+        "copy-paste": "^1.5.3",
+        "mongoose": "^8.8.3",
+        "react": "^18.3.1",
+        "tslib": "^2.8.1",
+        "winston": "catalog:"
+    },
+    "devDependencies": {
+        "@tsconfig/node18": "^18.2.4",
+        "@types/blessed": "^0.1.25",
+        "@types/colors": "^1.2.4",
+        "@types/copy-paste": "^1.1.33",
+        "prettier": "^3.4.1"
+    },
+    "files": [
+        "dist"
+    ],
+    "bin": {
+        "orbits-cli": "dist/bin/index.js"
+    },
+    "type": "module"
+}

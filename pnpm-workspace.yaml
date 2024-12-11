@@ -1,6 +1,7 @@
 packages:
   - src/core/actions
   - src/helpers
+  - src/cli
   - src/packages/*
 
 catalog:
