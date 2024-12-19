@@ -1,73 +1,73 @@
-import { Workflow, Action } from "@wbce/orbits-core";
-import { Commit, WaitForNewCommits, gitProviders } from "@wbce/orbits-fuel";
-import { ActionState } from "../../../../core/actions";
-import { PublishNpmPackage } from "../actions/publish-npm-package";
-import { UpdateNpmVersions } from "../actions/update-npm-versions";
+import { Workflow, Action } from '@wbce/orbits-core';
+import { Commit, WaitForNewCommits, gitProviders } from '@wbce/orbits-fuel';
+import { ActionState } from '../../../../core/actions';
+import { PublishNpmPackage } from '../actions/publish-npm-package';
+import { UpdateNpmVersions } from '../actions/update-npm-versions';
 
-
-export class MasterWorkflow extends Workflow{
-
-    IBag : {
-        lastCommit : Commit,
-        releasesToPublish : {
-            relativePackageDir : string,
-            packageName : string,
-            version? : string,
-            type : 'major' | 'minor' | 'patch',
-            notes? : string
-        }[]
-    } & Workflow['IBag']
+export class MasterWorkflow extends Workflow {
+    IBag: {
+        lastCommit: Commit;
+        releasesToPublish: {
+            relativePackageDir: string;
+            packageName: string;
+            version?: string;
+            type: 'major' | 'minor' | 'patch';
+            notes?: string;
+        }[];
+    } & Workflow['IBag'];
 
     semanticReleaseConfiguration = {
         //Coming soon : use semantic release.
-    }
+    };
 
     mapPackageDirectory = {
         '@wbce/orbits-core': 'src/core/actions',
         '@wbce/orbits-fuel': 'src/helpers',
-        '@wbce/services': 'src/packages/services'
-    }
+        '@wbce/services': 'src/packages/services',
+    };
 
-    define(){
-        this.name("wait for new commits step")
-            .next(()=>{
+    define() {
+        this.name('wait for new commits step')
+            .next(() => {
                 this.bag.releasesToPublish = [];
-                const waitForNewCommits = new WaitForNewCommits()
+                const waitForNewCommits = new WaitForNewCommits();
                 waitForNewCommits.setArgument({
-                    repoName : 'LaWebcapsule/orbits-fork',
-                    gitProviderName : gitProviders.GITHUB,
-                    branches : [{
-                        name : 'main',
-                        lastCommit : this.bag.lastCommit
-                    }]
-                })
+                    repoName: 'LaWebcapsule/orbits-fork',
+                    gitProviderName: gitProviders.GITHUB,
+                    branches: [
+                        {
+                            name: 'main',
+                            lastCommit: this.bag.lastCommit,
+                        },
+                    ],
+                });
                 return waitForNewCommits;
             })
-            .next(()=>{
+            .next(() => {
                 //Note : we could use semantic release to publish new versions
                 //but because of this : https://dev.to/antongolub/the-chronicles-of-semantic-release-and-monorepos-5cfc
                 //we will use semantic release to give us the new versions names of the different packages.
                 //for now, we always update the three packages.
-                for(const key in this.mapPackageDirectory){
+                for (const key in this.mapPackageDirectory) {
                     this.bag.releasesToPublish.push({
-                        type : 'patch',
-                        packageName : key,
-                        relativePackageDir : this.mapPackageDirectory[key]
-                    })
+                        type: 'patch',
+                        packageName: key,
+                        relativePackageDir: this.mapPackageDirectory[key],
+                    });
                 }
                 const updateVersions = new UpdateNpmVersions();
                 updateVersions.setArgument({
-                    versions : this.bag.releasesToPublish
-                })
+                    versions: this.bag.releasesToPublish,
+                });
                 updateVersions.setRepeat({
-                    [ActionState.ERROR] : 3 //in case of failure (network error, ...), we retry it three times.
-                })
-                return updateVersions
+                    [ActionState.ERROR]: 3, //in case of failure (network error, ...), we retry it three times.
+                });
+                return updateVersions;
             })
-            .next((lastCommit : UpdateNpmVersions['IResult'])=>{
+            .next((lastCommit: UpdateNpmVersions['IResult']) => {
                 this.bag.lastCommit = lastCommit;
-                return Action.resolve()
-            })
+                return Action.resolve();
+            });
 
         //the following syntax is a bit audacious
         //Our problem is :
@@ -86,25 +86,32 @@ export class MasterWorkflow extends Workflow{
         //However, if you are at step "B", the following steps "C", "D" can still be modified.
         //In our case, this means that the 'bag.releasesToPublish' array cannot be modified
         //during the publishing following steps.
-        const dependencyOrder = ['@wbce/services', '@wbce/orbits-core', '@wbce/orbits-fuel']
-        for(const wbcePackage of dependencyOrder){
-            const newReleaseOfPackage = this.bag.releasesToPublish?.find(r=>r.packageName === wbcePackage);
-            if(newReleaseOfPackage){
-                this.next(()=>{
-                    const publish = new PublishNpmPackage()
+        const dependencyOrder = [
+            '@wbce/services',
+            '@wbce/orbits-core',
+            '@wbce/orbits-fuel',
+        ];
+        for (const wbcePackage of dependencyOrder) {
+            const newReleaseOfPackage = this.bag.releasesToPublish?.find(
+                (r) => r.packageName === wbcePackage
+            );
+            if (newReleaseOfPackage) {
+                this.next(() => {
+                    const publish = new PublishNpmPackage();
                     publish.setArgument({
-                        packagePath : newReleaseOfPackage.relativePackageDir
-                    })
+                        packagePath: newReleaseOfPackage.relativePackageDir,
+                    });
                     publish.setRepeat({
-                        [ActionState.ERROR] : 3 //in case of failure (network error, ...), we retry it three times.
-                    })
+                        [ActionState.ERROR]: 3, //in case of failure (network error, ...), we retry it three times.
+                    });
                     return publish;
-                })
+                });
             }
         }
-        
+
         //Infinite loop : we are always watching for new commits
-        this.onErrorGoTo("wait for new commits step")
-            .onSuccessGoTo("wait for new commits step")
+        this.onErrorGoTo('wait for new commits step').onSuccessGoTo(
+            'wait for new commits step'
+        );
     }
 }

@@ -21,12 +21,12 @@
 - [db](CoreActionApp.md#db)
 - [declare](CoreActionApp.md#declare)
 - [imports](CoreActionApp.md#imports)
-- [inversedActionsRegistry](CoreActionApp.md#inversedactionsregistry)
+- [invertedActionsRegistry](CoreActionApp.md#invertedActionsRegistry)
 - [logger](CoreActionApp.md#logger)
 - [numberOfWorker](CoreActionApp.md#numberofworker)
 - [activeApp](CoreActionApp.md#activeapp)
 - [appImportedRegistry](CoreActionApp.md#appimportedregistry)
-- [boostrapPath](CoreActionApp.md#boostrappath)
+- [bootstrapPath](CoreActionApp.md#bootstrappath)
 - [rejectBootstrap](CoreActionApp.md#rejectbootstrap)
 - [resolveBootstrap](CoreActionApp.md#resolvebootstrap)
 - [waitForActiveApp](CoreActionApp.md#waitforactiveapp)
@@ -130,13 +130,13 @@ ___
 
 ___
 
-### inversedActionsRegistry
+### invertedActionsRegistry
 
-• **inversedActionsRegistry**: `Map`<typeof [`Action`](Action.md), `string`\>
+• **invertedActionsRegistry**: `Map`<typeof [`Action`](Action.md), `string`\>
 
 #### Inherited from
 
-[ActionApp](ActionApp.md).[inversedActionsRegistry](ActionApp.md#inversedactionsregistry)
+[ActionApp](ActionApp.md).[invertedActionsRegistry](ActionApp.md#invertedActionsRegistry)
 
 #### Defined in
 
@@ -200,13 +200,13 @@ ___
 
 ___
 
-### boostrapPath
+### bootstrapPath
 
-▪ `Static` **boostrapPath**: `string`
+▪ `Static` **bootstrapPath**: `string`
 
 #### Inherited from
 
-[ActionApp](ActionApp.md).[boostrapPath](ActionApp.md#boostrappath)
+[ActionApp](ActionApp.md).[bootstrapPath](ActionApp.md#bootstrappath)
 
 #### Defined in
 

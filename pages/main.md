@@ -11,11 +11,11 @@ Welcome on board! You are at the good place to start a smooth travel and to conf
 
 # What is orbits?
 
- - A flow manager for DevOps
- - A Continuous Integration and Continuous Deployment tool
- - A tool to manage CDK deployments and CDK life events programmatically
- - An opinionated framework to make DevOps easier to deal with
- - (A way to write Petri net)
+- A flow manager for DevOps
+- A Continuous Integration and Continuous Deployment tool
+- A tool to manage CDK deployments and CDK life events programmatically
+- An opinionated framework to make DevOps easier to deal with
+- (A way to write Petri net)
 
 Orbits is a node.js Typescript framework which allows you to write Ops pipe in a very similar manner you are used to write promises or events cycles.
 Robustness and precision are at the core of its developments.
@@ -23,6 +23,7 @@ Robustness and precision are at the core of its developments.
 # Why?
 
 We think that:
+
 - we should not have a specific language for each tool (terraform, circleCI, gitlab... each one develops its own syntax);
 - in the same spirit of the AWS CDK, we should dispose of a complete language instead of writing configuration files;
 - we should not write DevOps in some hidden file/folder like `.circleCI` or `.github`;

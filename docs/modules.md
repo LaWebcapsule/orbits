@@ -40,7 +40,7 @@
 
 ### actionSchema
 
-• `Const` **actionSchema**: `Schema`<`any`, `Model`<`any`, `any`, `any`, `any`, `any`\>, {}, {}, {}, {}, `ResolveSchemaOptions`<{ `minimize`: ``false`` = false; `timestamps`: ``true`` = true }\>, { `createdAt`: `NativeDate` ; `updatedAt`: `NativeDate`  } & { `actionRef`: `string` ; `argument`: `any` ; `bag`: `any` ; `cronActivity`: { pending: boolean; frequence?: number; lastActivity?: Date; nextActivity?: Date; } ; `delays`: { 1?: number; 2?: number; } ; `filter`: `any` ; `locked`: `boolean` ; `lockedAt`: `Date` ; `nExecutions`: { 4: number; 5: number; } ; `nTimes`: `number` ; `repeat`: { 4: number; 5: number; } ; `result`: `any` ; `state`: `number` ; `stateUpdatedAt`: `Date` ; `workflowId`: `string` ; `workflowStep`: `number`  }\>
+• `Const` **actionSchema**: `Schema`<`any`, `Model`<`any`, `any`, `any`, `any`, `any`\>, {}, {}, {}, {}, `ResolveSchemaOptions`<{ `minimize`: ``false`` = false; `timestamps`: ``true`` = true }\>, { `createdAt`: `NativeDate` ; `updatedAt`: `NativeDate`  } & { `actionRef`: `string` ; `argument`: `any` ; `bag`: `any` ; `cronActivity`: { pending: boolean; frequency?: number; lastActivity?: Date; nextActivity?: Date; } ; `delays`: { 1?: number; 2?: number; } ; `filter`: `any` ; `locked`: `boolean` ; `lockedAt`: `Date` ; `nExecutions`: { 4: number; 5: number; } ; `nTimes`: `number` ; `repeat`: { 4: number; 5: number; } ; `result`: `any` ; `state`: `number` ; `stateUpdatedAt`: `Date` ; `workflowId`: `string` ; `workflowStep`: `number`  }\>
 
 #### Defined in
 

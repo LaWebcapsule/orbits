@@ -1,132 +1,129 @@
-import { Action, ActionState } from "@wbce/orbits-core";
-import { gitCenter, GitProvider, gitProviders } from "./gitcenter";
-import { Commit } from "./gitrepo";
+import { Action, ActionState } from '@wbce/orbits-core';
+import { gitCenter, GitProvider, gitProviders } from './gitcenter';
+import { Commit } from './gitrepo';
 
-
-export class GitAction extends Action{
+export class GitAction extends Action {
     //to note : this action is not registered. It serves as a base for the other actions.
     IArgument: {
-        repoName : string,
-        gitProviderName : gitProviders
-    }
+        repoName: string;
+        gitProviderName: gitProviders;
+    };
 
-
-    gitProvider : GitProvider;
-    initGitProvider(){
+    gitProvider: GitProvider;
+    initGitProvider() {
         let gitToken = process.env['git_token'];
-        if(!gitToken && this.argument.gitProviderName === gitProviders.GITHUB){
-            gitToken = process.env['gh_token']
-        }
-        else if(!gitToken && this.argument.gitProviderName === gitProviders.GITLAB){
+        if (
+            !gitToken &&
+            this.argument.gitProviderName === gitProviders.GITHUB
+        ) {
+            gitToken = process.env['gh_token'];
+        } else if (
+            !gitToken &&
+            this.argument.gitProviderName === gitProviders.GITLAB
+        ) {
             gitToken = process.env['gitlab_token'];
         }
-        this.gitProvider = gitCenter.getGitProvider(this.argument.gitProviderName, {
-            token : gitToken
-        })   
+        this.gitProvider = gitCenter.getGitProvider(
+            this.argument.gitProviderName,
+            {
+                token: gitToken,
+            }
+        );
     }
 
-    init(){
-        return Promise.resolve().then(()=>{
-            return this.initGitProvider();
-        });
+    init() {
+        return Promise.resolve().then(() => this.initGitProvider());
     }
 }
 
+export class AddGitWebHookAction extends GitAction {
+    IArgument: GitAction['IArgument'] & {
+        targetUrl: string;
+        events: string[];
+    };
 
+    static defaultDelay = 2 * 60 * 1000;
 
-export class AddGitWebHookAction extends GitAction{
-    IArgument : GitAction['IArgument'] & {
-        targetUrl : string,
-        events : string[]
-    }
-
-    static defaultDelay = 2*60*1000;
-
-    main(){
+    main() {
         return this.gitProvider.addWebHook(
-            this.argument.repoName, 
+            this.argument.repoName,
             this.argument.targetUrl,
             this.argument.events
-        )
+        );
     }
 
-    watcher(){
-        //pas de watch pour l'instant donc on ajoute plusiers fois le hook si erreur
-        //sinon il faudrait ici verifier l'ajout du hook avec une requete http
-        return Promise.resolve(ActionState.UNKNOW);
+    watcher() {
+        // no watcher for now so hook is added several times in case of error
+        // hook addition should be checked here
+        return Promise.resolve(ActionState.UNKNOWN);
     }
 }
 
+export class WaitForNewCommits extends GitAction {
+    static defaultDelay = Infinity;
 
+    IArgument: {
+        branches: {
+            name: string;
+            lastCommit?: Commit;
+        }[];
+    } & GitAction['IArgument'];
 
-
-
-export class WaitForNewCommits extends GitAction{
-
-    static defaultDelay = Infinity;//potentiellement infini
-
-    IArgument : {
-        branches : {
-            name: string,
-            lastCommit? : Commit
-        }[]
-    } & GitAction['IArgument']
-
-    IResult : {
-        branches : {
-            name : string,
-            commits : Commit[]
-        }[]
-    }
+    IResult: {
+        branches: {
+            name: string;
+            commits: Commit[];
+        }[];
+    };
 
     static cronDefaultSettings = {
-        activityFrequence : 24*60*60*1000
-    }
+        activityFrequency: 24 * 60 * 60 * 1000,
+    };
 
-    init(){
-        return super.init().then(()=>{
-            if(!this.result.branches){
+    init() {
+        return super.init().then(() => {
+            if (!this.result.branches) {
                 this.result.branches = [];
             }
-        })
+        });
     }
 
-    main(){
+    main() {
         return Promise.resolve(ActionState.IN_PROGRESS);
     }
 
-    watcher() : Promise<ActionState>{
+    watcher(): Promise<ActionState> {
         let hasNewCommits = false;
         let p = Promise.resolve();
-        for(const branch of this.argument.branches){
+        for (const branch of this.argument.branches) {
             const since = branch.lastCommit?.createdAt.getTime() || 0;
-            p = p.then(()=>{
-                return this.gitProvider.getLastCommitsOnBranch(
-                    this.argument.repoName,
-                    branch.name,
-                    new Date(since)
+            p = p
+                .then(() =>
+                    this.gitProvider.getLastCommitsOnBranch(
+                        this.argument.repoName,
+                        branch.name,
+                        new Date(since)
+                    )
                 )
-            }).then((commits)=>{
-                commits = commits.filter(c=>{
-                    return c.sha !== branch.lastCommit?.sha
-                })
-                if(commits.length > 0){
-                    hasNewCommits = true
-                    this.result.branches.push({
-                        name : branch.name,
-                        commits : commits
-                    })
-                }
-            })
+                .then((commits) => {
+                    commits = commits.filter(
+                        (c) => c.sha !== branch.lastCommit?.sha
+                    );
+                    if (commits.length > 0) {
+                        hasNewCommits = true;
+                        this.result.branches.push({
+                            name: branch.name,
+                            commits: commits,
+                        });
+                    }
+                });
         }
-        return p.then(()=>{
-            if(hasNewCommits){
-                return ActionState.SUCCESS
+        return p.then(() => {
+            if (hasNewCommits) {
+                return ActionState.SUCCESS;
+            } else {
+                return ActionState.IN_PROGRESS;
             }
-            else{
-                return ActionState.IN_PROGRESS
-            }
-        })
-
+        });
     }
 }

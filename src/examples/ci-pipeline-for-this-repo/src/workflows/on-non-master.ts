@@ -1,15 +1,9 @@
-import { Workflow } from "@wbce/orbits-core";
+import { Workflow } from '@wbce/orbits-core';
 
-
-
-export class OnNonMasterWorkflow extends Workflow{
-
-    define(){
-        this.next(()=>{
-            return;
-        }).next(()=>{
+export class OnNonMasterWorkflow extends Workflow {
+    define() {
+        this.next(() => {}).next(() => {
             //publish result to github
-        })
+        });
     }
-
 }

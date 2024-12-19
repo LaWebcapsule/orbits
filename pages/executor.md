@@ -6,10 +6,11 @@ Executors allow Actions to be run in specific contexts. For example, assume you 
 
 An executor changes the way the `resume()` method executes. It mainly has two modes:
 When the `resume()` of an Action with an Executor is called:
+
 - The executor checks if the execution is the expected one
 - If the execution is not the expected one, the executor takes care of calling the good execution context with the correct information. This can imply to run a docker executor, call a lambda function, launch an ECS task...
 - If the execution context is the correct one, the executor runs the standard behavior of the `resume()`.
-As a consequence, an Action with an Executor executes normally, but in a context where you can choose the appropriate dependencies, right accesses...
+    As a consequence, an Action with an Executor executes normally, but in a context where you can choose the appropriate dependencies, right accesses...
 
 ---> :construction_worker: Today, we only have the DockerExecutor. We are expecting to write an Aws ecs and an Aws lambda executor. We would be pleased to receive contributions to go quicker!
 
@@ -18,11 +19,10 @@ As a consequence, an Action with an Executor executes normally, but in a context
 You only need to add to the Action class:
 
 ```typescript
-
-export class MyAction extends Action{
+export class MyAction extends Action {
     executor = new DockerExecutor({
         // ...
-    })
+    });
 }
 ```
 
@@ -33,24 +33,23 @@ As a consequence, an Executor has an install method which returns an Action.
 ```typescript
 const dockerExecutor = new DockerExecutor({
     // ...
-})
-const installAction = dockerExecutor.install()
+});
+const installAction = dockerExecutor.install();
 ```
 
 You should consume the install Action before using the Executor.
 Example:
+
 ```typescript
-
-export class MyBuildPipeline extends Workflow{
-
-    define(){
-        this.next(()=>{
-            const dockerExecutor = new DockerExecutor({})
-            return dockerExecutor.install()
-        }).next(()=>{
+export class MyBuildPipeline extends Workflow {
+    define() {
+        this.next(() => {
+            const dockerExecutor = new DockerExecutor({});
+            return dockerExecutor.install();
+        }).next(() => {
             const myBuild = new ActionThatUseExecutor();
             return myBuild;
-        })
+        });
     }
 }
 ```

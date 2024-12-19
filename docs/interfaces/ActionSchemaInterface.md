@@ -269,7 +269,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `frequence` | `number` |
+| `frequency` | `number` |
 | `lastActivity` | `Date` |
 | `nextActivity` | `Date` |
 | `pending` | `Boolean` |

@@ -21,12 +21,12 @@
 - [db](ActionApp.md#db)
 - [declare](ActionApp.md#declare)
 - [imports](ActionApp.md#imports)
-- [inversedActionsRegistry](ActionApp.md#inversedactionsregistry)
+- [invertedActionsRegistry](ActionApp.md#invertedActionsRegistry)
 - [logger](ActionApp.md#logger)
 - [numberOfWorker](ActionApp.md#numberofworker)
 - [activeApp](ActionApp.md#activeapp)
 - [appImportedRegistry](ActionApp.md#appimportedregistry)
-- [boostrapPath](ActionApp.md#boostrappath)
+- [bootstrapPath](ActionApp.md#bootstrappath)
 - [rejectBootstrap](ActionApp.md#rejectbootstrap)
 - [resolveBootstrap](ActionApp.md#resolvebootstrap)
 - [waitForActiveApp](ActionApp.md#waitforactiveapp)
@@ -107,9 +107,9 @@ ___
 
 ___
 
-### inversedActionsRegistry
+### invertedActionsRegistry
 
-• **inversedActionsRegistry**: `Map`<typeof [`Action`](Action.md), `string`\>
+• **invertedActionsRegistry**: `Map`<typeof [`Action`](Action.md), `string`\>
 
 #### Defined in
 
@@ -157,9 +157,9 @@ ___
 
 ___
 
-### boostrapPath
+### bootstrapPath
 
-▪ `Static` **boostrapPath**: `string`
+▪ `Static` **bootstrapPath**: `string`
 
 #### Defined in
 

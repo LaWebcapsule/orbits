@@ -1,50 +1,47 @@
-import { ActionState } from "@wbce/orbits-core";
-import { DockerExecutor, PublicRegistry } from "@wbce/orbits-fuel";
-import { Cli } from "@wbce/services";
-import { GitCloneAction } from "./git-clone-repo";
+import { ActionState } from '@wbce/orbits-core';
+import { DockerExecutor, PublicRegistry } from '@wbce/orbits-fuel';
+import { Cli } from '@wbce/services';
+import { GitCloneAction } from './git-clone-repo';
 
-
-
-
-export class PublishNpmPackage extends GitCloneAction{
-
+export class PublishNpmPackage extends GitCloneAction {
     executor = new DockerExecutor({
-        registry : new PublicRegistry('node','16.14.2'),
-        dockerConfig : {
-            env : {
-                'git_user' : 'ci_wbce',
-                'git_pwd': process.env['git_pwd'],
-                'NPM_TOKEN': process.env['NPM_TOKEN']
-            }
-        }
-    })
+        registry: new PublicRegistry('node', '16.14.2'),
+        dockerConfig: {
+            env: {
+                git_user: 'ci_wbce',
+                git_pwd: process.env['git_pwd'],
+                NPM_TOKEN: process.env['NPM_TOKEN'],
+            },
+        },
+    });
 
+    IArgument: {
+        packagePath: string;
+    };
 
-    IArgument : {
-        packagePath : string
-    }
-    
-
-    cli = new Cli()
+    cli = new Cli();
 
     static defaultDelays: { 1?: number | undefined; 2?: number | undefined } = {
-        [ActionState.EXECUTING_MAIN] : 3*60*1000
-    }
+        [ActionState.EXECUTING_MAIN]: 3 * 60 * 1000,
+    };
 
-
-
-    main(){
+    main() {
         //we could also modify the files directly via the github api in order to save one clone operation.
-        return this.gitClone().then(()=>{
-            process.chdir(this.argument.packagePath);
-            return this.cli.command("npm", ["install"]);
-        }).then(()=>{
-            return this.cli.command("npm", ["config", "set","_authToken", process.env['NPM_TOKEN']!  ])
-        }).then(()=>{
-            return this.cli.command("npm", ["run", "publish-package"]);
-        }).then(()=>{
-            return ActionState.SUCCESS
-        })
+        return this.gitClone()
+            .then(() => {
+                process.chdir(this.argument.packagePath);
+                return this.cli.command('npm', ['install']);
+            })
+            .then(() =>
+                this.cli.command('npm', [
+                    'config',
+                    'set',
+                    '_authToken',
+                    process.env['NPM_TOKEN']!,
+                ])
+            )
+            .then(() => this.cli.command('npm', ['run', 'publish-package']))
+            .then(() => ActionState.SUCCESS);
     }
 
     /* watcher() {
@@ -59,10 +56,6 @@ export class PublishNpmPackage extends GitCloneAction{
                     return true;
                 }
             }
-        }).then((isPushed)=>{
-            return isPushed ? ActionState.SUCCESS : ActionState.SLEEPING;
-        });
+        }).then((isPushed) => isPushed ? ActionState.SUCCESS : ActionState.SLEEPING);
     } */
-
-
 }

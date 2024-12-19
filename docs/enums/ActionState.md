@@ -15,7 +15,7 @@
 - [REVERTING](ActionState.md#reverting)
 - [SLEEPING](ActionState.md#sleeping)
 - [SUCCESS](ActionState.md#success)
-- [UNKNOW](ActionState.md#unknow)
+- [UNKNOWN](ActionState.md#unknow)
 
 ## Enumeration Members
 
@@ -109,9 +109,9 @@ ___
 
 ___
 
-### UNKNOW
+### UNKNOWN
 
-• **UNKNOW** = ``-1``
+• **UNKNOWN** = ``-1``
 
 #### Defined in
 

@@ -4,7 +4,6 @@ Applications are here to centralize the imports of Actions.
 
 Application is a typescript class that extends the `ActionApp` class.
 
-
 # Creating an Application
 
 See this example:
@@ -21,7 +20,6 @@ The `declare` property should be filled with the `Action` class you created.
 The `imports` property should be filled with `ActionApp` whom you plan to use the declared Actions.
 
 > An Action whom its class constructor is not declared in an `ActionApp` cannot be used. This will immediately emit an error.
-
 
 # Bootstrapping an Application
 
@@ -66,17 +64,18 @@ ActionApp.waitForActiveApp.then(()=>{
 
 However, we may keep in mind that if a second process run this script, a second `MyAction` will be created. It's probably not what you want.
 In general:
+
 - you will set a new Action via an external api call
 - or you can do something like this
-```typescript
 
-ActionApp.waitForActiveApp.then(()=>{
+```typescript
+ActionApp.waitForActiveApp.then(() => {
     ActionApp.activeApp.ActionModel.findOne({
         filter: {
-            main: true
-        }
-    }).then((actionDb)=>{
-        if(actionDb){
+            main: true,
+        },
+    }).then((actionDb) => {
+        if (actionDb) {
             //action already exists
             const action = Action.constructFromDb(actionDb);
             action.resume();
@@ -85,12 +84,11 @@ ActionApp.waitForActiveApp.then(()=>{
         //create main action
         const myAction = new MyAction();
         myAction.setFilter({
-            main: true
-        })
+            main: true,
+        });
         myAction.save();
-    })
-})
-
+    });
+});
 ```
 
 # In depth
@@ -98,9 +96,9 @@ ActionApp.waitForActiveApp.then(()=>{
 ## Why do we need Applications?
 
 Applications solve two major issues:
+
 - When we get an Action document from the database, we have to know how to build an Action object. This implies to map the `permanentName` property stored in the database with a constructor. An Application keep a map of declared and imported Actions.
 - Executors can launch Actions in different contexts. As a consequence, their inputs may be different from the default context's inputs. Applications keep track of both their own path and the path of the bootstrapped Application passed to an executor. This way, an executor can import the Application and its different Actions.
-
 
 ## Why do we use a Decorator?
 

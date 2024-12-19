@@ -37,7 +37,7 @@ You can read more here :
 - [defaultDelay](Action.md#defaultdelay)
 - [defaultDelays](Action.md#defaultdelays)
 - [executor](Action.md#executor)
-- [isInitialised](Action.md#isinitialised)
+- [isInitialized](Action.md#isInitialized)
 - [permanentRef](Action.md#permanentref)
 
 ### Accessors
@@ -62,7 +62,7 @@ You can read more here :
 - [execute](Action.md#execute)
 - [getLogs](Action.md#getlogs)
 - [init](Action.md#init)
-- [initialisation](Action.md#initialisation)
+- [initialization](Action.md#initialization)
 - [internalLog](Action.md#internallog)
 - [internalLogError](Action.md#internallogerror)
 - [main](Action.md#main)
@@ -167,7 +167,7 @@ ___
 
 • **cronDefaultSettings**: `Object`
 
-Configure the frequence in which a cron will cause the
+Configure the frequency in which a cron will cause the
 
 **`Link`**
 
@@ -178,7 +178,7 @@ You can also dinamically modify the dbDoc.cronActivity property to modify the ca
 
 | Name | Type |
 | :------ | :------ |
-| `activityFrequence` | `number` |
+| `activityFrequency` | `number` |
 
 #### Defined in
 
@@ -252,9 +252,9 @@ Specify an executor in which all actions of this class will run.
 
 ___
 
-### isInitialised
+### isInitialized
 
-• **isInitialised**: `boolean` = `false`
+• **isInitialized**: `boolean` = `false`
 
 #### Defined in
 
@@ -634,9 +634,9 @@ You cannot store class object on the database. If your action use complex object
 
 ___
 
-### initialisation
+### initialization
 
-▸ **initialisation**(): `Promise`<`any`\>
+▸ **initialization**(): `Promise`<`any`\>
 
 #### Returns
 
@@ -714,7 +714,7 @@ ___
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `actionState` | [`ActionState`](../enums/ActionState.md) | `ActionState.UNKNOW` |
+| `actionState` | [`ActionState`](../enums/ActionState.md) | `ActionState.UNKNOWN` |
 
 #### Returns
 
@@ -796,13 +796,13 @@ ___
 
 ### rollBackWatcher
 
-▸ **rollBackWatcher**(): `Promise`<[`UNKNOW`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
+▸ **rollBackWatcher**(): `Promise`<[`UNKNOWN`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
 
 Shortcut to configure the watcher of the rollback Action
 
 #### Returns
 
-`Promise`<[`UNKNOW`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
+`Promise`<[`UNKNOWN`](../enums/ActionState.md#unknow) \| [`SUCCESS`](../enums/ActionState.md#success)\>
 
 #### Defined in
 
