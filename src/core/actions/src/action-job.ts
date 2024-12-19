@@ -8,8 +8,10 @@ export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
     actions: ActionSchemaInterface<any>[] = [];
     app = ActionApp.getActiveApp();
+    filter?: Object;
 
-    constructor() {
+    constructor(filter?: Object) {
+        this.filter = filter;
         this.cycle();
     }
 
@@ -64,6 +66,7 @@ export class ActionCron {
     getAction() {
         return this.app.ActionModel.findOne({
             state: { $lte: ActionState.CLOSED },
+            filter: this.filter,
             $or: [
                 {
                     'cronActivity.pending': false,

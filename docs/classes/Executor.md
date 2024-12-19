@@ -30,9 +30,13 @@
 
 • `Optional` **scope**: [`ActionState`](../enums/ActionState.md)[]
 
+**`Default`**
+
+undefined all ActionStates
+
 #### Defined in
 
-[src/action-executor.ts:7](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-executor.ts#L7)
+[src/core/actions/src/action-executor.ts:8](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-executor.ts#L8)
 
 ## Methods
 
@@ -46,7 +50,7 @@
 
 #### Defined in
 
-[src/action-executor.ts:9](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-executor.ts#L9)
+[src/core/actions/src/action-executor.ts:10](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-executor.ts#L10)
 
 ___
 
@@ -60,7 +64,7 @@ ___
 
 #### Defined in
 
-[src/action-executor.ts:13](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-executor.ts#L13)
+[src/core/actions/src/action-executor.ts:14](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-executor.ts#L14)
 
 ___
 
@@ -80,4 +84,4 @@ ___
 
 #### Defined in
 
-[src/action-executor.ts:17](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-executor.ts#L17)
+[src/core/actions/src/action-executor.ts:18](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-executor.ts#L18)

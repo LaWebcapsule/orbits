@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
-    "publish-package": "npm run build && npm publish --access public",
+    "publish-package": "pnpm run build && pnpm publish --access public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,21 +26,20 @@
   },
   "homepage": "https://gitlab.com/webcapsule/actions#readme",
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.3",
-    "@tsconfig/node16": "^1.0.3",
-    "@tsconfig/node16-strictest-esm": "^1.0.3",
-    "@types/jasmine": "^4.3.1",
-    "@types/node": "^18.11.14",
-    "jasmine": "^4.5.0",
-    "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
-    "tslib": "^2.4.1",
-    "tsx": "^3.12.3",
-    "typescript": "^4.9.4"
+    "@tsconfig/node16": "catalog:",
+    "@types/jasmine": "catalog:",
+    "@types/node": "catalog:",
+    "jasmine": "catalog:",
+    "ts-node": "catalog:",
+    "ts-node-dev": "catalog:",
+    "tslib": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
   },
   "dependencies": {
-    "@wbce/services": "^0.0.x",
-    "mongoose": "^6.8.1",
-    "winston": "^3.8.2"
+    "@aws-sdk/client-sso-oidc": "^3.699.0",
+    "@wbce/services": "workspace:",
+    "mongoose": "catalog:",
+    "winston": "catalog:"
   }
 }

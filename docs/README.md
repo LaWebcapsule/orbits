@@ -1,5 +1,7 @@
+@wbce/orbits / [Exports](modules.md)
+
 <p align="center">
-  <img src="../Logo-Orbits.png" alt="Orbits-logo" width=50% height=50%/>
+  <img src="./Logo-Orbits.png" alt="Orbits-logo" width=50% height=50%/>
 </p>
 
 # Orbits
@@ -7,7 +9,7 @@ Keep your orbit in the cloud galaxy! A typescript framework for DevOps workflow.
 
 ## Documentation
 
-Read the documentation [here](../pages/main.md).
+Read the documentation [here](./pages/main.md).
 
 ## Install
 
@@ -32,13 +34,19 @@ You can use the `docker-compose.yml` file in order to run your app.
 - launch a docker-compose process with the `docker compose up` command.
 If you opt for this way of working, you still need to [install the dependencies](#standard-installation)
 
-### Standard installation
+### Standard install
+
+```bash
+pnpm install
+```
+
+### Standard installation in your project
 
 ```bash
 npm install @wbce/orbits-core @wbce/orbits-fuel
 ```
 
-### Minimal installation
+### Minimal installation in your project
 ```bash
 npm install @wbce/orbits-core
 ```

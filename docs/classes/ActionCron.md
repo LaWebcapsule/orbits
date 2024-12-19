@@ -12,6 +12,7 @@
 
 - [actions](ActionCron.md#actions)
 - [app](ActionCron.md#app)
+- [filter](ActionCron.md#filter)
 - [maxTimeToConsumeAnAction](ActionCron.md#maxtimetoconsumeanaction)
 - [nDatabaseEmpty](ActionCron.md#ndatabaseempty)
 
@@ -28,11 +29,17 @@
 
 ### constructor
 
-• **new ActionCron**()
+• **new ActionCron**(`filter?`)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `filter?` | `Object` |
 
 #### Defined in
 
-[src/action-job.ts:14](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L14)
+[src/core/actions/src/action-job.ts:13](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L13)
 
 ## Properties
 
@@ -42,7 +49,7 @@
 
 #### Defined in
 
-[src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L10)
+[src/core/actions/src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L9)
 
 ___
 
@@ -52,7 +59,17 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L11)
+[src/core/actions/src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L10)
+
+___
+
+### filter
+
+• `Optional` **filter**: `Object`
+
+#### Defined in
+
+[src/core/actions/src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L11)
 
 ___
 
@@ -62,7 +79,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L9)
+[src/core/actions/src/action-job.ts:8](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L8)
 
 ___
 
@@ -72,7 +89,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:18](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L18)
+[src/core/actions/src/action-job.ts:18](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L18)
 
 ## Methods
 
@@ -92,7 +109,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:88](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L88)
+[src/core/actions/src/action-job.ts:92](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L92)
 
 ___
 
@@ -106,7 +123,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:46](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L46)
+[src/core/actions/src/action-job.ts:45](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L45)
 
 ___
 
@@ -120,7 +137,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:69](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L69)
+[src/core/actions/src/action-job.ts:66](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L66)
 
 ___
 
@@ -134,7 +151,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:56](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L56)
+[src/core/actions/src/action-job.ts:52](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L52)
 
 ___
 
@@ -154,7 +171,7 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:135](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L135)
+[src/core/actions/src/action-job.ts:177](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L177)
 
 ___
 
@@ -168,4 +185,4 @@ ___
 
 #### Defined in
 
-[src/action-job.ts:19](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/action-job.ts#L19)
+[src/core/actions/src/action-job.ts:19](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/action-job.ts#L19)

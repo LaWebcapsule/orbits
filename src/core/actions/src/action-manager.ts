@@ -156,7 +156,7 @@ export class Action {
     }
 
     constructor() {
-        const actionRef = this.app.invertedActionsRegistry.get(
+        const actionRef = this.app.getActionRefFromRegistry(
             this.constructor as any
         );
         if (!actionRef) {
@@ -224,7 +224,7 @@ export class Action {
      */
     static _constructFromDb(actionDb: ActionSchemaInterface<any>): Action {
         const app = ActionApp.getActiveApp();
-        const ActionCtr = app.actionsRegistry.get(actionDb.actionRef);
+        const ActionCtr = app.getActionFromRegistry(actionDb.actionRef);
         let action: Action;
         try {
             action = new ActionCtr();

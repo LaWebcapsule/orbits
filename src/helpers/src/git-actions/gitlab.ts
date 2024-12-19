@@ -1,4 +1,4 @@
-import { Gitlab } from '@gitbeaker/node';
+import { Gitlab, Types } from '@gitbeaker/node';
 import { GitProvider, gitProviders } from './gitcenter';
 import { Commit } from './gitrepo';
 
@@ -8,7 +8,7 @@ export class GitlabApi implements GitProvider {
     url = 'gitlab.com';
     providerName = gitProviders.GITLAB;
 
-    gitBeaker = new Gitlab({});
+    gitBeaker: InstanceType<typeof Gitlab> = new Gitlab({});
 
     constructor(public authConfig: GitProvider['authConfig']) {
         this.gitBeaker = new Gitlab({
@@ -16,7 +16,11 @@ export class GitlabApi implements GitProvider {
         });
     }
 
-    addWebHook(projectId: string, targetUrl: string, events: string[]) {
+    addWebHook(
+        projectId: string,
+        targetUrl: string,
+        events: string[]
+    ): Promise<Types.ProjectHookSchema> {
         return this.gitBeaker.ProjectHooks.add(projectId, targetUrl, {
             events,
         });

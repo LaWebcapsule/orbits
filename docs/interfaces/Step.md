@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[src/workflow-manager.ts:8](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L8)
+[src/core/actions/src/workflow-manager.ts:19](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L19)
 
 ___
 
@@ -31,13 +31,13 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:9](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L9)
+[src/core/actions/src/workflow-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L20)
 
 ___
 
 ### cb
 
-• `Optional` **cb**: (...`args`: `any`[]) => `void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[] \| `Promise`<`void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[]\>
+• `Optional` **cb**: (...`args`: [`StepResult`](StepResult.md)<`any`\>[]) => `void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[] \| `Promise`<`void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[]\>
 
 #### Type declaration
 
@@ -47,7 +47,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `...args` | `any`[] |
+| `...args` | [`StepResult`](StepResult.md)<`any`\>[] |
 
 ##### Returns
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:10](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L10)
+[src/core/actions/src/workflow-manager.ts:21](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L21)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:11](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L11)
+[src/core/actions/src/workflow-manager.ts:24](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L24)
 
 ___
 
@@ -81,13 +81,13 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:12](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L12)
+[src/core/actions/src/workflow-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L25)
 
 ___
 
 ### rollback
 
-• `Optional` **rollback**: (...`args`: `any`[]) => `void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[] \| `Promise`<`void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[]\>
+• `Optional` **rollback**: (...`args`: [`StepResult`](StepResult.md)<`any`\>[]) => `void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[] \| `Promise`<`void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[]\>
 
 #### Type declaration
 
@@ -97,7 +97,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `...args` | `any`[] |
+| `...args` | [`StepResult`](StepResult.md)<`any`\>[] |
 
 ##### Returns
 
@@ -105,4 +105,4 @@ ___
 
 #### Defined in
 
-[src/workflow-manager.ts:15](https://github.com/LaWebcapsule/orbits/blob/b05d8f7/src/core/actions/src/workflow-manager.ts#L15)
+[src/core/actions/src/workflow-manager.ts:28](https://github.com/LaWebcapsule/orbits/blob/a1dfd88/src/core/actions/src/workflow-manager.ts#L28)
