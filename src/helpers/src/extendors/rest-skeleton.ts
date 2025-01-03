@@ -30,7 +30,7 @@ export class ActionApi {
         let newAction: Action;
         return Promise.resolve()
             .then(() => {
-                const ActionCtr = this.app.actionsRegistry.get(constructorName);
+                const ActionCtr = this.app.getActionFromRegistry(constructorName);
                 if (!ActionCtr) {
                     throw new Error('constructor not found');
                 }

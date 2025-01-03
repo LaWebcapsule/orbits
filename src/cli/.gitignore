@@ -1,0 +1,6 @@
+/node_modules/
+/build/
+/dist-*
+/dist
+*.tsbuildinfo
+!karma.conf.js

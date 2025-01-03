@@ -20,7 +20,6 @@
   },
   "homepage": "https://gitlab.com/webcapsule/actions#readme",
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.3",
     "@tsconfig/node16": "^1.0.3",
     "@tsconfig/node16-strictest-esm": "^1.0.3",
     "@types/jasmine": "^4.3.1",

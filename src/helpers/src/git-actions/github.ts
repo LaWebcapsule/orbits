@@ -1,4 +1,5 @@
 import { Octokit } from 'octokit';
+import { Endpoints } from '@octokit/types';
 import { GitProvider, gitProviders } from './gitcenter';
 import { Commit } from './gitrepo';
 
@@ -34,7 +35,7 @@ export class GithubApi implements GitProvider {
         });
     }
 
-    getCurrentUser() {
+    getCurrentUser(): Promise<Endpoints['GET /user']['response']> {
         return this.octokit.rest.users.getAuthenticated();
     }
 
@@ -113,7 +114,11 @@ export class GithubApi implements GitProvider {
             .then((infos) => (infos.data.length ? true : false));
     }
 
-    addWebHook(repo: string, targetUrl: string, events: string[]) {
+    addWebHook(
+        repo: string,
+        targetUrl: string,
+        events: string[]
+    ): Promise<Endpoints['POST /repos/{owner}/{repo}/hooks']['response']> {
         return this.getOwnerAndRepoName(repo).then((repoInfo) =>
             this.octokit.rest.repos.createWebhook({
                 owner: repoInfo.owner,
