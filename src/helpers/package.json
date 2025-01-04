@@ -23,7 +23,6 @@
   },
   "homepage": "https://gitlab.com/webcapsule/actions#readme",
   "devDependencies": {
-    "@octokit/types": "^13.6.2",
     "@tsconfig/node16": "catalog:",
     "@types/jasmine": "catalog:",
     "@types/node": "catalog:",
@@ -41,6 +40,7 @@
     "@aws-sdk/client-sso-oidc": "^3.699.0",
     "@gitbeaker/node": "^35.8.0",
     "@octokit/auth-token": "^3.0.2",
+    "@octokit/types": "^13.6.2",
     "@types/dockerode": "^3.3.14",
     "@types/express": "^4.17.15",
     "@wbce/orbits-core": "workspace:",
