@@ -1,5 +1,5 @@
 import { Octokit } from 'octokit';
-import { Endpoints } from '@octokit/types';
+import type { Endpoints } from '@octokit/types';
 import { GitProvider, gitProviders } from './gitcenter';
 import { Commit } from './gitrepo';
 
