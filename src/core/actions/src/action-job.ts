@@ -3,6 +3,7 @@ import { Action } from './action-manager';
 import { ActionApp } from './app/action-app';
 import { ActionError } from './error/error';
 import { errorCodes } from './error/errorcodes';
+import { FilterQuery } from 'mongoose';
 
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
@@ -64,9 +65,8 @@ export class ActionCron {
     }
 
     getAction() {
-        return this.app.ActionModel.findOne({
+        let query = {
             state: { $lte: ActionState.CLOSED },
-            filter: this.filter,
             $or: [
                 {
                     'cronActivity.pending': false,
@@ -84,7 +84,12 @@ export class ActionCron {
                     },
                 },
             ],
-        })
+        } as FilterQuery<ActionSchemaInterface>;
+
+        if (this.filter)
+            query.filter = this.filter;
+
+        return this.app.ActionModel.findOne(query)
             .sort('cronActivity.lastActivity')
             .then((action) => action);
     }
