@@ -365,7 +365,7 @@ export class Action {
                     return err.actionState;
                 }
                 this.internalLogError(err);
-                this.result = err;
+                this.setResult(err);
                 return ActionState.ERROR;
             });
     }
@@ -543,7 +543,7 @@ export class Action {
                         return err.actionState;
                     } else {
                         this.internalLogError(err);
-                        this.result = err;
+                        this.setResult(err);
                         return ActionState.ERROR;
                     }
                 });
