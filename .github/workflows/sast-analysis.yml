@@ -1,0 +1,23 @@
+name: SemGrep Analysis
+
+on:
+ workflow_dispatch:
+ workflow_call:
+ schedule:
+  - cron: '42 23 * * 5'
+
+env:
+ NODE_OPTIONS: --max_old_space_size=6144
+
+jobs:
+ semgrep:
+  runs-on: ubuntu-latest
+  steps:
+   - name: Checkout repository
+     uses: actions/checkout@v4
+
+   - name: Install semgrep
+     run: python3 -m pip install semgrep
+
+   - name: Run Semgrep
+     run: semgrep scan
