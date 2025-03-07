@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'async_hooks';
-import * as utils from './utils';
+import * as utils from './utils.js';
 
 export interface StorageObject {
     logInfo?: any;

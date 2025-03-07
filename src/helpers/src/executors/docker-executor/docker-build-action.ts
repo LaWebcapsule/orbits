@@ -1,7 +1,8 @@
-import { Action, ActionState } from '@wbce/orbits-core';
-import { DockerExecutor } from './docker-executor';
-import { EcrRegistry } from './ecr-registry';
 import Docker from 'dockerode';
+import { Action, ActionState } from '@wbce/orbits-core';
+
+import { DockerExecutor } from './docker-executor.js';
+import { EcrRegistry } from './ecr-registry.js';
 
 export class DockerBuildAction extends Action {
     executor = new DockerExecutor({

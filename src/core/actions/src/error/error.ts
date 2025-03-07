@@ -1,5 +1,5 @@
-import { ActionState } from '../models/action';
-import { errorCodes } from './errorcodes';
+import { ActionState } from '../models/action.js';
+import { errorCodes } from './errorcodes.js';
 
 export class ActionError extends Error {
     constructor(

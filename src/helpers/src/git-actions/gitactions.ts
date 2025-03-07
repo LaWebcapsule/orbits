@@ -1,6 +1,6 @@
 import { Action, ActionState } from '@wbce/orbits-core';
-import { gitCenter, GitProvider, gitProviders } from './gitcenter';
-import { Commit } from './gitrepo';
+import { gitCenter, GitProvider, gitProviders } from './gitcenter.js';
+import { Commit } from './gitrepo.js';
 
 export class GitAction extends Action {
     //to note : this action is not registered. It serves as a base for the other actions.

@@ -1,5 +1,5 @@
 import { ActionState } from '@wbce/orbits-core';
-import { DeployTestStack } from './actions-test';
+import { DeployTestStack } from './actions-test.js';
 
 describe('Test action', () => {
     let testAction = new DeployTestStack();

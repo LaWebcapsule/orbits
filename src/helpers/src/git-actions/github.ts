@@ -1,7 +1,7 @@
 import { Octokit } from 'octokit';
 import type { Endpoints } from '@octokit/types';
-import { GitProvider, gitProviders } from './gitcenter';
-import { Commit } from './gitrepo';
+import { GitProvider, gitProviders } from './gitcenter.js';
+import { Commit } from './gitrepo.js';
 
 export interface GithubRepoResponse {
     id: number;

@@ -1,4 +1,4 @@
-import { Action } from '../index';
+import { Action } from '../index.js';
 
 export const putManuallyDebuggingOnAction = function () {
     const oldExecute = Action.prototype.resume;

@@ -1,5 +1,5 @@
-import { Action } from './action-manager';
-import { ActionState } from './models/action';
+import { Action } from './action-manager.js';
+import { ActionState } from './models/action.js';
 
 export class Executor {
     /**

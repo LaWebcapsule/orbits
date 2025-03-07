@@ -1,11 +1,11 @@
 import jasmin from 'jasmine';
-import { ActionApp, bootstrapApp } from './../index';
+import { ActionApp, bootstrapApp } from '../index.js';
 import {
     TestAction,
     TestActionWithError,
     TestActionWithWatcherEnding,
     WorkflowApp,
-} from './test-action';
+} from './test-action.js';
 
 let j = new jasmin();
 
@@ -27,7 +27,7 @@ j.loadConfig({
 });
 
 const db = {
-    protocol: 'mongodb+srv',
+    protocol: 'mongodb',
     url: process.env['MONGO_URL'],
     name: 'orbits-test',
     connectQsParams: '?retryWrites=true&w=majority',

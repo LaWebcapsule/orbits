@@ -1,8 +1,8 @@
 import { ActionApp } from '@wbce/orbits-core';
-import { AddGitWebHookAction, WaitForNewCommits } from './gitactions';
-import { GithubApi } from './github';
-import { GitlabApi } from './gitlab';
-import { Commit } from './gitrepo';
+import { AddGitWebHookAction, WaitForNewCommits } from './gitactions.js';
+import { GithubApi } from './github.js';
+import { GitlabApi } from './gitlab.js';
+import { Commit } from './gitrepo.js';
 
 export enum gitProviders {
     GITLAB = 'gitlab',

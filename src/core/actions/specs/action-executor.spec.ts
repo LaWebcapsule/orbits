@@ -1,5 +1,5 @@
-import { ActionState } from '../src/models/action';
-import { TestExecutorAction } from './test-action';
+import { ActionState } from '../src/models/action.js';
+import { TestExecutorAction } from './test-action.js';
 
 describe('Test executor with docker', () => {
     const testAction = new TestExecutorAction();

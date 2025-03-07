@@ -1,4 +1,4 @@
 /**
  * @deprecated use utils.
  */
-export * as o from './utils';
+export * as o from './utils.js';

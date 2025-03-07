@@ -1,6 +1,6 @@
 import { Gitlab, Types } from '@gitbeaker/node';
-import { GitProvider, gitProviders } from './gitcenter';
-import { Commit } from './gitrepo';
+import { GitProvider, gitProviders } from './gitcenter.js';
+import { Commit } from './gitrepo.js';
 
 // API documentation: https://docs.gitlab.com/ee/api/projects.html
 

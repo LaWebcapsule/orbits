@@ -1,9 +1,9 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
-import { Action } from '../index';
-import { ActionError, BreakingActionState } from './error/error';
-import { errorCodes } from './error/errorcodes';
-import { ActionSchemaInterface, ActionState } from './models/action';
+import { Action } from '../index.js';
+import { ActionError, BreakingActionState } from './error/error.js';
+import { errorCodes } from './error/errorcodes.js';
+import { ActionSchemaInterface, ActionState } from './models/action.js';
 
 export interface StepResult<T = any> {
     state: ActionState.SUCCESS | ActionState.ERROR;

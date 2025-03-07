@@ -1,48 +1,47 @@
 {
-  "name": "@wbce/orbits-core",
-  "version": "0.0.40",
-  "description": "Flow for DevOps - a simple way to write state machine",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
-  "typedoc": {
-    "entryPoint": "./index.ts"
-  },
-  "scripts": {
-    "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
-    "publish-package": "pnpm run build && pnpm publish --access public",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "prettier --write --ignore-unknown **/*.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LaWebcapsule/orbits"
-  },
-  "author": "la webcapsule",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/webcapsule/actions/issues"
-  },
-  "homepage": "https://gitlab.com/webcapsule/actions#readme",
-  "devDependencies": {
-    "@tsconfig/node16": "catalog:",
-    "@types/jasmine": "catalog:",
-    "@types/node": "catalog:",
-    "jasmine": "catalog:",
-    "ts-node": "catalog:",
-    "ts-node-dev": "catalog:",
-    "tslib": "catalog:",
-    "tsx": "catalog:",
-    "typescript": "catalog:",
-    "prettier": "catalog:",
-    "prettier-plugin-organize-imports": "catalog:"
-  },
-  "dependencies": {
-    "@aws-sdk/client-sso-oidc": "^3.699.0",
-    "@wbce/services": "workspace:",
-    "mongoose": "catalog:",
-    "winston": "catalog:"
-  }
+    "name": "@wbce/orbits-core",
+    "version": "0.0.40",
+    "description": "Flow for DevOps - a simple way to write state machine",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist/**/*"
+    ],
+    "typedoc": {
+        "entryPoint": "./index.ts"
+    },
+    "scripts": {
+        "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
+        "publish-package": "pnpm run build && pnpm publish --access public",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "prettier --write --ignore-unknown **/*.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LaWebcapsule/orbits"
+    },
+    "author": "la webcapsule",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://gitlab.com/webcapsule/actions/issues"
+    },
+    "homepage": "https://gitlab.com/webcapsule/actions#readme",
+    "devDependencies": {
+        "@tsconfig/node16": "catalog:",
+        "@types/jasmine": "catalog:",
+        "@types/node": "catalog:",
+        "jasmine": "catalog:",
+        "tslib": "catalog:",
+        "tsx": "catalog:",
+        "typescript": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-organize-imports": "catalog:"
+    },
+    "dependencies": {
+        "@aws-sdk/client-sso-oidc": "^3.699.0",
+        "@wbce/services": "workspace:",
+        "mongoose": "catalog:",
+        "winston": "catalog:"
+    },
+    "type": "module"
 }

@@ -1,5 +1,5 @@
-import { ActionState } from '../index';
-import { TestAction } from './test-action';
+import { ActionState } from '../index.js';
+import { TestAction } from './test-action.js';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
 

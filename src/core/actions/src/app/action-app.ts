@@ -1,19 +1,20 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
 import * as winston from 'winston';
-import { ActionCron } from '../action-job';
 import {
     Action,
+    ActionSchemaInterface,
     RejectAction,
     ResolveAction,
+    RevertAction,
+    RevertWorkflow,
     RollBackAction,
     Workflow,
-} from '../../index';
-import { ActionError } from '../error/error';
-import { ActionSchemaInterface } from '../../index';
-import { RevertAction, RevertWorkflow } from '../../index';
-import { AppDb, setDbConnection } from './db-connection';
-import { defaultLogger, setLogger } from './logger';
+} from '../../index.js';
+import { ActionCron } from '../action-job.js';
+import { ActionError } from '../error/error.js';
+import { AppDb, setDbConnection } from './db-connection.js';
+import { defaultLogger, setLogger } from './logger.js';
 
 /**
  * Describes how the app can be configured.
