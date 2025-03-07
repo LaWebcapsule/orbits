@@ -1,9 +1,9 @@
-import { ActionSchemaInterface, ActionState } from './models/action';
+import { FilterQuery } from 'mongoose';
 import { Action } from './action-manager';
 import { ActionApp } from './app/action-app';
 import { ActionError } from './error/error';
 import { errorCodes } from './error/errorcodes';
-import { FilterQuery } from 'mongoose';
+import { ActionSchemaInterface, ActionState } from './models/action';
 
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
@@ -86,8 +86,7 @@ export class ActionCron {
             ],
         } as FilterQuery<ActionSchemaInterface>;
 
-        if (this.filter)
-            query.filter = this.filter;
+        if (this.filter) query.filter = this.filter;
 
         return this.app.ActionModel.findOne(query)
             .sort('cronActivity.lastActivity')

@@ -1,5 +1,5 @@
-import { DockerAction } from './actions-test';
 import { ActionState } from '@wbce/orbits-core';
+import { DockerAction } from './actions-test';
 
 describe('Test action', () => {
     const testAction = new DockerAction();

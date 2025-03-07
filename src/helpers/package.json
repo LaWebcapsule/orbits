@@ -10,7 +10,8 @@
   "scripts": {
     "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
     "publish-package": "pnpm run build && pnpm  publish --access public",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "prettier --write --ignore-unknown **/*.ts"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,9 @@
     "ts-node-dev": "catalog:",
     "tslib": "catalog:",
     "tsx": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-organize-imports": "catalog:"
   },
   "dependencies": {
     "@aws-cdk/cli-lib-alpha": "^2.158.0-alpha.0",
