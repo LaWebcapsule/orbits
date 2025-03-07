@@ -6,7 +6,7 @@ packages:
 
 catalog:
   typescript: ^4.9.4
-  mongoose: ^6.8.1
+  mongoose: ^6.13.6
   winston: ^3.8.2
 
   jasmine: ^4.5.0
