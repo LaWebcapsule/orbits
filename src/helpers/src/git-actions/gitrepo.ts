@@ -1,5 +1,5 @@
 import { utils } from '@wbce/services';
-import { gitProviders } from './gitcenter';
+import { gitProviders } from './gitcenter.js';
 
 export interface Commit {
     createdAt: Date;

@@ -1,5 +1,5 @@
-import { ActionState } from '../index';
-import { BasicWorkflow, TestRollBack, x } from './test-action';
+import { ActionState } from '../index.js';
+import { BasicWorkflow, TestRollBack, x } from './test-action.js';
 
 describe('testing workflow -', () => {
     let basicWorkflow = new BasicWorkflow();

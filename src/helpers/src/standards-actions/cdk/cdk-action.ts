@@ -6,9 +6,9 @@ import { Action, ActionApp, ActionState } from '@wbce/orbits-core';
 import { Cli } from '@wbce/services';
 import * as cdk from 'aws-cdk-lib';
 import { existsSync, readFileSync } from 'fs';
-import { DockerExecutor, PublicRegistry } from '../../executors';
-import { CdkHelper } from './cdk-helper';
 import { Transform } from 'stream';
+import { DockerExecutor, PublicRegistry } from '../../executors/index.js';
+import { CdkHelper } from './cdk-helper.js';
 
 export class CdkAction
     extends Action

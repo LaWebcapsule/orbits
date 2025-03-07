@@ -1,6 +1,6 @@
 import { Action } from '@wbce/orbits-core';
 import { Router } from 'express';
-import { ActionApi } from './rest-skeleton';
+import { ActionApi } from './rest-skeleton.js';
 
 export class ExpressRouterGenerator {
     router: Router = Router();

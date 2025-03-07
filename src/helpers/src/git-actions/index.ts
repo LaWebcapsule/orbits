@@ -1,3 +1,3 @@
-export * from './gitcenter';
-export * from './gitactions';
-export * from './gitrepo';
+export * from './gitcenter.js';
+export * from './gitactions.js';
+export * from './gitrepo.js';

@@ -55,7 +55,7 @@ npm install @wbce/orbits-core
 In each specific package, go to the `/specs/` folder. There is a `main.spec.ts`.
 In the jasmine configuration, choose the specs you want to run and then run:
 ```bash
-npx ts-node-dev main.spec.ts
+npx tsx main.spec.ts
 ```
 
 ## Contributing
