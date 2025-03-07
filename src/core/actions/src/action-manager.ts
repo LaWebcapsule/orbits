@@ -1,9 +1,9 @@
 import { utils, wbceAsyncStorage } from '@wbce/services';
-import { ActionApp, RevertAction, Workflow } from './../index';
-import { Executor } from './action-executor';
-import { ActionError, BreakingActionState } from './error/error';
-import { errorCodes } from './error/errorcodes';
-import { ActionSchemaInterface, ActionState } from './models/action';
+import { ActionApp, RevertAction, Workflow } from '../index.js';
+import { Executor } from './action-executor.js';
+import { ActionError, BreakingActionState } from './error/error.js';
+import { errorCodes } from './error/errorcodes.js';
+import { ActionSchemaInterface, ActionState } from './models/action.js';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 

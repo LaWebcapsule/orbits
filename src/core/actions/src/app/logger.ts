@@ -1,6 +1,6 @@
 import { wbceAsyncStorage } from '@wbce/services';
 import * as winston from 'winston';
-import type { ActionApp } from './action-app';
+import type { ActionApp } from './action-app.js';
 
 const expendError = (obj: any) => {
     if (obj instanceof Error) {

@@ -1,9 +1,9 @@
 import { FilterQuery } from 'mongoose';
-import { Action } from './action-manager';
-import { ActionApp } from './app/action-app';
-import { ActionError } from './error/error';
-import { errorCodes } from './error/errorcodes';
-import { ActionSchemaInterface, ActionState } from './models/action';
+import { Action } from './action-manager.js';
+import { ActionApp } from './app/action-app.js';
+import { ActionError } from './error/error.js';
+import { errorCodes } from './error/errorcodes.js';
+import { ActionSchemaInterface, ActionState } from './models/action.js';
 
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;

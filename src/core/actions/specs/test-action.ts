@@ -1,5 +1,11 @@
 import { Cli } from '@wbce/services';
-import { Action, ActionApp, ActionState, Executor, Workflow } from '../index';
+import {
+    Action,
+    ActionApp,
+    ActionState,
+    Executor,
+    Workflow,
+} from '../index.js';
 
 export class TestActionWithWatcherEnding extends Action {
     main() {

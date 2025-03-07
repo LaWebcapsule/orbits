@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { actionSchema, ActionSchemaInterface } from '../models/action';
-import type { ActionApp } from './action-app';
+import { actionSchema, ActionSchemaInterface } from '../models/action.js';
+import type { ActionApp } from './action-app.js';
 
 /**
  * Describes the structure of the `app.db` object.

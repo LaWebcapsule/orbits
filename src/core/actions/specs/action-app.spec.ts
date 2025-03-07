@@ -1,4 +1,4 @@
-import { Action, ActionApp, CoreActionApp } from './../index';
+import { Action, ActionApp, CoreActionApp } from '../index.js';
 
 export class TestAction extends Action {}
 

@@ -1,5 +1,5 @@
-import { ActionState } from '../src/models/action';
-import { TestActionInWorkflow } from './test-action';
+import { ActionState } from '../src/models/action.js';
+import { TestActionInWorkflow } from './test-action.js';
 
 describe('Test action defined in workflow', () => {
     const testAction = new TestActionInWorkflow();

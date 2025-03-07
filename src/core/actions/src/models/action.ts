@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { errorCodes } from './../error/errorcodes';
-import { ActionError } from './../error/error';
+import { errorCodes } from '../error/errorcodes.js';
+import { ActionError } from '../error/error.js';
 
 export enum ActionState {
     /**
