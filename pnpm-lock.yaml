@@ -19,8 +19,8 @@ catalogs:
       specifier: ^4.5.0
       version: 4.6.0
     mongoose:
-      specifier: ^6.8.1
-      version: 6.13.5
+      specifier: ^6.13.6
+      version: 6.13.8
     prettier:
       specifier: ^3.5.3
       version: 3.5.3
@@ -76,7 +76,7 @@ importers:
         version: 1.5.3
       mongoose:
         specifier: 'catalog:'
-        version: 6.13.5(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0))
+        version: 6.13.8(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0))
       winston:
         specifier: 'catalog:'
         version: 3.17.0
@@ -116,7 +116,7 @@ importers:
         version: link:../../packages/services
       mongoose:
         specifier: 'catalog:'
-        version: 6.13.5(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0))
+        version: 6.13.8(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0))
       winston:
         specifier: 'catalog:'
         version: 3.17.0
@@ -198,7 +198,7 @@ importers:
         version: 4.21.1
       mongoose:
         specifier: 'catalog:'
-        version: 6.13.5(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0))
+        version: 6.13.8(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0))
       octokit:
         specifier: ^2.0.10
         version: 2.1.0
@@ -1580,8 +1580,8 @@ packages:
     resolution: {integrity: sha512-mLV7SEiov2LHleRJPMPrK2PMyhXFZt2UQLC4VD4pnth3jMjYKHhtqfwwkkvS/NXuo/Fp3vbhaNcXrIDaLRb9Tg==}
     engines: {node: '>=12.9.0'}
 
-  mongoose@6.13.5:
-    resolution: {integrity: sha512-podJEaIF/5N2mQymkyyUzN2NeL/68MOyYjf3O0zsgCU2B2Omnhg6NhGHVavt9ZH/VxOrwKE9XphbuHDFK+T06g==}
+  mongoose@6.13.8:
+    resolution: {integrity: sha512-JHKco/533CyVrqCbyQsnqMpLn8ZCiKrPDTd2mvo2W7ygIvhygWjX2wj+RPjn6upZZgw0jC6U51RD7kUsyK8NBg==}
     engines: {node: '>=12.0.0'}
 
   mpath@0.9.0:
@@ -3829,7 +3829,7 @@ snapshots:
       - '@aws-sdk/client-sso-oidc'
       - aws-crt
 
-  mongoose@6.13.5(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0)):
+  mongoose@6.13.8(@aws-sdk/client-sso-oidc@3.699.0(@aws-sdk/client-sts@3.699.0)):
     dependencies:
       bson: 4.7.2
       kareem: 2.5.1
