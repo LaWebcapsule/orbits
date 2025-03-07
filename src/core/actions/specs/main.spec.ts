@@ -1,8 +1,8 @@
 import jasmin from 'jasmine';
 import { ActionApp, bootstrapApp } from './../index';
 import {
-    TestActionWithError,
     TestAction,
+    TestActionWithError,
     TestActionWithWatcherEnding,
     WorkflowApp,
 } from './test-action';

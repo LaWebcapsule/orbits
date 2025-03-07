@@ -1,6 +1,6 @@
 console.log('inside main spec 1 !!!');
-import jasmin from 'jasmine';
 import { ActionApp } from '@wbce/orbits-core';
+import jasmin from 'jasmine';
 let j = new jasmin();
 
 j.loadConfig({

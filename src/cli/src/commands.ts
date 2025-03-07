@@ -4,8 +4,8 @@ import child_process from 'child_process';
 import path from 'path';
 
 import { randomUUID } from 'crypto';
-import { fileURLToPath } from 'url';
 import { unlinkSync, writeFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 
 import {
     Action,
