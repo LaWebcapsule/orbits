@@ -1,4 +1,4 @@
-import colors from 'colors';
+import * as colors from 'colors';
 import { accessSync } from 'fs';
 import path from 'path';
 import winston from 'winston';

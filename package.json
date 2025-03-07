@@ -2,9 +2,7 @@
   "name": "@wbce/orbits",
   "version": "1.0.0",
   "description": "Flow for DevOps - a simple way to write state machine",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "generate-doc": "npx typedoc --options typedoc.ts"
   },
   "repository": {
@@ -18,11 +16,8 @@
   },
   "homepage": "https://gitlab.com/webcapsule/actions#readme",
   "devDependencies": {
-    "@tsconfig/node16": "catalog:",
-    "@types/node": "catalog:",
     "typedoc": "^0.23.0",
     "typedoc-plugin-markdown": "3.14.0",
-    "typedoc-theme-hierarchy": "^3.0.2",
-    "typescript": "catalog:"
+    "typedoc-theme-hierarchy": "^3.0.2"
   }
 }
