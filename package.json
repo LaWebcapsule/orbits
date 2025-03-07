@@ -19,5 +19,10 @@
     "typedoc": "^0.23.0",
     "typedoc-plugin-markdown": "3.14.0",
     "typedoc-theme-hierarchy": "^3.0.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild@<=0.24.2": ">=0.25.0"
+    }
   }
 }
