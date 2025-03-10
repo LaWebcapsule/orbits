@@ -38,7 +38,7 @@
         "prettier-plugin-organize-imports": "catalog:"
     },
     "dependencies": {
-        "@aws-sdk/client-sso-oidc": "^3.699.0",
+        "@aws-sdk/client-sso-oidc": "^3.758.0",
         "@wbce/services": "workspace:",
         "mongoose": "catalog:",
         "winston": "catalog:"
