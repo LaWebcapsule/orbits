@@ -1,5 +1,5 @@
-import { Octokit } from 'octokit';
 import type { Endpoints } from '@octokit/types';
+import { Octokit } from 'octokit';
 import { GitProvider, gitProviders } from './gitcenter.js';
 import { Commit } from './gitrepo.js';
 
@@ -100,18 +100,25 @@ export class GithubApi implements GitProvider {
     }
 
     isPrOpened(repo: string, branchId: string): Promise<boolean> {
+        // if given branchId is in the format `user:ref-name` or `organization:ref-name`
+        // we only take ref-name as repo owner will be prepended
+        const [refId] = branchId.split(':').reverse();
         return this.getOwnerAndRepoName(repo)
             .then((repoInfo) =>
                 this.octokit.rest.pulls.list({
                     owner: repoInfo.owner,
                     repo: repoInfo.repoName,
-                    query: {
-                        head: branchId,
-                        state: 'open',
-                    },
+                    head: `${repoInfo.owner}:${refId}`,
+                    state: 'open',
                 })
             )
-            .then((infos) => (infos.data.length ? true : false));
+            .then((infos) =>
+                Boolean(
+                    infos.data.length &&
+                        // make sure data includes the given ref
+                        infos.data.find((data) => data.head.ref === refId)
+                )
+            );
     }
 
     addWebHook(
