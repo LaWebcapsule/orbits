@@ -1,11 +1,28 @@
-<!--
+## Change description
 
-Heya! Thanks for opening a Pull Request! Please make sure your PR adheres to the following requirements:
+> Description here
 
-- The PR closes an Issue (not Discussion)
-- Tests are added/updated and are passing locally if applicable
-- Documentation was added/updated if applicable
+## Type of change
+- [ ] Bug fix (fixes an issue)
+- [ ] New feature (adds functionality)
 
-Please make sure to "Link" the issue you're closing. Without a Linked issue, this PR won't be accepted. See https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue for more information.
+## Related issues
+ 
 
--->
+## Checklists
+
+### Development
+
+- [ ] Lint rules pass locally
+- [ ] Application changes have been tested thoroughly
+- [ ] Automated tests covering modified code pass
+
+### Security
+
+- [ ] Security impact of change has been considered
+- [ ] Code follows company security practices and guidelines
+
+### Code review 
+
+- [ ] Pull request has a descriptive title and context useful to a reviewer. Screenshots or screencasts are attached as necessary
+- [ ] reviewers assigned
