@@ -1,9 +1,9 @@
 module.exports = {
     out: './docs',
     entryPoints: [
-      './src/core/actions',
-      // './src/helpers',
-      // './src/packages'
+      './core/actions',
+      // './helpers',
+      // './packages'
     ],
     entryPointStrategy: 'packages',
 };

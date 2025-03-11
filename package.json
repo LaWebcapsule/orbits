@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Flow for DevOps - a simple way to write state machine",
   "scripts": {
-    "generate-doc": "npx typedoc --options typedoc.ts"
+    "generate-doc": "npx typedoc --options typedoc.ts",
+    "ci:publish": "pnpm publish -r"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,7 @@
   },
   "homepage": "https://gitlab.com/webcapsule/actions#readme",
   "devDependencies": {
+    "@changesets/cli": "^2.28.1",
     "typedoc": "^0.23.0",
     "typedoc-plugin-markdown": "3.14.0",
     "typedoc-theme-hierarchy": "^3.0.2"
