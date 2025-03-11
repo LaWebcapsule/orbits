@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - changeset
 
 env:
   CI: true
