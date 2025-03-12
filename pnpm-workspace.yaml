@@ -1,8 +1,8 @@
 packages:
-  - src/core/actions
-  - src/helpers
-  - src/cli
-  - src/packages/*
+  - core/actions
+  - helpers
+  - cli
+  - packages/*
 
 catalog:
   typescript: ^4.9.4
