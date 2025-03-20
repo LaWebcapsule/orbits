@@ -1,4 +1,5 @@
-import { ActionState } from '../models/action.js';
+import { Action, Workflow } from '../../index.js';
+import { ActionSchemaInterface, ActionState } from '../models/action.js';
 import { errorCodes } from './errorcodes.js';
 
 export class ActionError extends Error {
@@ -10,6 +11,27 @@ export class ActionError extends Error {
         super();
     }
 }
+
+export class InWorkflowActionError extends Error{
+    workflowTrace : {
+        ref : string,
+        workflowCtr: string,
+        workflowId : string
+    }[] = [];
+    constructor(workflow: Workflow, ref: string, action: ActionSchemaInterface){
+        super();
+        this.message = (action.result as Error).message || action.result;
+        this.workflowTrace = [
+            ...((action.result as InWorkflowActionError).workflowTrace || []),
+            {
+                ref,
+                workflowCtr : workflow.dbDoc.actionRef,
+                workflowId : workflow._id.toString()
+            }
+        ]
+    }
+}
+
 
 export class BreakingActionState {
     constructor(

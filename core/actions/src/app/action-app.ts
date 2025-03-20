@@ -6,9 +6,7 @@ import {
     ActionSchemaInterface,
     RejectAction,
     ResolveAction,
-    RevertAction,
-    RevertWorkflow,
-    RollBackAction,
+    TrackPromise,
     Workflow,
 } from '../../index.js';
 import { ActionCron } from '../action-job.js';
@@ -194,10 +192,8 @@ export class CoreActionApp extends ActionApp {
     declare = [
         ResolveAction,
         RejectAction,
-        RollBackAction,
-        RevertAction,
-        RevertWorkflow,
         Action,
         Workflow,
+        TrackPromise
     ];
 }

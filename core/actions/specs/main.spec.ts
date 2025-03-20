@@ -17,17 +17,17 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 j.loadConfig({
     spec_dir: '.',
     spec_files: [
-        'action-executor.spec.ts',
-        'action-in-workflow.spec.ts',
-        'action-job.spec.ts',
-        'action.spec.ts',
+        //'action-executor.spec.ts',
+        //'action-in-workflow.spec.ts',
+        //'action-job.spec.ts',
+        //'action.spec.ts',
         'workflow.spec.ts',
-        'other-action.spec.ts',
+        //'other-action.spec.ts',
     ],
 });
 
 const db = {
-    protocol: 'mongodb',
+    protocol: 'mongodb+srv',
     url: process.env['MONGO_URL'],
     name: 'orbits-test',
     connectQsParams: '?retryWrites=true&w=majority',

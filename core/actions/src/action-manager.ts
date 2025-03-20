@@ -1,5 +1,5 @@
 import { utils, wbceAsyncStorage } from '@wbce/services';
-import { ActionApp, RevertAction, Workflow } from '../index.js';
+import { ActionApp, Workflow } from '../index.js';
 import { Executor } from './action-executor.js';
 import { ActionError, BreakingActionState } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
@@ -12,7 +12,7 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
  *
  * Extends this class to build new actions behaviors.
  */
-export class Action {
+export class Action<IArgument = any> {
     /**
      * Id of the action stored in database.
      * It should be a permanent id that designates the action instance.
@@ -81,7 +81,7 @@ export class Action {
     /**
      * Action argument
      */
-    IArgument: {};
+    IArgument: IArgument;
 
     /**
      * Action bag
@@ -242,15 +242,12 @@ export class Action {
         return action;
     }
 
-    static async constructFromDb(actionDb: ActionSchemaInterface<any>) {
-        if (actionDb.definitionFrom?.workflow?._id) {
-            return this.dynamicDefinitionFromWorkflowStep(actionDb);
-        } else {
-            return Action._constructFromDb(actionDb);
-        }
-    }
-
-    static async dynamicDefinitionFromWorkflowStep(
+     /**
+     * Construct an action from a document stored in the database and whose definition depends on a workflow.
+     * @param actionDb a document coming from the database
+     * @returns an action for which dbDoc property is equal to actionDb
+     */
+    static async _constructFromWorkflow(
         dbDoc: ActionSchemaInterface<any>
     ) {
         try {
@@ -261,21 +258,7 @@ export class Action {
                 workflowDoc
             )) as Workflow;
             await workflow.initialization();
-            const stepsActions = await workflow.getActionsOfStep(
-                dbDoc.definitionFrom.workflow
-            );
-            let action: Action;
-            if (Array.isArray(stepsActions)) {
-                action = stepsActions.find(
-                    (a) =>
-                        a.dbDoc.definitionFrom.workflow.marker ===
-                        dbDoc.definitionFrom.workflow.marker
-                );
-            } else if (stepsActions instanceof Action) {
-                action = stepsActions;
-            }
-            action.dbDoc = dbDoc;
-            return action;
+            return workflow.defineDynamicAction(dbDoc);
         } catch (err) {
             if (
                 dbDoc.state >= ActionState.SUCCESS &&
@@ -286,6 +269,17 @@ export class Action {
             throw err;
         }
     }
+
+
+    static async constructFromDb(actionDb: ActionSchemaInterface<any>) {
+        if (actionDb.definitionFrom?.workflow?._id) {
+            return Action._constructFromWorkflow(actionDb);
+        } else {
+            return Action._constructFromDb(actionDb);
+        }
+    }
+
+    
 
     /**
      * @deprecated use dynamicallyDefineFromWorkflowStep
@@ -427,8 +421,13 @@ export class Action {
      * Set the action result.
      * @param result
      */
-    setResult(result: Object) {
-        this.dbDoc.result = { ...this.dbDoc.result, ...result };
+    setResult(...results) {
+        if(results.length === 1){
+            this.dbDoc.result = results[0]
+        }
+        else{
+            this.dbDoc.result = results;
+        }
         this.dbDoc.markModified('result');
     }
 
@@ -708,9 +707,7 @@ export class Action {
                         const workflow = (await Action.constructFromDb(
                             workflowDb as any
                         )) as unknown as Workflow;
-                        if (workflow.isActionActive(this)) {
-                            return workflow.resume();
-                        }
+                        return workflow.resume();
                     }
                     return markAsClosed();
                 }
@@ -721,7 +718,6 @@ export class Action {
 
     private quit() {
         if (
-            this.isRollBackPossible &&
             !(this.dbDoc.state === ActionState.REVERTED)
         ) {
             // freeze action waiting for a future rollback
@@ -826,65 +822,6 @@ export class Action {
         });
     }
 
-    get isRollBackPossible() {
-        // check that at least one of the properties has changed from default ones
-        const mockAction = new Action();
-        if (
-            this.RollBackAction !== mockAction.RollBackAction ||
-            this.RollBackWorkflow !== mockAction.RollBackWorkflow ||
-            this.rollBack !== mockAction.rollBack ||
-            this.rollBackWatcher !== mockAction.rollBackWatcher
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Shortcut to configure a rollback.
-     * Will be encapsulated in a larger action
-     */
-    rollBack() {
-        return Promise.resolve(ActionState.SUCCESS);
-    }
-
-    /**
-     * Shortcut to configure the watcher for the rollback.
-     * @returns
-     */
-    rollBackWatcher() {
-        return this.watcher().then((actionState) => {
-            if (actionState !== this.dbDoc.state) {
-                return ActionState.SUCCESS;
-            } else {
-                return ActionState.UNKNOWN;
-            }
-        });
-    }
-
-    /**
-     * The action that rollback this action.
-     */
-    RollBackAction: typeof Action = RollBackAction;
-
-    /**
-     * Workflow that rollbacks the action.
-     *
-     * Wait for action end then rollback.
-     * Will use {@link RollBackAction}.
-     */
-    RollBackWorkflow: typeof Workflow = RevertAction;
-
-    /**
-     * Instantiate workflow that will rollback this action.
-     */
-    createRollBackWorkflow() {
-        const workflow = new this.RollBackWorkflow();
-        workflow.setArgument({
-            actionId: this.dbDoc._id.toString(),
-        });
-        return workflow;
-    }
 }
 
 /**
@@ -916,35 +853,3 @@ export class RejectAction extends Action {
     }
 }
 
-/**
- * Action that rolls back another Action
- */
-export class RollBackAction<A extends Action> extends Action {
-    IArgument: {
-        actionId: string;
-    };
-
-    oldAction: A;
-
-    init() {
-        return this.app.ActionModel.findById(this.argument.actionId).then(
-            async (dbDoc) => {
-                if (!dbDoc) {
-                    throw new BreakingActionState(ActionState.ERROR);
-                }
-                this.oldAction = (await Action.constructFromDb(
-                    dbDoc as any
-                )) as A;
-                return this.oldAction.initialization();
-            }
-        );
-    }
-
-    main() {
-        return this.oldAction.rollBack();
-    }
-
-    watcher() {
-        return this.oldAction.rollBackWatcher();
-    }
-}

@@ -51,7 +51,10 @@ export class ActionCron {
     }
 
     oneActionCycle() {
+        console.log("one action cycle")
         return this.getAction().then((action) => {
+            console.log("got action")
+            console.log(action)
             if (action) {
                 this.nDatabaseEmpty = 0;
                 return this.consumeAction(

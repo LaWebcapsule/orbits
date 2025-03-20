@@ -1,91 +1,100 @@
-import { ActionState } from '../index.js';
-import { BasicWorkflow, TestRollBack, x } from './test-action.js';
+import { ActionApp, ActionState, InWorkflowActionError, Workflow } from '../index.js';
+import { BasicWorkflow, ThrowErrorBasicWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition } from './test-action.js';
 
-describe('testing workflow -', () => {
-    let basicWorkflow = new BasicWorkflow();
-    basicWorkflow.setArgument({ x: 14 });
-    basicWorkflow.dbDoc.save();
+
+function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, expectedResult : any, numberOfChildActions : number, timeBeforeRunningTest?: number}){
 
     beforeAll(() => {
         jasmine.setDefaultSpyStrategy((and) => and.callThrough());
-        return new Promise((resolve) => {
-            let i = 0;
-            let runTime = 10; //seconds
-            const sI = setInterval(() => {
-                console.log(`launching tests in ${runTime - i} seconds`);
-                if (i > runTime) {
-                    clearInterval(sI);
-                    console.log('debut des tests!');
-                    resolve('ok');
-                }
-                i++;
-            }, 1000);
-        }).then(() => basicWorkflow.resyncWithDb());
+        return w.app.ActionModel.deleteMany({}).then(()=>{
+            return w.save()
+        }).then(()=>{
+            return new Promise((resolve) => {
+                let i = 0;
+                let runTime = opts.timeBeforeRunningTest || 30; //seconds
+                const sI = setInterval(() => {
+                    console.log(`launching tests in ${runTime - i} seconds`);
+                    if (i > runTime) {
+                        clearInterval(sI);
+                        console.log('debut des tests!');
+                        resolve('ok');
+                    }
+                    i++;
+                }, 1000);
+            })
+        })
+        .then(() => w.resyncWithDb());
     });
 
-    it('should be a success', () => {
-        expect(basicWorkflow.dbDoc.state).toEqual(ActionState.SUCCESS);
+    it(`should be a ${opts.expectedActionState}`, () => {
+        expect(w.dbDoc.state).toEqual(opts.expectedActionState);
     });
 
-    it('should have correct path', () => {
-        expect(basicWorkflow.bag.stepsHistory).toEqual([0, 1, 3, 4]);
-    });
+    it(`should have correct result`, ()=>{
+        const result = w.dbDoc.result;
+        if((result as Error).stack){
+            (result as Error).stack = undefined;
+            opts.expectedResult.stack = undefined
+        }
+        expect(w.dbDoc.result).toEqual(opts.expectedResult)
+    })
 
     it('should have launched sub-actions', () =>
-        basicWorkflow.app.ActionModel.find({
-            workflowId: basicWorkflow.dbDoc._id,
+        w.app.ActionModel.find({
+            workflowId: w.dbDoc._id,
         }).then((actions) => {
-            expect(actions.length).toEqual(4);
-        }));
+            expect(actions.length).toEqual(opts.numberOfChildActions);
+            actions.map(a=>{
+                expect(a.state).toBeGreaterThanOrEqual(ActionState.SUCCESS)
+            })
+    }));
 
-    afterAll(() =>
-        basicWorkflow.app.ActionModel.remove({
-            workflowId: basicWorkflow.dbDoc._id,
-        })
-    );
+}
+
+
+describe('basic Workflow', ()=>{
+    const basicWorkflow = new BasicWorkflow();
+    basicWorkflow.setArgument({ x: 14 });
+    testAWorkflow(basicWorkflow, {
+        expectedActionState : ActionState.SUCCESS, 
+        expectedResult : 10, 
+        numberOfChildActions : 5
+    })
+})
+
+describe('throw Error in Workflow', ()=>{
+    const throwErrorWorkflow = new ThrowErrorBasicWorkflow();
+    testAWorkflow(throwErrorWorkflow, {
+        expectedActionState : ActionState.ERROR, 
+        expectedResult : {message: "xyz", stack : undefined}, 
+        numberOfChildActions : 2,
+        timeBeforeRunningTest : 10
+    })
+})
+
+describe('action in error in workflow', () => {
+    let withActionErrorWorkflow = new WithActionErrorBasicWorkflow();
+    const targetError = new Error();
+    targetError.message = "xyz";
+    (targetError as any as InWorkflowActionError).workflowTrace = [{
+        workflowCtr : withActionErrorWorkflow.dbDoc.actionRef,
+        workflowId : withActionErrorWorkflow.dbDoc._id.toString(),
+        ref : "t2",
+    }]
+    testAWorkflow(withActionErrorWorkflow, {
+        expectedActionState : ActionState.ERROR, 
+        expectedResult : {...targetError}, 
+        numberOfChildActions : 2,
+        timeBeforeRunningTest : 10
+    })
 });
 
-let rollBack;
-describe('testing rollBack -', () => {
-    let t;
-    beforeAll(() => {
-        jasmine.setDefaultSpyStrategy((and) => and.callThrough());
-        t = new TestRollBack();
-        return t
-            .resume()
-            .then(
-                () =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            console.log('launching rollback');
-                            rollBack = new t.RollBackWorkflow();
-                            rollBack.setArgument({
-                                actionId: t.dbDoc._id.toString(),
-                            });
-                            rollBack.resume().then(() => {
-                                resolve(rollBack);
-                            });
-                        }, 2000);
-                    })
-            )
-            .then(
-                () =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve(1);
-                        }, 30000);
-                    })
-            );
-    });
-
-    it('should be a success', () =>
-        t.app.ActionModel.findById(rollBack.dbDoc._id).then((tr) => {
-            expect(tr.state).toEqual(ActionState.SUCCESS);
-        }));
-
-    it('should have rollBacked resource', () => {
-        expect(x).toEqual(0);
-    });
-
-    afterAll(() => {});
+fdescribe('dynamic action in workflow', () => {
+    const dynamicActionWorkflow = new WorkflowWithDynamicDefinition();
+    testAWorkflow(dynamicActionWorkflow, {
+        expectedActionState : ActionState.SUCCESS, 
+        expectedResult : 4, 
+        numberOfChildActions : 3,
+        timeBeforeRunningTest : 20
+    })
 });
