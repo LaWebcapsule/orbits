@@ -89,7 +89,7 @@ describe('action in error in workflow', () => {
     })
 });
 
-fdescribe('dynamic action in workflow', () => {
+describe('dynamic action in workflow', () => {
     const dynamicActionWorkflow = new WorkflowWithDynamicDefinition();
     testAWorkflow(dynamicActionWorkflow, {
         expectedActionState : ActionState.SUCCESS, 
