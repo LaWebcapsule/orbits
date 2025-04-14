@@ -4,6 +4,7 @@ import { Action, ActionApp } from '../index.js';
 import { ActionError, BreakingActionState, InWorkflowActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { Generator } from './generator-manager.js';
 
 export interface StepResult<T = any> {
     state: ActionState.SUCCESS | ActionState.ERROR;
@@ -283,11 +284,35 @@ export class Workflow extends Action {
         return this.trackDefine()
     }
 
-    findActionFromRef(ref: string){
-        return ActionApp.activeApp.ActionModel.findOne({
+    async findIfEquivalentActionAlreadyExists(ref: string, action : Action){
+        let actionDbDoc : ActionSchemaInterface;
+        //this is for common "do"
+        const actions = await ActionApp.activeApp.ActionModel.find({
             workflowId : this._id.toString(),
-            "workflowStack.ref": ref
-        })
+            "workflowStack.ref": action.dbDoc.workflowStack[0].ref
+        }).sort("createdAt");
+        if(actions.length){
+            for(const action of actions){
+                if(!this.registeredActionIds.includes(action.id)){
+                    actionDbDoc = action;
+                    break;
+                }
+            }
+        }
+        if(!actionDbDoc){ 
+            if(action instanceof Generator){
+                //this is for classic call of generator
+                const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+                    "identity": action.stringifyIdentity(),
+                    "actionRef": action.dbDoc.actionRef,
+                    "state": {
+                        $lt : ActionState.SUCCESS
+                    }
+                }).sort("createdAt");
+                actionDbDoc = action.substitute(actionsWithSameIdentity);   
+            }
+        }
+        return actionDbDoc;
     }
 
     startAction(ref: string, action : Action) {
@@ -324,7 +349,7 @@ export class Workflow extends Action {
                             })
                             action.dbDoc.workflowId = this._id.toString();
                             action.dbDoc.$session(this.dBSession);
-                            promises.push(action.dbDoc.save());
+                            promises.push(action.save());
                             return Promise.all(promises);
                         })
                         .then(() => Promise.resolve()); // for typing
@@ -368,6 +393,7 @@ export class Workflow extends Action {
         })
     }
 
+    registeredActionIds = [];
     do<T>(ref: string, cb : () => Promise<T>): Promise<T>
     do<T extends Action>(ref: string, action : T ) : Promise<T['IResult']> 
     do(ref: string, opts : {
@@ -378,13 +404,20 @@ export class Workflow extends Action {
     do<T extends Action>(ref: string, opts:{
         dynamicAction : T | (()=>T)
     })
+    do<T>(ref: string, opts : | Promise<any> |{
+        init? : Action['init'],
+        main: Action['main'],
+        watcher? : Action['watcher']
+    } | Action | {
+        dynamicAction : (Action | (()=>Action))
+    } | (() => Promise<any>), params? : {nCall : number}) : Promise<T>
     async do(ref: string, opts : | Promise<any> |{
         init? : Action['init'],
         main: Action['main'],
         watcher? : Action['watcher']
     } | Action | {
         dynamicAction : (Action | (()=>Action))
-    } | (() => Promise<any>) ){
+    } | (() => Promise<any>), params = {nCall : 0} ){
         let action : Action; 
         try{
             if(opts instanceof Action){
@@ -438,8 +471,9 @@ export class Workflow extends Action {
                 }
 
             }
-            const actionDb = await this.findActionFromRef(ref);
+            const actionDb = await this.findIfEquivalentActionAlreadyExists(ref, action);
             if(actionDb){
+                this.registeredActionIds.push(actionDb.id)
                 action.dbDoc = actionDb;
                 if(this.defineCallMode === 'actionFinding' && actionDb._id.toString() === this.dynamicActionToFound._id.toString()){
                     this.dynamicActionFound = action;
@@ -457,6 +491,11 @@ export class Workflow extends Action {
             }
         }
         catch(err){
+            if (err.code === 11000 && err.message.includes('duplicate key error') && params.nCall < 1) {
+                //we retry only once;
+                params.nCall ++;
+                return this.do(ref, opts, params);
+            }
             //in case we didn't success in manipulating the action
             //we just exit and will be retried later
             //maybe we should have a max. number of exit before erroring

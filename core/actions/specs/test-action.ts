@@ -6,6 +6,7 @@ import {
     Executor,
     Workflow,
 } from '../index.js';
+import { Generator } from '../src/generator-manager.js';
 
 export class TestActionWithWatcherEnding extends Action {
 
@@ -228,6 +229,32 @@ export class TestExecutorAction extends Action {
             () => ActionState.SUCCESS,
             () => ActionState.ERROR
         );
+    }
+}
+
+let x = 0;
+export class TestGenerator extends Generator{
+
+    IArgument: { commandName: string; name : string };
+
+    identity() {
+        return this.argument
+    }
+
+    async define(){
+        const result = await this.once("once", ()=>{
+            return Promise.resolve(3)
+        })
+        
+        if(result as number > 0){
+            await this.do("increment", ()=>{
+                x++;
+                return Promise.resolve()
+            })
+        }
+
+        
+        return x;
     }
 }
 

@@ -390,6 +390,7 @@ export class Action<IArgument = any> {
     setArgument(args: this['IArgument']) {
         this.argument = { ...this.argument, ...args };
         this.dbDoc.markModified('argument');
+        return this;
     }
 
     /**
@@ -402,6 +403,7 @@ export class Action<IArgument = any> {
             ...this.repeat,
             ...opts,
         };
+        return this;
     }
 
     /**
@@ -820,6 +822,25 @@ export class Action<IArgument = any> {
             filter: this.dbDoc.filter,
             err: err,
         });
+    }
+
+    clone(){
+        const clone = new (this.constructor as any)();
+        clone.setArgument({
+            ...this.argument
+        })
+        return clone;
+    }
+
+    static trackActionAsPromise(action: Action, states : ActionState[]){
+        return new Promise((resolve, reject)=>{
+            setInterval(async ()=>{
+                await action.resyncWithDb();
+                if(states.includes(action.dbDoc.state) ){
+                    resolve(action.dbDoc.state);
+                }
+            }, 10*1000)
+        })
     }
 
 }
