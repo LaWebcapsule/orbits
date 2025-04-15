@@ -98,6 +98,9 @@ export class ActionCron {
         // but we want to avoid it happening too often
         let action: Action;
         try {
+            ActionApp.activeApp.logger.info(
+                `consuming action with id : ${actionDb._id}, ref : ${actionDb.actionRef}`
+            );
             action = await Action.constructFromDb(actionDb);
         } catch (err) {
             ActionApp.activeApp.logger.error(
@@ -125,7 +128,7 @@ export class ActionCron {
                     'cronActivity.lastActivity': currentDate,
                 },
             }
-        )
+        ).then(()=>{console.log("after update one")})
             .then(() => action.resyncWithDb())
             .then(() => {
                 if (
@@ -171,6 +174,7 @@ export class ActionCron {
                     err instanceof ActionError &&
                     err.code === errorCodes.RESOURCE_LOCKED
                 ) {
+                    console.log(err);
                     return;
                 } else {
                     throw err;

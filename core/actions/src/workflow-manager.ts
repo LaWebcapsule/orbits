@@ -1,8 +1,7 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
-import { Action } from '../index.js';
-import { ActionError, BreakingActionState } from './error/error.js';
-import { errorCodes } from './error/errorcodes.js';
+import { Action, ActionApp, Generator } from '../index.js';
+import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 
 export interface StepResult<T = any> {
@@ -15,7 +14,7 @@ export interface StepResult<T = any> {
     parentStepName: string;
 }
 
-export interface Step {
+export interface Step{
     [ActionState.SUCCESS]?: boolean;
     [ActionState.ERROR]?: boolean;
     cb?: (
@@ -52,6 +51,11 @@ export class Workflow extends Action {
         currentStepName?: string;
         nTimesCurrentStep: number;
         stepsHistory: number[];
+        registeredActions : {
+          ref: string,
+          _id : string  
+        }[],
+        currentTrackIds : string[];
         oldResult: StepResult[];
         preserveOldResult: StepResult[];
         /**
@@ -73,11 +77,6 @@ export class Workflow extends Action {
         });
         return this;
     }
-
-    catch(cb: Step['cb'], opts?: Step['opts']) {
-        return this.onError(cb, opts);
-    }
-
     onError(cb: Step['cb'], opts?: Step['opts']) {
         this.steps.push({
             [ActionState.ERROR]: true,
@@ -85,10 +84,6 @@ export class Workflow extends Action {
             opts,
         });
         return this;
-    }
-
-    finally(cb: Step['cb'], opts?: Step['opts']) {
-        return this.onComplete(cb, opts);
     }
 
     onComplete(cb: Step['cb'], opts?: Step['opts']) {
@@ -210,159 +205,168 @@ export class Workflow extends Action {
             : false;
     }
 
-    declareActionStart(dbDoc: ActionSchemaInterface, index: number) {
-        //we register the index in order to give the result in the correct order
-        const workflowBag = this.dbDoc.bag;
-        dbDoc.workflowId = this.dbDoc._id.toString();
-        dbDoc.workflowStep = workflowBag.stepsHistory.length - 1;
-        dbDoc.workflowStack = [
-            ...this.dbDoc.workflowStack,
-            {
-                ref: this.dbDoc.actionRef,
-                _id: this._id.toString(),
-                stepIndex: this.bag.currentStepIndex,
-                stepName: this.bag.currentStepName,
-            },
-        ];
-        dbDoc.filter = { ...this.dbDoc.filter, ...dbDoc.filter };
-        dbDoc.markModified('filter');
-        workflowBag.actions[dbDoc._id.toString()] = {
-            state: dbDoc.state,
-            result: dbDoc.result,
-            ref: dbDoc.actionRef,
-            index,
-        };
-        this.dbDoc.markModified('bag.actions');
+    executingDefine = false;
+    defineCallMode : 'main' | 'actionFinding';
+    async define(): Promise<this['IResult']>{
+        return Promise.resolve() as any;
     }
 
-    async declareActionEnd(dbDoc: ActionSchemaInterface<any>) {
-        const workflowBag = this.dbDoc.bag;
-        workflowBag.actions[dbDoc._id.toString()]!.state = dbDoc.state;
-        workflowBag.actions[dbDoc._id.toString()]!.result = dbDoc.result;
-        const action = await Action.constructFromDb(dbDoc);
-        if (action.isRollBackPossible) {
-            this.bag.isRollBackPossible = true;
+    dynamicActionToFound : ActionSchemaInterface;
+    dynamicActionFound : Action;
+    resolveDynamicActionFinding = ()=>{};
+    defineDynamicAction(actionDb : ActionSchemaInterface){
+        if(this.executingDefine){
+            throw new ActionError("can only execute define once at a time")
         }
-        this.dbDoc.markModified('bag.actions');
-    }
-
-    getNextStep() {
-        if (this.bag.currentStepIndex === undefined) {
-            this.bag.currentStepIndex = -1;
-            this.bag.actions = {};
-            this.bag.stepsHistory = [];
-        }
-        let isStepSuccess = true;
-        let oldStepState = ActionState.ERROR;
-
-        const numberOfActions = Object.keys(this.bag.actions).length;
-        let oldResults: StepResult[] = new Array(numberOfActions);
-        for (let k in this.bag.actions) {
-            const actionSynth = this.bag.actions[k];
-            oldResults[actionSynth.index] = {
-                result: actionSynth.result,
-                actionRef: actionSynth.ref,
-                actionId: k,
-                parentStepId: this.bag.currentStepIndex,
-                parentStepName: this.bag.currentStepName,
-                isError: actionSynth.state === ActionState.ERROR,
-                state: actionSynth.state as
-                    | ActionState.SUCCESS
-                    | ActionState.ERROR,
+        this.executingDefine = true;
+        this.defineCallMode = 'actionFinding';
+        this.dynamicActionToFound = actionDb;
+        this.dynamicActionFound = undefined;
+        return new Promise((resolve, reject)=>{
+            let resolveNotCalled = true;
+            this.resolveDynamicActionFinding = ()=>{
+                if(resolveNotCalled){
+                    resolveNotCalled = false;
+                    resolve(this.dynamicActionFound)
+                }
             };
-        }
 
-        for (let key in this.bag.actions) {
-            isStepSuccess =
-                isStepSuccess &&
-                this.bag.actions[key]!.state === ActionState.SUCCESS;
-        }
-        oldStepState = isStepSuccess ? ActionState.SUCCESS : ActionState.ERROR;
-
-        const newIndex = this.steps.findIndex(
-            (step, i) => i > this.bag!.currentStepIndex! && step[oldStepState]
-        );
-        this.bag.currentStepIndex = newIndex;
-        this.bag.currentStepName = this.steps[newIndex - 1]?.name;
-        this.bag.actions = {};
-        this.dbDoc.markModified('bag');
-        this.dbDoc.markModified('bag.actions');
-        if (this.bag.currentStepIndex >= 0) {
-            this.bag.stepsHistory.push(newIndex);
-            if (this.bag.stepsHistory.length > 200) {
-                this.bag.stepsHistory.shift();
+            const resolveIfActionFound = ()=>{
+                if(this.dynamicActionFound){
+                    this.resolveDynamicActionFinding()
+                }
+                else{
+                    resolveNotCalled = false;
+                    reject(new ActionError(`action not found in definition - ${actionDb._id}, ${actionDb.actionRef}, ${actionDb.workflowStack[0]?.ref} `) )
+                }
             }
-            this.bag.oldResult = oldResults;
-            return Promise.resolve(
-                this.steps[this.bag.currentStepIndex]!['cb']!(...oldResults)
-            );
-        } else {
-            this.result = oldResults;
-            throw new BreakingActionState(oldStepState);
+
+            this.define().then(resolveIfActionFound, resolveIfActionFound)
+        }).finally(()=>{
+            this.executingDefine = false;
+        }) as Promise<Action>
+    }
+
+    resolveDefineIteration : (actionState? :ActionState)=>void = ()=>{};
+    trackDefine() : Promise<ActionState>{
+        if(this.executingDefine){
+            throw new Error("can only execute define once at a time")
+        }
+        this.executingDefine = true;
+        this.defineCallMode = 'main';
+        this.registeredActionIds = [];
+        if(!this.bag.registeredActions){
+            this.bag.registeredActions = [];
+        }
+        return new Promise((resolve, reject)=>{
+            //if define() doesn't resolve, another resolution will occur through
+            //resolveDefineIteration called in the `do` function
+            let resolveNotCalled = true;
+            this.resolveDefineIteration = (actionState : ActionState = ActionState.IN_PROGRESS)=>{
+                if(resolveNotCalled){
+                    //be sure to resolve the iteration only once
+                    resolveNotCalled = false;
+                    resolve(actionState)
+                }
+            };
+            this.define().then((...results : any[])=>{
+                if(results.length === 1){
+                    this.result = results[0]
+                }
+                else{
+                    this.setResult(results);
+                }
+                this.dbDoc.markModified("result")
+                this.resolveDefineIteration(ActionState.SUCCESS) 
+            }, (err)=>{
+                resolveNotCalled = false;
+                reject(err)
+            })
+        }).finally(()=>{
+            this.executingDefine = false;
+        }) as Promise<ActionState>
+    }
+
+    override main() {
+        return this.trackDefine()
+    }
+
+    trackAction(ref: string, action: ActionSchemaInterface){
+        this.registeredActionIds.push(action.id);
+        if(!this.bag.registeredActions.find((descriptor)=>{
+            return descriptor._id === action.id
+        })){
+            this.bag.registeredActions.push({
+                ref,
+                _id: action.id
+            })
+        }
+        if(this.bag.registeredActions.find((descriptor)=>{
+            return descriptor.ref === ref
+        })){
+            //ActionApp.activeApp.logger.warning("your workflow has the same ref multiple times, which can be tricky. See docs for more information.")
         }
     }
 
-    getActionsOfStep(opts: {
-        stepIndex?: number;
-        stepName?: string;
-        oldResults?: any[];
-    }) {
-        let stepIndex;
-        if (opts.stepName) {
-            stepIndex = this.steps.findIndex((s) => s.name === opts.stepName);
-            if (stepIndex !== -1) {
-                stepIndex = stepIndex + 1;
+    async findIfEquivalentActionAlreadyExists(ref: string, action : Action){
+        let actionDbDoc : ActionSchemaInterface;
+
+        //this is for common "do"
+        const actions = await ActionApp.activeApp.ActionModel.find({
+            workflowId : this._id.toString(),
+            "workflowRef": ref
+        }).sort("createdAt");
+        if(actions.length){
+            for(const action of actions){
+                if(!this.registeredActionIds.includes(action.id)){
+                    actionDbDoc = action;
+                    break;
+                }
             }
         }
-        if (stepIndex === undefined || stepIndex < 0) {
-            stepIndex = opts.stepIndex;
+        if(!actionDbDoc){
+            if(action instanceof Generator){
+                //this is for classic call of generator
+                //check if we have registered an action for this ref in previous execution
+                const actionDescriptor = this.bag.registeredActions.find((descriptor)=>{
+                    if(descriptor.ref === ref && !this.registeredActionIds.includes(descriptor._id)){
+                        return true
+                    }
+                    return false;
+                })
+                if(actionDescriptor){
+                    actionDbDoc = await ActionApp.activeApp.ActionModel.findOne({
+                        "_id": actionDescriptor._id
+                    })
+                }
+                else{
+                    const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+                        "identity": action.stringifyIdentity(),
+                        "actionRef": action.dbDoc.actionRef,
+                        "state": {
+                            $lt : ActionState.SUCCESS
+                        }
+                    }).sort("createdAt");
+                    actionDbDoc = action.substitute(actionsWithSameIdentity);
+                }  
+            }
         }
-        if (stepIndex === undefined || stepIndex < 0) {
-            throw new ActionError(
-                `cannot find workflow step with ${opts} ; workflowId : ${this._id.toString()} ; workflowCtr : ${this.constructor.name}`,
-                errorCodes.NOT_ACCEPTABLE
-            );
-        }
-        const oldResults = opts.oldResults || this.bag.oldResult;
-        return Promise.resolve(this.steps[stepIndex]!['cb'](...oldResults));
+        return actionDbDoc;
     }
 
-    startStep() {
+    async startAction(ref: string, action : Action) {
         return this.app.db.mongo.conn
             .startSession()
             .then((mongooseSession) => {
                 this.dBSession = mongooseSession;
-                return this.getNextStep().catch((err) => {
-                    this.bag.nTimesCurrentStep =
-                        this.bag.nTimesCurrentStep + 1 || 0;
-                    if (this.bag.nTimesCurrentStep > Infinity) {
-                        // change this once the deprecation has been done
-                        return this.breakAndReject({
-                            err,
-                            message: `blocked on step : ${this.bag.currentStepIndex}, ${this.bag.currentStepName} ; could not launch step.`,
-                        });
-                    }
-                    throw err;
-                });
-            })
-            .then((actions) =>
-                this.dBSession!.withTransaction(() => {
+                return this.dBSession!.withTransaction(async () => {
                     // beware: this function is often retried because of frequent TransientError
                     // do not put anything in this block that would accumulate
                     // (like this.x++)
-                    if (!actions) {
-                        actions = [];
-                    }
-                    if (!Array.isArray(actions)) {
-                        actions = [actions];
-                    }
-                    actions.map((action, index) => {
-                        this.declareActionStart(action.dbDoc, index);
-                    });
                     this.dbDoc.$session(this.dBSession);
-                    this.dbDoc.state = ActionState.IN_PROGRESS;
                     this.dbDoc.markModified('bag');
                     this.dbDoc.markModified('state');
+                    this.dbDoc.increment()
                     // necessary in case of retry
                     // because we proceed in two passes
                     // https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
@@ -371,24 +375,34 @@ export class Workflow extends Action {
                         .save()
                         .then(() => {
                             const promises: any[] = [];
-                            for (let action of actions as Action[]) {
-                                action.dbDoc.isNew = true; // necessary ?
-                                // looks like it solves a bug that causes transientError
-                                // et then withTransaction retry
-                                // but isNew is false and then it errors out with DocumentNotFoundError
-                                // to be confirmed
-                                action.dbDoc.$session(this.dBSession);
-                                promises.push(action.dbDoc.save());
+                            action.dbDoc.isNew = true; // necessary ?
+                            // looks like it solves a bug that causes transientError
+                            // et then withTransaction retry
+                            // but isNew is false and then it errors out with DocumentNotFoundError
+                            // to be confirmed
+                            action.dbDoc.workflowStack.push({
+                                ref,
+                                stepIndex : this.bag.currentStepIndex,
+                                _id : this._id.toString(),
+                                stepName : ref
+                            })
+                            action.dbDoc.workflowId = this._id.toString();
+                            action.dbDoc.workflowRef = ref;
+                            if(this instanceof Generator){
+                                action.dbDoc.workflowIdentity = this.stringifyIdentity();   
                             }
-                            for (let doc of this.docsToSaveAtStepStart) {
-                                doc.$session(this.dBSession);
-                                promises.push(doc.save());
-                            }
+                            action.dbDoc.$session(this.dBSession);
+                            promises.push(action.save());
                             return Promise.all(promises);
                         })
                         .then(() => Promise.resolve()); // for typing
-                }).finally(() => this.resyncWithDb())
-            )
+                }).then(()=>{
+                    return Promise.all([
+                        this.resyncWithDb(),
+                        action.resyncWithDb()
+                    ])
+                })
+            })
             .finally(() => {
                 this.docsToSaveAtStepStart = [];
                 if (this.dBSession) {
@@ -396,70 +410,146 @@ export class Workflow extends Action {
                 }
             })
             .then(() => {
-                this.internalLog(`state changed`);
                 this.internalLog(
-                    `step started : ${this.dbDoc.bag.currentStepIndex}`
+                    `action started : ${this.dbDoc.bag.currentStepIndex}`
                 );
-                // state is changed directly in the workflow
-                // so call resume directly
-                return this.resume();
             });
     }
 
-    endStep() {
-        return this.app.ActionModel.find({
-            _id: { $in: Object.keys(this.bag.actions) },
-            workflowId: this.dbDoc._id.toString(),
-            state: { $gt: ActionState.PAUSED },
-        }).then(async (actions) => {
-            for (let action of actions) {
-                await this.declareActionEnd(
-                    action as any as ActionSchemaInterface
-                );
+
+    toPromise(ref: string, dbDoc : ActionSchemaInterface){
+        return new Promise((resolve, reject)=>{
+            switch (dbDoc.state) {
+                case ActionState.ERROR:
+                    reject(new InWorkflowActionError(this, ref, dbDoc));
+                    break;
+
+                case ActionState.SUCCESS:
+                    resolve(dbDoc.result);
+                    break;
+            
+                default:
+                    this.resolveDynamicActionFinding();
+                    this.resolveDefineIteration();
+                    break;
             }
-            this.bag.nTimesCurrentStep = 0;
-            this.internalLog('endStep');
-            return ActionState.PAUSED;
-        });
+        })
     }
 
-    registerDocToSaveAtStepStart(doc: mongoose.Document) {
-        this.docsToSaveAtStepStart.push(doc);
-    }
-
-    registerDetachedAction(action: Action) {
-        this.docsToSaveAtStepStart.push(action.dbDoc);
-    }
-
-    /**
-     * @deprecated use initialization
-     */
-    override initialisation() {
-        return this.initialization();
-    }
-
-    override initialization() {
-        // TODO: remove isInitialised
-        if (this.isInitialised || this.isInitialized) {
-            return Promise.resolve();
+    registeredActionIds = [];
+    do<T>(ref: string, cb : () => Promise<T>): Promise<T>
+    do<T extends Action>(ref: string, action : T ) : Promise<T['IResult']> 
+    do(ref: string, opts : {
+        init? : Action['init'],
+        main: Action['main'],
+        watcher? : Action['watcher']
+    }) : Promise<any>
+    do<T extends Action>(ref: string, opts:{
+        dynamicAction : T | (()=>T)
+    })
+    do<T>(ref: string, opts : | Promise<any> |{
+        init? : Action['init'],
+        main: Action['main'],
+        watcher? : Action['watcher']
+    } | Action | {
+        dynamicAction : (Action | (()=>Action))
+    } | (() => Promise<any>), params? : {nCall : number}) : Promise<T>
+    async do(ref: string, opts : | Promise<any> |{
+        init? : Action['init'],
+        main: Action['main'],
+        watcher? : Action['watcher']
+    } | Action | {
+        dynamicAction : (Action | (()=>Action))
+    } | (() => Promise<any>), params = {nCall : 0} ){
+        let action : Action; 
+        try{
+            if(opts instanceof Action){
+                action = opts;
+            }
+            else if(typeof opts['main'] === 'function'){
+                action = new Action();
+                action['main'] = opts['main'];
+                action['init'] = opts['init'] || action['init'];
+                action['watcher'] = opts['watcher'] || action['watcher'];
+                action.dbDoc.definitionFrom.workflow = {
+                    _id : this.dbDoc._id.toString(),
+                    ref,
+                    stepName: ref,
+                    stepIndex : this.bag.currentStepIndex,
+                    marker : ref
+                }
+            }
+            else if(typeof opts === 'function'){
+                const trackPromise = new TrackPromise();
+                trackPromise.getPromiseLauncher = ()=>{
+                    return opts;
+                }
+                action = trackPromise;
+                action.dbDoc.definitionFrom.workflow = {
+                    _id : this.dbDoc._id.toString(),
+                    ref,
+                    stepName: ref,
+                    stepIndex : this.bag.currentStepIndex,
+                    marker : ref
+                }
+            }
+            else if(opts['dynamicAction'] instanceof Action){
+                action = opts['dynamicAction'];
+                action.dbDoc.definitionFrom.workflow = {
+                    _id : this.dbDoc._id.toString(),
+                    ref,
+                    stepName: ref,
+                    stepIndex : this.bag.currentStepIndex,
+                    marker : ref
+                }
+            }
+            else if(typeof opts['dynamicAction'] === "function" ){
+                action = opts['dynamicAction']();
+                action.dbDoc.definitionFrom.workflow = {
+                    _id : this.dbDoc._id.toString(),
+                    ref,
+                    stepName: ref,
+                    stepIndex : this.bag.currentStepIndex,
+                    marker : ref
+                }
+            }
+            const actionDb = await this.findIfEquivalentActionAlreadyExists(ref, action);
+            if(actionDb){
+                this.internalLog("tracking existing action")
+                this.trackAction(ref, actionDb)
+                action.dbDoc = actionDb;
+                if(this.defineCallMode === 'actionFinding' && actionDb._id.toString() === this.dynamicActionToFound._id.toString()){
+                    this.dynamicActionFound = action;
+                    this.resolveDynamicActionFinding();
+                    return new Promise((resolve, reject)=>{})
+                }
+            }
+            else{           
+                this.internalLog("using a new action")   
+                if(this.defineCallMode === 'main'){
+                    await this.startAction(ref, action);
+                }
+            }
+            if(this.defineCallMode === 'main'){
+                await action.resume();
+            }
         }
-        return super.initialization().then(() => this.define());
-    }
-
-    define(): Promise<void> | void {
-        return Promise.resolve();
-    }
-
-    override main() {
-        return this.startStep().catch((err) => {
-            if (!(err instanceof BreakingActionState)) {
-                // if an error occurs during this step, block on this step
-                // but workflow stays in EXECUTING_MAIN state and does not error out
-                this.internalLogError(err);
-                throw new BreakingActionState(this.dbDoc.state);
+        catch(err){
+            if (err.code === 11000 && err.message.includes('duplicate key error') && params.nCall < 1) {
+                //we retry only once;
+                params.nCall ++;
+                return this.do(ref, opts, params);
             }
-            throw err;
-        });
+            //in case we didn't success in manipulating the action
+            //we just exit and will be retried later
+            //maybe we should have a max. number of exit before erroring
+            this.internalLog(`body of do method didn't succeed ; got error : ${err}`);
+            this.internalLogError(err);
+            this.resolveDefineIteration(ActionState.UNKNOWN);//Unknow ensure here we don't change the state and so we don't have an infinite loop
+            this.resolveDynamicActionFinding();
+            return new Promise((resolve, reject)=>{});
+        }
+        return await this.toPromise(ref, action.dbDoc);
     }
 
     override onMainTimeout(): ActionState | Promise<ActionState> {
@@ -469,30 +559,36 @@ export class Workflow extends Action {
 
     override watcher() {
         return this.app.ActionModel.find({
-            workflowId: this.dbDoc._id.toString(),
-            $or: [
-                {
-                    state: { $lt: ActionState.SUCCESS },
+            $and: [{
+                $or : [{
+                    workflowId: this.dbDoc.id,
                 },
                 {
-                    state: ActionState.SUCCESS,
-                    [`repeat.${ActionState.SUCCESS}`]: { $gt: 0 },
-                },
-                {
-                    state: ActionState.ERROR,
-                    [`repeat.${ActionState.ERROR}`]: { $gt: 0 },
-                },
-            ],
+                    _id : {
+                        $in : this.bag.registeredActions.map(d=>d._id)
+                    }
+                }]
+            },
+            {
+                $or: [
+                    {
+                        state: { $lt: ActionState.SUCCESS },
+                    },
+                    {
+                        state: ActionState.SUCCESS,
+                        [`repeat.${ActionState.SUCCESS}`]: { $gt: 0 },
+                    },
+                    {
+                        state: ActionState.ERROR,
+                        [`repeat.${ActionState.ERROR}`]: { $gt: 0 },
+                    },
+                ]
+            }]
         }).then((actions) => {
             if (actions.length === 0) {
-                // two cases:
-                // if state === EXECUTING_MAIN: there was a problem in the step main and it must be tried again
-                // else step is done
-                if (this.dbDoc.state === ActionState.EXECUTING_MAIN) {
-                    return ActionState.PAUSED;
-                }
-                return this.endStep();
+                return ActionState.PAUSED;
             } else {
+                this.internalLog(`pending actions are present : ${JSON.stringify(actions.map(a=>{return {_id: a.id, ref: a.actionRef}}))}`)
                 if (!this.dbDoc.cronActivity.pending) {
                     // no parallelism in cron
                     // else it would trigger a watch or an execute for all non terminated actions
@@ -509,66 +605,32 @@ export class Workflow extends Action {
         });
     }
 
-    inWorkflowStepAction(
-        marker: string,
-        opts: {
-            init?: Action['init'];
-            main: Action['main'];
-            watcher?: Action['watcher'];
-        }
-    ): Action;
-    inWorkflowStepAction(marker: string, cb: () => Promise<any>): Action;
-    inWorkflowStepAction(
-        marker: string,
-        cb:
-            | (() => Promise<any>)
-            | {
-                  init?: Action['init'];
-                  main: Action['main'];
-                  watcher?: Action['watcher'];
-              }
-    ): Action {
-        let opts = cb;
-        if (typeof cb === 'function') {
-            opts = {
-                main: function (this: Action) {
-                    return cb().then((res) => {
-                        this.setResult(res);
-                        return ActionState.SUCCESS;
-                    });
+    static findPendingWorkflowUsingAction(actionDbDoc: ActionSchemaInterface){
+        return ActionApp.activeApp.ActionModel.find({
+            $and: [{
+                $or : [{
+                    _id: actionDbDoc.workflowId,
                 },
-            };
-        }
-        const action = new Action();
-        action.dynamicallyDefineFromWorkflowStep(this, marker);
-        action.main = opts['main'];
-        if (cb['init']) {
-            action.init = opts['init'];
-        }
-        if (cb['watcher']) {
-            action.watcher = opts['watcher'];
-        }
-        return action;
-    }
-
-    inWorkflowRedefineAction(marker: string, actions: Action): Promise<Action>;
-    inWorkflowRedefineAction(
-        marker: string,
-        actions: () => Action
-    ): Promise<Action>;
-    inWorkflowRedefineAction(
-        marker: string,
-        actions: () => Promise<Action>
-    ): Promise<Action>;
-    async inWorkflowRedefineAction(
-        marker: string,
-        action: Action | (() => Action | Promise<Action>)
-    ) {
-        if (typeof action === 'function') {
-            action = await Promise.resolve(action());
-        }
-        action.dynamicallyDefineFromWorkflowStep(this, marker);
-        return action;
+                {
+                    "bag.registeredActions._id" : actionDbDoc._id.toString()
+                }]
+            },
+            {
+                $or: [
+                    {
+                        state: { $lt: ActionState.SUCCESS },
+                    },
+                    {
+                        state: ActionState.SUCCESS,
+                        [`repeat.${ActionState.SUCCESS}`]: { $gt: 0 },
+                    },
+                    {
+                        state: ActionState.ERROR,
+                        [`repeat.${ActionState.ERROR}`]: { $gt: 0 },
+                    },
+                ]
+            }]
+        })
     }
 
     override internalLogError(err: Error) {
@@ -582,155 +644,36 @@ export class Workflow extends Action {
         });
     }
 
-    override get isRollBackPossible() {
-        if (this.bag.isRollBackPossible) {
-            return this.bag.isRollBackPossible;
-        } else {
-            for (const s of this.steps) {
-                if (s.rollback) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    override RollBackWorkflow = RevertWorkflow;
 }
 
-export class RevertWorkflow<
-    WorkflowToRevert extends Workflow,
-> extends Workflow {
-    override IArgument: {
-        actionId: string;
+
+export class TrackPromise extends Action{
+
+    IBag: {
+        cbReturnAnAction : boolean;
+        trackActionId : string;
     };
 
-    oldAction: WorkflowToRevert;
+    getPromiseLauncher : ()=>()=>Promise<any>;
 
-    override init() {
-        return this.app.ActionModel.findById(this.argument.actionId).then(
-            async (dbDoc) => {
-                if (!this.dbDoc) {
-                    throw new BreakingActionState(ActionState.ERROR);
-                }
-                this.oldAction = (await Action.constructFromDb(
-                    dbDoc as any as ActionSchemaInterface
-                )) as WorkflowToRevert;
-                return this.oldAction.initialization();
-            }
-        );
-    }
+    subAction : Action;
 
-    override define() {
-        this.next(() => {
-            const tToRevert = this.oldAction;
-            tToRevert.bag.currentStepIndex = Infinity;
-            tToRevert.dbDoc.bag.currentStepIndex = Infinity;
-            tToRevert.dbDoc.state = ActionState.REVERTING;
-            this.registerDocToSaveAtStepStart(tToRevert.dbDoc);
-            return Action.resolve({});
-        }).onErrorGoTo('end');
-        const stepsHistory = this.oldAction.bag.stepsHistory;
-        const nSteps = stepsHistory.length;
-        for (let i = 0; i < nSteps; i++) {
-            const stepIndex = stepsHistory[nSteps - 1 - i]!;
-            const step = this.oldAction.steps[stepIndex]!;
-            if (step.rollback) {
-                this.finally(step.rollback.bind(this));
-            }
-            this.finally(this.revertChildrenAction.bind(this, stepIndex));
-        }
-        this.finally(() => {
-            const tToRevert = this.oldAction;
-            tToRevert.dbDoc.state = ActionState.REVERTED;
-            this.registerDocToSaveAtStepStart(tToRevert.dbDoc);
-        });
-        this.name('end');
-        return Promise.resolve();
-    }
 
-    revertChildrenAction(stepIndex) {
-        return this.app.ActionModel.find({
-            workflowId: this.oldAction.dbDoc._id.toString(),
-            workflowStep: stepIndex,
-            state: { $lte: ActionState.SUCCESS },
-        }).then(async (actions) => {
-            const result = [];
-            for (const a of actions) {
-                const action = await Action.constructFromDb(
-                    a as any as ActionSchemaInterface
-                );
-                if (action.isRollBackPossible) {
-                    const rollBack = new action.RollBackWorkflow();
-                    rollBack.setArgument({
-                        actionId: action.dbDoc._id.toString(),
-                    });
-                    result.push(rollBack);
-                }
-            }
-            return result;
-        });
-    }
-}
-
-export class RevertAction<ActionToRevert extends Action> extends Workflow {
-    override IArgument: {
-        actionId: string;
-    };
-
-    oldAction: ActionToRevert;
-
-    override init() {
-        return this.app.ActionModel.findById(this.argument.actionId).then(
-            async (dbDoc) => {
-                if (!this.dbDoc) {
-                    throw new BreakingActionState(ActionState.ERROR);
-                }
-                this.oldAction = (await Action.constructFromDb(
-                    dbDoc as any as ActionSchemaInterface
-                )) as ActionToRevert;
-                return this.oldAction.initialization();
-            }
-        );
-    }
-
-    override define() {
-        this.next(() => {
-            // first wait for action end
-            // so action is 'attached' to workflow
-            const actionToRevert = this.oldAction;
-            if (actionToRevert.dbDoc.state < ActionState.SUCCESS) {
-                this.declareActionStart(actionToRevert.dbDoc, 0);
-                actionToRevert.setRepeat({
-                    [ActionState.SUCCESS]: 0,
-                    [ActionState.ERROR]: 0,
-                });
-                actionToRevert.dbDoc.optimisticLock();
-                this.registerDocToSaveAtStepStart(actionToRevert.dbDoc);
-            }
+    main(){
+        const cb = this.getPromiseLauncher();
+        const p = cb()
+        return p.then((...results)=>{
+            this.setResult(...results);
+            return ActionState.SUCCESS
         })
-            .next(() => {
-                // then we rollback the action
-                const actionToRevert = this.oldAction;
-                const revert = new actionToRevert.RollBackAction();
-                revert.setArgument({
-                    actionId: actionToRevert.dbDoc._id.toString(),
-                });
-                const nSuccess =
-                    this.oldAction.dbDoc.nExecutions[ActionState.SUCCESS];
-                revert.setRepeat({
-                    [ActionState.SUCCESS]: nSuccess - 1,
-                });
-                return revert;
-            })
-            .next(() => {
-                // properly terminate the action
-                this.oldAction.dbDoc.cronActivity.nextActivity = new Date(
-                    Date.now() + 10 * 60 * 1000
-                );
-                this.oldAction.dbDoc.state = ActionState.REVERTED;
-                this.registerDocToSaveAtStepStart(this.oldAction.dbDoc);
-            });
-        return Promise.resolve();
     }
+
+    onMainTimeout(): ActionState | Promise<ActionState> {
+        return ActionState.ERROR;
+    }
+
+    watcher(): Promise<ActionState> {
+        return Promise.resolve(ActionState.ERROR)
+    }
+
 }

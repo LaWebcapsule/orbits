@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { actionSchema, ActionSchemaInterface } from '../models/action.js';
 import type { ActionApp } from './action-app.js';
+import { resourceSchema, ResourceSchemaInterface } from '../models/resource.js';
 
 /**
  * Describes the structure of the `app.db` object.
@@ -28,6 +29,10 @@ export function setDbConnection(app: ActionApp) {
             'Action',
             actionSchema
         );
+        app.ResourceModel = app.db.mongo.conn.model<ResourceSchemaInterface>(
+            'Resource',
+            resourceSchema
+        );
         return;
     }
     return mongoose
@@ -38,6 +43,10 @@ export function setDbConnection(app: ActionApp) {
             app.ActionModel = conn.model<ActionSchemaInterface>(
                 'Action',
                 actionSchema
+            );
+            app.ResourceModel = conn.model<ResourceSchemaInterface>(
+                'Resource',
+                resourceSchema
             );
         });
 }

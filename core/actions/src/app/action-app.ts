@@ -6,15 +6,16 @@ import {
     ActionSchemaInterface,
     RejectAction,
     ResolveAction,
-    RevertAction,
-    RevertWorkflow,
-    RollBackAction,
+    ResourceController,
+    Sleep,
+    TrackPromise,
     Workflow,
 } from '../../index.js';
 import { ActionCron } from '../action-job.js';
 import { ActionError } from '../error/error.js';
 import { AppDb, setDbConnection } from './db-connection.js';
 import { defaultLogger, setLogger } from './logger.js';
+import { ResourceSchemaInterface } from '../models/resource.js';
 
 /**
  * Describes how the app can be configured.
@@ -66,6 +67,7 @@ export class ActionApp {
     };
 
     ActionModel: mongoose.Model<ActionSchemaInterface>;
+    ResourceModel: mongoose.Model<ResourceSchemaInterface>
 
     /**
      * @deprecated use bootstrapPath
@@ -194,10 +196,10 @@ export class CoreActionApp extends ActionApp {
     declare = [
         ResolveAction,
         RejectAction,
-        RollBackAction,
-        RevertAction,
-        RevertWorkflow,
         Action,
         Workflow,
+        TrackPromise,
+        Sleep,
+        ResourceController
     ];
 }
