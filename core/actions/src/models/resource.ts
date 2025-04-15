@@ -22,15 +22,20 @@ export enum ResourceState {
 export interface ResourceSchemaInterface<
 > extends mongoose.Document {
     identity : string,
+    actionRef: string[],
     version : string,
     output : any,
+    info: any
 }
 
 export const resourceSchema = new mongoose.Schema(
     {
-        identity: {type : String, unique : true},
+        identity: {type : String},
+        actionRef: [{type: String}],
         version : String,
         output : { type: mongoose.Schema.Types.Mixed, default: {} },
+        info : { type: mongoose.Schema.Types.Mixed, default: {} },
+
     },
     {
         timestamps: true,
@@ -38,7 +43,13 @@ export const resourceSchema = new mongoose.Schema(
     }
 );
 
-export const ResourceModel = mongoose.model<ResourceSchemaInterface>(
-	'Resource',
-	resourceSchema
+resourceSchema.index(
+    { identity: 1, actionRef: 1},
+    {
+      unique: true,
+      partialFilterExpression: {
+        identity: { $exists: true },
+        generatorCount: { $exists: true }
+      }
+    }
 );

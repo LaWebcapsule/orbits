@@ -5,8 +5,11 @@ import {
     ActionState,
     Executor,
     Workflow,
+    Generator,
+    Sleep,
+    Resource
 } from '../index.js';
-import { Generator } from '../src/generator-manager.js';
+import { writeFile } from 'fs/promises';
 
 export class TestActionWithWatcherEnding extends Action {
 
@@ -232,19 +235,35 @@ export class TestExecutorAction extends Action {
     }
 }
 
+export class SleepGenerator extends Generator{
+
+    identity() {
+        return "sleep"
+    }
+
+    async define(){
+        await this.do("sleep", new Sleep().setArgument({time : 10*1000}));
+        return {}
+    }
+}
+
 let x = 0;
 export class TestGenerator extends Generator{
 
     IArgument: { commandName: string; name : string };
 
     identity() {
-        return this.argument
+        return this.argument.name
     }
 
     async define(){
         const result = await this.once("once", ()=>{
             return Promise.resolve(3)
         })
+
+        await this.do("sleep", new Sleep().setArgument({time: 2*1000}));
+        
+        await this.do("sleepWithAGenerator", new SleepGenerator())
         
         if(result as number > 0){
             await this.do("increment", ()=>{
@@ -255,6 +274,58 @@ export class TestGenerator extends Generator{
 
         
         return x;
+    }
+}
+
+export class BlankResource extends Resource{
+
+    IArgument: { commandName: string; version?: string};
+
+    async init(){
+        if(this.argument.version){
+            this.version = this.argument.version;
+        }
+        return super.init();
+    }
+
+    identity(){
+        return "blank"
+    }
+
+    version = "1.0.0"
+
+    incrementCommandCount(commandName:string){
+        const n = this.resourceDbDoc.info[`n${commandName}`] || 0
+        this.resourceDbDoc.info[`n${commandName}`] = n+1
+        this.resourceDbDoc.markModified("info");
+    }
+
+    async defineInstall() {
+        await this.do("install", ()=>{
+            this.incrementCommandCount("install");
+            return this.resourceDbDoc.save();
+        })
+    }
+
+    async defineUpdate(){
+        await this.do("update", ()=>{
+            this.incrementCommandCount("update")
+            return this.resourceDbDoc.save();
+        })
+    }
+
+    async defineUninstall() {
+        await this.do("uninstall", ()=>{
+            this.incrementCommandCount("uninstall")
+            return this.resourceDbDoc.save();
+        })
+
+    }
+
+    async setOutput(): Promise<any> {
+        return {
+            "xyz":"abc"
+        }
     }
 }
 
@@ -270,5 +341,8 @@ export class WorkflowApp extends ActionApp {
         TestActionWithTimeTemporization,
         WorkflowWithDynamicDefinition,
         Workflow,
+        TestGenerator,
+        SleepGenerator,
+        BlankResource
     ];
 }

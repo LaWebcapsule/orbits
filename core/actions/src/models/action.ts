@@ -34,6 +34,8 @@ export interface ActionSchemaInterface<
     filter: Object;
     workflowId?: string;
     workflowStep?: number;
+    workflowRef? : string;
+    workflowIdentity?: string;
     workflowStack: {
         ref: string;
         stepIndex: number;
@@ -95,6 +97,8 @@ export const actionSchema = new mongoose.Schema(
         actionRef: String,
         workflowId: String,
         workflowStep: Number,
+        workflowRef : String,
+        workflowIdentity: String,
         generatorCount : Number,
         workflowStack: [
             {
@@ -143,12 +147,12 @@ export const actionSchema = new mongoose.Schema(
 );
 
 actionSchema.index(
-    { identity: 1, generatorCount : 1 },
+    { identity: 1, actionRef: 1, generatorCount : 1 },
     {
       unique: true,
       partialFilterExpression: {
-        identity: { $exists: true, $ne: null },
-        generatorCount: { $exists: true, $ne: null }
+        identity: { $exists: true },
+        generatorCount: { $exists: true }
       }
     }
 );

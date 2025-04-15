@@ -7,3 +7,4 @@ export * from './src/error/error.js';
 export { errorCodes } from './src/error/errorcodes.js';
 export * from './src/models/action.js';
 export * from './src/workflow-manager.js';
+export * from './src/generator-manager.js';

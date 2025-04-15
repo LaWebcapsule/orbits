@@ -1,104 +1,5 @@
-import { Query, Types } from "mongoose";
-import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "./../index.js";
-import { ResourceModel, ResourceSchemaInterface } from "./models/resource.js";
-
-export class TrackAction extends Action{
-
-    IArgument: {
-        actionId: string
-    }
-
-    static defaultDelay = Infinity;
-
-    main(){
-        return ActionState.IN_PROGRESS;
-    }
-
-    onMainTimeout(){
-        return this.watcher()
-    }
-
-    watcher(): Promise<ActionState> {
-        return ActionApp.activeApp.ActionModel.findOne({
-            _id : this.argument.actionId
-        }).then((action)=>{
-            this.setResult(action.result);
-            return action.state;
-        })
-    }
-
-}
-
-
-export class LockWorkflow extends Workflow{
-
-    IArgument : {
-        lockName : string
-    }
-
-    IResult : {
-        lockTaken? : boolean,
-        lockAlreadyTaken? : {
-            actionId : string
-        }
-    }
-
-    async define(){
-        await this.do("registerTrackAction", async ()=>{
-            const track = new TrackAction();
-            track.setArgument({
-                actionId : this._id.toString()
-            })
-            track.setFilter({
-                lock : this.argument.lockName
-            })
-            await track.save()
-        })
-        const firstActionId = await this.do("checkOnlyOne", async ()=>{
-            return ActionApp.activeApp.ActionModel.find({
-                filter : {
-                    lock : this.argument.lockName
-                },
-                state : {
-                    $lt : ActionState.SUCCESS
-                }
-            }).sort("createdAt").then((actions)=>{
-                return actions[0]._id.toString();
-            })
-        })
-        if(firstActionId === this._id.toString()){
-            return {
-                lockTaken : true
-            }
-        }
-        else{
-            return {
-                lockAlreadyTaken : {
-                    actionId : firstActionId
-                }
-            }
-        }
-    }
-}
-
-export class LockOrTrackWorkflow extends Workflow{
-
-    IArgument: {
-        lockName : string
-    }
-
-    async define(){
-        const lock = await this.do("lock", new LockWorkflow().setArgument({
-            lockName: this.argument.lockName
-        }).setRepeat({[ActionState.ERROR]: 3}))
-
-        if(lock.lockAlreadyTaken?.actionId){
-            return await this.do("track", new TrackAction().setArgument({
-                actionId: lock.lockAlreadyTaken.actionId
-            }))
-        }           
-    }
-}
+import { Action, ActionApp, ActionSchemaInterface, ActionState, Workflow } from "./../index.js";
+import { ResourceSchemaInterface } from "./models/resource.js";
 
 export abstract class Generator extends Workflow{
 
@@ -115,25 +16,50 @@ export abstract class Generator extends Workflow{
     private identityString: string
     stringifyIdentity(){
         if(!this.identityString){
-            this.identityString = JSON.stringify(this.identity());
+            const identity = this.identity();
+            if(typeof identity === "string"){
+                this.identityString = identity;
+            }
+            else{
+                this.identityString = JSON.stringify(this.identity());
+            }
         }
         return this.identityString;
     }
 
-    substitute(otherPendingActionsWithSameIdentity : ActionSchemaInterface[]): ActionSchemaInterface|undefined{
+    substitute(otherPendingActionsWithSameIdentity : this["dbDoc"][]): this["dbDoc"]|undefined{
         return otherPendingActionsWithSameIdentity?.[0];
     }
 
-    async save(){
-        if(this.dbDoc.isNew && !this.dbDoc.identity){
-            this.dbDoc.identity = this.stringifyIdentity();
-            const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+    async save(params = {nCall : 0, isNew: this.dbDoc.isNew}){
+        if(params.isNew || !this.dbDoc.identity){
+            const pendingActionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
                 actionRef: this.dbDoc.actionRef,
-                identity: this.dbDoc.identity
-            }).sort("generatorCount")
-            this.dbDoc.generatorCount = (actionsWithSameIdentity?.[0]?.generatorCount || 0) + 1
+                identity: this.stringifyIdentity(),
+                "state": {
+                        $lt : ActionState.SUCCESS
+                }
+            }).sort("createdAt")
+            if(pendingActionsWithSameIdentity.length){
+                this.dbDoc = this.substitute(pendingActionsWithSameIdentity)
+            }
+            if(!this.dbDoc){
+                this.dbDoc.identity = this.stringifyIdentity();
+                const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+                    actionRef: this.dbDoc.actionRef,
+                    identity: this.dbDoc.identity
+                }).sort({"generatorCount": -1})
+                this.dbDoc.generatorCount = (actionsWithSameIdentity?.[0]?.generatorCount || 0) + 1;
+            }
         }
-        return super.save();
+        return super.save().catch((err)=>{
+            if (err.code === 11000 && err.message.includes('duplicate key error') && params.nCall < 1) {
+                //we retry only once;
+                params.nCall ++;
+                return this.save(params);
+            }
+            throw err;
+        });
     }
 
 
@@ -143,8 +69,8 @@ export abstract class Generator extends Workflow{
         let actionDb : ActionSchemaInterface;
         if(strategy === 'cross-workflow'){
             const actions = await ActionApp.activeApp.ActionModel.find({
-                "workflowStack.ref": ref,
-                "workflowStack.identity": this.stringifyIdentity() 
+                "workflowRef": ref,
+                "workflowIdentity": this.stringifyIdentity() 
             }).sort("createdAt");
             for(const action of actions){
                 if(!this.registeredActionIds.includes(action.id)){
@@ -172,7 +98,7 @@ export abstract class Generator extends Workflow{
         const oldActions = await ActionApp.activeApp.ActionModel.find({
             identity: this.stringifyIdentity(),
             actionRef: this.dbDoc.actionRef,
-        }).sort("createdAt")
+        }).sort({"createdAt": -1})
         return oldActions[0]?.result        
     }
 
@@ -235,13 +161,18 @@ export class Sleep extends Action{
 
 export class ResourceController<T extends Resource> extends Workflow{
 
-    IArgument: T['IArgument']
+    IArgument: T['IArgument'] & {
+        actionRef: string
+    }
 
 
     constructor(resource? : T){
         super()
         if(resource){
-            this.setArgument(resource.argument)
+            this.setArgument({
+                ...resource.argument,
+                actionRef: resource.dbDoc.actionRef
+            })
         }
     }
 
@@ -254,7 +185,10 @@ export class ResourceController<T extends Resource> extends Workflow{
                 await this.do("digest", async ()=>{
                     const ActionCtr = ActionApp.activeApp.getActionFromRegistry(this.argument.actionRef);
                     const resource = new ActionCtr() as T;
-                    resource.setArgument(this.argument);
+                    resource.setArgument({
+                        ...this.argument,
+                        actionRef: undefined
+                    });
                     resource.setCommand('cycle');
                     return resource;
                 })
@@ -274,7 +208,7 @@ export class ScopeOfChanges<T>{
     }
 }
 
-export abstract class Resource extends Generator{
+export class Resource extends Generator{
 
     IArgument: { commandName: string; };
 
@@ -291,22 +225,29 @@ export abstract class Resource extends Generator{
 		}
 
 		let identity = this.stringifyIdentity();
-
-        this.resourceDbDoc = await ResourceModel.findOne({
-            identity
+        
+        this.resourceDbDoc = await this.app.ResourceModel.findOne({
+            identity,
+            actionRef: this.app.getActionRefFromRegistry(
+                this.constructor as any
+            )
         })
         return this.resourceDbDoc;
     }
 
     createResourceDoc(){
-        this.resourceDbDoc = new ResourceModel({
+        this.resourceDbDoc = new this.app.ResourceModel({
             identity : this.stringifyIdentity(),
+            actionRef: [this.app.getActionRefFromRegistry(
+                this.constructor as any
+            )]
         })
         return this.resourceDbDoc.save()
     }
 
     async saveResourceOutput(output: any){
         this.resourceDbDoc.output = output;
+        await this.resourceDbDoc.save();
     }
 
     async getResourceOutput(){
@@ -345,18 +286,22 @@ export abstract class Resource extends Generator{
                 await this.once("createResourceDoc", ()=>{
                     return this.createResourceDoc();
                 })
-                await this.once("install", new ResourceController(this));
+                await this.once("installController", ()=>{
+                    const controller = new ResourceController(this)
+                    return controller.save();
+                });
                 const changes = await this.do("digest", ()=>{
                     return this.digest();
                 });
                 for(const c of changes){
                     const clone = this.clone();
-                    clone.setArgument({
-                        ...this.argument,
-                        commandName : c
-                    })
+                    clone.setCommand(c.commandName)
                     await this.do(c.commandName, clone);
                 }
+                await this.do("saveVersion", ()=>{
+                    this.resourceDbDoc.version = this.version;
+                    return this.resourceDbDoc.save();
+                })
                 await this.do("endDigestor", ()=>{
                     return this.endDigestor();
                 });
@@ -370,8 +315,9 @@ export abstract class Resource extends Generator{
         if(this.resourceDbDoc.version !== this.version){
             changes.push(new ScopeOfChanges('install'));
         }
-        if(this.argument.commandName === ''){
-            changes.push(new ScopeOfChanges('install'));
+        if(this.resourceDbDoc.version){
+            //meaning a deploy already occurs
+            changes.push(new ScopeOfChanges('update'));
         }
         return changes;
     }
@@ -384,10 +330,24 @@ export abstract class Resource extends Generator{
 
     }
 
-    abstract setOutput(): Promise<void>
+    async setOutput(): Promise<any>{
+        return;
+    }
 
     async endDigestor(){
-        await this.setOutput();
+       const output = await this.setOutput();
+       await this.saveResourceOutput(output)
+    }
+
+    substitute(otherPendingActionsWithSameIdentity: ActionSchemaInterface[]): ActionSchemaInterface | undefined {
+        return otherPendingActionsWithSameIdentity.filter((a)=>a.argument.commandName === this.argument.commandName)?.[0]
+    }
+
+    resyncWithDb(){
+        this.resourceDbDoc = undefined;
+        return this.getResourceDoc().then(()=>{
+            return super.resyncWithDb()
+        })
     }
 
 }

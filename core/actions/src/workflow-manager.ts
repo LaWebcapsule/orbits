@@ -1,10 +1,8 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
-import { Action, ActionApp } from '../index.js';
-import { ActionError, BreakingActionState, InWorkflowActionError } from './error/error.js';
-import { errorCodes } from './error/errorcodes.js';
+import { Action, ActionApp, Generator } from '../index.js';
+import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
-import { Generator } from './generator-manager.js';
 
 export interface StepResult<T = any> {
     state: ActionState.SUCCESS | ActionState.ERROR;
@@ -16,7 +14,7 @@ export interface StepResult<T = any> {
     parentStepName: string;
 }
 
-export interface Step {
+export interface Step{
     [ActionState.SUCCESS]?: boolean;
     [ActionState.ERROR]?: boolean;
     cb?: (
@@ -53,6 +51,11 @@ export class Workflow extends Action {
         currentStepName?: string;
         nTimesCurrentStep: number;
         stepsHistory: number[];
+        registeredActions : {
+          ref: string,
+          _id : string  
+        }[],
+        currentTrackIds : string[];
         oldResult: StepResult[];
         preserveOldResult: StepResult[];
         /**
@@ -251,6 +254,10 @@ export class Workflow extends Action {
         }
         this.executingDefine = true;
         this.defineCallMode = 'main';
+        this.registeredActionIds = [];
+        if(!this.bag.registeredActions){
+            this.bag.registeredActions = [];
+        }
         return new Promise((resolve, reject)=>{
             //if define() doesn't resolve, another resolution will occur through
             //resolveDefineIteration called in the `do` function
@@ -284,12 +291,30 @@ export class Workflow extends Action {
         return this.trackDefine()
     }
 
+    trackAction(ref: string, action: ActionSchemaInterface){
+        this.registeredActionIds.push(action.id);
+        if(!this.bag.registeredActions.find((descriptor)=>{
+            return descriptor._id === action.id
+        })){
+            this.bag.registeredActions.push({
+                ref,
+                _id: action.id
+            })
+        }
+        if(this.bag.registeredActions.find((descriptor)=>{
+            return descriptor.ref === ref
+        })){
+            //ActionApp.activeApp.logger.warning("your workflow has the same ref multiple times, which can be tricky. See docs for more information.")
+        }
+    }
+
     async findIfEquivalentActionAlreadyExists(ref: string, action : Action){
         let actionDbDoc : ActionSchemaInterface;
+
         //this is for common "do"
         const actions = await ActionApp.activeApp.ActionModel.find({
             workflowId : this._id.toString(),
-            "workflowStack.ref": action.dbDoc.workflowStack[0].ref
+            "workflowRef": ref
         }).sort("createdAt");
         if(actions.length){
             for(const action of actions){
@@ -299,28 +324,42 @@ export class Workflow extends Action {
                 }
             }
         }
-        if(!actionDbDoc){ 
+        if(!actionDbDoc){
             if(action instanceof Generator){
                 //this is for classic call of generator
-                const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
-                    "identity": action.stringifyIdentity(),
-                    "actionRef": action.dbDoc.actionRef,
-                    "state": {
-                        $lt : ActionState.SUCCESS
+                //check if we have registered an action for this ref in previous execution
+                const actionDescriptor = this.bag.registeredActions.find((descriptor)=>{
+                    if(descriptor.ref === ref && !this.registeredActionIds.includes(descriptor._id)){
+                        return true
                     }
-                }).sort("createdAt");
-                actionDbDoc = action.substitute(actionsWithSameIdentity);   
+                    return false;
+                })
+                if(actionDescriptor){
+                    actionDbDoc = await ActionApp.activeApp.ActionModel.findOne({
+                        "_id": actionDescriptor._id
+                    })
+                }
+                else{
+                    const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+                        "identity": action.stringifyIdentity(),
+                        "actionRef": action.dbDoc.actionRef,
+                        "state": {
+                            $lt : ActionState.SUCCESS
+                        }
+                    }).sort("createdAt");
+                    actionDbDoc = action.substitute(actionsWithSameIdentity);
+                }  
             }
         }
         return actionDbDoc;
     }
 
-    startAction(ref: string, action : Action) {
+    async startAction(ref: string, action : Action) {
         return this.app.db.mongo.conn
             .startSession()
             .then((mongooseSession) => {
                 this.dBSession = mongooseSession;
-                return this.dBSession!.withTransaction(() => {
+                return this.dBSession!.withTransaction(async () => {
                     // beware: this function is often retried because of frequent TransientError
                     // do not put anything in this block that would accumulate
                     // (like this.x++)
@@ -348,6 +387,10 @@ export class Workflow extends Action {
                                 stepName : ref
                             })
                             action.dbDoc.workflowId = this._id.toString();
+                            action.dbDoc.workflowRef = ref;
+                            if(this instanceof Generator){
+                                action.dbDoc.workflowIdentity = this.stringifyIdentity();   
+                            }
                             action.dbDoc.$session(this.dBSession);
                             promises.push(action.save());
                             return Promise.all(promises);
@@ -469,11 +512,11 @@ export class Workflow extends Action {
                     stepIndex : this.bag.currentStepIndex,
                     marker : ref
                 }
-
             }
             const actionDb = await this.findIfEquivalentActionAlreadyExists(ref, action);
             if(actionDb){
-                this.registeredActionIds.push(actionDb.id)
+                this.internalLog("tracking existing action")
+                this.trackAction(ref, actionDb)
                 action.dbDoc = actionDb;
                 if(this.defineCallMode === 'actionFinding' && actionDb._id.toString() === this.dynamicActionToFound._id.toString()){
                     this.dynamicActionFound = action;
@@ -481,7 +524,8 @@ export class Workflow extends Action {
                     return new Promise((resolve, reject)=>{})
                 }
             }
-            else{
+            else{           
+                this.internalLog("using a new action")   
                 if(this.defineCallMode === 'main'){
                     await this.startAction(ref, action);
                 }
@@ -500,6 +544,7 @@ export class Workflow extends Action {
             //we just exit and will be retried later
             //maybe we should have a max. number of exit before erroring
             this.internalLog(`body of do method didn't succeed ; got error : ${err}`);
+            this.internalLogError(err);
             this.resolveDefineIteration(ActionState.UNKNOWN);//Unknow ensure here we don't change the state and so we don't have an infinite loop
             this.resolveDynamicActionFinding();
             return new Promise((resolve, reject)=>{});
@@ -514,24 +559,36 @@ export class Workflow extends Action {
 
     override watcher() {
         return this.app.ActionModel.find({
-            workflowId: this.dbDoc._id.toString(),
-            $or: [
-                {
-                    state: { $lt: ActionState.SUCCESS },
+            $and: [{
+                $or : [{
+                    workflowId: this.dbDoc.id,
                 },
                 {
-                    state: ActionState.SUCCESS,
-                    [`repeat.${ActionState.SUCCESS}`]: { $gt: 0 },
-                },
-                {
-                    state: ActionState.ERROR,
-                    [`repeat.${ActionState.ERROR}`]: { $gt: 0 },
-                },
-            ],
+                    _id : {
+                        $in : this.bag.registeredActions.map(d=>d._id)
+                    }
+                }]
+            },
+            {
+                $or: [
+                    {
+                        state: { $lt: ActionState.SUCCESS },
+                    },
+                    {
+                        state: ActionState.SUCCESS,
+                        [`repeat.${ActionState.SUCCESS}`]: { $gt: 0 },
+                    },
+                    {
+                        state: ActionState.ERROR,
+                        [`repeat.${ActionState.ERROR}`]: { $gt: 0 },
+                    },
+                ]
+            }]
         }).then((actions) => {
             if (actions.length === 0) {
                 return ActionState.PAUSED;
             } else {
+                this.internalLog(`pending actions are present : ${JSON.stringify(actions.map(a=>{return {_id: a.id, ref: a.actionRef}}))}`)
                 if (!this.dbDoc.cronActivity.pending) {
                     // no parallelism in cron
                     // else it would trigger a watch or an execute for all non terminated actions
@@ -546,6 +603,34 @@ export class Workflow extends Action {
                 return ActionState.IN_PROGRESS;
             }
         });
+    }
+
+    static findPendingWorkflowUsingAction(actionDbDoc: ActionSchemaInterface){
+        return ActionApp.activeApp.ActionModel.find({
+            $and: [{
+                $or : [{
+                    _id: actionDbDoc.workflowId,
+                },
+                {
+                    "bag.registeredActions._id" : actionDbDoc._id.toString()
+                }]
+            },
+            {
+                $or: [
+                    {
+                        state: { $lt: ActionState.SUCCESS },
+                    },
+                    {
+                        state: ActionState.SUCCESS,
+                        [`repeat.${ActionState.SUCCESS}`]: { $gt: 0 },
+                    },
+                    {
+                        state: ActionState.ERROR,
+                        [`repeat.${ActionState.ERROR}`]: { $gt: 0 },
+                    },
+                ]
+            }]
+        })
     }
 
     override internalLogError(err: Error) {

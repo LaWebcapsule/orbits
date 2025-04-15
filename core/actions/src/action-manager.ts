@@ -703,15 +703,19 @@ export class Action<IArgument = any> {
             }
             return this.changeState(ActionState.SLEEPING);
         } else if (this.dbDoc.workflowId) {
-            return this.app.ActionModel.findById(this.dbDoc.workflowId).then(
-                async (workflowDb) => {
-                    if (workflowDb) {
+            return Workflow.findPendingWorkflowUsingAction(this.dbDoc).then(
+                async (workflowDbs) => {
+                    const trackingResumePromise = []
+                    for(const workflowDb of workflowDbs){
                         const workflow = (await Action.constructFromDb(
                             workflowDb as any
                         )) as unknown as Workflow;
-                        return workflow.resume();
+                        trackingResumePromise.push(workflow.resume());
+                        await Promise.all(trackingResumePromise);
                     }
-                    return markAsClosed();
+                    if (!workflowDbs.length) {
+                        return markAsClosed();
+                    }
                 }
             );
         }
@@ -834,9 +838,10 @@ export class Action<IArgument = any> {
 
     static trackActionAsPromise(action: Action, states : ActionState[]){
         return new Promise((resolve, reject)=>{
-            setInterval(async ()=>{
+            const intervalRef = setInterval(async ()=>{
                 await action.resyncWithDb();
                 if(states.includes(action.dbDoc.state) ){
+                    clearInterval(intervalRef);
                     resolve(action.dbDoc.state);
                 }
             }, 10*1000)

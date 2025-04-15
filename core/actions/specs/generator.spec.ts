@@ -5,23 +5,23 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
 
 describe('Generators', () => {
     const testGen = new TestGenerator();
-    testGen.setArgument({name: 'xyz', commandName : 'e'});
+    testGen.setArgument({name: 'xyz', commandName : '1'});
 
     const testGen2 = new TestGenerator();
-    testGen.setArgument({name: 'xyz', commandName : 'e'});
+    testGen2.setArgument({name: 'xyz', commandName : '2'});
 
     const testGenRunAfterFirstExecution = new TestGenerator();
-    testGen.setArgument({name: 'xyz', commandName : 'e'});
+    testGenRunAfterFirstExecution.setArgument({name: 'xyz', commandName : '3'});
 
     const testGenOtherName = new TestGenerator();
-    testGen.setArgument({name: 'xyzzz', commandName : 'e'});
+    testGenOtherName.setArgument({name: 'xyzzz', commandName : '4'});
 
     beforeAll(() => {
         return ActionApp.activeApp.ActionModel.deleteMany({}).then(()=>{
             return Promise.all([
-                testGen.resume(),
-                testGen2.resume(),
-                testGenOtherName.resume()
+                testGen.save(),
+                testGen2.save(),
+                testGenOtherName.save()
             ])
         }).then(()=>{
             const endState = [ActionState.SUCCESS, ActionState.ERROR];
@@ -31,9 +31,9 @@ describe('Generators', () => {
                 Action.trackActionAsPromise(testGenOtherName, endState),
             ])
         }).then(()=>{
-            return testGenRunAfterFirstExecution.resume()
+            return testGenRunAfterFirstExecution.save()
         }).then(()=>{
-            return  Action.trackActionAsPromise(testGen, [ActionState.SUCCESS, ActionState.ERROR]);
+            return  Action.trackActionAsPromise(testGenRunAfterFirstExecution, [ActionState.SUCCESS, ActionState.ERROR]);
         })
     });
 
@@ -54,11 +54,18 @@ describe('Generators', () => {
         const onceActions = await ActionApp.activeApp.ActionModel.find({
             "definitionFrom.workflow.ref": "once",
         })
-        expect(onceActions.length).toEqual(2);
+        expect(onceActions).toHaveSize(2);
         const onceActionsForTestGen = await ActionApp.activeApp.ActionModel.find({
-            "workflowStack.ref": "once",
-            "workflowStack.identity": testGen.stringifyIdentity() 
+            "workflowRef": "once",
+            "workflowIdentity": testGen.stringifyIdentity() 
         })
-        expect(onceActionsForTestGen.length).toEqual(1);
+        expect(onceActionsForTestGen).toHaveSize(1);
+    })
+
+    it("should have run the sleep generator only twice", async ()=>{
+        const sleepGenActions = await ActionApp.activeApp.ActionModel.find({
+            "identity": "sleep"
+        })
+        expect(sleepGenActions).toHaveSize(2)
     })
 });
