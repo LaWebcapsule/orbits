@@ -16,7 +16,7 @@
         "publish-package": "pnpm run build && pnpm publish --access public"
     },
     "dependencies": {
-        "@wbce/orbits-core": "workspace:",
+        "@wbce/orbits-core": "workspace:^",
         "blessed": "^0.1.81",
         "colors": "^1.4.0",
         "commander": "^12.1.0",
@@ -26,13 +26,13 @@
     },
     "devDependencies": {
         "@tsconfig/node16": "catalog:",
-        "tslib": "catalog:",
-        "tsx": "catalog:",
-        "typescript": "catalog:",
+        "@types/blessed": "^0.1.25",
+        "@types/copy-paste": "^1.1.33",
         "prettier": "catalog:",
         "prettier-plugin-organize-imports": "catalog:",
-        "@types/blessed": "^0.1.25",
-        "@types/copy-paste": "^1.1.33"
+        "tslib": "catalog:",
+        "tsx": "catalog:",
+        "typescript": "catalog:"
     },
     "files": [
         "dist"

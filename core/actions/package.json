@@ -31,15 +31,15 @@
         "@types/jasmine": "catalog:",
         "@types/node": "catalog:",
         "jasmine": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-organize-imports": "catalog:",
         "tslib": "catalog:",
         "tsx": "catalog:",
-        "typescript": "catalog:",
-        "prettier": "catalog:",
-        "prettier-plugin-organize-imports": "catalog:"
+        "typescript": "catalog:"
     },
     "dependencies": {
-        "@aws-sdk/client-sso-oidc": "^3.758.0",
-        "@wbce/services": "workspace:",
+        "@aws-sdk/client-sso-oidc": "^3.787.0",
+        "@wbce/services": "workspace:^",
         "mongoose": "catalog:",
         "winston": "catalog:"
     },
