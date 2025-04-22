@@ -1,6 +1,6 @@
 {
     "name": "@wbce/orbits-cli",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Cli to run your Orbits App",
     "repository": {
         "type": "git",
