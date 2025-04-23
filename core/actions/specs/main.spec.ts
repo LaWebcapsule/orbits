@@ -1,10 +1,9 @@
 import jasmin from 'jasmine';
-import { ActionApp, bootstrapApp } from '../index.js';
+import { ActionApp } from '../index.js';
 import {
     TestAction,
     TestActionWithError,
     TestActionWithWatcherEnding,
-    WorkflowApp,
 } from './test-action.js';
 
 let j = new jasmin();
@@ -36,7 +35,7 @@ const db = {
 };
 let dbOpts = {};
 
-@bootstrapApp({
+const app = new ActionApp({
     db: {
         mongo: {
             url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
@@ -47,14 +46,9 @@ let dbOpts = {};
         quantity: 1,
     },
 })
-export class TestApp extends ActionApp {
-    declare = [TestAction, TestActionWithWatcherEnding, TestActionWithError];
-    imports = [WorkflowApp];
-}
 
-ActionApp.waitForActiveApp.then(() => {
-    const activeApp = ActionApp.getActiveApp();
-    return activeApp.ActionModel.remove({}).then(() => {
+app.waitForBootstrap.then(async () => {
+    return app.ActionModel.remove({}).then(() => {
         console.log('launching the tests');
         j.execute();
     });

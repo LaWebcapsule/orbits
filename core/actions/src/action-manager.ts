@@ -12,7 +12,7 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
  *
  * Extends this class to build new actions behaviors.
  */
-export class Action<IArgument = any> {
+export class Action {
     /**
      * Id of the action stored in database.
      * It should be a permanent id that designates the action instance.
@@ -24,7 +24,7 @@ export class Action<IArgument = any> {
      */
     executor?: Executor;
 
-    app: ActionApp = ActionApp.getActiveApp();
+    app = ActionApp.activeApp;
 
     /**
      * Shortcut to {@link Action.defaultDelays[ActionState.IN_PROGRESS]}.
@@ -81,7 +81,7 @@ export class Action<IArgument = any> {
     /**
      * Action argument
      */
-    IArgument: IArgument;
+    IArgument: {};
 
     /**
      * Action bag
@@ -214,7 +214,7 @@ export class Action<IArgument = any> {
             cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
 
-        this.app = ActionApp.getActiveApp();
+        this.app = ActionApp.activeApp;
     }
 
     /**
@@ -223,7 +223,7 @@ export class Action<IArgument = any> {
      * @returns an action for which dbDoc property is equal to actionDb
      */
     static _constructFromDb(actionDb: ActionSchemaInterface<any>): Action {
-        const app = ActionApp.getActiveApp();
+        const app = ActionApp.activeApp;
         const ActionCtr = app.getActionFromRegistry(actionDb.actionRef);
         let action: Action;
         try {
@@ -558,7 +558,6 @@ export class Action<IArgument = any> {
      * It returns a state value.
      * @returns
      */
-
     main(): ActionState | Promise<ActionState> {
         return Promise.resolve(ActionState.ERROR);
     }
@@ -867,8 +866,6 @@ export class ResolveAction extends Action {
  * Action that resolve in ERROR state
  */
 export class RejectAction extends Action {
-    IBag: Object;
-    IArgument: Object;
 
     main() {
         return Promise.resolve(ActionState.ERROR);

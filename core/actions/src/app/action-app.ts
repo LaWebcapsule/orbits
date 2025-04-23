@@ -1,6 +1,8 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
 import * as winston from 'winston';
+import precinct from "precinct";
+import path from "path"
 import {
     Action,
     ActionSchemaInterface,
@@ -16,6 +18,7 @@ import { ActionError } from '../error/error.js';
 import { AppDb, setDbConnection } from './db-connection.js';
 import { defaultLogger, setLogger } from './logger.js';
 import { ResourceSchemaInterface } from '../models/resource.js';
+import { access } from 'fs/promises';
 
 /**
  * Describes how the app can be configured.
@@ -29,10 +32,13 @@ export interface ActionAppConfig {
         quantity: number;
         filter?: Object;
     };
+    notActive?: boolean
 }
 
 export class ActionApp {
     static activeApp: ActionApp;
+
+    static apps : ActionApp[] = [];
 
     static appImportedRegistry = new Map();
 
@@ -43,6 +49,12 @@ export class ActionApp {
         ActionApp.rejectBootstrap = reject;
     });
     static bootstrapPath: string;
+    /**
+     * @deprecated use bootstrapPath
+     */
+    static get boostrapPath() {
+        return ActionApp.bootstrapPath;
+    }
 
     private actionsRegistry = new Map<string, typeof Action>();
     private invertedActionsRegistry = new Map<typeof Action, string>();
@@ -69,12 +81,9 @@ export class ActionApp {
     ActionModel: mongoose.Model<ActionSchemaInterface>;
     ResourceModel: mongoose.Model<ResourceSchemaInterface>
 
-    /**
-     * @deprecated use bootstrapPath
-     */
-    static get boostrapPath() {
-        return ActionApp.bootstrapPath;
-    }
+    
+
+    bootstrapPath: string;
 
     constructor(opts?: ActionAppConfig) {
         if (opts?.logger) {
@@ -87,6 +96,17 @@ export class ActionApp {
             this.numberOfWorker = opts?.workers.quantity;
             this.actionFilter = opts?.workers.filter;
         }
+        if(!ActionApp.activeApp && !opts.notActive){
+            ActionApp.activeApp = this;
+        }
+        ActionApp.apps.push(this);
+        const stackPaths = utils.getStackTracePaths();
+        let bootstrapPath = stackPaths[2];
+        if (bootstrapPath.includes('tslib')) {
+            bootstrapPath = stackPaths[3];
+        }
+        this.bootstrapPath = bootstrapPath;
+        this.bootstrap();
     }
 
     /**
@@ -112,11 +132,85 @@ export class ActionApp {
         return this.invertedActionsRegistry.get(action);
     }
 
-    bootstrap() {
-        if (ActionApp.activeApp && ActionApp.activeApp !== this) {
-            throw new ActionError(
-                'Only one app can be bootstrapped by process. Please merge your second app with the first.'
-            );
+    async scanModuleImport(moduleImport){
+        for(const key in moduleImport){
+            const value = moduleImport[key];
+            if(value?.prototype instanceof Action){
+                this.logger.info(`registering ${key}`)
+                this.registerAction(value);
+            }
+        }
+    }
+
+    importedFiles = new Set<string>();
+    static setExecutedVia(): 'ts'|'js'{
+        if(process['_preload_modules'].includes("/tsx/")){
+            return 'ts'
+        }
+        return 'js'
+    }
+    static executedVia = ActionApp.setExecutedVia();
+
+
+    async recursiveImport(pathFile: string){
+        this.logger.info(`dealing with ${pathFile}`);
+        let deps : string[];
+        try{
+            deps = await precinct.paperwork(pathFile);
+        }
+        catch(err){
+            if(err.code === "ENOENT"){
+                this.logger.info(`cannot read ${pathFile} ; got ${err} ; fallback to ts extension`)
+                try{
+                    console.log(pathFile.replace(".js", ".ts"))
+                    deps = await precinct.paperwork(pathFile.replace(".js", ".ts"));
+                }
+                catch(err2){   
+                    this.logger.info(`cannot read ts extension neither ; got ${err2}`)
+                    throw err;
+                }
+            }
+            else{
+                throw err;
+            }
+        }
+        const notDealthDeps = deps.filter((d)=>!this.importedFiles.has(d));
+        const baseDir = path.dirname(pathFile)
+        this.logger.info(`found deps: ${deps}`);
+        for(const file of notDealthDeps){
+            this.logger.info(`exploring dep: ${file}`);
+            this.importedFiles.add(file)
+            if(file.startsWith(".")){
+                //import another file in same module
+                const filePath = path.join(baseDir, file)
+                console.log(filePath)
+                const moduleImport = await import(filePath);
+                this.scanModuleImport(moduleImport);
+                await this.recursiveImport(filePath);
+            }
+            else{
+                //import an npm module
+                const moduleImport = await import(file);
+                this.scanModuleImport(moduleImport);
+            }
+        }
+
+    }
+
+    async lazyLoadApp(folderPath){
+        await import(folderPath);
+    }
+
+    rejectBootstrap;
+    resolveBootstrap;
+    waitForBootstrap = new Promise((resolve, reject)=>{
+        this.rejectBootstrap = reject;
+        this.resolveBootstrap = resolve;
+    })
+    async bootstrap() {
+        const isActiveApp = (ActionApp.activeApp === this)
+        if (isActiveApp) {
+            setLogger(this);
         }
         this.imports.push(CoreActionApp);
         this.import();
@@ -124,72 +218,56 @@ export class ActionApp {
             this.registerAction(action);
         }
         ActionApp.activeApp = this;
-        setLogger(this);
-        return setDbConnection(this).then(() => {
-            for (let i = 0; i < this.numberOfWorker; i++) {
-                new ActionCron(this.actionFilter);
-            }
-        });
+        await this.recursiveImport(this.bootstrapPath);
+        if(isActiveApp){
+            return setDbConnection(this).then(() => {
+                for (let i = 0; i < this.numberOfWorker; i++) {
+                    new ActionCron(this.actionFilter);
+                }
+            }).then(()=>{
+                this.resolveBootstrap();
+                ActionApp.resolveBootstrap();
+            })
+        }
+        else{
+            return ActionApp.waitForActiveApp.then(()=>{
+                this.resolveBootstrap();
+            });
+        }
+        
+    }
+
+    static bootstrap(config : ActionAppConfig){
+        new ActionApp(config);
     }
 
     private import() {
         for (const appCtr of this.imports) {
             if (!ActionApp.appImportedRegistry.get(appCtr)) {
+                ActionApp.appImportedRegistry.set(appCtr, true)
                 const appToImport = new appCtr();
                 appToImport.import();
                 this.declare = [...this.declare, ...appToImport.declare];
-            } else {
-                ActionApp.appImportedRegistry.set(appCtr, true);
             }
         }
     }
 
-    static getActiveApp(): ActionApp {
-        if (!this.activeApp) {
-            throw new ActionError('Please bootstrap an app before doing this.');
-        }
-        return this.activeApp;
-    }
-}
-
-/**
- * Bootstrap an app, used as decorator.
- * @param opts - `ActionAppConfig | (() => (ActionAppConfig|Promise<ActionAppConfig>))`
- * Either an object of class `ActionAppConfig` or a callback returning a Promise that return an `ActionAppConfig`.
- */
-export function bootstrapApp(
-    opts: ActionAppConfig | (() => ActionAppConfig | Promise<ActionAppConfig>)
-) {
-    return function (classTargetConstructor: any) {
-        if (typeof opts === 'function') {
-            // if opts is a callback,
-            // we get the result and we deal with it as if it was a promise.
-            // then we just call bootstrapApp again with the result.
-            const p = Promise.resolve(opts());
-            p.then((result) => bootstrapApp(result)(classTargetConstructor));
-            return;
-        }
-        if (ActionApp.activeApp) {
-            throw new ActionError(
-                'Only one app can be bootstrapped by process. Please merge your second app with the first.'
-            );
-        }
-        const stackPaths = utils.getStackTracePaths();
-        let bootstrapPath = stackPaths[2];
-        if (bootstrapPath.includes('tslib')) {
-            bootstrapPath = stackPaths[3];
-        }
-        ActionApp.bootstrapPath = bootstrapPath;
-        ActionApp.activeApp = new classTargetConstructor(opts);
-        ActionApp.activeApp
-            .bootstrap()
-            .then(() => {
-                ActionApp.resolveBootstrap();
+    static async getActiveApp(opts = {timeout: 60*1000}): Promise<ActionApp>{
+        return new Promise((resolve,reject)=>{
+            let activeApp, isResolved;
+            setTimeout(()=>{
+                if(!activeApp && !isResolved){
+                    isResolved = true;
+                    reject(new ActionError("no active app found ; reached timeout"));
+                }
+            }, opts.timeout)
+            this.waitForActiveApp.then(()=>{
+                if(!isResolved){
+                    resolve(this.activeApp)
+                }
             })
-            .catch((err) => {
-                ActionApp.rejectBootstrap(err);
-            });
-    };
+        })
+    }
 }
 
 export class CoreActionApp extends ActionApp {

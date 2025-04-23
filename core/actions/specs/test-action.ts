@@ -9,11 +9,10 @@ import {
     Sleep,
     Resource
 } from '../index.js';
-import { writeFile } from 'fs/promises';
 
 export class TestActionWithWatcherEnding extends Action {
 
-    IResult: number;
+    declare IResult: number;
 
     main() {
         return Promise.resolve(ActionState.IN_PROGRESS);
@@ -44,11 +43,12 @@ export class TestActionWithTimeTemporization extends Action{
 }
 
 export class TestActionWithError extends Action {
-    IBag: {
+     
+    declare IBag: {
         x: number;
     };
 
-    IArgument: {
+    declare IArgument: {
         y: number;
     };
 
@@ -86,15 +86,15 @@ export class TestActionMainTimeout extends Action {
 }
 
 export class TestAction extends Action {
-    IBag: {
+    declare IBag: {
         x: number;
     };
 
-    IArgument: {
+    declare IArgument: {
         y: number;
     };
 
-    IResult: number;
+    declare IResult: number;
 
     init() {
         return new Promise<void>((resolve) => {
@@ -119,7 +119,7 @@ export class TestAction extends Action {
 }
 
 export class BasicWorkflow extends Workflow {
-    IBag: {
+    declare IBag: {
         n: number;
     } & Workflow['IBag'];
 
@@ -160,11 +160,11 @@ export class ThrowErrorBasicWorkflow extends Workflow{
 
 export class WorkflowWithDynamicDefinition extends Workflow{
 
-    IBag : Workflow['IBag'] & {
+    declare IBag : Workflow['IBag'] & {
         x : number
     }
 
-    IResult: number;
+    declare IResult: number;
 
     async init(){
         if(!this.bag.x){
@@ -250,7 +250,7 @@ export class SleepGenerator extends Generator{
 let x = 0;
 export class TestGenerator extends Generator{
 
-    IArgument: { commandName: string; name : string };
+    declare IArgument: { commandName: string; name : string };
 
     identity() {
         return this.argument.name
@@ -279,7 +279,7 @@ export class TestGenerator extends Generator{
 
 export class BlankResource extends Resource{
 
-    IArgument: { commandName: string; version?: string};
+    declare IArgument: { commandName: string; version?: string};
 
     async init(){
         if(this.argument.version){
@@ -327,22 +327,4 @@ export class BlankResource extends Resource{
             "xyz":"abc"
         }
     }
-}
-
-
-
-export class WorkflowApp extends ActionApp {
-    declare = [
-        BasicWorkflow,
-        WithActionErrorBasicWorkflow,
-        ThrowErrorBasicWorkflow,
-        TestExecutorAction,
-        TestActionMainTimeout,
-        TestActionWithTimeTemporization,
-        WorkflowWithDynamicDefinition,
-        Workflow,
-        TestGenerator,
-        SleepGenerator,
-        BlankResource
-    ];
 }

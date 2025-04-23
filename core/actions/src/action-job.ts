@@ -8,11 +8,14 @@ import { ActionSchemaInterface, ActionState } from './models/action.js';
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
     actions: ActionSchemaInterface<any>[] = [];
-    app = ActionApp.getActiveApp();
+    app = ActionApp.activeApp;
     filter?: Object;
 
     constructor(filter?: Object) {
         this.filter = filter;
+        if(!this.filter && process.env['orbits_worker_filter']){
+            this.filter = JSON.parse(process.env['orbits_worker_filter']);
+        }
         this.cycle();
     }
 

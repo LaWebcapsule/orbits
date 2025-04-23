@@ -27,20 +27,21 @@
     },
     "homepage": "https://gitlab.com/webcapsule/actions#readme",
     "devDependencies": {
-        "@tsconfig/node16": "catalog:",
+        "@tsconfig/node22": "catalog:",
         "@types/jasmine": "catalog:",
         "@types/node": "catalog:",
         "jasmine": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-organize-imports": "catalog:",
         "tslib": "catalog:",
         "tsx": "catalog:",
-        "typescript": "catalog:",
-        "prettier": "catalog:",
-        "prettier-plugin-organize-imports": "catalog:"
+        "typescript": "catalog:"
     },
     "dependencies": {
         "@aws-sdk/client-sso-oidc": "^3.758.0",
         "@wbce/services": "workspace:",
         "mongoose": "catalog:",
+        "precinct": "^12.2.0",
         "winston": "catalog:"
     },
     "type": "module"
