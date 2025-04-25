@@ -40,40 +40,24 @@ export const rule = createRule({
   
 
     return {
-      "MethodDefinition[key.name=/define*/] CallExpression"(node: TSESTree.CallExpression){
+      "MethodDefinition[key.name!=/define*/] CallExpression"(node: TSESTree.CallExpression){
 
+        console.log("here!!!!!!!!!!!!")
         const services = ESLintUtils.getParserServices(context);
         const checker = services.program.getTypeChecker();
         const tsNode = services.esTreeNodeToTSNodeMap.get(node)
         const tsType = checker.getTypeAtLocation(tsNode)
-
-        if(isPromiseLike(tsNode, tsType)){
-          const symbol = tsType.getSymbol();
-          const name = checker.getFullyQualifiedName(symbol!);
-          if(name !== "ActionPromise"){
+        const symbol = tsType.getSymbol();
+        const signature = checker.getResolvedSignature(tsNode);
+        const returnType = checker.getReturnTypeOfSignature(signature!);
+        if (symbol) {
+          const returnTypeName = checker.getFullyQualifiedName(symbol);
+          if(returnTypeName === "DoPromise" || returnTypeName.includes(".DoPromise")){
             context.report({
               messageId: 'noAwait',
               node: node,
-            })
+            }) 
           }
-        }
-
-        function isPromiseLike(node: ts.Node, type: ts.Type): boolean {
-          //source code : cf : https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/type-utils/package.json
-          type ??= checker.getTypeAtLocation(node);
-        
-          // we always consider the built-in Promise to be Promise-like...
-          const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
-          if (
-            typeParts.some(typePart =>
-              typeUtils.isBuiltinSymbolLike(services.program, typePart, 'Promise'),
-            )
-          ) {
-            return true;
-          }
-        
-          const result = tsutils.isThenableType(checker, node, type);
-          return result;
         }
       }
     }
