@@ -27,6 +27,8 @@ export interface Step{
     rollback?: Step['cb'];
 }
 
+class DoPromise<T> extends Promise<T>{}
+
 export class Workflow extends Action {
     // a workflow will never be in ERROR state
     // ERROR state will be reported by its actions
@@ -418,7 +420,7 @@ export class Workflow extends Action {
 
 
     toPromise(ref: string, dbDoc : ActionSchemaInterface){
-        return new Promise((resolve, reject)=>{
+        return new DoPromise((resolve, reject)=>{
             switch (dbDoc.state) {
                 case ActionState.ERROR:
                     reject(new InWorkflowActionError(this, ref, dbDoc));
@@ -547,7 +549,7 @@ export class Workflow extends Action {
             this.internalLogError(err);
             this.resolveDefineIteration(ActionState.UNKNOWN);//Unknow ensure here we don't change the state and so we don't have an infinite loop
             this.resolveDynamicActionFinding();
-            return new Promise((resolve, reject)=>{});
+            return new DoPromise((resolve, reject)=>{});
         }
         return await this.toPromise(ref, action.dbDoc);
     }
