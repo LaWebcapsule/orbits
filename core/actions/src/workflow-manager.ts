@@ -1,6 +1,6 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
-import { Action, ActionApp, Generator } from '../index.js';
+import { Action, ActionApp, Generator, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 
@@ -69,6 +69,10 @@ export class Workflow extends Action {
 
     constructor() {
         super();
+    }
+
+    transform(ref: string, action: Action): Action{
+        return;
     }
 
     next(cb: Step['cb'], opts?: Step['opts']) {
@@ -356,7 +360,36 @@ export class Workflow extends Action {
         return actionDbDoc;
     }
 
+    async startActionTransaction(ref: string, action: Action){
+        this.trackAction(ref, action.dbDoc);
+        return this.dbDoc
+                    .save()
+                    .then(() => {
+                        const promises: any[] = [];
+                        action.dbDoc.isNew = true; // necessary ?
+                        // looks like it solves a bug that causes transientError
+                        // et then withTransaction retry
+                        // but isNew is false and then it errors out with DocumentNotFoundError
+                        // to be confirmed
+                        action.dbDoc.workflowStack.push({
+                            ref,
+                            stepIndex : this.bag.currentStepIndex,
+                            _id : this._id.toString(),
+                            stepName : ref
+                        })
+                        action.dbDoc.workflowId = this._id.toString();
+                        action.dbDoc.workflowRef = ref;
+                        if(this instanceof Generator){
+                            action.dbDoc.workflowIdentity = this.stringifyIdentity();   
+                        }
+                        action.dbDoc.$session(this.dBSession);
+                        promises.push(action.save());
+                        return Promise.all(promises);
+                    })
+    }
+
     async startAction(ref: string, action : Action) {
+        this.transform(ref, action);
         return this.app.db.mongo.conn
             .startSession()
             .then((mongooseSession) => {
@@ -373,30 +406,7 @@ export class Workflow extends Action {
                     // because we proceed in two passes
                     // https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
                     // first request from workflow must arrive before the others else there would be troubles
-                    return this.dbDoc
-                        .save()
-                        .then(() => {
-                            const promises: any[] = [];
-                            action.dbDoc.isNew = true; // necessary ?
-                            // looks like it solves a bug that causes transientError
-                            // et then withTransaction retry
-                            // but isNew is false and then it errors out with DocumentNotFoundError
-                            // to be confirmed
-                            action.dbDoc.workflowStack.push({
-                                ref,
-                                stepIndex : this.bag.currentStepIndex,
-                                _id : this._id.toString(),
-                                stepName : ref
-                            })
-                            action.dbDoc.workflowId = this._id.toString();
-                            action.dbDoc.workflowRef = ref;
-                            if(this instanceof Generator){
-                                action.dbDoc.workflowIdentity = this.stringifyIdentity();   
-                            }
-                            action.dbDoc.$session(this.dBSession);
-                            promises.push(action.save());
-                            return Promise.all(promises);
-                        })
+                    return this.startActionTransaction(ref, action)
                         .then(() => Promise.resolve()); // for typing
                 }).then(()=>{
                     return Promise.all([
@@ -439,24 +449,24 @@ export class Workflow extends Action {
     }
 
     registeredActionIds = [];
-    do<T>(ref: string, cb : () => Promise<T>): Promise<T>
-    do<T extends Action>(ref: string, action : T ) : Promise<T['IResult']> 
+    do<T>(ref: string, cb : () => Promise<T>): DoPromise<T>
+    do<T extends Action>(ref: string, action : T ) : DoPromise<T['IResult']> 
     do(ref: string, opts : {
         init? : Action['init'],
         main: Action['main'],
         watcher? : Action['watcher']
-    }) : Promise<any>
+    }) : DoPromise<any>
     do<T extends Action>(ref: string, opts:{
         dynamicAction : T | (()=>T)
     })
-    do<T>(ref: string, opts : | Promise<any> |{
+    do<T>(ref: string, opts : {
         init? : Action['init'],
         main: Action['main'],
         watcher? : Action['watcher']
     } | Action | {
         dynamicAction : (Action | (()=>Action))
-    } | (() => Promise<any>), params? : {nCall : number}) : Promise<T>
-    async do(ref: string, opts : | Promise<any> |{
+    } | (() => Promise<any>), params? : {nCall : number}) : DoPromise<T>
+    async do(ref: string, opts : {
         init? : Action['init'],
         main: Action['main'],
         watcher? : Action['watcher']
@@ -553,6 +563,37 @@ export class Workflow extends Action {
         }
         return await this.toPromise(ref, action.dbDoc);
     }
+
+    repeatDo<T>(ref: string, cb : () => Promise<T>, repeat: Action['repeat'] & {elapsedTime?: number}): DoPromise<T>
+    repeatDo<T>(ref: string, opts : () => Promise<T>, repeat: Action['repeat'] & {elapsedTime?: number}) : DoPromise<T>
+    async repeatDo<T>(ref: string, cb : () => Promise<T>, repeat: Action['repeat'] & {elapsedTime?: number}){
+        let result;
+        let nError = 0;
+        let nExecution = 0;
+        const nSuccessIteration = repeat[ActionState.SUCCESS] ?? 0;
+        for(let i=0; i <= nSuccessIteration; i++ ){
+            if(nExecution > 0){
+                await this.do("sleep", new Sleep().setArgument({
+                    time: repeat.elapsedTime || 10*60*1000
+                }))
+            }
+            try{
+                result = await this.do(ref, cb);
+            }
+            catch(err){
+                if(nError < repeat[ActionState.ERROR]){
+                    i--;
+                }
+                else{
+                    throw err;
+                }
+                nError++;
+            }
+            nExecution ++;
+        }
+        return result;
+    }
+            
 
     override onMainTimeout(): ActionState | Promise<ActionState> {
         // workflow hasn't been launched yet, launch again.

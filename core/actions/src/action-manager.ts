@@ -270,7 +270,11 @@ export class Action {
         }
     }
 
-
+    /**
+     * Construct an action from a document stored in the database.
+     * @param actionDb a document coming from the database
+     * @returns an action for which dbDoc property is equal to actionDb
+     */
     static async constructFromDb(actionDb: ActionSchemaInterface<any>) {
         if (actionDb.definitionFrom?.workflow?._id) {
             return Action._constructFromWorkflow(actionDb);
@@ -417,6 +421,7 @@ export class Action {
     setFilter(filter: Object) {
         this.dbDoc.filter = { ...this.dbDoc.filter, ...filter };
         this.dbDoc.markModified('filter');
+        return this;
     }
 
     /**
@@ -431,6 +436,7 @@ export class Action {
             this.dbDoc.result = results;
         }
         this.dbDoc.markModified('result');
+        return this;
     }
 
     /**

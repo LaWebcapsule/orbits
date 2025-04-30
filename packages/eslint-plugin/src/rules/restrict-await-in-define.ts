@@ -8,7 +8,7 @@ const createRule = ESLintUtils.RuleCreator(
     name => `https://example.com/rule/${name}`,
 );
   
-export const rule = createRule({
+export const noAsyncRule = createRule({
   create(context) {
     const services = ESLintUtils.getParserServices(context);
 
@@ -19,7 +19,7 @@ export const rule = createRule({
         );
     }  
   
-    function isInActionClass(node: TSESTree.MethodDefinition): boolean {
+    function isInActionClass(node: TSESTree.CallExpression): boolean {
         let parent = node.parent;
         while (parent) {
             if (parent.type === 'ClassBody') {
@@ -42,15 +42,18 @@ export const rule = createRule({
     return {
       "MethodDefinition[key.name=/define*/] CallExpression"(node: TSESTree.CallExpression){
 
+
         const services = ESLintUtils.getParserServices(context);
         const checker = services.program.getTypeChecker();
+
+
         const tsNode = services.esTreeNodeToTSNodeMap.get(node)
         const tsType = checker.getTypeAtLocation(tsNode)
 
         if(isPromiseLike(tsNode, tsType)){
           const symbol = tsType.getSymbol();
           const name = checker.getFullyQualifiedName(symbol!);
-          if(name !== "ActionPromise"){
+          if(name !== "DoPromise"){
             context.report({
               messageId: 'noAwait',
               node: node,
@@ -66,7 +69,7 @@ export const rule = createRule({
           const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
           if (
             typeParts.some(typePart =>
-              typeUtils.isBuiltinSymbolLike(services.program, typePart, 'Promise'),
+              typeUtils.isBuiltinSymbolLike(services.program as any, typePart as any, 'Promise'),
             )
           ) {
             return true;
@@ -91,12 +94,3 @@ export const rule = createRule({
   name: "no-classic-await",
   defaultOptions: [],
 });
-
-
-
-
-export function skipChainExpression<T extends TSESTree.Node>(
-  node: T,
-): T | TSESTree.ChainElement {
-  return node.type === TSESTree.AST_NODE_TYPES.ChainExpression ? node.expression : node;
-}

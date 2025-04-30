@@ -128,7 +128,7 @@ export class ActionApp {
     async scanModuleImport(moduleImport){
         for(const key in moduleImport){
             const value = moduleImport[key];
-            if(value?.prototype instanceof Action){
+            if(value?.prototype instanceof Action || value === Action){
                 this.logger.info(`registering ${key}`)
                 this.registerAction(value);
             }

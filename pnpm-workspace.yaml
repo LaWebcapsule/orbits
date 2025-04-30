@@ -2,10 +2,11 @@ packages:
   - core/actions
   - helpers
   - cli
+  - samples/diplomacy
   - packages/*
 
 catalog:
-  typescript: ^4.9.4
+  typescript: ^5.8.3
   mongoose: ^6.13.6
   winston: ^3.8.2
 

@@ -22,16 +22,22 @@ export enum ResourceState {
 export interface ResourceSchemaInterface<
 > extends mongoose.Document {
     identity : string,
-    actionRef: string[],
+    actionRef: string,
     version : string,
+    locks: [{
+        name: String
+    }]
     output : any,
-    info: any
+    info: any,
 }
 
 export const resourceSchema = new mongoose.Schema(
     {
         identity: {type : String},
-        actionRef: [{type: String}],
+        actionRef: String,
+        locks: [{
+            name: String
+        }],
         version : String,
         output : { type: mongoose.Schema.Types.Mixed, default: {} },
         info : { type: mongoose.Schema.Types.Mixed, default: {} },
@@ -42,6 +48,7 @@ export const resourceSchema = new mongoose.Schema(
         minimize: false,
     }
 );
+
 
 resourceSchema.index(
     { identity: 1, actionRef: 1},

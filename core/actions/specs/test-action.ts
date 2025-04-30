@@ -212,6 +212,34 @@ export class WorkflowWithDynamicDefinition extends Workflow{
     }
 }
 
+export class WorkflowWithRepeat extends Workflow{
+
+    async define(){
+        let i = 0;
+        await this.repeatDo("repeatSucces", ()=>{
+            i++
+            return Promise.resolve()
+        },{
+            [ActionState.SUCCESS]: 2,
+            elapsedTime: 10 
+        })
+
+        try{
+            await this.repeatDo("repeatOnFailure", ()=>{
+                i++
+                return Promise.reject()
+            }, {
+                [ActionState.ERROR]: 2,
+                elapsedTime: 10
+            })
+        }
+        catch(err){
+
+        }
+        return i;
+    }
+}
+
 
 
 export class TestExecutor extends Executor {

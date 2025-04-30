@@ -38,6 +38,10 @@ export type BasicType =
     | 'date'
     | 'buffer';
 
+export type JSON = {
+    [key: string]: Exclude<BasicType, 'symbol'|'date'|'object'|'function'|'buffer'> | JSON | JSON[]
+}
+
 export const getBasicType = (object: any): BasicType => {
     let currentType: BasicType = typeof object;
     if (currentType === 'object') {
@@ -78,3 +82,8 @@ export const getStackTracePaths: () => string[] = () => {
     }
     return result;
 };
+
+export function capitalize(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+  

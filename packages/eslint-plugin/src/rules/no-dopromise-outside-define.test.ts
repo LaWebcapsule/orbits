@@ -1,6 +1,6 @@
 import * as test from 'node:test';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import {rule} from './no-dopromise-outside-define.js';
+import {noDoRule} from './no-dopromise-outside-define.js';
 
 RuleTester.afterAll = test.after;
 RuleTester.describe = test.describe;
@@ -18,7 +18,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('my-rule', rule, {
+ruleTester.run('my-rule', noDoRule, {
   valid: [
     // valid tests can be a raw string,
     `

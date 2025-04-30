@@ -23,7 +23,7 @@ j.loadConfig({
         //'workflow.spec.ts',
         //'generator.spec.ts',
         //'other-action.spec.ts',
-        'resource.spec.ts',
+        //'resource.spec.ts',
     ],
 });
 

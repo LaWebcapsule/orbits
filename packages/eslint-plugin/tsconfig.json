@@ -1,0 +1,24 @@
+{
+    "extends": "@tsconfig/node22/tsconfig.json",
+    "compilerOptions": {
+      "downlevelIteration": true,
+      "importHelpers": true,
+      "incremental": true,
+      "removeComments": false,
+      "resolveJsonModule": true,
+      "rootDir": "src",
+      "lib": ["es2022"],
+      "useUnknownInCatchVariables": false,
+      "declaration": false,
+      "noImplicitAny": false,
+      "noImplicitOverride": false,
+      "strictPropertyInitialization": false,
+      "exactOptionalPropertyTypes":false,
+      "experimentalDecorators": true,
+      "strict": false,
+      "outDir": "lib",
+      "esModuleInterop": true
+    },
+    "include": ["src"],
+    "exclude":["dist/"]
+  }

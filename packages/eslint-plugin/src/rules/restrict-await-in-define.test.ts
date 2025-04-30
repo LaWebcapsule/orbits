@@ -1,6 +1,6 @@
 import * as test from 'node:test';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import {rule} from './restrict-await-in-define.js';
+import {noAsyncRule} from './restrict-await-in-define.js';
 
 RuleTester.afterAll = test.after;
 RuleTester.describe = test.describe;
@@ -18,7 +18,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('my-rule', rule, {
+ruleTester.run('my-rule', noAsyncRule, {
   valid: [
     // valid tests can be a raw string,
     `

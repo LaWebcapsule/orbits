@@ -1,14 +1,10 @@
 import { ESLintUtils, TSESTree } from "@typescript-eslint/utils";
-import * as ts from "typescript";
-import * as typeUtils from "@typescript-eslint/type-utils"
-import * as tsutils from 'ts-api-utils';
-import * as tsEsLint from "@typescript-eslint/eslint-plugin"
 
 const createRule = ESLintUtils.RuleCreator(
     name => `https://example.com/rule/${name}`,
 );
   
-export const rule = createRule({
+export const noDoRule = createRule({
   create(context) {
     const services = ESLintUtils.getParserServices(context);
 
@@ -42,7 +38,6 @@ export const rule = createRule({
     return {
       "MethodDefinition[key.name!=/define*/] CallExpression"(node: TSESTree.CallExpression){
 
-        console.log("here!!!!!!!!!!!!")
         const services = ESLintUtils.getParserServices(context);
         const checker = services.program.getTypeChecker();
         const tsNode = services.esTreeNodeToTSNodeMap.get(node)
@@ -67,20 +62,11 @@ export const rule = createRule({
       description: "Avoid looping over enums.",
     },
     messages: {
-      noAwait: "Do not await except over this.do.",
+      noAwait: "Do not use do outside a method prefixed with define.",
     },
     type: "suggestion",
     schema: [],
   },
-  name: "no-classic-await",
+  name: "no-do-outside-def",
   defaultOptions: [],
 });
-
-
-
-
-export function skipChainExpression<T extends TSESTree.Node>(
-  node: T,
-): T | TSESTree.ChainElement {
-  return node.type === TSESTree.AST_NODE_TYPES.ChainExpression ? node.expression : node;
-}

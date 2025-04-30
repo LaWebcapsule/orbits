@@ -1,5 +1,5 @@
-import { ActionApp, ActionState, InWorkflowActionError, Workflow } from '../index.js';
-import { BasicWorkflow, ThrowErrorBasicWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition } from './test-action.js';
+import { Action, ActionApp, ActionState, InWorkflowActionError, Workflow } from '../index.js';
+import { BasicWorkflow, ThrowErrorBasicWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition, WorkflowWithRepeat } from './test-action.js';
 
 
 function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, expectedResult : any, numberOfChildActions : number, timeBeforeRunningTest?: number}){
@@ -9,19 +9,7 @@ function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, ex
         return w.app.ActionModel.deleteMany({}).then(()=>{
             return w.save()
         }).then(()=>{
-            return new Promise((resolve) => {
-                let i = 0;
-                let runTime = opts.timeBeforeRunningTest || 30; //seconds
-                const sI = setInterval(() => {
-                    console.log(`launching tests in ${runTime - i} seconds`);
-                    if (i > runTime) {
-                        clearInterval(sI);
-                        console.log('debut des tests!');
-                        resolve('ok');
-                    }
-                    i++;
-                }, 1000);
-            })
+            return Action.trackActionAsPromise(w, [ActionState.SUCCESS, ActionState.ERROR]);
         })
         .then(() => w.resyncWithDb());
     });
@@ -98,3 +86,12 @@ describe('dynamic action in workflow', () => {
         timeBeforeRunningTest : 20
     })
 });
+
+describe('workflow with repeat', ()=>{
+    const workflowWithRepeat = new WorkflowWithRepeat();
+    testAWorkflow(workflowWithRepeat, {
+        expectedActionState: ActionState.SUCCESS,
+        expectedResult: 6,
+        numberOfChildActions: 10,
+    })
+})

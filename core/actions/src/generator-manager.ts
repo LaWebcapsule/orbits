@@ -1,5 +1,7 @@
-import { Action, ActionApp, ActionSchemaInterface, ActionState, Workflow } from "./../index.js";
+import { capitalize } from "@wbce/services/src/utils.js";
+import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "./../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
+import * as mongoose from "mongoose";
 
 export abstract class Generator extends Workflow{
 
@@ -82,7 +84,7 @@ export abstract class Generator extends Workflow{
         return actionDb || await super.findIfEquivalentActionAlreadyExists(ref, action)
     }
 
-    async once(ref: string, opts : | Promise<any> |{
+    async once(ref: string, opts : {
         init? : Action['init'],
         main: Action['main'],
         watcher? : Action['watcher']
@@ -118,7 +120,6 @@ export abstract class Digestor extends Generator{
         for(const c of changes){
             await this[`define${c}`];
         }
-
         return {};
     }
 
@@ -177,27 +178,29 @@ export class ResourceController<T extends Resource> extends Workflow{
     }
 
     async define(){
-        while(true){
-            try{
-                await this.do('sleep', new Sleep().setArgument({
-                    time : 10*60*1000
-                }))
-                await this.do("digest", async ()=>{
-                    const ActionCtr = ActionApp.activeApp.getActionFromRegistry(this.argument.actionRef);
-                    const resource = new ActionCtr() as T;
-                    resource.setArgument({
-                        ...this.argument,
-                        actionRef: undefined
-                    });
-                    resource.setCommand('cycle');
-                    return resource;
-                })
-            }
-            catch(err){
-                //do nothing
-            }
-        }  
-        return {};  
+        try{
+            await this.do('sleep', new Sleep().setArgument({
+                time : 10*60*1000
+            }))
+            await this.do("cycle", async ()=>{
+                const ActionCtr = ActionApp.activeApp.getActionFromRegistry(this.argument.actionRef);
+                const resource = new ActionCtr() as T;
+                resource.setArgument({
+                    ...this.argument,
+                    actionRef: undefined
+                });
+                resource.setCommand('cycle');
+                return resource;
+            })
+        }
+        catch(err){
+            //do nothing
+        }
+        await this.do("launchClone", ()=>{
+            const clone = this.clone();
+            return clone.save()
+        }) 
+        return {}
     }
 }
 
@@ -208,9 +211,17 @@ export class ScopeOfChanges<T>{
     }
 }
 
+type ResourceCommands<T> = {
+    [K in keyof T]: T[K] extends (...args: any[]) => any
+        ? K extends `define${infer S}`
+          ? K extends keyof Workflow ? never: S
+          : never
+        : never
+}[keyof T];
+
 export class Resource extends Generator{
 
-    IArgument: { commandName: string; };
+    IArgument: { commandName: string;};
 
 
     async init(){
@@ -238,9 +249,9 @@ export class Resource extends Generator{
     createResourceDoc(){
         this.resourceDbDoc = new this.app.ResourceModel({
             identity : this.stringifyIdentity(),
-            actionRef: [this.app.getActionRefFromRegistry(
+            actionRef: this.app.getActionRefFromRegistry(
                 this.constructor as any
-            )]
+            )
         })
         return this.resourceDbDoc.save()
     }
@@ -255,7 +266,7 @@ export class Resource extends Generator{
        return resourceDbDoc.output;
     }
 
-    setCommand(commandName : 'cycle'|'install'|'update'|'uninstall'){
+    setCommand(commandName : ResourceCommands<this>){
         return this.setArgument({
             ...this.argument,
             commandName
@@ -268,45 +279,64 @@ export class Resource extends Generator{
 
     version : string;
 
+    noConcurrencyCommandNames = ['install', 'update', 'uninstall']
+    async lockCommand(commandName: string){ 
+        if(this.noConcurrencyCommandNames.includes(commandName)){
+            if(this.resourceDbDoc.locks.length){
+                this.resourceDbDoc.locks.push({
+                    name: commandName
+                })
+                await this.resourceDbDoc.save()
+            }
+            else{
+                throw new ActionError("a command is already in progress", errorCodes.RESOURCE_LOCKED)
+            }
+        }   
+    }
+
     async define(){
-        switch (this.argument.commandName) {
-            case 'cycle':                
-                break;
-
-            case 'install':
-                return this.defineInstall();
-
-            case 'update':
-                return this.defineUpdate();
-            
-            case 'uninstall':
-                return this.defineUninstall();
-        
-            default:
-                await this.once("createResourceDoc", ()=>{
-                    return this.createResourceDoc();
+        await this.once("createResourceDoc", ()=>{
+            return this.createResourceDoc();
+        })
+        await this.once("installController", ()=>{
+            const controller = new ResourceController(this)
+            return controller.save();
+        });
+        const commandName = this.argument.commandName ? capitalize(this.argument.commandName) : '';
+        if(commandName && typeof this[`define${commandName}`] === 'function'){
+            await this.do("lock", this.lockCommand.bind(this))
+            try{
+                return await this[`define${commandName}`]()
+            }
+            finally{
+                await this.repeatDo("unlock", async ()=>{
+                    await this.getResourceDoc();
+                    (this.resourceDbDoc.locks as any).pull({
+                        name : commandName
+                    });
+                    await this.resourceDbDoc.save() 
+                }, {
+                    [ActionState.ERROR]: Infinity
                 })
-                await this.once("installController", ()=>{
-                    const controller = new ResourceController(this)
-                    return controller.save();
-                });
-                const changes = await this.do("digest", ()=>{
-                    return this.digest();
-                });
-                for(const c of changes){
-                    const clone = this.clone();
-                    clone.setCommand(c.commandName)
-                    await this.do(c.commandName, clone);
-                }
-                await this.do("saveVersion", ()=>{
-                    this.resourceDbDoc.version = this.version;
-                    return this.resourceDbDoc.save();
-                })
-                await this.do("endDigestor", ()=>{
-                    return this.endDigestor();
-                });
-                return this.resourceDbDoc.output;
-                break;
+            }
+        }
+        else{
+            const changes = await this.do("digest", ()=>{
+                return this.digest();
+            });
+            for(const c of changes){
+                const clone = this.clone();
+                clone.setCommand(c.commandName)
+                await this.do(c.commandName, clone);
+            }
+            await this.do("saveVersion", ()=>{
+                this.resourceDbDoc.version = this.version;
+                return this.resourceDbDoc.save();
+            })
+            await this.do("endDigestor", ()=>{
+                return this.endDigestor();
+            });
+            return this.resourceDbDoc.output;
         }        
     }
 
@@ -351,6 +381,9 @@ export class Resource extends Generator{
     }
 
 }
+
+type x = ResourceCommands<Resource>
+
 
 /**
  * 
