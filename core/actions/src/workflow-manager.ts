@@ -3,10 +3,11 @@ import mongoose from 'mongoose';
 import { Action, ActionApp, Generator, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { JSONObject } from '@wbce/services/src/utils.js';
 
-export interface StepResult<T = any> {
+export type StepResult = {
     state: ActionState.SUCCESS | ActionState.ERROR;
-    result: T;
+    result: JSONObject;
     isError: boolean;
     actionRef: string;
     actionId: string;
@@ -40,11 +41,11 @@ export class Workflow extends Action {
 
     steps: Step[] = [];
 
-    override IBag: {
+    declare IBag: {
         actions: {
             [key: string]: {
                 state: ActionState;
-                result: any;
+                result: JSONObject;
                 ref: string;
                 index: number;
             };
@@ -692,7 +693,7 @@ export class Workflow extends Action {
 
 export class TrackPromise extends Action{
 
-    IBag: {
+    declare IBag: {
         cbReturnAnAction : boolean;
         trackActionId : string;
     };

@@ -4,6 +4,7 @@ import { Executor } from './action-executor.js';
 import { ActionError, BreakingActionState } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { JSONObject } from '@wbce/services/src/utils.js';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -81,17 +82,17 @@ export class Action {
     /**
      * Action argument
      */
-    IArgument: {};
+    IArgument: JSONObject;
 
     /**
      * Action bag
      */
-    IBag: {};
+    IBag: JSONObject;
 
     /**
      * Action result
      */
-    IResult: {};
+    IResult: JSONObject|Error;
 
     /**
      * Action Database Document
@@ -392,7 +393,12 @@ export class Action {
      * @param args - The argument to set.
      */
     setArgument(args: this['IArgument']) {
-        this.argument = { ...this.argument, ...args };
+        if(typeof args === 'object'){
+            this.argument = { ...this.argument as object, ...args };
+        }
+        else{
+            this.argument = args;
+        }
         this.dbDoc.markModified('argument');
         return this;
     }
@@ -835,9 +841,7 @@ export class Action {
 
     clone(){
         const clone = new (this.constructor as any)();
-        clone.setArgument({
-            ...this.argument
-        })
+        clone.setArgument(this.argument);
         return clone;
     }
 

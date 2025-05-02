@@ -5,11 +5,9 @@ import * as mongoose from "mongoose";
 
 export abstract class Generator extends Workflow{
 
-    IArgument: {
+    declare IArgument: {
         commandName : string
     }
-
-    IResult: {};
 
     identity():any{
         return;
@@ -132,7 +130,7 @@ export abstract class Digestor extends Generator{
 
 export class Sleep extends Action{
 
-    IArgument: {
+    declare IArgument: {
         time : number
     }
 
@@ -162,7 +160,7 @@ export class Sleep extends Action{
 
 export class ResourceController<T extends Resource> extends Workflow{
 
-    IArgument: T['IArgument'] & {
+    declare IArgument: T['IArgument'] & {
         actionRef: string
     }
 
@@ -189,7 +187,7 @@ export class ResourceController<T extends Resource> extends Workflow{
                     ...this.argument,
                     actionRef: undefined
                 });
-                resource.setCommand('cycle');
+                resource.setCommand('cycle' as any);
                 return resource;
             })
         }
@@ -221,7 +219,7 @@ type ResourceCommands<T> = {
 
 export class Resource extends Generator{
 
-    IArgument: { commandName: string;};
+    declare IArgument: { commandName: string;};
 
 
     async init(){
@@ -275,6 +273,9 @@ export class Resource extends Generator{
 
     defineInstall(){
 
+    }
+
+    defineCycle(){
     }
 
     version : string;

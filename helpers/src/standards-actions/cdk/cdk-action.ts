@@ -26,7 +26,7 @@ export class CdkAction
     commandName: 'deploy' | 'bootstrap' | 'destroy';
 
     executor = new DockerExecutor({
-        registry: new PublicRegistry('node', '16'),
+        registry: new PublicRegistry('node', '22'),
     });
 
     IArgument: {

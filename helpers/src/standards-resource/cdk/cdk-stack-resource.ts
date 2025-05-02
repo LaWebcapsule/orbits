@@ -20,11 +20,11 @@ export class CdkStackResource extends Resource{
     }
 
     defineUpdate(){
-        await this.do("bootstrap", ()=>{
+        const output = this.do("bootstrap", ()=>{
             const action = new CdkAction();
             action.stack = this.generateStack.bind(this);
             return action;
-        });  
+        });
         await this.do("deploy", ()=>{
             
         })

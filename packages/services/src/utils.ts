@@ -38,9 +38,11 @@ export type BasicType =
     | 'date'
     | 'buffer';
 
-export type JSON = {
-    [key: string]: Exclude<BasicType, 'symbol'|'date'|'object'|'function'|'buffer'> | JSON | JSON[]
-}
+export type JSONLeafType = string | number | bigint | boolean 
+
+export type JSONObject = JSONLeafType | {
+    [key: string]: JSONLeafType | JSONLeafType[] | JSONObject | JSONObject[]
+} | JSONObject[]
 
 export const getBasicType = (object: any): BasicType => {
     let currentType: BasicType = typeof object;

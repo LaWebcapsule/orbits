@@ -24,7 +24,7 @@ function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, ex
             (result as Error).stack = undefined;
             opts.expectedResult.stack = undefined
         }
-        expect(w.dbDoc.result).toEqual(opts.expectedResult)
+        expect(result as any).toEqual(opts.expectedResult)
     })
 
     it('should have launched sub-actions', () =>
