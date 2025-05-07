@@ -34,7 +34,7 @@
     "@aws-sdk/client-s3": "^3.241.0",
     "@wbce/orbits-core": "0.0.x",
     "@wbce/orbits-fuel": "0.0.x",
-    "aws-cdk-lib": "2.177.0",
+    "aws-cdk-lib": "2.189.1",
     "winston": "^3.8.2"
   }
 }
