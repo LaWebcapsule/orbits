@@ -153,7 +153,7 @@ export class ActionApp {
         }
         catch(err){
             if(err.code === "ENOENT"){
-                this.logger.info(`cannot read ${pathFile} ; got ${err} ; fallback to ts extension`)
+                this.logger.info(`cannot read ${pathFile} ; fallback to ts extension`)
                 try{
                     deps = await precinct.paperwork(pathFile.replace(".js", ".ts"));
                 }
@@ -181,7 +181,8 @@ export class ActionApp {
             }
             else{
                 //import an npm module
-                const moduleImport = await import(file);
+                const url = await import.meta.resolve(file, pathFile);
+                const moduleImport = await import(url);
                 this.scanModuleImport(moduleImport);
             }
         }

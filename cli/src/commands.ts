@@ -11,7 +11,6 @@ import {
     Action,
     ActionApp,
     ActionState,
-    bootstrapApp,
 } from '@wbce/orbits-core';
 
 import { ActionsViewer } from './viewer/actions-viewer.js';
@@ -50,10 +49,10 @@ const runOnActionDb = async (
     fn: (action: Action['dbDoc'] & any) => any
 ) => {
     try {
-        bootstrapApp({
+        new ActionApp({
             db: { mongo: { url: database } },
             workers: { quantity: 0 },
-        })(ActionApp);
+        });
 
         await ActionApp.waitForActiveApp;
     } catch (error) {
@@ -131,10 +130,10 @@ const watchAction = async (
 };
 
 const processWatchCmd = async (actionId: string, opts: any) => {
-    bootstrapApp({
+    new ActionApp({
         db: { mongo: { url: opts.database } },
         workers: { quantity: 0 },
-    })(ActionApp);
+    });
 
     await ActionApp.waitForActiveApp;
 
@@ -160,13 +159,13 @@ const processRunCmd = async (
     }
 
     try {
-        bootstrapApp({
+        new ActionApp({
             db: { mongo: { url: opts.database } },
             workers: {
                 quantity: 0,
                 filter: { cli: true, instance: cliInstanceUUID },
             },
-        })(ActionApp);
+        });
 
         await ActionApp.waitForActiveApp;
     } catch (error) {
