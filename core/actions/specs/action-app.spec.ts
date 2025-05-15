@@ -11,7 +11,6 @@ export class ImportingApp extends ActionApp {
 }
 
 describe('action app', () => {
-
     describe('registerAction should work', function () {
         it('with permanentRef as array of strings', () => {
             const app = new ActionApp();
