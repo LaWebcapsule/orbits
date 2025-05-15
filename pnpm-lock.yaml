@@ -129,6 +129,9 @@ importers:
       colors:
         specifier: ^1.4.0
         version: 1.4.0
+      import-meta-resolve:
+        specifier: ^4.1.0
+        version: 4.1.0
       mongoose:
         specifier: 'catalog:'
         version: 6.13.8(@aws-sdk/client-sso-oidc@3.758.0)
@@ -2724,6 +2727,9 @@ packages:
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
+
+  import-meta-resolve@4.1.0:
+    resolution: {integrity: sha512-I6fiaX09Xivtk+THaMfAwnA3MVA5Big1WHF1Dfx9hFuvNIWpXnorlkzhcQf6ehrqQiiZECRt1poOAkPmer3ruw==}
 
   imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
@@ -7543,6 +7549,8 @@ snapshots:
     dependencies:
       parent-module: 1.0.1
       resolve-from: 4.0.0
+
+  import-meta-resolve@4.1.0: {}
 
   imurmurhash@0.1.4: {}
 
