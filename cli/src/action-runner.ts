@@ -1,4 +1,4 @@
-import * as colors from 'colors';
+import colors from 'colors';
 import { accessSync } from 'fs';
 import path from 'path';
 import winston from 'winston';
@@ -84,7 +84,7 @@ export const runAction = async (
     }
 
     try {
-        new ActionApp({
+        new AppConstructor({
             db: { mongo: { url: database } },
             logger: winston.createLogger({
                 transports: [
@@ -97,7 +97,7 @@ export const runAction = async (
             },
         });
 
-        // await ActionApp.waitForActiveApp;
+        await ActionApp.waitForActiveApp;
     } catch (error) {
         throwError(
             `Cannot bootstrap Orbits app:\n${error}`,

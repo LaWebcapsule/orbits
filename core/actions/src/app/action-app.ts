@@ -1,7 +1,9 @@
 import { utils } from '@wbce/services';
+import { resolve } from 'import-meta-resolve';
 import mongoose from 'mongoose';
 import path from 'path';
 import precinct from 'precinct';
+import { pathToFileURL } from 'url';
 import * as winston from 'winston';
 import { Action, ActionSchemaInterface } from '../../index.js';
 import { ActionCron } from '../action-job.js';
@@ -9,8 +11,6 @@ import { ActionError } from '../error/error.js';
 import { ResourceSchemaInterface } from '../models/resource.js';
 import { AppDb, setDbConnection } from './db-connection.js';
 import { defaultLogger, setLogger } from './logger.js';
-import { pathToFileURL } from 'url';
-import {resolve} from 'import-meta-resolve';
 
 /**
  * Describes how the app can be configured.
@@ -177,7 +177,7 @@ export class ActionApp {
             if (file.startsWith('.')) {
                 //import another file in same module
                 let filePath = path.join(baseDir, file);
-                if(tsMode){
+                if (tsMode) {
                     filePath = filePath.replace('.js', '.ts');
                 }
                 const moduleImport = await import(filePath);
@@ -190,6 +190,7 @@ export class ActionApp {
                 this.scanModuleImport(moduleImport);
             }
         }
+        console.log('DONE');
     }
 
     rejectBootstrap;

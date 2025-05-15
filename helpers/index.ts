@@ -4,6 +4,7 @@ export * from './src/executors/index.js';
 export * from './src/git-actions/index.js';
 export * from './src/standards-actions/cdk/cdk-action.js';
 export * from './src/standards-actions/cdk/cdk-helper.js';
+export * from './src/standards-actions/cdk8s/cdk8s-action.js';
 
 import { ExecutorHelperApp } from './src/executors/index.js';
 import { GitHelperApp } from './src/git-actions/gitcenter.js';

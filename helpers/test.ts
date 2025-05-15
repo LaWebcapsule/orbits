@@ -32,6 +32,8 @@ export class Core extends Chart {
 }
 
 class MyAction extends Cdk8sAction {
+    static permanentRef = 'coucou';
+
     generateStack(): this['stack'] | Promise<this['stack']> {
         return new Core(this.cdkApp, 'test-core');
     }

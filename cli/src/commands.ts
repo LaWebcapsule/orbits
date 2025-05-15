@@ -266,13 +266,13 @@ const processRunCmd = async (
             // if child is still running then it's just some
             // warning printed out on stderr
             // sending 0 will just check for existence
-            try {
-                return process.kill(child.pid!, 0);
-            } catch (error: any) {
-                if (error.code == 'EPERM') return true;
-                logError(`failed to run Orbits job:\n${data.toString()}`);
-                code = exitCodes.ORBITS_JOB_ERROR;
-            }
+            // try {
+            // return process.kill(child.pid!, 0);
+            // } catch (error: any) {
+            if (error.code == 'EPERM') return true;
+            logError(`failed to run Orbits job:\n${data.toString()}`);
+            code = exitCodes.ORBITS_JOB_ERROR;
+            // }
         }
 
         if (viewer) viewer.destroy();
