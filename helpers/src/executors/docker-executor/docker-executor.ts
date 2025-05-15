@@ -1,4 +1,4 @@
-import { Executor, Action, ActionApp, ActionState } from '@wbce/orbits-core';
+import { Action, ActionApp, ActionState, Executor } from '@wbce/orbits-core';
 import { utils } from '@wbce/services';
 import { exec } from 'child_process';
 import Docker from 'dockerode';

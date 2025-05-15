@@ -1,10 +1,5 @@
 import jasmin from 'jasmine';
 import { ActionApp } from '../index.js';
-import {
-    TestAction,
-    TestActionWithError,
-    TestActionWithWatcherEnding,
-} from './test-action.js';
 
 let j = new jasmin();
 
@@ -45,7 +40,7 @@ const app = new ActionApp({
     workers: {
         quantity: 1,
     },
-})
+});
 
 app.waitForBootstrap.then(async () => {
     return app.ActionModel.remove({}).then(() => {

@@ -29,7 +29,7 @@ jobs:
         uses: ./.github/actions/prepare
 
       - name: Run Linter
-        run: pnpm lint
+        run: pnpm -r run format
 
   unit:
     name: Unit Tests

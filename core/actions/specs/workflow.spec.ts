@@ -1,97 +1,119 @@
-import { Action, ActionApp, ActionState, InWorkflowActionError, Workflow } from '../index.js';
-import { BasicWorkflow, ThrowErrorBasicWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition, WorkflowWithRepeat } from './test-action.js';
+import {
+    Action,
+    ActionState,
+    InWorkflowActionError,
+    Workflow,
+} from '../index.js';
+import {
+    BasicWorkflow,
+    ThrowErrorBasicWorkflow,
+    WithActionErrorBasicWorkflow,
+    WorkflowWithDynamicDefinition,
+    WorkflowWithRepeat,
+} from './test-action.js';
 
-
-function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, expectedResult : any, numberOfChildActions : number, timeBeforeRunningTest?: number}){
-
+function testAWorkflow(
+    w: Workflow,
+    opts: {
+        expectedActionState: ActionState;
+        expectedResult: any;
+        numberOfChildActions: number;
+        timeBeforeRunningTest?: number;
+    }
+) {
     beforeAll(() => {
         jasmine.setDefaultSpyStrategy((and) => and.callThrough());
-        return w.app.ActionModel.deleteMany({}).then(()=>{
-            return w.save()
-        }).then(()=>{
-            return Action.trackActionAsPromise(w, [ActionState.SUCCESS, ActionState.ERROR]);
-        })
-        .then(() => w.resyncWithDb());
+        return w.app.ActionModel.deleteMany({})
+            .then(() => {
+                return w.save();
+            })
+            .then(() => {
+                return Action.trackActionAsPromise(w, [
+                    ActionState.SUCCESS,
+                    ActionState.ERROR,
+                ]);
+            })
+            .then(() => w.resyncWithDb());
     });
 
     it(`should be a ${opts.expectedActionState}`, () => {
         expect(w.dbDoc.state).toEqual(opts.expectedActionState);
     });
 
-    it(`should have correct result`, ()=>{
+    it(`should have correct result`, () => {
         const result = w.dbDoc.result;
-        if((result as Error).stack){
+        if ((result as Error).stack) {
             (result as Error).stack = undefined;
-            opts.expectedResult.stack = undefined
+            opts.expectedResult.stack = undefined;
         }
-        expect(result as any).toEqual(opts.expectedResult)
-    })
+        expect(result as any).toEqual(opts.expectedResult);
+    });
 
     it('should have launched sub-actions', () =>
         w.app.ActionModel.find({
             workflowId: w.dbDoc._id,
         }).then((actions) => {
             expect(actions.length).toEqual(opts.numberOfChildActions);
-            actions.map(a=>{
-                expect(a.state).toBeGreaterThanOrEqual(ActionState.SUCCESS)
-            })
-    }));
-
+            actions.map((a) => {
+                expect(a.state).toBeGreaterThanOrEqual(ActionState.SUCCESS);
+            });
+        }));
 }
 
-
-describe('basic Workflow', ()=>{
+describe('basic Workflow', () => {
     const basicWorkflow = new BasicWorkflow();
     basicWorkflow.setArgument({ x: 14 });
     testAWorkflow(basicWorkflow, {
-        expectedActionState : ActionState.SUCCESS, 
-        expectedResult : 10, 
-        numberOfChildActions : 5
-    })
-})
+        expectedActionState: ActionState.SUCCESS,
+        expectedResult: 10,
+        numberOfChildActions: 5,
+    });
+});
 
-describe('throw Error in Workflow', ()=>{
+describe('throw Error in Workflow', () => {
     const throwErrorWorkflow = new ThrowErrorBasicWorkflow();
     testAWorkflow(throwErrorWorkflow, {
-        expectedActionState : ActionState.ERROR, 
-        expectedResult : {message: "xyz", stack : undefined}, 
-        numberOfChildActions : 2,
-        timeBeforeRunningTest : 10
-    })
-})
+        expectedActionState: ActionState.ERROR,
+        expectedResult: { message: 'xyz', stack: undefined },
+        numberOfChildActions: 2,
+        timeBeforeRunningTest: 10,
+    });
+});
 
 describe('action in error in workflow', () => {
     let withActionErrorWorkflow = new WithActionErrorBasicWorkflow();
     const targetError = new Error();
-    targetError.message = "xyz";
-    (targetError as any as InWorkflowActionError).workflowTrace = [{
-        workflowCtr : withActionErrorWorkflow.dbDoc.actionRef,
-        workflowId : withActionErrorWorkflow.dbDoc._id.toString(),
-        ref : "t2",
-    }]
+    targetError.message = 'xyz';
+    (targetError as any as InWorkflowActionError).workflowTrace = [
+        {
+            workflowCtr: withActionErrorWorkflow.dbDoc.actionRef,
+            workflowId: withActionErrorWorkflow.dbDoc._id.toString(),
+            ref: 't2',
+        },
+    ];
     testAWorkflow(withActionErrorWorkflow, {
-        expectedActionState : ActionState.ERROR, 
-        expectedResult : {...targetError}, 
-        numberOfChildActions : 2,
-        timeBeforeRunningTest : 10
-    })
+        expectedActionState: ActionState.ERROR,
+        expectedResult: { ...targetError },
+        numberOfChildActions: 2,
+        timeBeforeRunningTest: 10,
+    });
 });
 
 describe('dynamic action in workflow', () => {
     const dynamicActionWorkflow = new WorkflowWithDynamicDefinition();
     testAWorkflow(dynamicActionWorkflow, {
-        expectedActionState : ActionState.SUCCESS, 
-        expectedResult : 4, 
-        numberOfChildActions : 3,
-        timeBeforeRunningTest : 20
-    })
+        expectedActionState: ActionState.SUCCESS,
+        expectedResult: 4,
+        numberOfChildActions: 3,
+        timeBeforeRunningTest: 20,
+    });
 });
 
-describe('workflow with repeat', ()=>{
+describe('workflow with repeat', () => {
     const workflowWithRepeat = new WorkflowWithRepeat();
     testAWorkflow(workflowWithRepeat, {
         expectedActionState: ActionState.SUCCESS,
         expectedResult: 6,
         numberOfChildActions: 10,
-    })
-})
+    });
+});

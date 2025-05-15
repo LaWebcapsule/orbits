@@ -13,7 +13,7 @@ export class ActionCron {
 
     constructor(filter?: Object) {
         this.filter = filter;
-        if(!this.filter && process.env['orbits_worker_filter']){
+        if (!this.filter && process.env['orbits_worker_filter']) {
             this.filter = JSON.parse(process.env['orbits_worker_filter']);
         }
         this.cycle();
@@ -131,7 +131,10 @@ export class ActionCron {
                     'cronActivity.lastActivity': currentDate,
                 },
             }
-        ).then(()=>{console.log("after update one")})
+        )
+            .then(() => {
+                console.log('after update one');
+            })
             .then(() => action.resyncWithDb())
             .then(() => {
                 if (

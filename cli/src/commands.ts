@@ -326,9 +326,9 @@ const processReplayCmd = async (actionId: string, opts: any) => {
 };
 
 export {
+    processPauseCmd,
+    processReplayCmd,
+    processResumeCmd,
     processRunCmd,
     processWatchCmd,
-    processReplayCmd,
-    processPauseCmd,
-    processResumeCmd,
 };
