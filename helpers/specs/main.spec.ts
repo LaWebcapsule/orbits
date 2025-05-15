@@ -12,9 +12,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 
 console.log('inside main spec 2 !!!');
 
-ActionApp.waitForActiveApp.then(() => {
-    const defaultApp = ActionApp.getActiveApp();
-    defaultApp.ActionModel.remove({}).then(() => {
-        j.execute();
-    });
+const defaultApp = await ActionApp.getActiveApp();
+defaultApp.ActionModel.remove({}).then(() => {
+    j.execute();
 });

@@ -35,7 +35,7 @@ new ActionApp({
 })
 ```
 
-In order to bootstrap an Application, you have to instanciate  an ActionApp somewhere in your app.
+In order to bootstrap an Application, you have to instantiate  an ActionApp somewhere in your app.
 
 This is where you implement a mongo database connection and other parameters.
 

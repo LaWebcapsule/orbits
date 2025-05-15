@@ -1,14 +1,14 @@
 import { Action, ActionApp } from '@wbce/orbits-core';
 
 export class ActionApi {
-    app: ActionApp;
+    app: Promise<ActionApp>;
 
     constructor() {
         this.app = ActionApp.getActiveApp();
     }
 
-    list(query: any) {
-        return this.app.ActionModel.find(query).then((data) => {
+    async list(query: any) {
+        return (await this.app).ActionModel.find(query).then((data) => {
             const result = [];
             for (const actionDb of data) {
                 result.push(Action.constructFromDb(actionDb));
@@ -17,8 +17,8 @@ export class ActionApi {
         });
     }
 
-    getOne(query: any) {
-        return this.app.ActionModel.findOne(query).then((actionDb) => {
+    async getOne(query: any) {
+        return (await this.app).ActionModel.findOne(query).then((actionDb) => {
             if (!actionDb) {
                 throw new Error('not found');
             }
@@ -26,25 +26,24 @@ export class ActionApi {
         });
     }
 
-    createOne(constructorName: string, argument: any, filter?: any) {
+    async createOne(constructorName: string, argument: any, filter?: any) {
         let newAction: Action;
-        return Promise.resolve()
-            .then(() => {
-                const ActionCtr =
-                    this.app.getActionFromRegistry(constructorName);
-                if (!ActionCtr) {
-                    throw new Error('constructor not found');
-                }
-                newAction = new ActionCtr();
-                newAction.setArgument(argument);
-                newAction.setFilter(filter);
-                return newAction.dbDoc.save();
-            })
-            .then(() => newAction);
+        const ActionCtr = (await this.app).getActionFromRegistry(
+            constructorName
+        );
+        if (!ActionCtr) {
+            throw new Error('constructor not found');
+        }
+        newAction = new ActionCtr();
+        newAction.setArgument(argument);
+        newAction.setFilter(filter);
+
+        await newAction.dbDoc.save();
+        return newAction;
     }
 
-    resumeOne(query: any) {
-        return this.app.ActionModel.findOne(query)
+    async resumeOne(query: any) {
+        return (await this.app).ActionModel.findOne(query)
             .then((actionDb) => {
                 if (!actionDb) {
                     throw new Error('not found');

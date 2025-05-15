@@ -7,11 +7,7 @@ import { randomUUID } from 'crypto';
 import { unlinkSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 
-import {
-    Action,
-    ActionApp,
-    ActionState,
-} from '@wbce/orbits-core';
+import { Action, ActionApp, ActionState } from '@wbce/orbits-core';
 
 import { ActionsViewer } from './viewer/actions-viewer.js';
 import { ACTION_STATE_FORMAT } from './viewer/constants.js';
