@@ -21,16 +21,15 @@ jobs:
         with:
           version: 9
 
-
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
-      
+          cache: "pnpm"
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Create and publish versions
         uses: changesets/action@v1
         with:
@@ -40,4 +39,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
