@@ -44,10 +44,12 @@ describe('Generators', () => {
     });
 
     it('should have correct result', () => {
-        expect(testGen.dbDoc.result).toEqual(testGen2.dbDoc.result);
-        expect(testGenOtherName.dbDoc.result).not.toEqual(testGen.dbDoc.result);
+        const result = testGen.dbDoc.result;
+        const result2 = testGen2.dbDoc.result;
+        expect(result as any).toEqual(result2 as any);
+        expect(testGenOtherName.dbDoc.result as any).not.toEqual(testGen.dbDoc.result);
         expect(testGen.dbDoc.result).toBeGreaterThan(0);
-        expect(testGenRunAfterFirstExecution.dbDoc.result).toEqual(3);
+        expect(testGenRunAfterFirstExecution.dbDoc.result as any).toEqual(3);
     });
 
     it("should have run the once step only once by identity", async ()=>{

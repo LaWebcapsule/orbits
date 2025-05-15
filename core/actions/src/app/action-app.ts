@@ -155,7 +155,6 @@ export class ActionApp {
             if(err.code === "ENOENT"){
                 this.logger.info(`cannot read ${pathFile} ; got ${err} ; fallback to ts extension`)
                 try{
-                    console.log(pathFile.replace(".js", ".ts"))
                     deps = await precinct.paperwork(pathFile.replace(".js", ".ts"));
                 }
                 catch(err2){   

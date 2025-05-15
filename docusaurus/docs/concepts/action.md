@@ -1,4 +1,9 @@
-# Action documentation
+---
+title: Action
+sidebar_position: 1
+---
+
+# Action
 
 Actions are the finest granular level of Orbits.
 An Action represents the potential completion (or failure) of an operation.
@@ -11,9 +16,12 @@ See the [conceptual documentation](./action-in-depth.md) for a better understand
 
 # Write your first Action
 
-As stated, Actions allow you to follow the state of an external process.
-The following example is fictive; you can see real world example in the [example folder](./../src/examples/).
-Let's assume we have a library; let's write an Action that launches a delivery order and succeeds if the delivery go to its term, fails if not.
+Actions allow you to track the state of external processes.
+
+The following example is fictitious — real-world examples can be found in the [examples folder](./../src/examples/).
+
+Let’s imagine a library system: we’ll write an Action that launches a delivery order, succeeds if the delivery completes, and fails otherwise.
+
 
 - Step 1: extend the Action class
 
@@ -27,8 +35,8 @@ export class MyFirstAction extends Action {
 
 The actionRef is important. When an Action document is stored in the database, the actionRef is also stored. When orbits retrieve the document from the database, it will use this property to know which constructor it should call.
 
-As a consequence, you may not want to change the `permanentName`. Think about it as an id you give to your Action - it is its only purpose.
-If you don't specify any name, the name of the class will be used as default but this is more likely to change.
+As a consequence, you may not want to change the `permanentName`. Think about it as an id you give to your Action constructor - it is its only purpose.
+If you don't specify any name, the name of the class will be used as default — which is more likely to change.
 
 - Step 2: choose the format of your argument, bag and result
 
@@ -204,13 +212,14 @@ export class MyFirstAction extends Action {
 - Step 5:
 
 What happens if a `createOrder` worked but, because of a failure, the orderId was not stored in our action database?
+Then, your action would still be in the state `ActionState.EXECUTING_MAIN`.
+After a period of time, your action will be in timeout.
+You can manage this case using the `onMainTimeout` hook.
 
-You should write a specific case for this in the watcher.
-
-Depending on the api consumes, there are two strategies.
+Depending on the api implementation the library would consume, there are two strategies.
 
 Sometimes api allow you to set an id on the resource you created. In this case, you already have the id and just need to retrieve it.
-
+So `onMainTimeout` can just call the already written watcher method.
 Example would be:
 
 ```typescript
@@ -219,6 +228,12 @@ const libraryApi = new LibraryApi();
 libraryApi.createOrder(this.argument.bookName, this.argument.id || this.bag.id);
 
 // retrieve the order
+export class MyFirstAction extends Action {
+    //...
+    onMainTimeout(){
+        return this.watcher();//just call the watcher
+    }
+}
 ```
 
 In most cases, you have to write custom logic.
@@ -228,10 +243,9 @@ For example:
 ```typescript
 export class MyFirstAction extends Action {
     //....
-    watcher() {
-        const libraryApi = new LibraryApi();
-        if (!this.bag.orderId) {
-            return libraryApi
+
+    onMainTimeout(){
+        return libraryApi
                 .listOrder({
                     book: this.argument.bookName,
                     after: this.dbDoc.createdAt,
@@ -248,10 +262,13 @@ export class MyFirstAction extends Action {
                         // In general an order also has a name and phoneNumber,
                         // which would make sure the order is the right one
                         this.bag.orderId = orders[0].orderId;
-                        return ActionState.IN_PROGRESS;
+                        return ActionState.IN_PROGRESS;//as it's IN_PROGRESS, watcher will be called.
                     }
                 });
-        }
+    }
+
+    watcher() {
+        const libraryApi = new LibraryApi();
         return libraryApi.getOrderState(this.bag.orderId).then((orderState) => {
             if (orderState === 0) {
                 return ActionState.IN_PROGRESS;
@@ -265,27 +282,19 @@ export class MyFirstAction extends Action {
 }
 ```
 
-- Step 6
+# Persistent storage
 
-Register the action in an app (see the [app documentation](./app.md))
-
-```typescript
-export class MyFirstApp extends ActionApp {
-    declare = [MyFirstAction];
-}
-```
-
-# Database interaction
-
+Each action has a db document assiociated with it.
 The db document is accessible via the `dbDoc` property. Most properties are internal settings for the framework.
 
-You can modify these properties (if you know what you are doing); it's a mongoose document.
+You can modify these properties (if you know what you are doing).
 
 You can also store in these three stores:
 
 ## Argument
 
-The `argument` property should be set via the `setArgument()` method and should not be modified once the action leaves the `ActionState.SLEEPING`.
+
+The `argument` property should be set via the `setArgument()` method and must not be changed after the action leaves the `ActionState.SLEEPING`state.
 The interface of the `argument` is set via the `IArgument` property of the class.
 
 If you want to set a default argument, you should override the `setArgument()` property.
@@ -308,14 +317,40 @@ The interface of the `result` is set via the `IResult` property of the class.
 
 If your Action belongs to a Workflow, the result object will then be available in the Workflow.
 
-# Behavior on error
+# Setting an Action to Error
 
-The best way to set an Action in `ActionState.ERROR` state, is to return that state.
+You can explicitly return `ActionState.ERROR`, and optionally set an error object:
+```ts
+export class MyAction extends Action{
+    watcher() {
+        const libraryApi = new LibraryApi();
+        return libraryApi.getOrderState(this.bag.orderId).then((orderState) => {
+            if (orderState === 0) {
+                return ActionState.IN_PROGRESS;
+            } else if (orderState === -1) {
+                this.setResult(orderState)
+                return ActionState.ERROR;
+            } else if (orderState === 1) {
+                return ActionState.SUCCESS;
+            }
+        });
+    }
+}
+```
 
 However, there are cases where an error can be implicitly set:
 
 - if an error is thrown in the `main` or in the `init` function
 - if one of the delays expired (see [delays](#delays))
+
+```ts
+export class MyAction extends Action{
+    main(){
+        throw new Error("this is a test error");//the action will be in ActionState.ERROR and the result of the action will be the thrown error.
+    }
+}
+```
+
 
 # Other parameters to be aware of
 
@@ -343,14 +378,6 @@ You can set default delays via the `defaultDelays` property. It expects an objec
     [ActionState.EXECUTING_MAIN]: 30*1000
 }
 ```
-
-# Rolling back an Action
-
-You can rollback an Action by passing:
-
-- a `rollback` method to the class
-- a `RollBackAction` to the class
-    See the [api documentation](./../docs/classes/Action.md) for further information.
 
 # In depth
 

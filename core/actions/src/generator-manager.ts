@@ -1,4 +1,4 @@
-import { capitalize } from "@wbce/services/src/utils.js";
+import {utils} from "@wbce/services";
 import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "./../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
 import * as mongoose from "mongoose";
@@ -303,7 +303,7 @@ export class Resource extends Generator{
             const controller = new ResourceController(this)
             return controller.save();
         });
-        const commandName = this.argument.commandName ? capitalize(this.argument.commandName) : '';
+        const commandName = this.argument.commandName ? utils.capitalize(this.argument.commandName) : '';
         if(commandName && typeof this[`define${commandName}`] === 'function'){
             await this.do("lock", this.lockCommand.bind(this))
             try{

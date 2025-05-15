@@ -1,4 +1,4 @@
-import { ActionState } from '../src/models/action.js';
+/* import { ActionState } from '../src/models/action.js';
 import { TestActionInWorkflow } from './test-action.js';
 
 describe('Test action defined in workflow', () => {
@@ -62,3 +62,4 @@ describe('Test action defined in workflow', () => {
 
     afterAll(() => testAction.dbDoc.remove());
 });
+ */

@@ -1,8 +1,6 @@
 # Application documentation
 
-Applications are here to centralize the imports of Actions.
-
-Application is a typescript class that extends the `ActionApp` class.
+Application manages connection to your database.
 
 # Creating an Application
 
@@ -24,38 +22,22 @@ The `imports` property should be filled with `ActionApp` whom you plan to use th
 # Bootstrapping an Application
 
 ```typescript
-@bootstrapApp({
+new ActionApp({
     db: {
         mongo: {
             url: 'mongodb://localhost:27017/example'
         }
     }
 })
-export class MyApp extends ActionApp{
-    declare = [MyAction],
-    imports = [AnotherApp]
-}
 ```
 
-In order to bootstrap an Application, you have to use the `bootstrapApp` decorator. This method has to be called only once by process.
+In order to bootstrap an Application, you have to instanciate  an ActionApp somewhere in your app.
 
 This is where you implement a mongo database connection and other parameters.
 
 To wait for the end of the bootstrapping process, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
 
 ```typescript
-@bootstrapApp({
-    db: {
-        mongo: {
-            url: 'mongodb://localhost:27017/example'
-        }
-    }
-})
-export class MyApp extends ActionApp{
-    declare = [MyAction],
-    imports = [AnotherApp]
-}
-
 ActionApp.waitForActiveApp.then(()=>{
     const action = new MyAction();
     action.save();
@@ -63,42 +45,44 @@ ActionApp.waitForActiveApp.then(()=>{
 ```
 
 However, we may keep in mind that if a second process run this script, a second `MyAction` will be created. It's probably not what you want.
+You should use a resource here, which will correctly manage its lifecycle hooks.
+
+```typescript
+ActionApp.waitForActiveApp.then(()=>{
+    const resource = new MyResource();
+    resource.save();
+})
+```
+
 In general:
 
 - you will set a new Action via an external api call
-- or you can do something like this
+- you can set a new Resource after the app has been bootstrapped
 
+## Where to bootstrap the application
+
+You can bootstrap the application anywhere you want in your codebase.
+However, we recomend this pattern : 
+- create an `orbi.ts` file at the root of your orbit application folder
+- instanciante the app in `orbit.ts`
+- import your `orbi.ts` file from your `index.ts`
 ```typescript
-ActionApp.waitForActiveApp.then(() => {
-    ActionApp.activeApp.ActionModel.findOne({
-        filter: {
-            main: true,
-        },
-    }).then((actionDb) => {
-        if (actionDb) {
-            //action already exists
-            const action = Action.constructFromDb(actionDb);
-            action.resume();
-            return;
-        }
-        //create main action
-        const myAction = new MyAction();
-        myAction.setFilter({
-            main: true,
-        });
-        myAction.save();
-    });
-});
+    import './orbi.js'
+    //...
 ```
+See [In depth](./app.md#in-depth) section for more information.
+
 
 # In depth
 
+## ActionApp and actions catalog
+
+ActionApp has two special property
+
 ## Why do we need Applications?
 
-Applications solve two major issues:
-
-- When we get an Action document from the database, we have to know how to build an Action object. This implies to map the `permanentName` property stored in the database with a constructor. An Application keep a map of declared and imported Actions.
-- Executors can launch Actions in different contexts. As a consequence, their inputs may be different from the default context's inputs. Applications keep track of both their own path and the path of the bootstrapped Application passed to an executor. This way, an executor can import the Application and its different Actions.
+Applications help to solve a major issues:
+- Executors can launch Actions in different contexts. As a consequence, their inputs may be different from the default context's inputs. When a worker in a new context is set, we need to be able to rebuild the s.
 
 ## Why do we use a Decorator?
 
