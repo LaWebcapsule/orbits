@@ -1,9 +1,4 @@
-import {
-    Action,
-    ActionApp,
-    ActionState,
-    bootstrapApp,
-} from '@wbce/orbits-core';
+import { Action, ActionApp, ActionState } from '@wbce/orbits-core';
 import { Cli } from '@wbce/services';
 import * as cdk from 'aws-cdk-lib';
 import { DockerExecutor, PublicRegistry } from '../index.js';
@@ -68,13 +63,14 @@ export class BootstrapTestStack extends CdkBootstrapAction {
     StackConstructor: typeof cdk.Stack = TestStack;
 }
 
-@bootstrapApp({
+export class TestApp extends ActionApp {
+    declare = [DockerAction, DeployTestStack, BootstrapTestStack];
+}
+
+new TestApp({
     db: {
         mongo: {
             url: `mongodb+srv://${process.env.MONGO_URL}/test`,
         },
     },
-})
-export class TestApp extends ActionApp {
-    declare = [DockerAction, DeployTestStack, BootstrapTestStack];
-}
+});

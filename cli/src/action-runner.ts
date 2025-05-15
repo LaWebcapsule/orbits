@@ -3,7 +3,7 @@ import { accessSync } from 'fs';
 import path from 'path';
 import winston from 'winston';
 
-import { Action, ActionApp, bootstrapApp } from '@wbce/orbits-core';
+import { Action, ActionApp } from '@wbce/orbits-core';
 
 import { DEFAULT_ACTION, DEFAULT_APP, exitCodes } from './commands.js';
 
@@ -84,7 +84,7 @@ export const runAction = async (
     }
 
     try {
-        bootstrapApp({
+        new ActionApp({
             db: { mongo: { url: database } },
             logger: winston.createLogger({
                 transports: [
@@ -95,9 +95,9 @@ export const runAction = async (
                 quantity: 1,
                 filter: { cli: true, instance: cliInstanceUUID },
             },
-        })(AppConstructor);
+        });
 
-        await ActionApp.waitForActiveApp;
+        // await ActionApp.waitForActiveApp;
     } catch (error) {
         throwError(
             `Cannot bootstrap Orbits app:\n${error}`,

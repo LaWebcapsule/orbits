@@ -166,7 +166,9 @@ export class ActionApp {
         const notDealthDeps = deps.filter((d) => !this.importedFiles.has(d));
         const baseDir = path.dirname(pathFile);
         this.logger.info(`found deps: ${deps}`);
+
         for (const file of notDealthDeps) {
+            console.log(baseDir, file);
             this.logger.info(`exploring dep: ${file}`);
             this.importedFiles.add(file);
             if (file.startsWith('.')) {

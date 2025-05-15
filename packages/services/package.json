@@ -27,11 +27,15 @@
     "devDependencies": {
         "@tsconfig/node16": "catalog:",
         "@types/node": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-organize-imports": "catalog:",
         "ts-node": "catalog:",
         "tslib": "catalog:",
-        "typescript": "catalog:",
-        "prettier": "catalog:",
-        "prettier-plugin-organize-imports": "catalog:"
+        "typescript": "catalog:"
     },
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "@kubernetes/client-node": "^1.2.0",
+        "winston": "catalog:"
+    }
 }

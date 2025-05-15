@@ -1,7 +1,7 @@
 import { utils } from '@wbce/services';
 import { JSONObject } from '@wbce/services/src/utils.js';
 import mongoose from 'mongoose';
-import { Action, ActionApp, Generator, Sleep } from '../index.js';
+import { Action, ActionApp, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 
@@ -343,38 +343,38 @@ export class Workflow extends Action {
             }
         }
         if (!actionDbDoc) {
-            if (action instanceof Generator) {
-                //this is for classic call of generator
-                //check if we have registered an action for this ref in previous execution
-                const actionDescriptor = this.bag.registeredActions.find(
-                    (descriptor) => {
-                        if (
-                            descriptor.ref === ref &&
-                            !this.registeredActionIds.includes(descriptor._id)
-                        ) {
-                            return true;
-                        }
-                        return false;
-                    }
-                );
-                if (actionDescriptor) {
-                    actionDbDoc = await ActionApp.activeApp.ActionModel.findOne(
-                        {
-                            _id: actionDescriptor._id,
-                        }
-                    );
-                } else {
-                    const actionsWithSameIdentity =
-                        await ActionApp.activeApp.ActionModel.find({
-                            identity: action.stringifyIdentity(),
-                            actionRef: action.dbDoc.actionRef,
-                            state: {
-                                $lt: ActionState.SUCCESS,
-                            },
-                        }).sort('createdAt');
-                    actionDbDoc = action.substitute(actionsWithSameIdentity);
-                }
-            }
+            // if (action instanceof Generator) {
+            //     //this is for classic call of generator
+            //     //check if we have registered an action for this ref in previous execution
+            //     const actionDescriptor = this.bag.registeredActions.find(
+            //         (descriptor) => {
+            //             if (
+            //                 descriptor.ref === ref &&
+            //                 !this.registeredActionIds.includes(descriptor._id)
+            //             ) {
+            //                 return true;
+            //             }
+            //             return false;
+            //         }
+            //     );
+            //     if (actionDescriptor) {
+            //         actionDbDoc = await ActionApp.activeApp.ActionModel.findOne(
+            //             {
+            //                 _id: actionDescriptor._id,
+            //             }
+            //         );
+            //     } else {
+            //         const actionsWithSameIdentity =
+            //             await ActionApp.activeApp.ActionModel.find({
+            //                 identity: action.stringifyIdentity(),
+            //                 actionRef: action.dbDoc.actionRef,
+            //                 state: {
+            //                     $lt: ActionState.SUCCESS,
+            //                 },
+            //             }).sort('createdAt');
+            //         actionDbDoc = action.substitute(actionsWithSameIdentity);
+            //     }
+            // }
         }
         return actionDbDoc;
     }
@@ -396,9 +396,9 @@ export class Workflow extends Action {
             });
             action.dbDoc.workflowId = this._id.toString();
             action.dbDoc.workflowRef = ref;
-            if (this instanceof Generator) {
-                action.dbDoc.workflowIdentity = this.stringifyIdentity();
-            }
+            // if (this instanceof Generator) {
+            //     action.dbDoc.workflowIdentity = this.stringifyIdentity();
+            // }
             action.dbDoc.$session(this.dBSession);
             promises.push(action.save());
             return Promise.all(promises);

@@ -41,6 +41,7 @@
     "dependencies": {
         "@aws-sdk/client-sso-oidc": "^3.758.0",
         "@wbce/services": "workspace:",
+        "colors": "^1.4.0",
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "winston": "catalog:"

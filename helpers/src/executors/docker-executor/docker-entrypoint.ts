@@ -11,9 +11,9 @@ import(params.bootstrapPath)
         console.log('after import!');
         return ActionApp.waitForActiveApp;
     })
-    .then(() => {
+    .then(async () => {
         ActionApp.activeApp.logger.info('after bootstrap');
-        const app = ActionApp.getActiveApp();
+        const app = await ActionApp.getActiveApp();
         return app.ActionModel.findById(params.actionId);
     })
     .then(async (actionDb) => {

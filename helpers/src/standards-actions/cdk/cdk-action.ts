@@ -38,7 +38,7 @@ export class CdkAction
         stackProps?: any & cdk.StackProps;
     };
 
-    IBag: {
+    IBag: Action['IBag'] & {
         stackName?: string;
         env?: cdk.StackProps['env'];
     };
