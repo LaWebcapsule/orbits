@@ -12,6 +12,7 @@ import { defaultLogger, setLogger } from './logger.js';
 import { pathToFileURL } from 'url';
 import {resolve} from 'import-meta-resolve';
 
+
 /**
  * Describes how the app can be configured.
  */
@@ -144,7 +145,6 @@ export class ActionApp {
     async recursiveImport(pathFile: string) {
         this.logger.info(`dealing with ${pathFile}`);
         let deps: string[];
-        let tsMode = pathFile.endsWith('.ts');
         try {
             deps = await precinct.paperwork(pathFile);
         } catch (err) {
@@ -156,7 +156,6 @@ export class ActionApp {
                     deps = await precinct.paperwork(
                         pathFile.replace('.js', '.ts')
                     );
-                    tsMode = true;
                 } catch (err2) {
                     this.logger.info(
                         `cannot read ts extension neither ; got ${err2}`
@@ -177,9 +176,6 @@ export class ActionApp {
             if (file.startsWith('.')) {
                 //import another file in same module
                 let filePath = path.join(baseDir, file);
-                if(tsMode){
-                    filePath = filePath.replace('.js', '.ts');
-                }
                 const moduleImport = await import(filePath);
                 this.scanModuleImport(moduleImport);
                 await this.recursiveImport(filePath);

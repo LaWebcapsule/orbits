@@ -1,9 +1,11 @@
-import { javascript, typescript } from "projen";
+import { javascript, typescript } from 'projen';
 const project = new typescript.TypeScriptProject({
-  defaultReleaseBranch: "main",
-  name: "diplomacy",
+  defaultReleaseBranch: 'main',
+  name: 'diplomacy',
   packageManager: javascript.NodePackageManager.PNPM,
   projenrcTs: true,
+  eslint: false,
+  disableTsconfig:true,
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
@@ -11,11 +13,12 @@ const project = new typescript.TypeScriptProject({
   // packageName: undefined,  /* The "name" in package.json. */
 });
 
-project.addDeps('@wbce/eslint-plugin-orbits@workspace:')
+project.addDeps('@wbce/eslint-plugin-orbits@workspace:');
 project.addDeps('@wbce/orbits-core@workspace:');
 
-project.eslint?.addPlugins("@wbce/eslint-plugin-orbits")
+//project.eslint?.addPlugins("@wbce/eslint-plugin-orbits")
 
-project.tsconfig?.addInclude("eslint.config.mjs")
+
+project.tsconfig?.addInclude('eslint.config.mjs');
 
 project.synth();
