@@ -1,9 +1,8 @@
 import {utils} from "@wbce/services";
 import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "./../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
-import * as mongoose from "mongoose";
 
-export abstract class Generator extends Workflow{
+export abstract class CoalescingWorkflow extends Workflow{
 
     declare IArgument: {
         commandName : string
@@ -105,7 +104,7 @@ export abstract class Generator extends Workflow{
 }
 
 
-export abstract class Digestor extends Generator{
+export abstract class Digestor extends CoalescingWorkflow{
 
 
     async define(){
@@ -217,7 +216,7 @@ type ResourceCommands<T> = {
         : never
 }[keyof T];
 
-export class Resource extends Generator{
+export class Resource extends CoalescingWorkflow{
 
     declare IArgument: { commandName: string;};
 

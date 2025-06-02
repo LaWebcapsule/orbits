@@ -200,6 +200,8 @@ export class ActionApp {
         if (isActiveApp) {
             setLogger(this);
         }
+        const moduleImport = await import(this.bootstrapPath);
+        this.scanModuleImport(moduleImport);
         await this.recursiveImport(this.bootstrapPath);
         if(isActiveApp){
             return setDbConnection(this).then(() => {

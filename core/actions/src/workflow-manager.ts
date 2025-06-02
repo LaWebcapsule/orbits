@@ -1,6 +1,6 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
-import { Action, ActionApp, Generator, Sleep } from '../index.js';
+import { Action, ActionApp, CoalescingWorkflow, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { JSONObject } from '@wbce/services/src/utils.js';
@@ -332,7 +332,7 @@ export class Workflow extends Action {
             }
         }
         if(!actionDbDoc){
-            if(action instanceof Generator){
+            if(action instanceof CoalescingWorkflow){
                 //this is for classic call of generator
                 //check if we have registered an action for this ref in previous execution
                 const actionDescriptor = this.bag.registeredActions.find((descriptor)=>{
@@ -380,7 +380,7 @@ export class Workflow extends Action {
                         })
                         action.dbDoc.workflowId = this._id.toString();
                         action.dbDoc.workflowRef = ref;
-                        if(this instanceof Generator){
+                        if(this instanceof CoalescingWorkflow){
                             action.dbDoc.workflowIdentity = this.stringifyIdentity();   
                         }
                         action.dbDoc.$session(this.dBSession);

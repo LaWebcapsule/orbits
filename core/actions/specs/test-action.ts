@@ -5,7 +5,7 @@ import {
     ActionState,
     Executor,
     Workflow,
-    Generator,
+    CoalescingWorkflow,
     Sleep,
     Resource
 } from '../index.js';
@@ -263,7 +263,7 @@ export class TestExecutorAction extends Action {
     }
 }
 
-export class SleepGenerator extends Generator{
+export class SleepGenerator extends CoalescingWorkflow{
 
     identity() {
         return "sleep"
@@ -276,7 +276,7 @@ export class SleepGenerator extends Generator{
 }
 
 let x = 0;
-export class TestGenerator extends Generator{
+export class TestGenerator extends CoalescingWorkflow{
 
     declare IArgument: { commandName: string; name : string };
 
