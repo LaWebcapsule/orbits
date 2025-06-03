@@ -621,6 +621,13 @@ export class Workflow extends Action {
         return await this.toPromise(ref, action.dbDoc);
     }
 
+    /**
+     * Repeats a do a number of times.
+     * @param ref the step reference of the action to repeat
+     * @param cb a callback that returns a promise
+     * @param repeat an object containing the number of times to repeat the action
+     * @returns a promise that resolves with the result of the last action
+     */
     repeatDo<T>(ref: string, cb : () => Promise<T>, repeat: Action['repeat'] & {elapsedTime?: number}): DoPromise<T>
     repeatDo<T>(ref: string, opts : () => Promise<T>, repeat: Action['repeat'] & {elapsedTime?: number}) : DoPromise<T>
     async repeatDo<T>(ref: string, cb : () => Promise<T>, repeat: Action['repeat'] & {elapsedTime?: number}){

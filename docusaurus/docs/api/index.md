@@ -1,5 +1,3 @@
-
-
 # Orbits
 Keep your orbit in the cloud galaxy! A typescript framework for DevOps workflow.
 
@@ -21,12 +19,12 @@ Orbits, at this stage, only supports mongodb as database.
 To get a mongodb connection, you can:
 - deploy mongo in local (in this case, you will need to opt for the `replicaset` configuration)
 - use a Mongo Atlas cluster (you can start with a free cluster)
-- use the [docker compose](./docker-compose.yml) file.
+- use the [docker compose](_media/docker-compose.yml) file.
 
 ### Docker compose
 
 You can use the `docker-compose.yml` file in order to run your app.
-- Put the [docker compose](./docker-compose.yml) file at the root of your Orbits directory (for example, at `./src/examples/basic-bash-example`)
+- Put the [docker compose](_media/docker-compose.yml) file at the root of your Orbits directory (for example, at `./src/examples/basic-bash-example`)
 - launch a docker-compose process with the `docker compose up` command.
 If you opt for this way of working, you still need to [install the dependencies](#standard-installation)
 

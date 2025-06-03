@@ -1,7 +1,6 @@
 module.exports = {
-    out: './docusaurus/api-reference',
     entryPoints: [
-      './core/actions',
+      './../core/actions',
       // './helpers',
       // './packages'
     ],

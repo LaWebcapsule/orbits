@@ -10,7 +10,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://orbi.io',
+  url: 'https://orbits.do',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -59,12 +59,11 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
+      title: 'Orbits',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -75,6 +74,12 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Tutorial',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'typedocSidebar',
+          position: 'left',
+          label: 'API',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
@@ -134,6 +139,23 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    [
+      'docusaurus-plugin-typedoc',
+      // Options
+      {
+        sidebar: {
+          autoconfiguration: true,
+        },
+        entryPoints: [
+          './../core/actions',
+          // './helpers',
+          // './packages'
+        ],
+        entryPointStrategy: 'packages',
+    },
+    ],
+  ],
 };
 
 export default config;
