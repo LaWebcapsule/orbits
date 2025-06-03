@@ -31,7 +31,7 @@ export interface Step{
 class DoPromise<T> extends Promise<T>{}
 
 export class Workflow extends Action {
-    // a workflow will never be in ERROR state
+    // a workflow will never be in ERROR state due to a timeout
     // ERROR state will be reported by its actions
     static defaultDelay = Infinity;
 
@@ -71,6 +71,14 @@ export class Workflow extends Action {
     constructor() {
         super();
     }
+
+    /**
+     * Proxy that will be called before the start of any action.
+     * Use this method to transform any action before it is started.
+     * @param ref the step reference of the action to transform
+     * @param action the action to transform
+     * @returns the transformed action
+     */
 
     transform(ref: string, action: Action): Action{
         return;
@@ -214,6 +222,12 @@ export class Workflow extends Action {
 
     executingDefine = false;
     defineCallMode : 'main' | 'actionFinding';
+    /**
+     * Defines the workflow logic.
+     * Called multiple times for a single workflow process.
+     * Use the `do` method to apply mutating operations.
+     * @returns Promise that resolves with an argument of type `this['IResult']`.
+     */
     async define(): Promise<this['IResult']>{
         return Promise.resolve() as any;
     }
@@ -255,7 +269,7 @@ export class Workflow extends Action {
     }
 
     resolveDefineIteration : (actionState? :ActionState)=>void = ()=>{};
-    trackDefine() : Promise<ActionState>{
+    private trackDefine() : Promise<ActionState>{
         if(this.executingDefine){
             throw new Error("can only execute define once at a time")
         }
@@ -298,7 +312,7 @@ export class Workflow extends Action {
         return this.trackDefine()
     }
 
-    trackAction(ref: string, action: ActionSchemaInterface){
+    private trackAction(ref: string, action: ActionSchemaInterface){
         this.registeredActionIds.push(action.id);
         if(!this.bag.registeredActions.find((descriptor)=>{
             return descriptor._id === action.id
@@ -315,7 +329,7 @@ export class Workflow extends Action {
         }
     }
 
-    async findIfEquivalentActionAlreadyExists(ref: string, action : Action){
+    protected async findIfEquivalentActionAlreadyExists(ref: string, action : Action){
         let actionDbDoc : ActionSchemaInterface;
 
         //this is for common "do"
@@ -361,7 +375,7 @@ export class Workflow extends Action {
         return actionDbDoc;
     }
 
-    async startActionTransaction(ref: string, action: Action){
+    protected async startActionTransaction(ref: string, action: Action){
         this.trackAction(ref, action.dbDoc);
         return this.dbDoc
                     .save()
@@ -389,8 +403,8 @@ export class Workflow extends Action {
                     })
     }
 
-    async startAction(ref: string, action : Action) {
-        this.transform(ref, action);
+    protected async startAction(ref: string, action : Action) {
+        action = this.transform(ref, action) || action;
         return this.app.db.mongo.conn
             .startSession()
             .then((mongooseSession) => {
@@ -430,7 +444,7 @@ export class Workflow extends Action {
     }
 
 
-    toPromise(ref: string, dbDoc : ActionSchemaInterface){
+    protected toPromise(ref: string, dbDoc : ActionSchemaInterface){
         return new DoPromise((resolve, reject)=>{
             switch (dbDoc.state) {
                 case ActionState.ERROR:
@@ -450,13 +464,55 @@ export class Workflow extends Action {
     }
 
     registeredActionIds = [];
+
+
+
+    /**
+     * Executes an action in the workflow.
+     * If the action already exists, it will be tracked and resumed.
+     * If not, it will be started.
+     * @param ref the step reference of the action to execute
+     * @param cb a callback that returns a promise
+     * @returns a promise that resolves with the result of the action
+     */
+        do<T extends Action>(ref: string, action : T ) : DoPromise<T['IResult']> 
+
+    /**
+     * Executes an action in the workflow.
+     * If the action already exists, it will be tracked and resumed.
+     * If not, it will be started.
+     * @param ref the step reference of the action to execute
+     * @param cb a callback that returns a promise
+     * @returns a promise that resolves with the result of the promise
+     */
     do<T>(ref: string, cb : () => Promise<T>): DoPromise<T>
-    do<T extends Action>(ref: string, action : T ) : DoPromise<T['IResult']> 
+        
+    /**
+     * Executes an action in the workflow.
+     * If the action already exists, it will be tracked and resumed.
+     * If not, it will be started.
+     * @param ref the step reference of the action to execute
+     * @param opts an object containing a pattern of the action to execute
+     * @param opts.init the init method of the action
+     * @param opts.main the main method of the action
+     * @param opts.watcher the watcher method of the action
+     * @returns a promise that resolves with the result of the action
+     */
     do(ref: string, opts : {
         init? : Action['init'],
         main: Action['main'],
         watcher? : Action['watcher']
     }) : DoPromise<any>
+
+    /**
+     * Executes an action in the workflow.
+     * If the action already exists, it will be tracked and resumed.
+     * If not, it will be started.
+     * @param ref the step reference of the action to execute
+     * @param opts an object containing an instanciation of a dynamic action
+     * @param opts.dynamicAction an action or a function that returns an action
+     * @returns a promise that resolves with the result of the action
+     */
     do<T extends Action>(ref: string, opts:{
         dynamicAction : T | (()=>T)
     })

@@ -5,6 +5,7 @@ import { ActionError, BreakingActionState } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { JSONObject } from '@wbce/services/src/utils.js';
+import { level } from 'winston';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -152,6 +153,10 @@ export class Action {
         return this.dbDoc._id;
     }
 
+    /**
+     * Save an action in the database. Will then be managed by the worker.
+     * @returns a promise that resolves when the action has been saved
+     */
     save() {
         return this.dbDoc.save();
     }
@@ -383,10 +388,6 @@ export class Action {
         return Promise.resolve();
     }
 
-    defineExecutor(): void | Promise<void> {
-        return;
-    }
-
     /**
      * Set the `argument` that will be stored in the database.
      * Once set, the argument of an action should not be modified.
@@ -489,13 +490,26 @@ export class Action {
     }
 
     isExecutorSet = false;
-    private setExecutor() {
+    private async _setExecutor() {
         if (this.isExecutorSet) {
             return Promise.resolve();
         }
         this.isExecutorSet = true;
         this.internalLog('setExecutor');
-        return Promise.resolve(this.defineExecutor());
+        const executor = await Promise.resolve(this.setExecutor());
+        if(executor){
+            this.executor = executor;
+        }
+    }
+
+    /**
+     * Set the executor for this action.
+     * It is called only once when the action is created.
+     * If you want to set an executor, you should override this method.
+     * @returns a promise that resolves when you have set the executor is set
+     */
+    setExecutor(): void | Executor | Promise<void| Executor> {
+        return;
     }
 
     private watch() {
@@ -592,7 +606,7 @@ export class Action {
             () => {
                 let setExecutor = Promise.resolve();
                 if (!this.isExecutorSet) {
-                    setExecutor = this.setExecutor();
+                    setExecutor = this._setExecutor();
                 }
                 return setExecutor.then(() => {
                     if (this.executor) {
@@ -649,7 +663,7 @@ export class Action {
         });
     }
 
-    changeState(actionState: ActionState) {
+    private changeState(actionState: ActionState) {
         const oldState = this.dbDoc.state;
         this.dbDoc.state = actionState;
         return this.dbDoc.lockAndSave().then(() => {
@@ -659,7 +673,7 @@ export class Action {
         });
     }
 
-    onStateNotification(actionState: ActionState = ActionState.UNKNOWN) {
+    private onStateNotification(actionState: ActionState = ActionState.UNKNOWN) {
         if (
             actionState !== ActionState.UNKNOWN &&
             this.dbDoc.state !== actionState
@@ -810,7 +824,24 @@ export class Action {
         });
     }
 
-    internalLog(message: string) {
+    /**
+     * Log a message in the internal logger.
+     * @param message - The message to log.
+     * @param opts - Options for logging, such as the log level.
+     * the final log message will be:
+     * ```
+     * {
+     *   actionRef: this.dbDoc.actionRef,
+     *  actionId: this.dbDoc._id.toString(),
+     *  filter: this.dbDoc.filter,
+     *  definedIn: this.dbDoc.definitionFrom.workflow ? this.dbDoc.definitionFrom.workflow.toObject() : undefined,
+     *  timestamp: new Date().toISOString(),
+     *  level: opts.level || 'info',
+     *  message: message,
+     * }
+     * ```
+     */
+    internalLog(message: string, opts = {level: 'info'}) {
         let defFromWorkflow: any;
         if (this.dbDoc.definitionFrom.workflow.marker) {
             defFromWorkflow = (
@@ -821,7 +852,7 @@ export class Action {
         if (!Object.keys(filter).length) {
             filter = undefined;
         }
-        this.app.logger.info(message, {
+        this.app.logger.log(opts.level, message, {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter,
@@ -830,21 +861,56 @@ export class Action {
         });
     }
 
+    /**
+     * Log an error in the internal logger.
+     * @param err - The error to log.
+     * the final log message will be:
+     * ```
+     * {
+     *   actionRef: this.dbDoc.actionRef,
+     *   actionId: this.dbDoc._id.toString(),
+     *   filter: this.dbDoc.filter,
+     *   definedIn: this.dbDoc.definitionFrom.workflow ? this.dbDoc.definitionFrom.workflow.toObject() : undefined,
+     *   err: err,
+     *   timestamp: new Date().toISOString(),
+     * }
+     */
     internalLogError(err: Error) {
+        let defFromWorkflow: any;
+        if (this.dbDoc.definitionFrom.workflow.marker) {
+            defFromWorkflow = (
+                this.dbDoc.definitionFrom.workflow as any
+            ).toObject();
+        }
+        let filter = this.dbDoc.filter;
+        if (!Object.keys(filter).length) {
+            filter = undefined;
+        }
         this.app.logger.error('!!-.-!!', {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter: this.dbDoc.filter,
+            definedIn: defFromWorkflow,
             err: err,
         });
     }
 
+    /**
+     * Clone the action.
+     * @returns a new action with the same argument
+     */
     clone(){
         const clone = new (this.constructor as any)();
         clone.setArgument(this.argument);
         return clone;
     }
 
+    /**
+     * Track an action until it reaches one of the given states.
+     * @param action - The action to track.
+     * @param states - The states to reach.
+     * @returns A promise that resolves when the action reaches one of the given states. The promise resolves with the state reached.
+     */
     static trackActionAsPromise(action: Action, states : ActionState[]){
         return new Promise((resolve, reject)=>{
             const intervalRef = setInterval(async ()=>{

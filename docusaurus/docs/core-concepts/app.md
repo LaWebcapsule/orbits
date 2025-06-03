@@ -1,3 +1,7 @@
+---
+title: Application
+sidebar_position: 4
+---
 # Application documentation
 
 Application manages connection to your database.

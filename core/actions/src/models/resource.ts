@@ -28,6 +28,9 @@ export interface ResourceSchemaInterface<
         name: String
     }]
     output : any,
+    cycle: {
+        frequency: number
+    }
     info: any,
 }
 
@@ -39,6 +42,9 @@ export const resourceSchema = new mongoose.Schema(
             name: String
         }],
         version : String,
+        cycle: {
+            frequency: Number
+        },
         output : { type: mongoose.Schema.Types.Mixed, default: {} },
         info : { type: mongoose.Schema.Types.Mixed, default: {} },
 

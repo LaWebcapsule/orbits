@@ -1,3 +1,7 @@
+---
+title: Workflow
+sidebar_position: 2
+---
 # Workflow documentation
 
 A Workflow is a way to chain Actions. The syntax is similar to how async/await syntax works.
@@ -36,13 +40,14 @@ export class MyWorkflow extends Workflow{
 ## The do method
 
 ### Purpose
+
 The `do()` method is used to declare an action to be executed within the workflow. It mimics the behavior of await in native JavaScript/TypeScript syntax to provide readable, sequential flow control.
 
 However, `do()` is more complex than a normal asynchronous call. Behind the scenes, the orbits framework implements deterministic execution with built-in replayability. This means:
+
 - `define()` can be executed multiple times during the lifecycle of a workflow.
 - Each call to `do()` is idempotent: the action is only executed once.
 - On re-execution, previously completed `do()` calls return the stored result instead of re-running the action.
-
 
 ### Point of attention : deterministic execution and async/await
 
@@ -101,7 +106,7 @@ export class CorrectWorkflow extends Workflow {
 
     IBag: {
         now : number
-        
+  
     }
 
   async init(){
@@ -161,7 +166,8 @@ However this promises not always resolve.
 ### Action level
 
 At the action level, you can configure the repetion using the `setRepeat()` method.
-Example : 
+Example :
+
 ```typescript
 export class MyWorkflow extends Workflow{
 
@@ -191,38 +197,135 @@ export class MyWorkflow extends Workflow{
 
 ### Workflow level
 
+At the workflow level, you can configure the repetion using the `doRepeat()` method.
+Example :
 
-At the wor level, you can configure the repetion using the `setRepeat()` method.
-Example : 
 ```typescript
-export class MyWorkflow extends Workflow{
+export class WorkflowWithRepeat extends Workflow{
 
-    define(){
+    async define(){
+        await this.repeatDo("repeatSucces", ()=>{
+            //...do something...
+            return Promise.resolve()
+        },{
+            [ActionState.SUCCESS]: 2,
+            elapsedTime: 10 
+        })
+
         try{
-            await this.do("my-action", new MyAction().setArgument({
-                x: 1
-            }).setRepeat({
-                [ActionState.ERROR]: 2 //repeat twice, so will be executed max. 3 times
-            }))
+            await this.repeatDo("repeatOnFailure", ()=>{
+                //...do something...
+                return Promise.reject()
+            }, {
+                [ActionState.ERROR]: 2,
+                elapsedTime: 10
+            })
         }
         catch(err){
-            await this.do("on-error-action", new OnErrorAction().setArgument({
-                x: 1
-            }))
-        }
-        finally{
-            //....
-        }
-        return {
-            x: 2
-        }
-    }
 
+        }
+        return i;
+    }
 }
 ```
 
 ### Transformation
 
+The `transform()` method is a powerful hook that intercepts every Action before it is executed by the Workflow.
 
+It acts as a proxy layer over all Actions that pass through the Workflow engine. You can use it to:
 
+- Modify the arguments of any Action
+- Replace one Action with another
+- Apply conditional logic
+- Dynamically set `.setRepeat()`, `.setTimeout()`, `.setBag()`, etc.
 
+This is especially useful when you want to customize or override Action behavior without changing the Workflow's `define()` logic.
+
+---
+
+#### Examples
+
+##### Simple example
+
+```ts
+export class MyWorkflow extends Workflow {
+
+  // The transform method allows you to intercept and modify actions dynamically.
+  transform(ref: string, action: Action): Action {
+    if (ref === "my-action") {
+      // Override the arguments for the step "my-action"
+      return MyAction().setArgument({
+        x: 2,
+      });
+    }
+
+    // Returning `undefined` means the original action instance will be used as-is
+    return;
+  }
+
+  async define() {
+    try {
+      await this.do(
+        "my-action",
+        MyAction().setArgument({
+          x: 1,
+        }).setRepeat({
+          [ActionState.ERROR]: 2, // Retry up to 2 times on error (executed max 3 times)
+        })
+      );
+    } catch (err) {
+      await this.do(
+        "on-error-action",
+        OnErrorAction().setArgument({
+          x: 1,
+        })
+      );
+    } finally {
+      // You can perform cleanup or additional steps here
+    }
+
+    return {
+      x: 2,
+    };
+  }
+}
+```
+
+*Key Notes*
+
+- The `ref` argument passed to `transform()` matches the name you use in this.do("my-action", ...).
+- You must return a valid Action instance if you want to replace or modify it.
+- If `transform()` returns `undefined`, the original `Action` provided in `define()` will be used.
+
+*Use this to:*
+
+- Inject environment-specific parameters (e.g. test vs. prod)
+- Dynamically change retry logic or timeouts
+- Centralize logic for versioning or conditional behavior
+
+##### Inheritance example
+
+```ts
+export class CustomWorkflow extends BaseWorkflow {
+  
+  transform(ref: string, action: Action): Action {
+    if (ref === "notify") {
+      // Override the default email step with a custom SMS notification
+      return new SendSmsAction().setArgument({
+        message: "This replaces the email notification"
+      });
+    }
+    return;
+  }
+  
+}
+```
+
+This pattern allows you to:
+
+- Reuse shared workflow logic
+
+- Swap or extend individual steps based on context
+
+- Build a hierarchy of workflows with consistent interfaces but customizable behavior

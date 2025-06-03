@@ -1,3 +1,7 @@
+---
+title: Action lifecycle
+sidebar_position: 1.1
+---
 # Action lifecycle
 
 An action has a lifecycle that starts when the action is saved in the database. Then, Orbits takes care of the different states and calls the appropriate function when needed, with correct locks and timeouts.

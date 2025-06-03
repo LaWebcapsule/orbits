@@ -1,5 +1,5 @@
 import {utils} from "@wbce/services";
-import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "./../index.js";
+import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
 
 export abstract class CoalescingWorkflow extends Workflow{
@@ -174,20 +174,32 @@ export class ResourceController<T extends Resource> extends Workflow{
         }
     }
 
+    resource: T;
+    resourceDbDoc: ResourceSchemaInterface;
+    
+    async getResourceDoc(){
+
+    }
+
+    async init(){
+        await super.init();
+        const ActionCtr = ActionApp.activeApp.getActionFromRegistry(this.argument.actionRef);
+        const resource = new ActionCtr() as T;
+        resource.setArgument({
+            ...this.argument,
+            actionRef: undefined
+        });
+        await resource.getResourceDoc();
+    }
+
     async define(){
         try{
             await this.do('sleep', new Sleep().setArgument({
-                time : 10*60*1000
+                time : this.resource.resourceDbDoc.cycle.frequency
             }))
             await this.do("cycle", async ()=>{
-                const ActionCtr = ActionApp.activeApp.getActionFromRegistry(this.argument.actionRef);
-                const resource = new ActionCtr() as T;
-                resource.setArgument({
-                    ...this.argument,
-                    actionRef: undefined
-                });
-                resource.setCommand('cycle' as any);
-                return resource;
+                this.resource.setCommand('cycle' as any);
+                return this.resource;
             })
         }
         catch(err){
@@ -243,12 +255,19 @@ export class Resource extends CoalescingWorkflow{
         return this.resourceDbDoc;
     }
 
+    defaultResourceSettings : {cycle: {frequency: number}} = {
+        cycle: {
+            frequency: 10*60*1000 //default to 1 minute
+        }
+    }
+
     createResourceDoc(){
         this.resourceDbDoc = new this.app.ResourceModel({
+            ...this.defaultResourceSettings.cycle,
             identity : this.stringifyIdentity(),
             actionRef: this.app.getActionRefFromRegistry(
                 this.constructor as any
-            )
+            ),
         })
         return this.resourceDbDoc.save()
     }

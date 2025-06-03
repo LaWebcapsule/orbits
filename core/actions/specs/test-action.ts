@@ -251,7 +251,7 @@ export class TestExecutor extends Executor {
 export class TestExecutorAction extends Action {
     cli = new Cli();
 
-    defineExecutor(): Promise<undefined> | undefined {
+    setExecutor(): Promise<undefined> | undefined {
         return;
     }
 

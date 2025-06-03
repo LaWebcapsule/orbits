@@ -1,3 +1,7 @@
+---
+title: Executor
+sidebar_position: 5
+---
 # Executor
 
 Executors allow Actions to be run in specific contexts. For example, assume you want to build an app that requires external dependencies, like grunt, java, composer... You can specify that the deploy Action runs in a normal context and that the builder Action runs in a docker or in a lambda or in any other context managed by an executor.
