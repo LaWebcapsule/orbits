@@ -1,3 +1,13 @@
+louis:
+  name: Louis Dussarps
+  title: CEO @ Webcapsule
+  url: https://github.com/yangshun
+  image_url: https://github.com/yangshun.png
+  page: true
+  socials:
+    x: yangshunz
+    github: yangshun
+
 yangshun:
   name: Yangshun Tay
   title: Front End Engineer @ Facebook
@@ -7,6 +17,7 @@ yangshun:
   socials:
     x: yangshunz
     github: yangshun
+
 
 slorber:
   name: Sébastien Lorber

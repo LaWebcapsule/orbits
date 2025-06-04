@@ -433,8 +433,6 @@ The set of mutually exclusive commands is defined in the `noConcurrencyCommandNa
 
 :::
 
-
-
 ### Digest method
 
 The `digest()` method determines which commands (hooks) should be executed based on the current state of the resource. It is called during each lifecycle cycle and can be customized when implementing advanced behavior.

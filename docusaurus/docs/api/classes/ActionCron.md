@@ -1,6 +1,6 @@
 # Class: ActionCron
 
-Defined in: [core/actions/src/action-job.ts:8](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L8)
+Defined in: [core/actions/src/action-job.ts:8](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L8)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/action-job.ts:8](https://github.com/LaWebcapsule/o
 
 > **new ActionCron**(`filter?`): `ActionCron`
 
-Defined in: [core/actions/src/action-job.ts:14](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L14)
+Defined in: [core/actions/src/action-job.ts:14](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L14)
 
 #### Parameters
 
@@ -26,7 +26,7 @@ Defined in: [core/actions/src/action-job.ts:14](https://github.com/LaWebcapsule/
 
 > **actions**: [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\>[] = `[]`
 
-Defined in: [core/actions/src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L10)
+Defined in: [core/actions/src/action-job.ts:10](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L10)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [core/actions/src/action-job.ts:10](https://github.com/LaWebcapsule/
 
 > **app**: [`ActionApp`](ActionApp.md) = `ActionApp.activeApp`
 
-Defined in: [core/actions/src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L11)
+Defined in: [core/actions/src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L11)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [core/actions/src/action-job.ts:11](https://github.com/LaWebcapsule/
 
 > `optional` **filter**: `Object`
 
-Defined in: [core/actions/src/action-job.ts:12](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L12)
+Defined in: [core/actions/src/action-job.ts:12](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L12)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [core/actions/src/action-job.ts:12](https://github.com/LaWebcapsule/
 
 > **maxTimeToConsumeAnAction**: `number`
 
-Defined in: [core/actions/src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L9)
+Defined in: [core/actions/src/action-job.ts:9](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L9)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [core/actions/src/action-job.ts:9](https://github.com/LaWebcapsule/o
 
 > **nDatabaseEmpty**: `number` = `0`
 
-Defined in: [core/actions/src/action-job.ts:22](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L22)
+Defined in: [core/actions/src/action-job.ts:22](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L22)
 
 ## Methods
 
@@ -66,7 +66,7 @@ Defined in: [core/actions/src/action-job.ts:22](https://github.com/LaWebcapsule/
 
 > **consumeAction**(`actionDb`): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-job.ts:99](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L99)
+Defined in: [core/actions/src/action-job.ts:99](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L99)
 
 #### Parameters
 
@@ -84,7 +84,7 @@ Defined in: [core/actions/src/action-job.ts:99](https://github.com/LaWebcapsule/
 
 > **cycle**(): `any`
 
-Defined in: [core/actions/src/action-job.ts:49](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L49)
+Defined in: [core/actions/src/action-job.ts:49](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L49)
 
 #### Returns
 
@@ -96,7 +96,7 @@ Defined in: [core/actions/src/action-job.ts:49](https://github.com/LaWebcapsule/
 
 > **getAction**(): `Promise`\<[`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\> & `object`\>
 
-Defined in: [core/actions/src/action-job.ts:70](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L70)
+Defined in: [core/actions/src/action-job.ts:70](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L70)
 
 #### Returns
 
@@ -108,7 +108,7 @@ Defined in: [core/actions/src/action-job.ts:70](https://github.com/LaWebcapsule/
 
 > **oneActionCycle**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-job.ts:56](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L56)
+Defined in: [core/actions/src/action-job.ts:56](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L56)
 
 #### Returns
 
@@ -120,7 +120,7 @@ Defined in: [core/actions/src/action-job.ts:56](https://github.com/LaWebcapsule/
 
 > **resyncWithDb**(`action`): `Promise`\<[`Action`](Action.md)\>
 
-Defined in: [core/actions/src/action-job.ts:188](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L188)
+Defined in: [core/actions/src/action-job.ts:188](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L188)
 
 #### Parameters
 
@@ -138,7 +138,7 @@ Defined in: [core/actions/src/action-job.ts:188](https://github.com/LaWebcapsule
 
 > **wait**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-job.ts:23](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/action-job.ts#L23)
+Defined in: [core/actions/src/action-job.ts:23](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/action-job.ts#L23)
 
 #### Returns
 

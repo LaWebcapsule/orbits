@@ -1,4 +1,8 @@
-# Quick start
+---
+sidebar_position: 2
+title: Quickstart
+---
+# Hello world
 This is a basic guide to get your first resource working.
 
 # Install
@@ -43,7 +47,7 @@ export class MyAction extends Action{
 You will need a mongodb connection to store the state of your action.
 Once you have a valid mongodb url, please create an `ActionApp` with the mongodb connection string.
 
-```typescript title='src/orbits/action-app.ts'
+```typescript title='src/orbits/orbi.ts'
 const db = {
     protocol: 'mongodb+srv',
     url: process.env['MONGO_URL'],
@@ -65,7 +69,7 @@ new ActionApp({
 
 ### Hook : ensure your app is set
 
-```typescript 
+```typescript  title='src/index.ts'
 import {ActionApp} from "@wbce/orbits-core"
 import "./orbits/action-app.ts"
 
@@ -75,7 +79,7 @@ import "./orbits/action-app.ts"
 
 ### Use the action anywhere you want in your app
 
-```typescript
+```typescript title='src/consume-action.ts'
   const action = new MyAction();
   await action.save();//the action will be executed in the background.
   await Action.trackActionAsPromise(action, [ActionState.SUCCESS, ActionState.ERROR]);//this line is optional.
@@ -115,7 +119,7 @@ This allows to apply the SEGA principle.
 ## Consume the workflow
 
 A workflow is an action, so you consume it like an action
-```typescript
+```typescript title='src/consume-workflow.ts'
   const workflow = new MyWorkflow();
   await workflow.save();//the action will be executed in the background.
   await Action.trackActionAsPromise(workflow, [ActionState.SUCCESS, ActionState.ERROR]);//this line is optional.
@@ -125,7 +129,7 @@ A workflow is an action, so you consume it like an action
 
 Greetings occurs only once in a day but if I do : 
 
-```typescript
+```typescript title='src/consume-workflow.ts'
     const workflow1 = new MyWorkflow().setArgument({name : "John Doe"});
     await workflow1.save();//the action will be executed in the background.
     //others processes
@@ -136,7 +140,7 @@ Greetings occurs only once in a day but if I do :
 the workflow will run twice. How do I do to have it run once ?
 This is managed by the concept of "Resource".
 
-```typescript
+```typescript title='src/orbits/my-resource.ts'
     export class MyGreetings extends Resource{
         IArgument: {
             name : string
@@ -172,7 +176,7 @@ This is managed by the concept of "Resource".
 ## Consume your resources
 
 A resource is an action, so you consume it like an action
-```typescript
+```typescript title='src/consume-resource.ts'
   const resource = new MyGreetings().setArgument({
     name: "John Doe",
     date: "01-01-01"

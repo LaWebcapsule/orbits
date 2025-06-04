@@ -4,26 +4,11 @@ sidebar_position: 4
 ---
 # Application documentation
 
-Application manages connection to your database.
-
-# Creating an Application
-
-See this example:
-
-```typescript
-export class MyApp extends ActionApp{
-    declare = [MyAction],
-    imports = [AnotherApp]
-}
-```
-
-When creating an `ActionApp` class, you can complete two properties.
-The `declare` property should be filled with the `Action` class you created.
-The `imports` property should be filled with `ActionApp` whom you plan to use the declared Actions.
-
-> An Action whom its class constructor is not declared in an `ActionApp` cannot be used. This will immediately emit an error.
+Application manages connection to your database and serves as the central bootstrap point for your Orbits application.
 
 # Bootstrapping an Application
+
+To initialize your application, create a new `ActionApp` instance with your database configuration:
 
 ```typescript
 new ActionApp({
@@ -35,21 +20,24 @@ new ActionApp({
 })
 ```
 
-In order to bootstrap an Application, you have to instanciate  an ActionApp somewhere in your app.
+The `ActionApp` constructor requires a database configuration object. Currently, MongoDB is supported through the `mongo` property, which accepts a connection URL.
 
-This is where you implement a mongo database connection and other parameters.
+## Waiting for Bootstrap Completion
 
+After instantiating the application, wait for the bootstrapping process to complete before creating Actions or Resources:
 To wait for the end of the bootstrapping process, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
 
 ```typescript
-ActionApp.waitForActiveApp.then(()=>{
+ActionApp.waitForActiveApp.then(() => {
     const action = new MyAction();
     action.save();
 })
 ```
 
-However, we may keep in mind that if a second process run this script, a second `MyAction` will be created. It's probably not what you want.
-You should use a resource here, which will correctly manage its lifecycle hooks.
+
+::warning
+
+Be cautious when creating Actions directly after bootstrap. If multiple processes run this script simultaneously or if the same script is run multiple times, duplicate Actions will be created. This is typically not the desired behavior.Instead, use Resources, which properly manage their lifecycle hooks:
 
 ```typescript
 ActionApp.waitForActiveApp.then(()=>{
@@ -61,51 +49,172 @@ ActionApp.waitForActiveApp.then(()=>{
 In general:
 
 - you will set a new Action via an external api call
-- you can set a new Resource after the app has been bootstrapped
+- you can programmatically set a new Resource after the app has been bootstrapped
 
-## Where to bootstrap the application
+::
+
+## Recommended Project Structure
 
 You can bootstrap the application anywhere you want in your codebase.
-However, we recomend this pattern : 
+However, we recomend using this pattern : 
 - create an `orbi.ts` file at the root of your orbit application folder
 - instanciante the app in `orbit.ts`
 - import your `orbi.ts` file from your `index.ts`
-```typescript
-    import './orbi.js'
-    //...
+
+```bash
+my-project/
+├── src/
+│   ├── orbits/
+│   │   ├── orbi.ts
+│   │   ├── my-action.ts
+│   │   ├── my-workflow.ts
+│   └── index.ts
+└── package.json
 ```
-See [In depth](./app.md#in-depth) section for more information.
 
+### Bootstrap file (`orbi.ts`)
 
-# In depth
+Create an `orbi.ts` file in your orbits directory to contain the application initialization:
 
-## ActionApp and actions catalog
+```typescript title='src/orbits/orbi.ts'
+new ActionApp({
+    db: {
+        mongo: {
+            url: 'mongodb://localhost:27017/example'
+        }
+    }
+})
+```
 
-ActionApp has two special property
+### Main entrypoint (`index.ts`)
 
-## Why do we need Applications?
+Import the bootstrap file in your main entry point and wait for the application to be ready:
 
-Applications help to solve a major issues:
-- Executors can launch Actions in different contexts. As a consequence, their inputs may be different from the default context's inputs. When a worker in a new context is set, we need to be able to rebuild the s.
+```typescript title='src/index.ts'
+import './orbits/orbi.js'
+import { ActionApp } from '@wbce/orbits-core'
 
-## Why do we use a Decorator?
-
-We could do something like:
-
-```typescript
-export class MyApp extends ActionApp{
-    declare = [MyAction],
-    imports = [AnotherApp]
+// Your application context
+async function main() {
+    await ActionApp.waitForActiveApp
+    
+    // Your application logic here
 }
 
-const myApp = new MyApp();
-myApp.bootstrap.then(....)
+main().catch(console.error)
+
 ```
 
-Unfortunately this could lead to the Application being dynamically bootstrapped by some api call, manual user call...
-Nevertheless, other process, like executor, can be launched, which should have a simple way to bootstrap the Application.
-A Decorator force the Application to be bootstrapped just after the process starts.
+## Ensuring Action Discoverability
 
-This also explains why we extend class everywhere in the framework. We wanted a way to be sure that all objects are defined at the beginning of a process and class can't be created dynamically.
+For complex applications (e.g. using executors), ensure your Actions are discoverable by the application through proper import chains.
+You have two choice.
 
-Moreover, the decorator allows us to keep track of the code path and could permit a more complex Action dependency injector.
+
+### Method 1: Recursive import
+
+Structure your imports so the application can discover all Actions through the dependency chain:
+
+```typescript title='src/orbits/my-action.ts'
+//ensure you export the action
+export class MyAction extends Action{
+    //....
+}
+```
+
+```typescript title='src/orbits/my-workflow.ts'
+// Import and use the action
+import {MyAction} from "./my-action.ts"
+
+export class MyWorkflow extends Workflow{
+    //....
+}
+```
+
+```typescript title='src/orbits/orbi.ts'
+// Import workflow, which imports action, ensuring discoverability
+import "./my-workflow.ts"
+//...
+new ActionApp({
+    db: {
+        mongo: {
+            url: 'mongodb://localhost:27017/example'
+        }
+    }
+})
+```
+
+:: warning
+**Bad Pattern - Action Not Discoverable**
+
+```typescript title='src/orbits/my-workflow.ts'
+// ❌ MySecondAction is not exported
+class MySecondAction extends Action {
+   // Action implementation
+}
+
+export class MyWorkflow extends Workflow {
+   define() {
+       // ...something
+       await this.do("second-step", new MySecondAction()); // ❌ MySecondAction is not exported, so it won't be registered in the application catalog
+   }
+}
+```
+
+Even if MySecondAction is only consumed by MyWorkflow, you should export it.
+::
+
+### Method 2: Direct Registration
+
+Alternatively, you can explicitly declare all Actions and Workflows in your bootstrap file using a custom App class:
+
+```typescript title='src/orbits/orbi.ts'
+import { MyAction } from "./my-action.ts"
+import { MyWorkflow } from "./my-workflow.ts"
+
+export class MyApp extends ActionApp {
+   declare = [MyAction, MyWorkflow]
+   register = [
+       // You can register other apps here
+       // ActionApp is included by default, shown here for example
+       ActionApp
+   ]
+}
+```
+
+**Trade-off:**
+Must remember to add new Actions/Workflows to the declare array
+
+
+# Under the hood
+
+## ActionApp and Actions Catalog
+
+ActionApp maintains two special properties: `actionsRegistry` and `invertedActionsRegistry`.
+
+### Actions Registry
+
+The `actionsRegistry` serves as the catalog of all `Actions` available in your application. This registry is crucial for the application's ability to execute workflows and actions dynamically.
+
+
+### How Action Resolution Works
+
+When a worker encounters a workflow in a pending state or an action waiting for execution, it must map database documents back to their corresponding action constructors. Here's the process:
+
+1. **Database Storage**: The database stores only a reference to the constructor, not the actual code
+2. **Reference Types**: This reference can be either:
+  - The name of the constructor class
+  - The static `permanentRef` property of the ActionConstructor
+3. **Constructor Resolution**: The worker uses this reference to look up the actual constructor in the `actionsRegistry`
+4. **Execution**: Once resolved, the worker can instantiate the action and call its `main` function
+
+### Why Action Discovery Matters
+
+If ActionApp cannot discover your action constructor during bootstrap, the following problems occur:
+
+- The action won't be added to the `actionsRegistry`
+- Workers cannot resolve database references to action constructors
+- Runtime errors are thrown when attempting to execute the action
+- Workflows that depend on the action will fail
+
+This is why proper action registration through exports and imports is essential for application functionality.

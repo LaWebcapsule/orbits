@@ -2,4 +2,4 @@
 
 > `const` **actionSchema**: `Schema`\<`any`, `Model`\<`any`, `any`, `any`, `any`, `any`\>, \{ \}, \{ \}, \{ \}, \{ \}, `ResolveSchemaOptions`\<\{ `minimize`: `false`; `timestamps`: `true`; \}\>, `object` & `object`\>
 
-Defined in: [core/actions/src/models/action.ts:88](https://github.com/LaWebcapsule/orbits/blob/d868a491665847b3fcad6a5fb6cc538d2ad58104/core/actions/src/models/action.ts#L88)
+Defined in: [core/actions/src/models/action.ts:88](https://github.com/LaWebcapsule/orbits/blob/0227fc1f241d9ddfb863d821a69fe94c6051b22a/core/actions/src/models/action.ts#L88)
