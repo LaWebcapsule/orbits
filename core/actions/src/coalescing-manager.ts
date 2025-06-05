@@ -4,10 +4,6 @@ import { ResourceSchemaInterface } from "./models/resource.js";
 
 export abstract class CoalescingWorkflow extends Workflow{
 
-    declare IArgument: {
-        commandName : string
-    }
-
     identity():any{
         return;
     }
@@ -230,7 +226,7 @@ type ResourceCommands<T> = {
 
 export class Resource extends CoalescingWorkflow{
 
-    declare IArgument: { commandName: string;};
+    declare IArgument: { commandName?: string;};
 
 
     async init(){

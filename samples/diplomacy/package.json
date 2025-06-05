@@ -1,5 +1,6 @@
 {
   "name": "diplomacy",
+  "type": "module",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",

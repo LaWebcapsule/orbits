@@ -4,54 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-catalogs:
-  default:
-    '@tsconfig/node16':
-      specifier: ^16.1.3
-      version: 16.1.3
-    '@tsconfig/node22':
-      specifier: ^22.0.0
-      version: 22.0.1
-    '@types/jasmine':
-      specifier: ^4.3.1
-      version: 4.6.4
-    '@types/node':
-      specifier: ^18.11.14
-      version: 18.19.67
-    jasmine:
-      specifier: ^4.5.0
-      version: 4.6.0
-    mongoose:
-      specifier: ^6.13.6
-      version: 6.13.8
-    prettier:
-      specifier: ^3.5.3
-      version: 3.5.3
-    prettier-plugin-organize-imports:
-      specifier: ^4.1.0
-      version: 4.1.0
-    ts-node:
-      specifier: ^10.9.1
-      version: 10.9.2
-    ts-node-dev:
-      specifier: ^2.0.0
-      version: 2.0.0
-    tslib:
-      specifier: ^2.4.1
-      version: 2.8.1
-    tsx:
-      specifier: ^3.14.0
-      version: 3.14.0
-    typescript:
-      specifier: ^5.8.3
-      version: 5.8.3
-    winston:
-      specifier: ^3.8.2
-      version: 3.17.0
-
-overrides:
-  esbuild@<=0.24.2: '>=0.25.0'
-
 importers:
 
   .:
@@ -401,6 +353,16 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
+  samples/hello-world:
+    dependencies:
+      '@wbce/orbits-core':
+        specifier: workspace:^
+        version: link:../../core/actions
+    devDependencies:
+      tsx:
+        specifier: ^4.19.4
+        version: 4.19.4
+
 packages:
 
   '@ampproject/remapping@2.3.0':
@@ -610,6 +572,10 @@ packages:
 
   '@aws-sdk/types@3.734.0':
     resolution: {integrity: sha512-o11tSPTT70nAkGV1fN9wm/hAIiLPyWX6SuGf+9JyTp7S/rC2cFWhR26MvA69nplcjNaXVzB0f+QFrLXXjOqCrg==}
+    engines: {node: '>=18.0.0'}
+
+  '@aws-sdk/types@3.821.0':
+    resolution: {integrity: sha512-Znroqdai1a90TlxGaJ+FK1lwC0fHpo97Xjsp5UKGR5JODYm7f9+/fF17ebO1KdoBr/Rm0UIFiF5VmI8ts9F1eA==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/util-endpoints@3.696.0':
@@ -1698,6 +1664,10 @@ packages:
 
   '@smithy/types@4.1.0':
     resolution: {integrity: sha512-enhjdwp4D7CXmwLtD6zbcDMbo6/T6WtuuKCY49Xxc6OMOmUWlBEBDREsxxgV2LIdeQPW756+f97GzcgAwp3iLw==}
+    engines: {node: '>=18.0.0'}
+
+  '@smithy/types@4.3.1':
+    resolution: {integrity: sha512-UqKOQBL2x6+HWl3P+3QqFD4ncKq0I8Nuz9QItGv5WuKuMHuuwlhvqcZCoXGfc+P1QmfJE7VieykoYYmrOoFJxA==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/url-parser@3.0.10':
@@ -5247,6 +5217,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  tsx@4.19.4:
+    resolution: {integrity: sha512-gK5GVzDkJK1SI1zwHf32Mqxf2tSJkNx+eYcNly5+nHvWqXUJYUkWBQtKauoESz3ymezAI++ZwT855x5p5eop+Q==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   tweetnacl@0.14.5:
     resolution: {integrity: sha512-KXXFFdAbFXY4geFIwoyNK+f5Z1b7swfXABfL7HXCmoIWMKU3dmS26672A4EeQtDzLKy7SXmfBu51JolvEKwtGA==}
 
@@ -5646,7 +5621,7 @@ snapshots:
       '@aws-crypto/sha256-js': 5.2.0
       '@aws-crypto/supports-web-crypto': 5.2.0
       '@aws-crypto/util': 5.2.0
-      '@aws-sdk/types': 3.734.0
+      '@aws-sdk/types': 3.821.0
       '@aws-sdk/util-locate-window': 3.693.0
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
@@ -5654,7 +5629,7 @@ snapshots:
   '@aws-crypto/sha256-js@5.2.0':
     dependencies:
       '@aws-crypto/util': 5.2.0
-      '@aws-sdk/types': 3.734.0
+      '@aws-sdk/types': 3.821.0
       tslib: 2.8.1
 
   '@aws-crypto/supports-web-crypto@5.2.0':
@@ -5663,7 +5638,7 @@ snapshots:
 
   '@aws-crypto/util@5.2.0':
     dependencies:
-      '@aws-sdk/types': 3.734.0
+      '@aws-sdk/types': 3.821.0
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
@@ -6589,6 +6564,11 @@ snapshots:
   '@aws-sdk/types@3.734.0':
     dependencies:
       '@smithy/types': 4.1.0
+      tslib: 2.8.1
+
+  '@aws-sdk/types@3.821.0':
+    dependencies:
+      '@smithy/types': 4.3.1
       tslib: 2.8.1
 
   '@aws-sdk/util-endpoints@3.696.0':
@@ -8005,6 +7985,10 @@ snapshots:
     optional: true
 
   '@smithy/types@4.1.0':
+    dependencies:
+      tslib: 2.8.1
+
+  '@smithy/types@4.3.1':
     dependencies:
       tslib: 2.8.1
 
@@ -12210,6 +12194,13 @@ snapshots:
     dependencies:
       esbuild: 0.25.0
       get-tsconfig: 4.8.1
+    optionalDependencies:
+      fsevents: 2.3.3
+
+  tsx@4.19.4:
+    dependencies:
+      esbuild: 0.25.0
+      get-tsconfig: 4.10.0
     optionalDependencies:
       fsevents: 2.3.3
 

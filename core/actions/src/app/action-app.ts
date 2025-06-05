@@ -174,13 +174,15 @@ export class ActionApp {
             this.importedFiles.add(file)
             if(file.startsWith(".")){
                 //import another file in same module
+                this.logger.info(`importing local file: ${file}`);
                 const filePath = path.join(baseDir, file)
-                const moduleImport = await import(filePath);
-                this.scanModuleImport(moduleImport);
+                /*const moduleImport = await import(filePath);
+                this.scanModuleImport(moduleImport);  */
                 await this.recursiveImport(filePath);
             }
             else{
                 //import an npm module
+                this.logger.info(`importing npm module: ${file}`);
                 const url = await import.meta.resolve(file, pathFile);
                 const moduleImport = await import(url);
                 this.scanModuleImport(moduleImport);
