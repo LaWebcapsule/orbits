@@ -15,6 +15,8 @@ export enum ActionState {
     SUCCESS,
     ERROR,
     CLOSED, // nothing more can happen except a rollback
+    REVERTING,
+    REVERTED,
 }
 
 export interface ActionSchemaInterface<
