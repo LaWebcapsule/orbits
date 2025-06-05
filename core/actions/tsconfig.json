@@ -16,7 +16,7 @@
       "experimentalDecorators": true,
       "strict": false,
       "outDir": "dist",
-      "esModuleInterop": true
+      "esModuleInterop": true,
     },
     "exclude":["dist/"]
   }

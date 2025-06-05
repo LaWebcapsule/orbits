@@ -61,5 +61,4 @@ export class MyBuildPipeline extends Workflow {
 # Write your own Executor
 
 Writing your own Executor is a bit more complex than consuming an executing one.
-You can refer to the source of the DockerExecutor [here](./../src/helpers/src/executors/docker-executor/).
 The documentation on this point is pending.

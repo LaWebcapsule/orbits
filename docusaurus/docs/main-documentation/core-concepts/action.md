@@ -18,7 +18,7 @@ See the [conceptual documentation](./action-in-depth.md) for a better understand
 
 Actions allow you to track the state of external processes.
 
-The following example is fictitious — real-world examples can be found in the [examples folder](./../src/examples/).
+The following example is fictitious — real-world examples can be found in the [examples folder](./../guides/intro.md).
 
 Let’s imagine a library system: we’ll write an Action that launches a delivery order, succeeds if the delivery completes, and fails otherwise.
 

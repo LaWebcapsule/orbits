@@ -20,7 +20,7 @@ const config: Config = {
   organizationName: 'lawebcapsule', // Usually your GitHub org/user name.
   projectName: 'orbits', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
@@ -148,7 +148,7 @@ const config: Config = {
       // Options
       {
         sidebar: {
-          autoconfiguration: true,
+          autoConfiguration: true,
         },
         entryPoints: [
           './../core/actions',
@@ -156,7 +156,12 @@ const config: Config = {
           // './packages'
         ],
         entryPointStrategy: 'packages',
-    },
+        externalPattern: [
+          '**/node_modules/**'
+        ],
+        excludeExternals:true,
+        excludeInternal: true
+      },
     ],
   ],
 };

@@ -7,9 +7,6 @@
     "files": [
         "dist/**/*"
     ],
-    "typedoc": {
-        "entryPoint": "./index.ts"
-    },
     "scripts": {
         "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
         "publish-package": "pnpm run build && pnpm publish --access public",

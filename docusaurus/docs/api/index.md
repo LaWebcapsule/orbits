@@ -3,7 +3,7 @@ Keep your orbit in the cloud galaxy! A typescript framework for DevOps workflow.
 
 ## Documentation
 
-Read the documentation [here](./pages/main.md).
+Read the documentation :
 
 ## Install
 
