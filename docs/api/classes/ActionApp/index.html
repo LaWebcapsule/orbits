@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-api/classes/ActionApp" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.7.0">
+<title data-rh="true">Class: ActionApp | Orbits documentation</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://orbits.do/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://orbits.do/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://orbits.do/docs/api/classes/ActionApp"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Class: ActionApp | Orbits documentation"><meta data-rh="true" name="description" content="Defined in32"><meta data-rh="true" property="og:description" content="Defined in32"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://orbits.do/docs/api/classes/ActionApp"><link data-rh="true" rel="alternate" href="https://orbits.do/docs/api/classes/ActionApp" hreflang="en"><link data-rh="true" rel="alternate" href="https://orbits.do/docs/api/classes/ActionApp" hreflang="x-default"><link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Orbits documentation RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Orbits documentation Atom Feed"><link rel="stylesheet" href="/assets/css/styles.1724a0b2.css">
+<script src="/assets/js/runtime~main.f787fde4.js" defer="defer"></script>
+<script src="/assets/js/main.0b7a75ae.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/img/logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/img/logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Orbits</b></a><a class="navbar__item navbar__link" href="/docs/main-documentation/intro">Tutorial</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/docs/api/">API</a><a class="navbar__item navbar__link" href="/blog">Blog</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/docs/api/classes/ActionApp">Next</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/LaWebcapsule/orbits" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" href="/docs/api/">TypeDoc API</a><button aria-label="Collapse sidebar category &#x27;TypeDoc API&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/docs/api/enumerations/ActionState">Enumerations</a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" tabindex="0" href="/docs/api/classes/Action">Classes</a></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/Action">Action</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/docs/api/classes/ActionApp">ActionApp</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/ActionCron">ActionCron</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/ActionError">ActionError</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/BreakingActionState">BreakingActionState</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/CoalescingWorkflow">CoalescingWorkflow</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/Digestor">Digestor</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/Executor">Executor</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/InWorkflowActionError">InWorkflowActionError</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/RejectAction">RejectAction</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/ResolveAction">ResolveAction</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/Resource">Resource</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/ResourceController">ResourceController</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/ScopeOfChanges">ScopeOfChanges</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/Sleep">Sleep</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/TrackPromise">TrackPromise</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/api/classes/Workflow">Workflow</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/docs/api/interfaces/ActionAppConfig">Interfaces</a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/docs/api/type-aliases/StepResult">Type Aliases</a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/docs/api/variables/actionSchema">Variables</a></div></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item"><a class="breadcrumbs__link" itemprop="item" href="/docs/api/"><span itemprop="name">TypeDoc API</span></a><meta itemprop="position" content="1"></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Classes</span><meta itemprop="position" content="2"></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">ActionApp</span><meta itemprop="position" content="3"></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Class: ActionApp</h1></header>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L32" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:32</a></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="constructors">Constructors<a href="#constructors" class="hash-link" aria-label="Direct link to Constructors" title="Direct link to Constructors">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="constructor">Constructor<a href="#constructor" class="hash-link" aria-label="Direct link to Constructor" title="Direct link to Constructor">​</a></h3>
+<blockquote>
+<p><strong>new ActionApp</strong>(<code>opts?</code>): <code>ActionApp</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L81" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:81</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters">Parameters<a href="#parameters" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="opts">opts?<a href="#opts" class="hash-link" aria-label="Direct link to opts?" title="Direct link to opts?">​</a></h5>
+<p><a href="/docs/api/interfaces/ActionAppConfig"><code>ActionAppConfig</code></a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns">Returns<a href="#returns" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>ActionApp</code></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="properties">Properties<a href="#properties" class="hash-link" aria-label="Direct link to Properties" title="Direct link to Properties">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="actionfilter">actionFilter?<a href="#actionfilter" class="hash-link" aria-label="Direct link to actionFilter?" title="Direct link to actionFilter?">​</a></h3>
+<blockquote>
+<p><code>optional</code> <strong>actionFilter</strong>: <code>Object</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L66" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:66</a></p>
+<p>Used by ActionCron to
+filter actions using their <code>filter</code> field</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="actionmodel">ActionModel<a href="#actionmodel" class="hash-link" aria-label="Direct link to ActionModel" title="Direct link to ActionModel">​</a></h3>
+<blockquote>
+<p><strong>ActionModel</strong>: <code>Model</code>&lt;<a href="/docs/api/interfaces/ActionSchemaInterface"><code>ActionSchemaInterface</code></a>&lt;<code>any</code>, <code>any</code>, <code>any</code>&gt;&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L74" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:74</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bootstrappath">bootstrapPath<a href="#bootstrappath" class="hash-link" aria-label="Direct link to bootstrapPath" title="Direct link to bootstrapPath">​</a></h3>
+<blockquote>
+<p><strong>bootstrapPath</strong>: <code>string</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L79" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:79</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="db">db<a href="#db" class="hash-link" aria-label="Direct link to db" title="Direct link to db">​</a></h3>
+<blockquote>
+<p><strong>db</strong>: <a href="/docs/api/interfaces/AppDb"><code>AppDb</code></a></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L68" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:68</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="declare">declare<a href="#declare" class="hash-link" aria-label="Direct link to declare" title="Direct link to declare">​</a></h3>
+<blockquote>
+<p><strong>declare</strong>: <em>typeof</em> <a href="/docs/api/classes/Action"><code>Action</code></a>[] = <code>[]</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L58" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:58</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="importedfiles">importedFiles<a href="#importedfiles" class="hash-link" aria-label="Direct link to importedFiles" title="Direct link to importedFiles">​</a></h3>
+<blockquote>
+<p><strong>importedFiles</strong>: <code>Set</code>&lt;<code>string</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L138" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:138</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="imports">imports<a href="#imports" class="hash-link" aria-label="Direct link to imports" title="Direct link to imports">​</a></h3>
+<blockquote>
+<p><strong>imports</strong>: <em>typeof</em> <code>ActionApp</code>[] = <code>[]</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L57" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:57</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="logger">logger<a href="#logger" class="hash-link" aria-label="Direct link to logger" title="Direct link to logger">​</a></h3>
+<blockquote>
+<p><strong>logger</strong>: <code>Logger</code> = <code>defaultLogger</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L55" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:55</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="numberofworker">numberOfWorker<a href="#numberofworker" class="hash-link" aria-label="Direct link to numberOfWorker" title="Direct link to numberOfWorker">​</a></h3>
+<blockquote>
+<p><strong>numberOfWorker</strong>: <code>number</code> = <code>3</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L60" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:60</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="rejectbootstrap">rejectBootstrap<a href="#rejectbootstrap" class="hash-link" aria-label="Direct link to rejectBootstrap" title="Direct link to rejectBootstrap">​</a></h3>
+<blockquote>
+<p><strong>rejectBootstrap</strong>: <code>any</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L192" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:192</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="resolvebootstrap">resolveBootstrap<a href="#resolvebootstrap" class="hash-link" aria-label="Direct link to resolveBootstrap" title="Direct link to resolveBootstrap">​</a></h3>
+<blockquote>
+<p><strong>resolveBootstrap</strong>: <code>any</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L193" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:193</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="resourcemodel">ResourceModel<a href="#resourcemodel" class="hash-link" aria-label="Direct link to ResourceModel" title="Direct link to ResourceModel">​</a></h3>
+<blockquote>
+<p><strong>ResourceModel</strong>: <code>Model</code>&lt;<code>ResourceSchemaInterface</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L75" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:75</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="waitforbootstrap">waitForBootstrap<a href="#waitforbootstrap" class="hash-link" aria-label="Direct link to waitForBootstrap" title="Direct link to waitForBootstrap">​</a></h3>
+<blockquote>
+<p><strong>waitForBootstrap</strong>: <code>Promise</code>&lt;<code>unknown</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L194" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:194</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="activeapp">activeApp<a href="#activeapp" class="hash-link" aria-label="Direct link to activeApp" title="Direct link to activeApp">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>activeApp</strong>: <code>ActionApp</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L33" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:33</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="apps">apps<a href="#apps" class="hash-link" aria-label="Direct link to apps" title="Direct link to apps">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>apps</strong>: <code>ActionApp</code>[] = <code>[]</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L35" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:35</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bootstrappath-1">bootstrapPath<a href="#bootstrappath-1" class="hash-link" aria-label="Direct link to bootstrapPath" title="Direct link to bootstrapPath">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>bootstrapPath</strong>: <code>string</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L43" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:43</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="executedvia">executedVia<a href="#executedvia" class="hash-link" aria-label="Direct link to executedVia" title="Direct link to executedVia">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>executedVia</strong>: <code>&quot;ts&quot;</code> | <code>&quot;js&quot;</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L145" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:145</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="importappconfig">importAppConfig<a href="#importappconfig" class="hash-link" aria-label="Direct link to importAppConfig" title="Direct link to importAppConfig">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>importAppConfig</strong>: <code>any</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L53" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:53</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="rejectbootstrap-1">rejectBootstrap<a href="#rejectbootstrap-1" class="hash-link" aria-label="Direct link to rejectBootstrap" title="Direct link to rejectBootstrap">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>rejectBootstrap</strong>: <code>any</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L38" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:38</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="resolvebootstrap-1">resolveBootstrap<a href="#resolvebootstrap-1" class="hash-link" aria-label="Direct link to resolveBootstrap" title="Direct link to resolveBootstrap">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>resolveBootstrap</strong>: <code>any</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L37" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:37</a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="waitforactiveapp">waitForActiveApp<a href="#waitforactiveapp" class="hash-link" aria-label="Direct link to waitForActiveApp" title="Direct link to waitForActiveApp">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>waitForActiveApp</strong>: <code>Promise</code>&lt;<code>unknown</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L39" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:39</a></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="accessors">Accessors<a href="#accessors" class="hash-link" aria-label="Direct link to Accessors" title="Direct link to Accessors">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="boostrappath">boostrapPath<a href="#boostrappath" class="hash-link" aria-label="Direct link to boostrapPath" title="Direct link to boostrapPath">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="get-signature">Get Signature<a href="#get-signature" class="hash-link" aria-label="Direct link to Get Signature" title="Direct link to Get Signature">​</a></h4>
+<blockquote>
+<p><strong>get</strong> <code>static</code> <strong>boostrapPath</strong>(): <code>string</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L47" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:47</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="deprecated">Deprecated<a href="#deprecated" class="hash-link" aria-label="Direct link to Deprecated" title="Direct link to Deprecated">​</a></h5>
+<p>use bootstrapPath</p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="returns-1">Returns<a href="#returns-1" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h5>
+<p><code>string</code></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="methods">Methods<a href="#methods" class="hash-link" aria-label="Direct link to Methods" title="Direct link to Methods">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bootstrap">bootstrap()<a href="#bootstrap" class="hash-link" aria-label="Direct link to bootstrap()" title="Direct link to bootstrap()">​</a></h3>
+<blockquote>
+<p><strong>bootstrap</strong>(): <code>Promise</code>&lt;<code>void</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L198" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:198</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-2">Returns<a href="#returns-2" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>Promise</code>&lt;<code>void</code>&gt;</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="getactionfromregistry">getActionFromRegistry()<a href="#getactionfromregistry" class="hash-link" aria-label="Direct link to getActionFromRegistry()" title="Direct link to getActionFromRegistry()">​</a></h3>
+<blockquote>
+<p><strong>getActionFromRegistry</strong>(<code>actionRef</code>): <em>typeof</em> <a href="/docs/api/classes/Action"><code>Action</code></a></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L120" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:120</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters-1">Parameters<a href="#parameters-1" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="actionref">actionRef<a href="#actionref" class="hash-link" aria-label="Direct link to actionRef" title="Direct link to actionRef">​</a></h5>
+<p><code>string</code></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-3">Returns<a href="#returns-3" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><em>typeof</em> <a href="/docs/api/classes/Action"><code>Action</code></a></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="getactionreffromregistry">getActionRefFromRegistry()<a href="#getactionreffromregistry" class="hash-link" aria-label="Direct link to getActionRefFromRegistry()" title="Direct link to getActionRefFromRegistry()">​</a></h3>
+<blockquote>
+<p><strong>getActionRefFromRegistry</strong>(<code>action</code>): <code>string</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L124" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:124</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters-2">Parameters<a href="#parameters-2" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="action">action<a href="#action" class="hash-link" aria-label="Direct link to action" title="Direct link to action">​</a></h5>
+<p><em>typeof</em> <a href="/docs/api/classes/Action"><code>Action</code></a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-4">Returns<a href="#returns-4" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>string</code></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="recursiveimport">recursiveImport()<a href="#recursiveimport" class="hash-link" aria-label="Direct link to recursiveImport()" title="Direct link to recursiveImport()">​</a></h3>
+<blockquote>
+<p><strong>recursiveImport</strong>(<code>pathFile</code>): <code>Promise</code>&lt;<code>void</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L148" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:148</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters-3">Parameters<a href="#parameters-3" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="pathfile">pathFile<a href="#pathfile" class="hash-link" aria-label="Direct link to pathFile" title="Direct link to pathFile">​</a></h5>
+<p><code>string</code></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-5">Returns<a href="#returns-5" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>Promise</code>&lt;<code>void</code>&gt;</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="scanmoduleimport">scanModuleImport()<a href="#scanmoduleimport" class="hash-link" aria-label="Direct link to scanModuleImport()" title="Direct link to scanModuleImport()">​</a></h3>
+<blockquote>
+<p><strong>scanModuleImport</strong>(<code>moduleImport</code>): <code>Promise</code>&lt;<code>void</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L128" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:128</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters-4">Parameters<a href="#parameters-4" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="moduleimport">moduleImport<a href="#moduleimport" class="hash-link" aria-label="Direct link to moduleImport" title="Direct link to moduleImport">​</a></h5>
+<p><code>any</code></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-6">Returns<a href="#returns-6" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>Promise</code>&lt;<code>void</code>&gt;</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bootstrap-1">bootstrap()<a href="#bootstrap-1" class="hash-link" aria-label="Direct link to bootstrap()" title="Direct link to bootstrap()">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>bootstrap</strong>(<code>config</code>): <code>void</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L224" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:224</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters-5">Parameters<a href="#parameters-5" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="config">config<a href="#config" class="hash-link" aria-label="Direct link to config" title="Direct link to config">​</a></h5>
+<p><a href="/docs/api/interfaces/ActionAppConfig"><code>ActionAppConfig</code></a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-7">Returns<a href="#returns-7" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>void</code></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="getactiveapp">getActiveApp()<a href="#getactiveapp" class="hash-link" aria-label="Direct link to getActiveApp()" title="Direct link to getActiveApp()">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>getActiveApp</strong>(<code>opts</code>): <code>Promise</code>&lt;<code>ActionApp</code>&gt;</p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L228" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:228</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="parameters-6">Parameters<a href="#parameters-6" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="opts-1">opts<a href="#opts-1" class="hash-link" aria-label="Direct link to opts" title="Direct link to opts">​</a></h5>
+<h6 class="anchor anchorWithStickyNavbar_LWe7" id="timeout">timeout<a href="#timeout" class="hash-link" aria-label="Direct link to timeout" title="Direct link to timeout">​</a></h6>
+<p><code>number</code> = <code>...</code></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-8">Returns<a href="#returns-8" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>Promise</code>&lt;<code>ActionApp</code>&gt;</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="setexecutedvia">setExecutedVia()<a href="#setexecutedvia" class="hash-link" aria-label="Direct link to setExecutedVia()" title="Direct link to setExecutedVia()">​</a></h3>
+<blockquote>
+<p><code>static</code> <strong>setExecutedVia</strong>(): <code>&quot;ts&quot;</code> | <code>&quot;js&quot;</code></p>
+</blockquote>
+<p>Defined in: <a href="https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/app/action-app.ts#L139" target="_blank" rel="noopener noreferrer">core/actions/src/app/action-app.ts:139</a></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="returns-9">Returns<a href="#returns-9" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
+<p><code>&quot;ts&quot;</code> | <code>&quot;js&quot;</code></p></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/docs/api/classes/Action"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Action</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/docs/api/classes/ActionCron"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">ActionCron</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#constructors" class="table-of-contents__link toc-highlight">Constructors</a><ul><li><a href="#constructor" class="table-of-contents__link toc-highlight">Constructor</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#actionfilter" class="table-of-contents__link toc-highlight">actionFilter?</a></li><li><a href="#actionmodel" class="table-of-contents__link toc-highlight">ActionModel</a></li><li><a href="#bootstrappath" class="table-of-contents__link toc-highlight">bootstrapPath</a></li><li><a href="#db" class="table-of-contents__link toc-highlight">db</a></li><li><a href="#declare" class="table-of-contents__link toc-highlight">declare</a></li><li><a href="#importedfiles" class="table-of-contents__link toc-highlight">importedFiles</a></li><li><a href="#imports" class="table-of-contents__link toc-highlight">imports</a></li><li><a href="#logger" class="table-of-contents__link toc-highlight">logger</a></li><li><a href="#numberofworker" class="table-of-contents__link toc-highlight">numberOfWorker</a></li><li><a href="#rejectbootstrap" class="table-of-contents__link toc-highlight">rejectBootstrap</a></li><li><a href="#resolvebootstrap" class="table-of-contents__link toc-highlight">resolveBootstrap</a></li><li><a href="#resourcemodel" class="table-of-contents__link toc-highlight">ResourceModel</a></li><li><a href="#waitforbootstrap" class="table-of-contents__link toc-highlight">waitForBootstrap</a></li><li><a href="#activeapp" class="table-of-contents__link toc-highlight">activeApp</a></li><li><a href="#apps" class="table-of-contents__link toc-highlight">apps</a></li><li><a href="#bootstrappath-1" class="table-of-contents__link toc-highlight">bootstrapPath</a></li><li><a href="#executedvia" class="table-of-contents__link toc-highlight">executedVia</a></li><li><a href="#importappconfig" class="table-of-contents__link toc-highlight">importAppConfig</a></li><li><a href="#rejectbootstrap-1" class="table-of-contents__link toc-highlight">rejectBootstrap</a></li><li><a href="#resolvebootstrap-1" class="table-of-contents__link toc-highlight">resolveBootstrap</a></li><li><a href="#waitforactiveapp" class="table-of-contents__link toc-highlight">waitForActiveApp</a></li></ul></li><li><a href="#accessors" class="table-of-contents__link toc-highlight">Accessors</a><ul><li><a href="#boostrappath" class="table-of-contents__link toc-highlight">boostrapPath</a></li></ul></li><li><a href="#methods" class="table-of-contents__link toc-highlight">Methods</a><ul><li><a href="#bootstrap" class="table-of-contents__link toc-highlight">bootstrap()</a></li><li><a href="#getactionfromregistry" class="table-of-contents__link toc-highlight">getActionFromRegistry()</a></li><li><a href="#getactionreffromregistry" class="table-of-contents__link toc-highlight">getActionRefFromRegistry()</a></li><li><a href="#recursiveimport" class="table-of-contents__link toc-highlight">recursiveImport()</a></li><li><a href="#scanmoduleimport" class="table-of-contents__link toc-highlight">scanModuleImport()</a></li><li><a href="#bootstrap-1" class="table-of-contents__link toc-highlight">bootstrap()</a></li><li><a href="#getactiveapp" class="table-of-contents__link toc-highlight">getActiveApp()</a></li><li><a href="#setexecutedvia" class="table-of-contents__link toc-highlight">setExecutedVia()</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/docs/intro">Tutorial</a></li></ul></div><div class="col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></div><div class="col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
