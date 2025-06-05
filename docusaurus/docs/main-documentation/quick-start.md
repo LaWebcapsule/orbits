@@ -2,10 +2,11 @@
 sidebar_position: 2
 title: Quickstart
 ---
+
 # Hello world
 This is a basic guide to get your first resource working.
 
-# Install
+## Install
 
 Install `@wbce/orbits-core` and `@wbce/orbits-fuel`.
 ```bash
@@ -17,20 +18,15 @@ Install it with yarn:
 yarn add @wbce/orbits-core @wbce/orbits-fuel
 ```
 
-# Write you first action
+## Write your first action
+
+An [`Action`](./core-concepts/action.md) is an object that encapsulate a mutating process.
+
 
 ```typescript title='src/orbits/my-action.ts'
 import {Action} from "@wbce/orbits-core"
 
 export class MyAction extends Action{
-
-    IArgument: {
-
-    }
-
-    IResult: {
-
-    }
 
     main(){
         console.log("hello");
@@ -40,9 +36,17 @@ export class MyAction extends Action{
 }
 ```
 
-# Import your action in your code
+### Consume your action
 
-## Configure persistent storage
+#### Use the action anywhere you want in your app
+
+```typescript title='src/anywhere-in-your-app.ts'
+  const action = new MyAction();
+  await action.save();//the action will be executed in the background.
+  await Action.trackActionAsPromise(action, [ActionState.SUCCESS, ActionState.ERROR]);//this line is optional.
+```
+
+#### Configure persistent storage
 
 You will need a mongodb connection to store the state of your action.
 Once you have a valid mongodb url, please create an `ActionApp` with the mongodb connection string.
@@ -64,10 +68,7 @@ new ActionApp({
     }
 })
 ```
-
-## Consume the action in your app
-
-### Hook : ensure your app is set
+#### Hook : ensure your app is set
 
 ```typescript  title='src/index.ts'
 import {ActionApp} from "@wbce/orbits-core"
@@ -77,19 +78,10 @@ import "./orbits/action-app.ts"
     await ActionApp.waitForActiveApp;
 ```
 
-### Use the action anywhere you want in your app
-
-```typescript title='src/consume-action.ts'
-  const action = new MyAction();
-  await action.save();//the action will be executed in the background.
-  await Action.trackActionAsPromise(action, [ActionState.SUCCESS, ActionState.ERROR]);//this line is optional.
-```
-
-
-## What if you want to chain actions ?
+## Workflow: a chain of actions
 
 You will quickly want to exploit the result of your action and not just launch a process in background.
-To do this, you need to write a workflow.
+To do this, you need to write a [`Workflow`](./core-concepts/workflow.md).
 
 ```typescript title='src/orbits/my-workflow.ts'
 import {Workflow} from "@wbce/orbits-core"
@@ -116,18 +108,18 @@ Of course, you don't need this to display hello name, but this is for the exampl
 Here, using `this.do` we ensure that, for each execution of `MyWorkflow`, the "hello" step is run once and only once.
 This allows to apply the SEGA principle.
 
-## Consume the workflow
+### Consume your workflow
 
 A workflow is an action, so you consume it like an action
-```typescript title='src/consume-workflow.ts'
-  const workflow = new MyWorkflow();
+```typescript title='src/anywhere-in-your-app.ts'
+  const workflow = new MyWorkflow().setArgument({name : "John Doe"});
   await workflow.save();//the action will be executed in the background.
   await Action.trackActionAsPromise(workflow, [ActionState.SUCCESS, ActionState.ERROR]);//this line is optional.
 ```
 
-## What if you want to do the greeting only once ?
+## Resources : a complete lifecycle
 
-Greetings occurs only once in a day but if I do : 
+Greetings occurs only once in a day but if you do : 
 
 ```typescript title='src/consume-workflow.ts'
     const workflow1 = new MyWorkflow().setArgument({name : "John Doe"});
@@ -137,8 +129,8 @@ Greetings occurs only once in a day but if I do :
     await workflow1.save();
 ```
 
-the workflow will run twice. How do I do to have it run once ?
-This is managed by the concept of "Resource".
+the workflow will run twice. How do you do to have it run once ?
+This is managed by the concept of [`Resource`](./core-concepts/resource.md).
 
 ```typescript title='src/orbits/my-resource.ts'
     export class MyGreetings extends Resource{
@@ -152,6 +144,7 @@ This is managed by the concept of "Resource".
         }
 
         defineInstall(){
+            //say hello
             await this.do("hello", new MyWorkflow().setArgument({
                 name: this.argument.name
             }))
@@ -173,10 +166,10 @@ This is managed by the concept of "Resource".
     }
 ```
 
-## Consume your resources
+### Consume your resources
 
 A resource is an action, so you consume it like an action
-```typescript title='src/consume-resource.ts'
+```typescript title='src/anywhere-in-your-app.ts'
   const resource = new MyGreetings().setArgument({
     name: "John Doe",
     date: "01-01-01"
@@ -198,5 +191,3 @@ A resource is an action, so you consume it like an action
   await resource2.save();//the action will be executed ; "goodbye" will appear in the console
   await Action.trackActionAsPromise(resource2, [ActionState.SUCCESS, ActionState.ERROR]);
 ```
-
-# Next steps

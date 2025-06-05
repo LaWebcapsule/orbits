@@ -7,7 +7,7 @@ sidebar_position: 2
 A Workflow is a way to chain Actions. The syntax is similar to how async/await syntax works.
 A Workflow is also a specific type of `Action`, so you can chain Workflows in other Workflows.
 
-# Write a Workflow
+## Write a Workflow
 
 A Workflow, same as an `Action`, has an `init()` method.
 A Workflow also has a `define()` method where you can write your flow of Actions.
@@ -37,9 +37,9 @@ export class MyWorkflow extends Workflow{
 }
 ```
 
-## The do method
+### The do method
 
-### Purpose
+#### Purpose
 
 The `do()` method is used to declare an action to be executed within the workflow. It mimics the behavior of await in native JavaScript/TypeScript syntax to provide readable, sequential flow control.
 
@@ -49,8 +49,9 @@ However, `do()` is more complex than a normal asynchronous call. Behind the scen
 - Each call to `do()` is idempotent: the action is only executed once.
 - On re-execution, previously completed `do()` calls return the stored result instead of re-running the action.
 
-### Point of attention : deterministic execution and async/await
+#### Point of attention : deterministic execution and async/await
 
+:::warning
 ```ts
 export class BadWorkflow extends Workflow {
   define() {
@@ -66,7 +67,10 @@ export class BadWorkflow extends Workflow {
   }
 }
 ```
+:::
 
+
+:::success
 ```ts
 export class CorrectWorkflow extends Workflow {
   define() {
@@ -84,7 +88,10 @@ export class CorrectWorkflow extends Workflow {
   }
 }
 ```
+:::
 
+
+:::warning
 ```ts
 export class BadWorkflow extends Workflow {
   define() {
@@ -100,7 +107,9 @@ export class BadWorkflow extends Workflow {
   }
 }
 ```
+:::
 
+:::success
 ```ts
 export class CorrectWorkflow extends Workflow {
 
@@ -128,31 +137,11 @@ export class CorrectWorkflow extends Workflow {
   }
 }
 ```
-
-The `do` methods is what allows expect a callback returning either: an Action, an array of Actions, a promise returning an Action or a promise returning an array of Actions.
-
-These methods reproduce the Promise behaviors.
-As a consequence, the argument of the callback is the result of the previous Action.
-
-```typescript
-export class MyWorkflow extends Workflow {
-    define() {
-        this.next(() => Action.resolve({ x: 1 }))
-            .next((result) => {
-                //result is {x:1}
-                return [Action.resolve({ x: 1 }), Action.resolve({ x: 2 })];
-            })
-            .next((result1, result2) => {
-                //result1 is {x:1}
-                //result2 is {x:2}
-            });
-    }
-}
-```
+:::
 
 ### Action Step definition
 
-### On the fly promise Step definition
+### On the fly promise definition
 
 ### Dynamic definition
 

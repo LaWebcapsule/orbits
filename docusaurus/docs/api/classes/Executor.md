@@ -1,6 +1,6 @@
 # Class: Executor
 
-Defined in: [core/actions/src/action-executor.ts:4](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-executor.ts#L4)
+Defined in: [core/actions/src/action-executor.ts:4](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-executor.ts#L4)
 
 ## Constructors
 
@@ -18,7 +18,7 @@ Defined in: [core/actions/src/action-executor.ts:4](https://github.com/LaWebcaps
 
 > `optional` **scope**: [`ActionState`](../enumerations/ActionState.md)[]
 
-Defined in: [core/actions/src/action-executor.ts:8](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-executor.ts#L8)
+Defined in: [core/actions/src/action-executor.ts:8](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-executor.ts#L8)
 
 #### Default
 
@@ -32,7 +32,7 @@ undefined all ActionStates
 
 > **createInstallAction**(): [`Action`](Action.md) \| `Promise`\<[`Action`](Action.md)\>
 
-Defined in: [core/actions/src/action-executor.ts:10](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-executor.ts#L10)
+Defined in: [core/actions/src/action-executor.ts:10](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-executor.ts#L10)
 
 #### Returns
 
@@ -44,7 +44,7 @@ Defined in: [core/actions/src/action-executor.ts:10](https://github.com/LaWebcap
 
 > **createUninstallAction**(): [`Action`](Action.md) \| `Promise`\<[`Action`](Action.md)\>
 
-Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-executor.ts#L14)
+Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-executor.ts#L14)
 
 #### Returns
 
@@ -56,7 +56,7 @@ Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcap
 
 > **resume**(`action`): `any`
 
-Defined in: [core/actions/src/action-executor.ts:18](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-executor.ts#L18)
+Defined in: [core/actions/src/action-executor.ts:18](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-executor.ts#L18)
 
 #### Parameters
 

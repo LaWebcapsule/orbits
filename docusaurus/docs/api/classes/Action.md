@@ -1,6 +1,6 @@
 # Class: Action
 
-Defined in: [core/actions/src/action-manager.ts:17](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L17)
+Defined in: [core/actions/src/action-manager.ts:17](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L17)
 
 Structure actions.
 
@@ -20,7 +20,7 @@ Extends this class to build new actions behaviors.
 
 > **new Action**(): `Action`
 
-Defined in: [core/actions/src/action-manager.ts:164](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L164)
+Defined in: [core/actions/src/action-manager.ts:164](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L164)
 
 #### Returns
 
@@ -32,7 +32,7 @@ Defined in: [core/actions/src/action-manager.ts:164](https://github.com/LaWebcap
 
 > **app**: [`ActionApp`](ActionApp.md) = `ActionApp.activeApp`
 
-Defined in: [core/actions/src/action-manager.ts:29](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L29)
+Defined in: [core/actions/src/action-manager.ts:29](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L29)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/actions/src/action-manager.ts:29](https://github.com/LaWebcaps
 
 > **dbDoc**: [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`JSONObject`, `JSONObject`, `Error` \| `JSONObject`\>
 
-Defined in: [core/actions/src/action-manager.ts:101](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L101)
+Defined in: [core/actions/src/action-manager.ts:101](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L101)
 
 Action Database Document
 
@@ -50,7 +50,7 @@ Action Database Document
 
 > `optional` **executor**: [`Executor`](Executor.md)
 
-Defined in: [core/actions/src/action-manager.ts:27](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L27)
+Defined in: [core/actions/src/action-manager.ts:27](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L27)
 
 Specify an executor in which all actions of this class will run.
 
@@ -60,7 +60,7 @@ Specify an executor in which all actions of this class will run.
 
 > **IArgument**: `JSONObject`
 
-Defined in: [core/actions/src/action-manager.ts:86](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L86)
+Defined in: [core/actions/src/action-manager.ts:86](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L86)
 
 Action argument
 
@@ -70,7 +70,7 @@ Action argument
 
 > **IBag**: `JSONObject`
 
-Defined in: [core/actions/src/action-manager.ts:91](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L91)
+Defined in: [core/actions/src/action-manager.ts:91](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L91)
 
 Action bag
 
@@ -80,7 +80,7 @@ Action bag
 
 > **IResult**: `Error` \| `JSONObject`
 
-Defined in: [core/actions/src/action-manager.ts:96](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L96)
+Defined in: [core/actions/src/action-manager.ts:96](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L96)
 
 Action result
 
@@ -90,7 +90,7 @@ Action result
 
 > **isExecutorSet**: `boolean` = `false`
 
-Defined in: [core/actions/src/action-manager.ts:492](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L492)
+Defined in: [core/actions/src/action-manager.ts:492](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L492)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [core/actions/src/action-manager.ts:492](https://github.com/LaWebcap
 
 > **isInitialised**: `boolean` = `false`
 
-Defined in: [core/actions/src/action-manager.ts:464](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L464)
+Defined in: [core/actions/src/action-manager.ts:464](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L464)
 
 #### Deprecated
 
@@ -110,7 +110,7 @@ use isInitialized
 
 > **isInitialized**: `boolean` = `false`
 
-Defined in: [core/actions/src/action-manager.ts:465](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L465)
+Defined in: [core/actions/src/action-manager.ts:465](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L465)
 
 ***
 
@@ -118,7 +118,7 @@ Defined in: [core/actions/src/action-manager.ts:465](https://github.com/LaWebcap
 
 > `static` **cronDefaultSettings**: `object`
 
-Defined in: [core/actions/src/action-manager.ts:69](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L69)
+Defined in: [core/actions/src/action-manager.ts:69](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L69)
 
 Configure the frequency at which a cron will launch [Action.resume](#resume).
 It is also possible to dynamically modify the dbDoc.cronActivity property to modify the call to a cron.
@@ -144,7 +144,7 @@ TODO: set this as required after activityFrequence removal
 
 > `static` **defaultDelay**: `number`
 
-Defined in: [core/actions/src/action-manager.ts:36](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L36)
+Defined in: [core/actions/src/action-manager.ts:36](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L36)
 
 Shortcut to [\[ActionState.IN\_PROGRESS\]](#defaultdelays).
 
@@ -156,7 +156,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 > `static` **defaultDelays**: `object`
 
-Defined in: [core/actions/src/action-manager.ts:57](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L57)
+Defined in: [core/actions/src/action-manager.ts:57](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L57)
 
 For the states `ActionState.EXECUTING_MAIN` and `ActionState.IN_PROGRESS`,
 this object configures the time after which, if no change happened, an action is considered in error.
@@ -191,7 +191,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 > `static` **permanentRef**: `string` \| `string`[]
 
-Defined in: [core/actions/src/action-manager.ts:22](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L22)
+Defined in: [core/actions/src/action-manager.ts:22](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L22)
 
 Id of the action stored in database.
 It should be a permanent id that designates the action instance.
@@ -204,7 +204,7 @@ It should be a permanent id that designates the action instance.
 
 > **get** **\_id**(): `this`\[`"dbDoc"`\]\[`"_id"`\]
 
-Defined in: [core/actions/src/action-manager.ts:152](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L152)
+Defined in: [core/actions/src/action-manager.ts:152](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L152)
 
 ##### Returns
 
@@ -218,7 +218,7 @@ Defined in: [core/actions/src/action-manager.ts:152](https://github.com/LaWebcap
 
 > **get** **argument**(): `this`\[`"dbDoc"`\]\[`"argument"`\]
 
-Defined in: [core/actions/src/action-manager.ts:116](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L116)
+Defined in: [core/actions/src/action-manager.ts:116](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L116)
 
 ##### Returns
 
@@ -228,7 +228,7 @@ Defined in: [core/actions/src/action-manager.ts:116](https://github.com/LaWebcap
 
 > **set** **argument**(`argument`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:120](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L120)
+Defined in: [core/actions/src/action-manager.ts:120](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L120)
 
 ##### Parameters
 
@@ -248,7 +248,7 @@ Defined in: [core/actions/src/action-manager.ts:120](https://github.com/LaWebcap
 
 > **get** **bag**(): `this`\[`"dbDoc"`\]\[`"bag"`\]
 
-Defined in: [core/actions/src/action-manager.ts:107](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L107)
+Defined in: [core/actions/src/action-manager.ts:107](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L107)
 
 ##### Returns
 
@@ -258,7 +258,7 @@ Defined in: [core/actions/src/action-manager.ts:107](https://github.com/LaWebcap
 
 > **set** **bag**(`bag`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:111](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L111)
+Defined in: [core/actions/src/action-manager.ts:111](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L111)
 
 ##### Parameters
 
@@ -278,7 +278,7 @@ Defined in: [core/actions/src/action-manager.ts:111](https://github.com/LaWebcap
 
 > **get** **cronActivity**(): `this`\[`"dbDoc"`\]\[`"cronActivity"`\]
 
-Defined in: [core/actions/src/action-manager.ts:143](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L143)
+Defined in: [core/actions/src/action-manager.ts:143](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L143)
 
 ##### Returns
 
@@ -288,7 +288,7 @@ Defined in: [core/actions/src/action-manager.ts:143](https://github.com/LaWebcap
 
 > **set** **cronActivity**(`cronActivity`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:147](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L147)
+Defined in: [core/actions/src/action-manager.ts:147](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L147)
 
 ##### Parameters
 
@@ -308,7 +308,7 @@ Defined in: [core/actions/src/action-manager.ts:147](https://github.com/LaWebcap
 
 > **get** **repeat**(): `this`\[`"dbDoc"`\]\[`"repeat"`\]
 
-Defined in: [core/actions/src/action-manager.ts:134](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L134)
+Defined in: [core/actions/src/action-manager.ts:134](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L134)
 
 ##### Returns
 
@@ -318,7 +318,7 @@ Defined in: [core/actions/src/action-manager.ts:134](https://github.com/LaWebcap
 
 > **set** **repeat**(`repeat`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:138](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L138)
+Defined in: [core/actions/src/action-manager.ts:138](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L138)
 
 ##### Parameters
 
@@ -338,7 +338,7 @@ Defined in: [core/actions/src/action-manager.ts:138](https://github.com/LaWebcap
 
 > **get** **result**(): `this`\[`"dbDoc"`\]\[`"result"`\]
 
-Defined in: [core/actions/src/action-manager.ts:125](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L125)
+Defined in: [core/actions/src/action-manager.ts:125](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L125)
 
 ##### Returns
 
@@ -348,7 +348,7 @@ Defined in: [core/actions/src/action-manager.ts:125](https://github.com/LaWebcap
 
 > **set** **result**(`result`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:129](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L129)
+Defined in: [core/actions/src/action-manager.ts:129](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L129)
 
 ##### Parameters
 
@@ -366,7 +366,7 @@ Defined in: [core/actions/src/action-manager.ts:129](https://github.com/LaWebcap
 
 > **\_resume**(): `any`
 
-Defined in: [core/actions/src/action-manager.ts:627](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L627)
+Defined in: [core/actions/src/action-manager.ts:627](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L627)
 
 The function resumes the action by calling the appropriate function depending on the current
 state of the action. It doesn't take into account the executor.
@@ -383,7 +383,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 > **activityLogs**(`options`): `any`[] \| `Promise`\<`any`[]\>
 
-Defined in: [core/actions/src/action-manager.ts:779](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L779)
+Defined in: [core/actions/src/action-manager.ts:779](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L779)
 
 #### Parameters
 
@@ -401,7 +401,7 @@ Defined in: [core/actions/src/action-manager.ts:779](https://github.com/LaWebcap
 
 > **clone**(): `any`
 
-Defined in: [core/actions/src/action-manager.ts:902](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L902)
+Defined in: [core/actions/src/action-manager.ts:902](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L902)
 
 Clone the action.
 
@@ -417,7 +417,7 @@ a new action with the same argument
 
 > **dynamicallyDefineFromWorkflowStep**(`workflow`, `marker`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:301](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L301)
+Defined in: [core/actions/src/action-manager.ts:301](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L301)
 
 #### Parameters
 
@@ -439,7 +439,7 @@ Defined in: [core/actions/src/action-manager.ts:301](https://github.com/LaWebcap
 
 > **dynamiclyDefineFromWorfklowStep**(`workflow`, `marker`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:297](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L297)
+Defined in: [core/actions/src/action-manager.ts:297](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L297)
 
 #### Parameters
 
@@ -465,7 +465,7 @@ use dynamicallyDefineFromWorkflowStep
 
 > **getLogs**(`options`): `Promise`\<`any`[]\>
 
-Defined in: [core/actions/src/action-manager.ts:783](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L783)
+Defined in: [core/actions/src/action-manager.ts:783](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L783)
 
 #### Parameters
 
@@ -485,7 +485,7 @@ Defined in: [core/actions/src/action-manager.ts:783](https://github.com/LaWebcap
 
 > **init**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-manager.ts:387](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L387)
+Defined in: [core/actions/src/action-manager.ts:387](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L387)
 
 Initialize the action from the action stored in the database.
 
@@ -506,7 +506,7 @@ If your action use complex object, they can be initialized here.
 
 > **initialisation**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-manager.ts:470](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L470)
+Defined in: [core/actions/src/action-manager.ts:470](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L470)
 
 #### Returns
 
@@ -522,7 +522,7 @@ use initialization
 
 > **initialization**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-manager.ts:479](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L479)
+Defined in: [core/actions/src/action-manager.ts:479](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L479)
 
 Mainly used for workflows.
 Can also complement init().
@@ -538,7 +538,7 @@ If it gets too complex, use hooks.
 
 > **internalLog**(`message`, `opts`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:844](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L844)
+Defined in: [core/actions/src/action-manager.ts:844](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L844)
 
 Log a message in the internal logger.
 
@@ -580,7 +580,7 @@ the final log message will be:
 
 > **internalLogError**(`err`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:878](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L878)
+Defined in: [core/actions/src/action-manager.ts:878](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L878)
 
 Log an error in the internal logger.
 
@@ -612,7 +612,7 @@ the final log message will be:
 
 > **main**(): [`ActionState`](../enumerations/ActionState.md) \| `Promise`\<[`ActionState`](../enumerations/ActionState.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:587](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L587)
+Defined in: [core/actions/src/action-manager.ts:587](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L587)
 
 This method should launched the main action process
 It is called only one time.
@@ -628,7 +628,7 @@ It returns a state value.
 
 > **onMainTimeout**(): [`ActionState`](../enumerations/ActionState.md) \| `Promise`\<[`ActionState`](../enumerations/ActionState.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:694](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L694)
+Defined in: [core/actions/src/action-manager.ts:694](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L694)
 
 Called in case of timeout in `ActionState.EXECUTING_MAIN` state.
 
@@ -647,7 +647,7 @@ a `ActionState` value.
 
 > **resume**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-manager.ts:596](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L596)
+Defined in: [core/actions/src/action-manager.ts:596](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L596)
 
 The function resumes the action by calling the appropriate executor if needed and then by calling the appropriate function depending on the current
 state of the action
@@ -664,7 +664,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 > **resyncWithDb**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-manager.ts:316](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L316)
+Defined in: [core/actions/src/action-manager.ts:316](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L316)
 
 Update the current model instance with latest data from database
 
@@ -680,7 +680,7 @@ a promise that resolves when the document has been loaded
 
 > **save**(): `Promise`\<[`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`JSONObject`, `JSONObject`, `Error` \| `JSONObject`\>\>
 
-Defined in: [core/actions/src/action-manager.ts:160](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L160)
+Defined in: [core/actions/src/action-manager.ts:160](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L160)
 
 Save an action in the database. Will then be managed by the worker.
 
@@ -696,7 +696,7 @@ a promise that resolves when the action has been saved
 
 > **setArgument**(`args`): `Action`
 
-Defined in: [core/actions/src/action-manager.ts:396](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L396)
+Defined in: [core/actions/src/action-manager.ts:396](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L396)
 
 Set the `argument` that will be stored in the database.
 Once set, the argument of an action should not be modified.
@@ -719,7 +719,7 @@ The argument to set.
 
 > **setExecutor**(): `void` \| [`Executor`](Executor.md) \| `Promise`\<`void` \| [`Executor`](Executor.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:511](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L511)
+Defined in: [core/actions/src/action-manager.ts:511](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L511)
 
 Set the executor for this action.
 It is called only once when the action is created.
@@ -737,7 +737,7 @@ a promise that resolves when you have set the executor is set
 
 > **setFilter**(`filter`): `Action`
 
-Defined in: [core/actions/src/action-manager.ts:428](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L428)
+Defined in: [core/actions/src/action-manager.ts:428](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L428)
 
 Make filtering actions easier with the `filter` property.
 These filters are stored in database with
@@ -760,7 +760,7 @@ an action or a group of actions
 
 > **setRepeat**(`opts`): `Action`
 
-Defined in: [core/actions/src/action-manager.ts:412](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L412)
+Defined in: [core/actions/src/action-manager.ts:412](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L412)
 
 Configure the number of times an action is repeated.
 
@@ -786,7 +786,7 @@ Configure the number of times an action is repeated.
 
 > **setResult**(...`results`): `Action`
 
-Defined in: [core/actions/src/action-manager.ts:438](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L438)
+Defined in: [core/actions/src/action-manager.ts:438](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L438)
 
 Set the action result.
 
@@ -806,7 +806,7 @@ Set the action result.
 
 > **watcher**(): `Promise`\<[`ActionState`](../enumerations/ActionState.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:457](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L457)
+Defined in: [core/actions/src/action-manager.ts:457](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L457)
 
 Watch the action state.
 
@@ -826,7 +826,7 @@ promise
 
 > `static` **\_constructFromDb**(`actionDb`): `Action`
 
-Defined in: [core/actions/src/action-manager.ts:231](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L231)
+Defined in: [core/actions/src/action-manager.ts:231](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L231)
 
 Construct an action from a document stored in the database.
 
@@ -850,7 +850,7 @@ an action for which dbDoc property is equal to actionDb
 
 > `static` **\_constructFromWorkflow**(`dbDoc`): `Promise`\<`Action`\>
 
-Defined in: [core/actions/src/action-manager.ts:256](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L256)
+Defined in: [core/actions/src/action-manager.ts:256](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L256)
 
 Construct an action from a document stored in the database and whose definition depends on a workflow.
 
@@ -872,7 +872,7 @@ an action for which dbDoc property is equal to actionDb
 
 > `static` **constructFromDb**(`actionDb`): `Promise`\<`Action`\>
 
-Defined in: [core/actions/src/action-manager.ts:284](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L284)
+Defined in: [core/actions/src/action-manager.ts:284](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L284)
 
 Construct an action from a document stored in the database.
 
@@ -896,7 +896,7 @@ an action for which dbDoc property is equal to actionDb
 
 > `static` **reject**(`result?`): [`RejectAction`](RejectAction.md)
 
-Defined in: [core/actions/src/action-manager.ts:344](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L344)
+Defined in: [core/actions/src/action-manager.ts:344](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L344)
 
 Return a new [RejectAction](RejectAction.md) object.
 
@@ -920,7 +920,7 @@ new `RejectAction`instance
 
 > `static` **resolve**(`result?`): [`ResolveAction`](ResolveAction.md)
 
-Defined in: [core/actions/src/action-manager.ts:333](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L333)
+Defined in: [core/actions/src/action-manager.ts:333](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L333)
 
 Return a new [ResolveAction](ResolveAction.md) object.
 
@@ -944,7 +944,7 @@ new `ResolveAction`instance
 
 > `static` **trackActionAsPromise**(`action`, `states`): `Promise`\<`unknown`\>
 
-Defined in: [core/actions/src/action-manager.ts:914](https://github.com/LaWebcapsule/orbits/blob/91e23ed9e774f700a33dffa669d7826eb3819015/core/actions/src/action-manager.ts#L914)
+Defined in: [core/actions/src/action-manager.ts:914](https://github.com/LaWebcapsule/orbits/blob/3f123982aa47abe6d32fbbb9044905e24288f2ef/core/actions/src/action-manager.ts#L914)
 
 Track an action until it reaches one of the given states.
 

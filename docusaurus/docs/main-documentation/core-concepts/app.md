@@ -6,7 +6,7 @@ sidebar_position: 4
 
 Application manages connection to your database and serves as the central bootstrap point for your Orbits application.
 
-# Bootstrapping an Application
+## Bootstrapping an Application
 
 To initialize your application, create a new `ActionApp` instance with your database configuration:
 
@@ -22,7 +22,7 @@ new ActionApp({
 
 The `ActionApp` constructor requires a database configuration object. Currently, MongoDB is supported through the `mongo` property, which accepts a connection URL.
 
-## Waiting for Bootstrap Completion
+### Waiting for Bootstrap Completion
 
 After instantiating the application, wait for the bootstrapping process to complete before creating Actions or Resources:
 To wait for the end of the bootstrapping process, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
@@ -35,7 +35,7 @@ ActionApp.waitForActiveApp.then(() => {
 ```
 
 
-::warning
+:::warning
 
 Be cautious when creating Actions directly after bootstrap. If multiple processes run this script simultaneously or if the same script is run multiple times, duplicate Actions will be created. This is typically not the desired behavior.Instead, use Resources, which properly manage their lifecycle hooks:
 
@@ -51,9 +51,9 @@ In general:
 - you will set a new Action via an external api call
 - you can programmatically set a new Resource after the app has been bootstrapped
 
-::
+:::
 
-## Recommended Project Structure
+### Recommended Project Structure
 
 You can bootstrap the application anywhere you want in your codebase.
 However, we recomend using this pattern : 
@@ -72,7 +72,7 @@ my-project/
 └── package.json
 ```
 
-### Bootstrap file (`orbi.ts`)
+#### Bootstrap file (`orbi.ts`)
 
 Create an `orbi.ts` file in your orbits directory to contain the application initialization:
 
@@ -86,7 +86,7 @@ new ActionApp({
 })
 ```
 
-### Main entrypoint (`index.ts`)
+#### Main entrypoint (`index.ts`)
 
 Import the bootstrap file in your main entry point and wait for the application to be ready:
 
@@ -105,13 +105,13 @@ main().catch(console.error)
 
 ```
 
-## Ensuring Action Discoverability
+### Ensuring Action Discoverability
 
 For complex applications (e.g. using executors), ensure your Actions are discoverable by the application through proper import chains.
 You have two choice.
 
 
-### Method 1: Recursive import
+#### Method 1: Recursive import
 
 Structure your imports so the application can discover all Actions through the dependency chain:
 
@@ -144,7 +144,8 @@ new ActionApp({
 })
 ```
 
-:: warning
+:::warning
+
 **Bad Pattern - Action Not Discoverable**
 
 ```typescript title='src/orbits/my-workflow.ts'
@@ -162,9 +163,9 @@ export class MyWorkflow extends Workflow {
 ```
 
 Even if MySecondAction is only consumed by MyWorkflow, you should export it.
-::
+:::
 
-### Method 2: Direct Registration
+#### Method 2: Direct Registration
 
 Alternatively, you can explicitly declare all Actions and Workflows in your bootstrap file using a custom App class:
 
@@ -186,18 +187,18 @@ export class MyApp extends ActionApp {
 Must remember to add new Actions/Workflows to the declare array
 
 
-# Under the hood
+## Under the hood
 
-## ActionApp and Actions Catalog
+### ActionApp and Actions Catalog
 
 ActionApp maintains two special properties: `actionsRegistry` and `invertedActionsRegistry`.
 
-### Actions Registry
+#### Actions Registry
 
 The `actionsRegistry` serves as the catalog of all `Actions` available in your application. This registry is crucial for the application's ability to execute workflows and actions dynamically.
 
 
-### How Action Resolution Works
+#### How Action Resolution Works
 
 When a worker encounters a workflow in a pending state or an action waiting for execution, it must map database documents back to their corresponding action constructors. Here's the process:
 
@@ -208,7 +209,7 @@ When a worker encounters a workflow in a pending state or an action waiting for 
 3. **Constructor Resolution**: The worker uses this reference to look up the actual constructor in the `actionsRegistry`
 4. **Execution**: Once resolved, the worker can instantiate the action and call its `main` function
 
-### Why Action Discovery Matters
+#### Why Action Discovery Matters
 
 If ActionApp cannot discover your action constructor during bootstrap, the following problems occur:
 

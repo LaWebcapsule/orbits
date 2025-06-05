@@ -14,12 +14,12 @@ Resources offer:
 - Output reuse across executions
 - Hookable lifecycle stages: install, update, uninstall, and cycle 
 
-# Write a Resource
+## Write a Resource
 
 A Resource is a `Workflow` with some specials behaviours.
 
 
-## the `identity` of a resource
+### the `identity` of a resource
 
 
 ```typescript
@@ -40,7 +40,7 @@ The identity() method defines a unique key for the resource. All resource instan
 
 This enables deduplication and stateful coordination between concurrent invocations.
 
-### Persistent storage for resources
+#### Persistent storage for resources
 
 Each resource is backed by a shared database document, accessible via the resourceDbDoc property.
 Some properties of the document are internal to the framework and should not be modified unless you know what you are doing.
@@ -103,11 +103,11 @@ export class MySecondResource extends Resource{
 }
 ```
 
-## Resource lifecycle commands
+### Resource lifecycle commands
 
 Resources define lifecycle hooks. These correspond to specific setCommand() values and are executed based on state or schedule.
 
-### Install hook
+#### Install hook
 
 ```typescript
 export class MyResource extends Resource{
@@ -136,7 +136,7 @@ export class MyResource extends Resource{
 - when explicitly triggered with .setCommand("install")
 
 
-### Update
+#### Update
 
 ```typescript
 export class MyResource extends Resource{
@@ -169,7 +169,7 @@ export class MyResource extends Resource{
 - everytime a default execution runs.
 - if you force the execution of the `update` step using `setCommand('update')`
  
-### Uninstall
+#### Uninstall
 
 ```typescript
 export class MyResource extends Resource{
@@ -212,7 +212,7 @@ export class MyResource extends Resource{
 `defineUninstall()` runs only if explicitly triggered with `.setCommand("uninstall")`
 
 
-### Cycle
+#### Cycle
 
 Resources support a `defineCycle()` method, triggered periodically to verify or reconcile the external-world state.
 
@@ -320,7 +320,7 @@ export class MyResource extends Resource{
 }
 ```
 
-### Using resources in a workflow
+#### Using resources in a workflow
 
 You can execute a Resource like any other Workflow. Its default command is derived from current state (e.g. install or update):
 
@@ -347,7 +347,7 @@ export class MyWorkflow extends Workflow{
 }
 ```
 
-### Custom Hooks
+#### Custom Hooks
 
 In addition to the standard lifecycle hooks (install, update, uninstall, cycle), a `Resource` can expose custom hooks. These are useful when you want to support additional behaviors that do not fit into the predefined lifecycle.
 

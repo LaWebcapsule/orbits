@@ -10,11 +10,11 @@ An Action represents the potential completion (or failure) of an operation.
 It stores the state of an operation in a database to be able to retrieve it despite of process failures or network incidents.
 Moreover, it has a lock management that guarantees the consistency of the flow.
 
-# Concepts
+## Concepts
 
 See the [conceptual documentation](./action-in-depth.md) for a better understanding on how Actions work.
 
-# Write your first Action
+## Write your first Action
 
 Actions allow you to track the state of external processes.
 
@@ -282,7 +282,7 @@ export class MyFirstAction extends Action {
 }
 ```
 
-# Persistent storage
+## Persistent storage
 
 Each action has a db document assiociated with it.
 The db document is accessible via the `dbDoc` property. Most properties are internal settings for the framework.
@@ -291,7 +291,7 @@ You can modify these properties (if you know what you are doing).
 
 You can also store in these three stores:
 
-## Argument
+### Argument
 
 
 The `argument` property should be set via the `setArgument()` method and must not be changed after the action leaves the `ActionState.SLEEPING`state.
@@ -301,7 +301,7 @@ If you want to set a default argument, you should override the `setArgument()` p
 
 If you want to modify an argument, you should instead see the [bag](./action.md#bag) property
 
-## Bag
+### Bag
 
 Bag is an object stored in database where you can set everything you need during the process (ids, caches...).
 
@@ -309,7 +309,7 @@ The interface of the `bag` is set via the `IBag` property of the class.
 
 You can see an example of how to use it in the [write your first action](./action.md#write-your-first-action) section.
 
-## Result
+### Result
 
 The `result` property is an object stored in database where you set the result of your action.
 
@@ -317,7 +317,7 @@ The interface of the `result` is set via the `IResult` property of the class.
 
 If your Action belongs to a Workflow, the result object will then be available in the Workflow.
 
-# Setting an Action to Error
+## Setting an Action to Error
 
 You can explicitly return `ActionState.ERROR`, and optionally set an error object:
 ```ts
@@ -352,9 +352,9 @@ export class MyAction extends Action{
 ```
 
 
-# Other parameters to be aware of
+## Other parameters to be aware of
 
-## cronActivity
+### cronActivity
 
 The `resume` method will be regularly called.
 
@@ -366,7 +366,7 @@ By default, each time `resume()` will be called, this date will be updated to th
 
 By default, the `cronActivity` get its value from the `defaultCronActivity` property in the class.
 
-## Delays
+### Delays
 
 Delays represents the amount of time an action can spend in a certain state.
 
@@ -379,6 +379,6 @@ You can set default delays via the `defaultDelays` property. It expects an objec
 }
 ```
 
-# In depth
+## In depth
 
 See [this](./action-in-depth.md).
