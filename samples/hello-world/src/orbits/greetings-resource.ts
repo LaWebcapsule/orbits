@@ -15,16 +15,18 @@ export class GreetingResource extends Resource {
     }
 
     async defineInstall() {
-        this.internalLog(`Installing greeting resource for ${this.argument.name}`);
-        await this.do("greeting", new HelloWorkflow())
+        const greeting = await this.do("greeting", new HelloWorkflow().setArgument({
+            name: this.argument.name
+        }));
+        console.log(`${greeting}  👋👋👋`);
     }
 
     async defineUpdate() {
         //do nothing
-        this.internalLog(`(I have already seen you.)`);
+        console.log(`(I have already seen you.)👻`);
     }
 
     async defineUninstall() {
-        this.internalLog(`Goodbye my dear friend ${this.argument.name}`);
+        console.log(`Goodbye my dear friend ${this.argument.name}`);
     }
 }

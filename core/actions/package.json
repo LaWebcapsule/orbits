@@ -37,6 +37,7 @@
     "dependencies": {
         "@aws-sdk/client-sso-oidc": "^3.758.0",
         "@wbce/services": "workspace:",
+        "import-meta-resolve": "^4.1.0",
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "winston": "catalog:"

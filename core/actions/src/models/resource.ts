@@ -30,7 +30,7 @@ export interface ResourceSchemaInterface<
     output : any,
     cycle: {
         frequency: number
-    }
+    },
     info: any,
 }
 
@@ -43,7 +43,10 @@ export const resourceSchema = new mongoose.Schema(
         }],
         version : String,
         cycle: {
-            frequency: Number
+            frequency: {
+                type: Number,
+                default: 60*60*1000
+            }
         },
         output : { type: mongoose.Schema.Types.Mixed, default: {} },
         info : { type: mongoose.Schema.Types.Mixed, default: {} },

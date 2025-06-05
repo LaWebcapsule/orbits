@@ -172,10 +172,6 @@ export class ResourceController<T extends Resource> extends Workflow{
 
     resource: T;
     resourceDbDoc: ResourceSchemaInterface;
-    
-    async getResourceDoc(){
-
-    }
 
     async init(){
         await super.init();
@@ -186,26 +182,32 @@ export class ResourceController<T extends Resource> extends Workflow{
             actionRef: undefined
         });
         await resource.getResourceDoc();
+        this.resource = resource;
+        this.resourceDbDoc = resource.resourceDbDoc;
     }
 
     async define(){
+        const sleep = new Sleep().setArgument({
+            time : this.resourceDbDoc.cycle.frequency
+        })
+        await this.do('sleep', sleep);
+        
         try{
-            await this.do('sleep', new Sleep().setArgument({
-                time : this.resource.resourceDbDoc.cycle.frequency
-            }))
             await this.do("cycle", async ()=>{
                 this.resource.setCommand('cycle' as any);
-                return this.resource;
+                return this.resource.clone();
             })
         }
         catch(err){
+            this.internalLog(`Error during cycle execution: ${err}`);
             //do nothing
         }
+
         await this.do("launchClone", ()=>{
             const clone = this.clone();
             return clone.save()
         }) 
-        return {}
+        return {};
     }
 }
 
@@ -253,13 +255,13 @@ export class Resource extends CoalescingWorkflow{
 
     defaultResourceSettings : {cycle: {frequency: number}} = {
         cycle: {
-            frequency: 10*60*1000 //default to 1 minute
+            frequency: 10*60*1000 //default to 10 minutes
         }
     }
 
     createResourceDoc(){
         this.resourceDbDoc = new this.app.ResourceModel({
-            ...this.defaultResourceSettings.cycle,
+            ...this.defaultResourceSettings,
             identity : this.stringifyIdentity(),
             actionRef: this.app.getActionRefFromRegistry(
                 this.constructor as any
@@ -292,7 +294,7 @@ export class Resource extends CoalescingWorkflow{
     defineCycle(){
     }
 
-    version : string;
+    version : string = "1.0.0";
 
     noConcurrencyCommandNames = ['install', 'update', 'uninstall']
     async lockCommand(commandName: string){ 

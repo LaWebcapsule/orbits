@@ -1,17 +1,17 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
+import path from 'path';
+import precinct from 'precinct';
 import * as winston from 'winston';
-import precinct from "precinct";
-import path from "path"
-import {
-    Action,
-    ActionSchemaInterface,
-} from '../../index.js';
+import { Action, ActionSchemaInterface } from '../../index.js';
 import { ActionCron } from '../action-job.js';
 import { ActionError } from '../error/error.js';
+import { ResourceSchemaInterface } from '../models/resource.js';
 import { AppDb, setDbConnection } from './db-connection.js';
 import { defaultLogger, setLogger } from './logger.js';
-import { ResourceSchemaInterface } from '../models/resource.js';
+import { pathToFileURL } from 'url';
+import {resolve} from 'import-meta-resolve';
+
 
 /**
  * Describes how the app can be configured.
@@ -26,13 +26,13 @@ export interface ActionAppConfig {
         quantity: number;
         filter?: Object;
     };
-    notActive?: boolean
+    notActive?: boolean;
 }
 
 export class ActionApp {
     static activeApp: ActionApp;
 
-    static apps : ActionApp[] = [];
+    static apps: ActionApp[] = [];
 
     static resolveBootstrap;
     static rejectBootstrap;
@@ -72,9 +72,7 @@ export class ActionApp {
     };
 
     ActionModel: mongoose.Model<ActionSchemaInterface>;
-    ResourceModel: mongoose.Model<ResourceSchemaInterface>
-
-    
+    ResourceModel: mongoose.Model<ResourceSchemaInterface>;
 
     bootstrapPath: string;
 
@@ -89,7 +87,7 @@ export class ActionApp {
             this.numberOfWorker = opts?.workers.quantity;
             this.actionFilter = opts?.workers.filter;
         }
-        if(!ActionApp.activeApp && !opts.notActive){
+        if (!ActionApp.activeApp && !opts.notActive) {
             ActionApp.activeApp = this;
         }
         ActionApp.apps.push(this);
@@ -125,122 +123,123 @@ export class ActionApp {
         return this.invertedActionsRegistry.get(action);
     }
 
-    async scanModuleImport(moduleImport){
-        for(const key in moduleImport){
+    async scanModuleImport(moduleImport) {
+        for (const key in moduleImport) {
             const value = moduleImport[key];
-            if(value?.prototype instanceof Action || value === Action){
-                this.logger.info(`registering ${key}`)
+            if (value?.prototype instanceof Action || value === Action) {
+                this.logger.info(`registering ${key}`);
                 this.registerAction(value);
             }
         }
     }
 
     importedFiles = new Set<string>();
-    static setExecutedVia(): 'ts'|'js'{
-        if(process['_preload_modules'].includes("/tsx/")){
-            return 'ts'
+    static setExecutedVia(): 'ts' | 'js' {
+        if (process['_preload_modules'].includes('/tsx/')) {
+            return 'ts';
         }
-        return 'js'
+        return 'js';
     }
     static executedVia = ActionApp.setExecutedVia();
 
-
-    async recursiveImport(pathFile: string){
+    async recursiveImport(pathFile: string) {
         this.logger.info(`dealing with ${pathFile}`);
-        let deps : string[];
-        try{
+        let deps: string[];
+        try {
             deps = await precinct.paperwork(pathFile);
-        }
-        catch(err){
-            if(err.code === "ENOENT"){
-                this.logger.info(`cannot read ${pathFile} ; fallback to ts extension`)
-                try{
-                    deps = await precinct.paperwork(pathFile.replace(".js", ".ts"));
-                }
-                catch(err2){   
-                    this.logger.info(`cannot read ts extension neither ; got ${err2}`)
+        } catch (err) {
+            if (err.code === 'ENOENT') {
+                this.logger.info(
+                    `cannot read ${pathFile} ; fallback to ts extension`
+                );
+                try {
+                    deps = await precinct.paperwork(
+                        pathFile.replace('.js', '.ts')
+                    );
+                } catch (err2) {
+                    this.logger.info(
+                        `cannot read ts extension neither ; got ${err2}`
+                    );
                     throw err;
                 }
-            }
-            else{
+            } else {
                 throw err;
             }
         }
-        const notDealthDeps = deps.filter((d)=>!this.importedFiles.has(d));
-        const baseDir = path.dirname(pathFile)
+        const notDealthDeps = deps.filter((d) => !this.importedFiles.has(d));
+        const baseDir = path.dirname(pathFile);
         this.logger.info(`found deps: ${deps}`);
-        for(const file of notDealthDeps){
+
+        for (const file of notDealthDeps) {
             this.logger.info(`exploring dep: ${file}`);
-            this.importedFiles.add(file)
-            if(file.startsWith(".")){
+            this.importedFiles.add(file);
+            if (file.startsWith('.')) {
                 //import another file in same module
-                this.logger.info(`importing local file: ${file}`);
-                const filePath = path.join(baseDir, file)
-                /*const moduleImport = await import(filePath);
-                this.scanModuleImport(moduleImport);  */
+                let filePath = path.join(baseDir, file);
+                const moduleImport = await import(filePath);
+                this.scanModuleImport(moduleImport);
                 await this.recursiveImport(filePath);
-            }
-            else{
+            } else {
                 //import an npm module
-                this.logger.info(`importing npm module: ${file}`);
-                const url = await import.meta.resolve(file, pathFile);
+                const url = await resolve(file, pathToFileURL(pathFile) as any);
                 const moduleImport = await import(url);
                 this.scanModuleImport(moduleImport);
             }
         }
-
     }
 
     rejectBootstrap;
     resolveBootstrap;
-    waitForBootstrap = new Promise((resolve, reject)=>{
+    waitForBootstrap = new Promise((resolve, reject) => {
         this.rejectBootstrap = reject;
         this.resolveBootstrap = resolve;
-    })
+    });
     async bootstrap() {
-        const isActiveApp = (ActionApp.activeApp === this)
+        const isActiveApp = ActionApp.activeApp === this;
         if (isActiveApp) {
             setLogger(this);
         }
-        const moduleImport = await import(this.bootstrapPath);
-        this.scanModuleImport(moduleImport);
         await this.recursiveImport(this.bootstrapPath);
-        if(isActiveApp){
-            return setDbConnection(this).then(() => {
-                for (let i = 0; i < this.numberOfWorker; i++) {
-                    new ActionCron(this.actionFilter);
-                }
-            }).then(()=>{
-                this.resolveBootstrap();
-                ActionApp.resolveBootstrap();
-            })
-        }
-        else{
-            return ActionApp.waitForActiveApp.then(()=>{
+        if (isActiveApp) {
+            return setDbConnection(this)
+                .then(() => {
+                    for (let i = 0; i < this.numberOfWorker; i++) {
+                        new ActionCron(this.actionFilter);
+                    }
+                })
+                .then(() => {
+                    this.resolveBootstrap();
+                    ActionApp.resolveBootstrap();
+                });
+        } else {
+            return ActionApp.waitForActiveApp.then(() => {
                 this.resolveBootstrap();
             });
         }
-        
     }
 
-    static bootstrap(config : ActionAppConfig){
+    static bootstrap(config: ActionAppConfig) {
         new ActionApp(config);
     }
 
-    static async getActiveApp(opts = {timeout: 60*1000}): Promise<ActionApp>{
-        return new Promise((resolve,reject)=>{
+    static async getActiveApp(
+        opts = { timeout: 60 * 1000 }
+    ): Promise<ActionApp> {
+        return new Promise((resolve, reject) => {
             let activeApp, isResolved;
-            setTimeout(()=>{
-                if(!activeApp && !isResolved){
+            setTimeout(() => {
+                if (!activeApp && !isResolved) {
                     isResolved = true;
-                    reject(new ActionError("no active app found ; reached timeout"));
+                    reject(
+                        new ActionError('no active app found ; reached timeout')
+                    );
                 }
-            }, opts.timeout)
-            this.waitForActiveApp.then(()=>{
-                if(!isResolved){
-                    resolve(this.activeApp)
+            }, opts.timeout);
+            this.waitForActiveApp.then(() => {
+                if (!isResolved) {
+                    resolve(this.activeApp);
                 }
-            })
-        })
+            });
+        });
     }
 }
