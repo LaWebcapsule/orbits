@@ -39,7 +39,7 @@ describe('Test action', () => {
     });
 
     afterAll(() => {
-        const rollback = testAction.createRollBackWorkflow();
-        return rollback.dbDoc.save();
+        /* const rollback = testAction.createRollBackWorkflow();
+        return rollback.dbDoc.save(); */
     });
 });

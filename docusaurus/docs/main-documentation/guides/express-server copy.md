@@ -1,5 +1,6 @@
-# Quick start
-This is a basic guide to get your first resource working.
+# An express server over your resources
+
+One of the advantage of being over 
 
 # Install
 

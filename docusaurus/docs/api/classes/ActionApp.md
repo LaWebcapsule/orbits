@@ -1,6 +1,6 @@
 # Class: ActionApp
 
-Defined in: [core/actions/src/app/action-app.ts:32](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L32)
+Defined in: [core/actions/src/app/action-app.ts:32](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L32)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/app/action-app.ts:32](https://github.com/LaWebcaps
 
 > **new ActionApp**(`opts?`): `ActionApp`
 
-Defined in: [core/actions/src/app/action-app.ts:81](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L81)
+Defined in: [core/actions/src/app/action-app.ts:79](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L79)
 
 #### Parameters
 
@@ -26,7 +26,7 @@ Defined in: [core/actions/src/app/action-app.ts:81](https://github.com/LaWebcaps
 
 > `optional` **actionFilter**: `Object`
 
-Defined in: [core/actions/src/app/action-app.ts:66](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L66)
+Defined in: [core/actions/src/app/action-app.ts:66](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L66)
 
 Used by ActionCron to
 filter actions using their `filter` field
@@ -37,7 +37,7 @@ filter actions using their `filter` field
 
 > **ActionModel**: `Model`\<[`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\>\>
 
-Defined in: [core/actions/src/app/action-app.ts:74](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L74)
+Defined in: [core/actions/src/app/action-app.ts:74](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L74)
 
 ***
 
@@ -45,7 +45,7 @@ Defined in: [core/actions/src/app/action-app.ts:74](https://github.com/LaWebcaps
 
 > **bootstrapPath**: `string`
 
-Defined in: [core/actions/src/app/action-app.ts:79](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L79)
+Defined in: [core/actions/src/app/action-app.ts:77](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L77)
 
 ***
 
@@ -53,7 +53,7 @@ Defined in: [core/actions/src/app/action-app.ts:79](https://github.com/LaWebcaps
 
 > **db**: [`AppDb`](../interfaces/AppDb.md)
 
-Defined in: [core/actions/src/app/action-app.ts:68](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L68)
+Defined in: [core/actions/src/app/action-app.ts:68](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L68)
 
 ***
 
@@ -61,7 +61,7 @@ Defined in: [core/actions/src/app/action-app.ts:68](https://github.com/LaWebcaps
 
 > **declare**: *typeof* [`Action`](Action.md)[] = `[]`
 
-Defined in: [core/actions/src/app/action-app.ts:58](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L58)
+Defined in: [core/actions/src/app/action-app.ts:58](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L58)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: [core/actions/src/app/action-app.ts:58](https://github.com/LaWebcaps
 
 > **importedFiles**: `Set`\<`string`\>
 
-Defined in: [core/actions/src/app/action-app.ts:138](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L138)
+Defined in: [core/actions/src/app/action-app.ts:136](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L136)
 
 ***
 
@@ -77,7 +77,7 @@ Defined in: [core/actions/src/app/action-app.ts:138](https://github.com/LaWebcap
 
 > **imports**: *typeof* `ActionApp`[] = `[]`
 
-Defined in: [core/actions/src/app/action-app.ts:57](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L57)
+Defined in: [core/actions/src/app/action-app.ts:57](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L57)
 
 ***
 
@@ -85,7 +85,7 @@ Defined in: [core/actions/src/app/action-app.ts:57](https://github.com/LaWebcaps
 
 > **logger**: `Logger` = `defaultLogger`
 
-Defined in: [core/actions/src/app/action-app.ts:55](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L55)
+Defined in: [core/actions/src/app/action-app.ts:55](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L55)
 
 ***
 
@@ -93,7 +93,7 @@ Defined in: [core/actions/src/app/action-app.ts:55](https://github.com/LaWebcaps
 
 > **numberOfWorker**: `number` = `3`
 
-Defined in: [core/actions/src/app/action-app.ts:60](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L60)
+Defined in: [core/actions/src/app/action-app.ts:60](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L60)
 
 ***
 
@@ -101,7 +101,7 @@ Defined in: [core/actions/src/app/action-app.ts:60](https://github.com/LaWebcaps
 
 > **rejectBootstrap**: `any`
 
-Defined in: [core/actions/src/app/action-app.ts:192](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L192)
+Defined in: [core/actions/src/app/action-app.ts:191](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L191)
 
 ***
 
@@ -109,7 +109,7 @@ Defined in: [core/actions/src/app/action-app.ts:192](https://github.com/LaWebcap
 
 > **resolveBootstrap**: `any`
 
-Defined in: [core/actions/src/app/action-app.ts:193](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L193)
+Defined in: [core/actions/src/app/action-app.ts:192](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L192)
 
 ***
 
@@ -117,7 +117,7 @@ Defined in: [core/actions/src/app/action-app.ts:193](https://github.com/LaWebcap
 
 > **ResourceModel**: `Model`\<`ResourceSchemaInterface`\>
 
-Defined in: [core/actions/src/app/action-app.ts:75](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L75)
+Defined in: [core/actions/src/app/action-app.ts:75](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L75)
 
 ***
 
@@ -125,7 +125,7 @@ Defined in: [core/actions/src/app/action-app.ts:75](https://github.com/LaWebcaps
 
 > **waitForBootstrap**: `Promise`\<`unknown`\>
 
-Defined in: [core/actions/src/app/action-app.ts:194](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L194)
+Defined in: [core/actions/src/app/action-app.ts:193](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L193)
 
 ***
 
@@ -133,7 +133,7 @@ Defined in: [core/actions/src/app/action-app.ts:194](https://github.com/LaWebcap
 
 > `static` **activeApp**: `ActionApp`
 
-Defined in: [core/actions/src/app/action-app.ts:33](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L33)
+Defined in: [core/actions/src/app/action-app.ts:33](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L33)
 
 ***
 
@@ -141,7 +141,7 @@ Defined in: [core/actions/src/app/action-app.ts:33](https://github.com/LaWebcaps
 
 > `static` **apps**: `ActionApp`[] = `[]`
 
-Defined in: [core/actions/src/app/action-app.ts:35](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L35)
+Defined in: [core/actions/src/app/action-app.ts:35](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L35)
 
 ***
 
@@ -149,7 +149,7 @@ Defined in: [core/actions/src/app/action-app.ts:35](https://github.com/LaWebcaps
 
 > `static` **bootstrapPath**: `string`
 
-Defined in: [core/actions/src/app/action-app.ts:43](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L43)
+Defined in: [core/actions/src/app/action-app.ts:43](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L43)
 
 ***
 
@@ -157,7 +157,7 @@ Defined in: [core/actions/src/app/action-app.ts:43](https://github.com/LaWebcaps
 
 > `static` **executedVia**: `"ts"` \| `"js"`
 
-Defined in: [core/actions/src/app/action-app.ts:145](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L145)
+Defined in: [core/actions/src/app/action-app.ts:143](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L143)
 
 ***
 
@@ -165,7 +165,7 @@ Defined in: [core/actions/src/app/action-app.ts:145](https://github.com/LaWebcap
 
 > `static` **importAppConfig**: `any`
 
-Defined in: [core/actions/src/app/action-app.ts:53](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L53)
+Defined in: [core/actions/src/app/action-app.ts:53](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L53)
 
 ***
 
@@ -173,7 +173,7 @@ Defined in: [core/actions/src/app/action-app.ts:53](https://github.com/LaWebcaps
 
 > `static` **rejectBootstrap**: `any`
 
-Defined in: [core/actions/src/app/action-app.ts:38](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L38)
+Defined in: [core/actions/src/app/action-app.ts:38](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L38)
 
 ***
 
@@ -181,7 +181,7 @@ Defined in: [core/actions/src/app/action-app.ts:38](https://github.com/LaWebcaps
 
 > `static` **resolveBootstrap**: `any`
 
-Defined in: [core/actions/src/app/action-app.ts:37](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L37)
+Defined in: [core/actions/src/app/action-app.ts:37](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L37)
 
 ***
 
@@ -189,7 +189,7 @@ Defined in: [core/actions/src/app/action-app.ts:37](https://github.com/LaWebcaps
 
 > `static` **waitForActiveApp**: `Promise`\<`unknown`\>
 
-Defined in: [core/actions/src/app/action-app.ts:39](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L39)
+Defined in: [core/actions/src/app/action-app.ts:39](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L39)
 
 ## Accessors
 
@@ -199,7 +199,7 @@ Defined in: [core/actions/src/app/action-app.ts:39](https://github.com/LaWebcaps
 
 > **get** `static` **boostrapPath**(): `string`
 
-Defined in: [core/actions/src/app/action-app.ts:47](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L47)
+Defined in: [core/actions/src/app/action-app.ts:47](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L47)
 
 ##### Deprecated
 
@@ -215,7 +215,7 @@ use bootstrapPath
 
 > **bootstrap**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/app/action-app.ts:198](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L198)
+Defined in: [core/actions/src/app/action-app.ts:197](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L197)
 
 #### Returns
 
@@ -227,7 +227,7 @@ Defined in: [core/actions/src/app/action-app.ts:198](https://github.com/LaWebcap
 
 > **getActionFromRegistry**(`actionRef`): *typeof* [`Action`](Action.md)
 
-Defined in: [core/actions/src/app/action-app.ts:120](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L120)
+Defined in: [core/actions/src/app/action-app.ts:118](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L118)
 
 #### Parameters
 
@@ -245,7 +245,7 @@ Defined in: [core/actions/src/app/action-app.ts:120](https://github.com/LaWebcap
 
 > **getActionRefFromRegistry**(`action`): `string`
 
-Defined in: [core/actions/src/app/action-app.ts:124](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L124)
+Defined in: [core/actions/src/app/action-app.ts:122](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L122)
 
 #### Parameters
 
@@ -263,7 +263,7 @@ Defined in: [core/actions/src/app/action-app.ts:124](https://github.com/LaWebcap
 
 > **recursiveImport**(`pathFile`): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/app/action-app.ts:148](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L148)
+Defined in: [core/actions/src/app/action-app.ts:145](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L145)
 
 #### Parameters
 
@@ -281,7 +281,7 @@ Defined in: [core/actions/src/app/action-app.ts:148](https://github.com/LaWebcap
 
 > **scanModuleImport**(`moduleImport`): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/app/action-app.ts:128](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L128)
+Defined in: [core/actions/src/app/action-app.ts:126](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L126)
 
 #### Parameters
 
@@ -299,7 +299,7 @@ Defined in: [core/actions/src/app/action-app.ts:128](https://github.com/LaWebcap
 
 > `static` **bootstrap**(`config`): `void`
 
-Defined in: [core/actions/src/app/action-app.ts:224](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L224)
+Defined in: [core/actions/src/app/action-app.ts:221](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L221)
 
 #### Parameters
 
@@ -317,7 +317,7 @@ Defined in: [core/actions/src/app/action-app.ts:224](https://github.com/LaWebcap
 
 > `static` **getActiveApp**(`opts`): `Promise`\<`ActionApp`\>
 
-Defined in: [core/actions/src/app/action-app.ts:228](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L228)
+Defined in: [core/actions/src/app/action-app.ts:225](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L225)
 
 #### Parameters
 
@@ -337,7 +337,7 @@ Defined in: [core/actions/src/app/action-app.ts:228](https://github.com/LaWebcap
 
 > `static` **setExecutedVia**(): `"ts"` \| `"js"`
 
-Defined in: [core/actions/src/app/action-app.ts:139](https://github.com/LaWebcapsule/orbits/blob/005da96cd1cd634f11172ebcc8f82d8d36aba627/core/actions/src/app/action-app.ts#L139)
+Defined in: [core/actions/src/app/action-app.ts:137](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L137)
 
 #### Returns
 
