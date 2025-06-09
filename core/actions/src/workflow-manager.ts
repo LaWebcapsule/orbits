@@ -1,6 +1,6 @@
 import { utils } from '@wbce/services';
 import mongoose from 'mongoose';
-import { Action, ActionApp, CoalescingWorkflow, Sleep } from '../index.js';
+import { Action, ActionRuntime, CoalescingWorkflow, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { JSONObject } from '@wbce/services/src/utils.js';
@@ -333,7 +333,7 @@ export class Workflow extends Action {
         let actionDbDoc : ActionSchemaInterface;
 
         //this is for common "do"
-        const actions = await ActionApp.activeApp.ActionModel.find({
+        const actions = await ActionRuntime.activeRuntime.ActionModel.find({
             workflowId : this._id.toString(),
             "workflowRef": ref
         }).sort("createdAt");
@@ -356,12 +356,12 @@ export class Workflow extends Action {
                     return false;
                 })
                 if(actionDescriptor){
-                    actionDbDoc = await ActionApp.activeApp.ActionModel.findOne({
+                    actionDbDoc = await ActionRuntime.activeRuntime.ActionModel.findOne({
                         "_id": actionDescriptor._id
                     })
                 }
                 else{
-                    const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+                    const actionsWithSameIdentity = await ActionRuntime.activeRuntime.ActionModel.find({
                         "identity": action.stringifyIdentity(),
                         "actionRef": action.dbDoc.actionRef,
                         "state": {
@@ -405,7 +405,7 @@ export class Workflow extends Action {
 
     protected async startAction(ref: string, action : Action) {
         action = this.transform(ref, action) || action;
-        return this.app.db.mongo.conn
+        return this.runtime.db.mongo.conn
             .startSession()
             .then((mongooseSession) => {
                 this.dBSession = mongooseSession;
@@ -665,7 +665,7 @@ export class Workflow extends Action {
     }
 
     override watcher() {
-        return this.app.ActionModel.find({
+        return this.runtime.ActionModel.find({
             $and: [{
                 $or : [{
                     workflowId: this.dbDoc.id,
@@ -713,7 +713,7 @@ export class Workflow extends Action {
     }
 
     static findPendingWorkflowUsingAction(actionDbDoc: ActionSchemaInterface){
-        return ActionApp.activeApp.ActionModel.find({
+        return ActionRuntime.activeRuntime.ActionModel.find({
             $and: [{
                 $or : [{
                     _id: actionDbDoc.workflowId,
@@ -741,7 +741,7 @@ export class Workflow extends Action {
     }
 
     override internalLogError(err: Error) {
-        this.app.logger.error('!!-.-!!', {
+        this.runtime.logger.error('!!-.-!!', {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter: this.dbDoc.filter,

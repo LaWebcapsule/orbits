@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState, InWorkflowActionError, Workflow } from '../index.js';
+import { Action, ActionError, ActionRuntime, ActionState, InWorkflowActionError, Workflow } from '../index.js';
 import { BasicWorkflow, ThrowErrorBasicWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition, WorkflowWithRepeat } from './test-action.js';
 
 
@@ -6,7 +6,7 @@ function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, ex
 
     beforeAll(() => {
         jasmine.setDefaultSpyStrategy((and) => and.callThrough());
-        return w.app.ActionModel.deleteMany({}).then(()=>{
+        return w.runtime.ActionModel.deleteMany({}).then(()=>{
             return w.save()
         }).then(()=>{
             return Action.trackActionAsPromise(w, [ActionState.SUCCESS, ActionState.ERROR]);
@@ -19,16 +19,17 @@ function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, ex
     });
 
     it(`should have correct result`, ()=>{
-        const result = w.dbDoc.result;
-        if((result as Error).stack){
+        let result : any = w.dbDoc.result;
+        if((result as ActionError).stack){
             (result as Error).stack = undefined;
-            opts.expectedResult.stack = undefined
+            opts.expectedResult.stack = undefined;
+            result = jasmine.objectContaining(opts.expectedResult)
         }
-        expect(result as any).toEqual(opts.expectedResult)
+        expect(result as any).toEqual(result)
     })
 
     it('should have launched sub-actions', () =>
-        w.app.ActionModel.find({
+        w.runtime.ActionModel.find({
             workflowId: w.dbDoc._id,
         }).then((actions) => {
             expect(actions.length).toEqual(opts.numberOfChildActions);

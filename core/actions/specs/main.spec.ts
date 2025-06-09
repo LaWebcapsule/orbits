@@ -1,5 +1,5 @@
 import jasmin from 'jasmine';
-import { ActionApp } from '../index.js';
+import { ActionRuntime } from '../index.js';
 import {
     TestAction,
     TestActionWithError,
@@ -20,36 +20,15 @@ j.loadConfig({
         //'action-in-workflow.spec.ts',
         //'action-job.spec.ts',
         //'action.spec.ts',
-        //'workflow.spec.ts',
+        'workflow.spec.ts',
         //'generator.spec.ts',
         //'other-action.spec.ts',
         //'resource.spec.ts',
     ],
 });
 
-const db = {
-    protocol: 'mongodb+srv',
-    url: process.env['MONGO_URL'],
-    name: 'orbits-test',
-    connectQsParams: '?retryWrites=true&w=majority',
-};
-let dbOpts = {};
 
-const app = new ActionApp({
-    db: {
-        mongo: {
-            url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
-            opts: dbOpts,
-        },
-    },
-    workers: {
-        quantity: 1,
-    },
-})
-
-app.waitForBootstrap.then(async () => {
-    return app.ActionModel.remove({}).then(() => {
-        console.log('launching the tests');
-        j.execute();
-    });
+ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
+    console.log('launching the tests');
+    j.execute();
 });

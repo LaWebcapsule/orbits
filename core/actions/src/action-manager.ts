@@ -1,5 +1,5 @@
 import { utils, wbceAsyncStorage } from '@wbce/services';
-import { ActionApp, Workflow } from '../index.js';
+import { ActionRuntime, Workflow } from '../index.js';
 import { Executor } from './action-executor.js';
 import { ActionError, BreakingActionState } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
@@ -26,7 +26,7 @@ export class Action {
      */
     executor?: Executor;
 
-    app = ActionApp.activeApp;
+    runtime = ActionRuntime.activeRuntime;
 
     /**
      * Shortcut to {@link Action.defaultDelays[ActionState.IN_PROGRESS]}.
@@ -157,23 +157,24 @@ export class Action {
      * Save an action in the database. Will then be managed by the worker.
      * @returns a promise that resolves when the action has been saved
      */
-    save() {
-        return this.dbDoc.save();
-    }
-
-    constructor() {
-        const actionRef = this.app.getActionRefFromRegistry(
+    save(){
+        const actionRef = this.runtime.getActionRefFromRegistry(
             this.constructor as any
         );
         if (!actionRef) {
             throw new ActionError(
-                'Please declare this action in a bootstrapped app before using it',
+                'Please declare this action in a bootstrapped app before saving it',
                 errorCodes.NOT_ACCEPTABLE,
                 {
                     ctrName: this.constructor.name,
                 }
             );
         }
+        return this.dbDoc.save();
+    }
+
+    constructor() {
+        
         // Copy the static properties to create the dynamic ones
         // Check whether defaultDelay has priority over defaultDelays[ActionState.SUCCESS]
         // (if and only if it was set before in the inheritance chain)
@@ -208,8 +209,8 @@ export class Action {
         if (nInheritanceForDefaultDelay < nInheritanceForDefaultDelays) {
             defaultDelays[ActionState.IN_PROGRESS] = defaultDelay;
         }
-
-        this.dbDoc = new this.app.ActionModel({
+        const actionRef = this.runtime.getActionRefFromCtr(this.constructor as any);
+        this.dbDoc = new this.runtime.ActionModel({
             actionRef,
             state: ActionState.SLEEPING,
             bag: {},
@@ -220,7 +221,7 @@ export class Action {
             cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
 
-        this.app = ActionApp.activeApp;
+        this.runtime = ActionRuntime.activeRuntime;
     }
 
     /**
@@ -229,7 +230,7 @@ export class Action {
      * @returns an action for which dbDoc property is equal to actionDb
      */
     static _constructFromDb(actionDb: ActionSchemaInterface<any>): Action {
-        const app = ActionApp.activeApp;
+        const app = ActionRuntime.activeRuntime;
         const ActionCtr = app.getActionFromRegistry(actionDb.actionRef);
         let action: Action;
         try {
@@ -257,7 +258,7 @@ export class Action {
         dbDoc: ActionSchemaInterface<any>
     ) {
         try {
-            const workflowDoc = await ActionApp.activeApp.ActionModel.findById(
+            const workflowDoc = await ActionRuntime.activeRuntime.ActionModel.findById(
                 dbDoc.definitionFrom.workflow._id
             );
             const workflow = (await Action.constructFromDb(
@@ -314,7 +315,7 @@ export class Action {
      * @returns a promise that resolves when the document has been loaded
      */
     resyncWithDb() {
-        return this.app.ActionModel.findById(this.dbDoc._id.toString()).then(
+        return this.runtime.ActionModel.findById(this.dbDoc._id.toString()).then(
             (newDb) => {
                 if (newDb) {
                     this.dbDoc = newDb as any;
@@ -852,7 +853,7 @@ export class Action {
         if (!Object.keys(filter).length) {
             filter = undefined;
         }
-        this.app.logger.log(opts.level, message, {
+        this.runtime.logger.log(opts.level, message, {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter,
@@ -886,7 +887,7 @@ export class Action {
         if (!Object.keys(filter).length) {
             filter = undefined;
         }
-        this.app.logger.error('!!-.-!!', {
+        this.runtime.logger.error('!!-.-!!', {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter: this.dbDoc.filter,

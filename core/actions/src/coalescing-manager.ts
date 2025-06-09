@@ -1,5 +1,5 @@
 import {utils} from "@wbce/services";
-import { Action, ActionApp, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "../index.js";
+import { Action, ActionRuntime, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
 
 export abstract class CoalescingWorkflow extends Workflow{
@@ -28,7 +28,7 @@ export abstract class CoalescingWorkflow extends Workflow{
 
     async save(params = {nCall : 0, isNew: this.dbDoc.isNew}){
         if(params.isNew || !this.dbDoc.identity){
-            const pendingActionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+            const pendingActionsWithSameIdentity = await ActionRuntime.activeRuntime.ActionModel.find({
                 actionRef: this.dbDoc.actionRef,
                 identity: this.stringifyIdentity(),
                 "state": {
@@ -40,7 +40,7 @@ export abstract class CoalescingWorkflow extends Workflow{
             }
             if(!this.dbDoc){
                 this.dbDoc.identity = this.stringifyIdentity();
-                const actionsWithSameIdentity = await ActionApp.activeApp.ActionModel.find({
+                const actionsWithSameIdentity = await ActionRuntime.activeRuntime.ActionModel.find({
                     actionRef: this.dbDoc.actionRef,
                     identity: this.dbDoc.identity
                 }).sort({"generatorCount": -1})
@@ -63,7 +63,7 @@ export abstract class CoalescingWorkflow extends Workflow{
         const strategy = this.mapRefWithStrategy.get(ref);
         let actionDb : ActionSchemaInterface;
         if(strategy === 'cross-workflow'){
-            const actions = await ActionApp.activeApp.ActionModel.find({
+            const actions = await ActionRuntime.activeRuntime.ActionModel.find({
                 "workflowRef": ref,
                 "workflowIdentity": this.stringifyIdentity() 
             }).sort("createdAt");
@@ -90,7 +90,7 @@ export abstract class CoalescingWorkflow extends Workflow{
 
 
     async lastOutput(){
-        const oldActions = await ActionApp.activeApp.ActionModel.find({
+        const oldActions = await ActionRuntime.activeRuntime.ActionModel.find({
             identity: this.stringifyIdentity(),
             actionRef: this.dbDoc.actionRef,
         }).sort({"createdAt": -1})
@@ -175,7 +175,7 @@ export class ResourceController<T extends Resource> extends Workflow{
 
     async init(){
         await super.init();
-        const ActionCtr = ActionApp.activeApp.getActionFromRegistry(this.argument.actionRef);
+        const ActionCtr = ActionRuntime.activeRuntime.getActionFromRegistry(this.argument.actionRef);
         const resource = new ActionCtr() as T;
         resource.setArgument({
             ...this.argument,
@@ -244,9 +244,9 @@ export class Resource extends CoalescingWorkflow{
 
 		let identity = this.stringifyIdentity();
         
-        this.resourceDbDoc = await this.app.ResourceModel.findOne({
+        this.resourceDbDoc = await this.runtime.ResourceModel.findOne({
             identity,
-            actionRef: this.app.getActionRefFromRegistry(
+            actionRef: this.runtime.getActionRefFromRegistry(
                 this.constructor as any
             )
         })
@@ -260,10 +260,10 @@ export class Resource extends CoalescingWorkflow{
     }
 
     createResourceDoc(){
-        this.resourceDbDoc = new this.app.ResourceModel({
+        this.resourceDbDoc = new this.runtime.ResourceModel({
             ...this.defaultResourceSettings,
             identity : this.stringifyIdentity(),
-            actionRef: this.app.getActionRefFromRegistry(
+            actionRef: this.runtime.getActionRefFromRegistry(
                 this.constructor as any
             ),
         })
@@ -312,6 +312,7 @@ export class Resource extends CoalescingWorkflow{
     }
 
     async define(){
+
         await this.once("createResourceDoc", ()=>{
             return this.createResourceDoc();
         })

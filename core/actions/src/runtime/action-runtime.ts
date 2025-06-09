@@ -1,5 +1,5 @@
 import { utils } from '@wbce/services';
-import mongoose from 'mongoose';
+import mongoose, { set } from 'mongoose';
 import path from 'path';
 import precinct from 'precinct';
 import * as winston from 'winston';
@@ -7,54 +7,57 @@ import { Action, ActionSchemaInterface } from '../../index.js';
 import { ActionCron } from '../action-job.js';
 import { ActionError } from '../error/error.js';
 import { ResourceSchemaInterface } from '../models/resource.js';
-import { AppDb, setDbConnection } from './db-connection.js';
+import { RuntimeDb, setDbConnection } from './db-connection.js';
 import { defaultLogger, setLogger } from './logger.js';
 import { pathToFileURL } from 'url';
 import {resolve} from 'import-meta-resolve';
-
+import { getEnv } from './get-env.js';
+import EventEmitter from 'events';
 
 /**
- * Describes how the app can be configured.
+ * Describes how the runtime can be configured.
  */
-export interface ActionAppConfig {
+export interface RuntimeConfig {
     /** db configuration */
     name?: string;
-    db?: AppDb;
+    db?: RuntimeDb;
     /** log driver configuration */
     logger?: winston.Logger;
     workers?: {
         quantity: number;
         filter?: Object;
     };
+    autostart?: boolean;
     notActive?: boolean;
+    entrypoint?: string;
 }
 
-export class ActionApp {
-    static activeApp: ActionApp;
+export class ActionRuntime {
+    static activeRuntime: ActionRuntime;
 
-    static apps: ActionApp[] = [];
+    static runtimes: ActionRuntime[] = [];
 
     static resolveBootstrap;
     static rejectBootstrap;
-    static waitForActiveApp = new Promise((resolve, reject) => {
-        ActionApp.resolveBootstrap = resolve;
-        ActionApp.rejectBootstrap = reject;
+    static waitForActiveRuntime = new Promise((resolve, reject) => {
+        ActionRuntime.resolveBootstrap = resolve;
+        ActionRuntime.rejectBootstrap = reject;
     });
     static bootstrapPath: string;
     /**
      * @deprecated use bootstrapPath
      */
     static get boostrapPath() {
-        return ActionApp.bootstrapPath;
+        return ActionRuntime.bootstrapPath;
     }
 
     private actionsRegistry = new Map<string, typeof Action>();
     private invertedActionsRegistry = new Map<typeof Action, string>();
-    static importAppConfig;
+    static importRuntimeConfig;
 
     logger = defaultLogger;
 
-    imports: (typeof ActionApp)[] = [];
+    imports: (typeof ActionRuntime)[] = [];
     declare: (typeof Action)[] = [];
 
     numberOfWorker = 3;
@@ -65,7 +68,7 @@ export class ActionApp {
      */
     actionFilter?: Object;
 
-    db: AppDb = {
+    db: RuntimeDb = {
         mongo: {
             url: 'mongodb://localhost:27017/actions',
         },
@@ -76,7 +79,7 @@ export class ActionApp {
 
     bootstrapPath: string;
 
-    constructor(opts?: ActionAppConfig) {
+    constructor(private opts?: RuntimeConfig) {
         if (opts?.logger) {
             this.logger = opts.logger;
         }
@@ -87,17 +90,21 @@ export class ActionApp {
             this.numberOfWorker = opts?.workers.quantity;
             this.actionFilter = opts?.workers.filter;
         }
-        if (!ActionApp.activeApp && !opts.notActive) {
-            ActionApp.activeApp = this;
+        if (!ActionRuntime.activeRuntime) {
+            ActionRuntime.activeRuntime = this;
         }
-        ActionApp.apps.push(this);
-        const stackPaths = utils.getStackTracePaths();
-        let bootstrapPath = stackPaths[2];
-        if (bootstrapPath.includes('tslib')) {
-            bootstrapPath = stackPaths[3];
+        ActionRuntime.runtimes.push(this);
+        global.orbitsRuntimes = [...global.orbitsRuntimes || [], this];
+        if(!global.orbitsRuntimeEvent){
+            global.orbitsRuntimeEvent = new EventEmitter();
         }
-        this.bootstrapPath = bootstrapPath;
+        this.bootstrapPath = opts?.entrypoint;
+        if(!opts?.entrypoint){
+            this.bootstrapPath = process.argv[1];
+            console.log(this.bootstrapPath);
+        };
         this.bootstrap();
+        global.orbitsRuntimeEvent.emit('runtime', this);
     }
 
     /**
@@ -123,6 +130,13 @@ export class ActionApp {
         return this.invertedActionsRegistry.get(action);
     }
 
+    getActionRefFromCtr(action: typeof Action) {
+        let [ref, ...previousRefs] = Array.isArray(action.permanentRef)
+            ? action.permanentRef
+            : [action.permanentRef];
+        return ref || action.name; 
+    }
+
     async scanModuleImport(moduleImport) {
         for (const key in moduleImport) {
             const value = moduleImport[key];
@@ -140,7 +154,7 @@ export class ActionApp {
         }
         return 'js';
     }
-    static executedVia = ActionApp.setExecutedVia();
+    static executedVia = ActionRuntime.setExecutedVia();
 
     async recursiveImport(pathFile: string) {
         this.logger.info(`dealing with ${pathFile}`);
@@ -154,7 +168,15 @@ export class ActionApp {
                 );
                 try {
                     deps = await precinct.paperwork(
-                        pathFile.replace('.js', '.ts')
+                        pathFile.replace('.js', '.ts'),
+                        {
+                            ts: {
+                                skipTypeImports: true
+                            },
+                            tsx: {
+                                skipTypeImports: true
+                            }
+                        } as any
                     );
                 } catch (err2) {
                     this.logger.info(
@@ -182,7 +204,7 @@ export class ActionApp {
             } else {
                 //import an npm module
                 const url = await resolve(file, pathToFileURL(pathFile) as any);
-                const moduleImport = await import(url);
+                const moduleImport = await import(url);                 
                 this.scanModuleImport(moduleImport);
             }
         }
@@ -194,14 +216,14 @@ export class ActionApp {
         this.rejectBootstrap = reject;
         this.resolveBootstrap = resolve;
     });
-    async bootstrap() {
-        const isActiveApp = ActionApp.activeApp === this;
+    bootstrap() {
+        const isActiveApp = ActionRuntime.activeRuntime === this;
         if (isActiveApp) {
             setLogger(this);
         }
-        await this.recursiveImport(this.bootstrapPath);
-        if (isActiveApp) {
-            return setDbConnection(this)
+        if (isActiveApp && !(this.opts?.autostart === false)) {
+            setDbConnection(this)
+            return this.recursiveImport(this.bootstrapPath)
                 .then(() => {
                     for (let i = 0; i < this.numberOfWorker; i++) {
                         new ActionCron(this.actionFilter);
@@ -209,22 +231,29 @@ export class ActionApp {
                 })
                 .then(() => {
                     this.resolveBootstrap();
-                    ActionApp.resolveBootstrap();
+                    ActionRuntime.resolveBootstrap();
                 });
         } else {
-            return ActionApp.waitForActiveApp.then(() => {
-                this.resolveBootstrap();
-            });
+            return this.recursiveImport(this.bootstrapPath).then(()=>{
+                return ActionRuntime.waitForActiveRuntime.then(() => {
+                    this.resolveBootstrap();
+                });
+            }) 
         }
     }
 
-    static bootstrap(config: ActionAppConfig) {
-        new ActionApp(config);
+    setLogger(logger: winston.Logger) {
+        this.logger = logger;
+        setLogger(this);
+    }
+
+    static bootstrap(config: RuntimeConfig) {
+        new ActionRuntime(config);
     }
 
     static async getActiveApp(
         opts = { timeout: 60 * 1000 }
-    ): Promise<ActionApp> {
+    ): Promise<ActionRuntime> {
         return new Promise((resolve, reject) => {
             let activeApp, isResolved;
             setTimeout(() => {
@@ -235,11 +264,15 @@ export class ActionApp {
                     );
                 }
             }, opts.timeout);
-            this.waitForActiveApp.then(() => {
+            this.waitForActiveRuntime.then(() => {
                 if (!isResolved) {
-                    resolve(this.activeApp);
+                    resolve(this.activeRuntime);
                 }
             });
         });
     }
 }
+
+const env = getEnv();
+
+new ActionRuntime(env);

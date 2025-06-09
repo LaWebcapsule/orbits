@@ -1,6 +1,6 @@
 import { FilterQuery } from 'mongoose';
 import { Action } from './action-manager.js';
-import { ActionApp } from './app/action-app.js';
+import { ActionRuntime } from './runtime/action-runtime.js';
 import { ActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
@@ -8,7 +8,7 @@ import { ActionSchemaInterface, ActionState } from './models/action.js';
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
     actions: ActionSchemaInterface<any>[] = [];
-    app = ActionApp.activeApp;
+    app = ActionRuntime.activeRuntime;
     filter?: Object;
 
     constructor(filter?: Object) {
@@ -101,12 +101,12 @@ export class ActionCron {
         // but we want to avoid it happening too often
         let action: Action;
         try {
-            ActionApp.activeApp.logger.info(
+            ActionRuntime.activeRuntime.logger.info(
                 `consuming action with id : ${actionDb._id}, ref : ${actionDb.actionRef}`
             );
             action = await Action.constructFromDb(actionDb);
         } catch (err) {
-            ActionApp.activeApp.logger.error(
+            ActionRuntime.activeRuntime.logger.error(
                 `could not construct action with id : ${actionDb._id}, ref : ${actionDb.actionRef}; got ${err} `
             );
             actionDb.updateNextActivity();

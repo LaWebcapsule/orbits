@@ -28,13 +28,12 @@
         "@types/jasmine": "catalog:",
         "@types/node": "catalog:",
         "jasmine": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-organize-imports": "catalog:",
         "ts-node": "catalog:",
         "ts-node-dev": "catalog:",
         "tslib": "catalog:",
-        "tsx": "catalog:",
-        "typescript": "catalog:",
-        "prettier": "catalog:",
-        "prettier-plugin-organize-imports": "catalog:"
+        "typescript": "catalog:"
     },
     "dependencies": {
         "@aws-cdk/cli-lib-alpha": "^2.1003.0-alpha.0",
@@ -55,6 +54,7 @@
         "mongoose": "catalog:",
         "octokit": "^4.1.2",
         "source-map-support": "^0.5.21",
+        "tsx": "^4.19.4",
         "winston": "catalog:"
     },
     "type": "module"

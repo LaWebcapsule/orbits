@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState } from '../index.js';
+import { Action, ActionRuntime, ActionState } from '../index.js';
 import { TestAction, TestGenerator } from './test-action.js';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
@@ -17,7 +17,7 @@ describe('Generators', () => {
     testGenOtherName.setArgument({name: 'xyzzz', commandName : '4'});
 
     beforeAll(() => {
-        return ActionApp.activeApp.ActionModel.deleteMany({}).then(()=>{
+        return ActionRuntime.activeRuntime.ActionModel.deleteMany({}).then(()=>{
             return Promise.all([
                 testGen.save(),
                 testGen2.save(),
@@ -53,11 +53,11 @@ describe('Generators', () => {
     });
 
     it("should have run the once step only once by identity", async ()=>{
-        const onceActions = await ActionApp.activeApp.ActionModel.find({
+        const onceActions = await ActionRuntime.activeRuntime.ActionModel.find({
             "definitionFrom.workflow.ref": "once",
         })
         expect(onceActions).toHaveSize(2);
-        const onceActionsForTestGen = await ActionApp.activeApp.ActionModel.find({
+        const onceActionsForTestGen = await ActionRuntime.activeRuntime.ActionModel.find({
             "workflowRef": "once",
             "workflowIdentity": testGen.stringifyIdentity() 
         })
@@ -65,7 +65,7 @@ describe('Generators', () => {
     })
 
     it("should have run the sleep generator only twice", async ()=>{
-        const sleepGenActions = await ActionApp.activeApp.ActionModel.find({
+        const sleepGenActions = await ActionRuntime.activeRuntime.ActionModel.find({
             "identity": "sleep"
         })
         expect(sleepGenActions).toHaveSize(2)

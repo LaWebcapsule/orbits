@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState } from '../index.js';
+import { Action, ActionRuntime, ActionState } from '../index.js';
 import { BlankResource, TestAction, TestGenerator } from './test-action.js';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
@@ -14,8 +14,8 @@ describe('Resource', () => {
 
     beforeAll(() => {
         console.log("before all")
-        return ActionApp.activeApp.ActionModel.deleteMany({}).then(()=>{
-            return ActionApp.activeApp.ResourceModel.deleteMany({})
+        return ActionRuntime.activeRuntime.ActionModel.deleteMany({}).then(()=>{
+            return ActionRuntime.activeRuntime.ResourceModel.deleteMany({})
         }).then(()=>{
             return Promise.all([
                 testResource.save()
@@ -61,7 +61,7 @@ describe('Resource', () => {
     })
 
     it("should have one controller", async ()=>{
-        const controllers = await ActionApp.activeApp.ActionModel.find({
+        const controllers = await ActionRuntime.activeRuntime.ActionModel.find({
             "actionRef": "ResourceController"
         })
         expect(controllers).toHaveSize(1);

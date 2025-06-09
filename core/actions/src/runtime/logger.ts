@@ -1,6 +1,6 @@
 import { wbceAsyncStorage } from '@wbce/services';
 import * as winston from 'winston';
-import type { ActionApp } from './action-app.js';
+import type { ActionRuntime } from './action-runtime.js';
 
 const expendError = (obj: any) => {
     if (obj instanceof Error) {
@@ -45,7 +45,7 @@ export const defaultLogger = winston.createLogger({
     ],
 });
 
-export function setLogger(app: ActionApp) {
+export function setLogger(app: ActionRuntime) {
     app.logger.format = winston.format.combine(
         addLogZoneInfo(),
         app.logger.format

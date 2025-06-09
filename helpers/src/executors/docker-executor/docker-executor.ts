@@ -3,6 +3,11 @@ import { utils } from '@wbce/services';
 import { exec } from 'child_process';
 import Docker from 'dockerode';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 export class DockerExecutor extends Executor {
     registry: {
@@ -176,11 +181,13 @@ export class DockerExecutor extends Executor {
         relativeImportPathFromEntrypoint: string; //how to pass to 'entrypoint' to bootstap path
     }> {
         const stackPaths = utils.getStackTracePaths();
+        console.log("here!!!!!!")
+        console.log(stackPaths);
         const rootFolder = stackPaths[0].substring(
             0,
             stackPaths[0].indexOf('node_modules')
         );
-        const bootstrapPath = ActionApp.bootstrapPath;
+        const bootstrapPath = ActionApp.activeApp.bootstrapPath;
         const relativeEntrypointPathFromRoot = __dirname.replace(
             rootFolder,
             ''
@@ -252,6 +259,7 @@ export class DockerExecutor extends Executor {
             .then((data) => data.Mounts)
             .catch((err) => {
                 //we don't care of an error in this case
+                console.log(err);
                 return;
             });
     }

@@ -1,7 +1,7 @@
 import { Cli } from '@wbce/services';
 import {
     Action,
-    ActionApp,
+    ActionRuntime,
     ActionState,
     Executor,
     Workflow,

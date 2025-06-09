@@ -40,7 +40,7 @@ catalogs:
       specifier: ^2.4.1
       version: 2.8.1
     tsx:
-      specifier: ^3.14.0
+      specifier: ^4.19.0
       version: 3.14.0
     typescript:
       specifier: ^5.8.3
@@ -135,6 +135,9 @@ importers:
       precinct:
         specifier: ^12.2.0
         version: 12.2.0
+      read-env:
+        specifier: ^2.0.0
+        version: 2.0.0
       winston:
         specifier: 'catalog:'
         version: 3.17.0
@@ -162,7 +165,7 @@ importers:
         version: 2.8.1
       tsx:
         specifier: 'catalog:'
-        version: 3.14.0
+        version: 4.19.4
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -223,6 +226,9 @@ importers:
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
+      tsx:
+        specifier: ^4.19.4
+        version: 4.19.4
       winston:
         specifier: 'catalog:'
         version: 3.17.0
@@ -254,9 +260,6 @@ importers:
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
-      tsx:
-        specifier: 'catalog:'
-        version: 3.14.0
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -1905,6 +1908,10 @@ packages:
 
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
+
+  '@types/camelcase@5.2.0':
+    resolution: {integrity: sha512-zhHaryYYUUsJ1h6Rq4hisPkljY7c2bkC5PFYQbom5fyKloGJEDK+wdsw2L4hnBwXr4plGjW6D/UVJBbNbOzVpQ==}
+    deprecated: This is a stub types definition. camelcase provides its own type definitions, so you do not need this installed.
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
@@ -4702,6 +4709,9 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  read-env@2.0.0:
+    resolution: {integrity: sha512-gCuo85JH2aWt23HVeFzUUhpLzCRtc9O0jjvpMDG/3vue2aOp7/XllAQjSyL8xGqBifGNYbnWLE0PAqi4AWMBlA==}
 
   read-pkg-up@3.0.0:
     resolution: {integrity: sha512-YFzFrVvpC6frF1sz8psoHDBGF7fLPc+llq/8NB43oagqWkx8ar5zYtsTORtOjw9W2RHLpWP+zTWwBvf1bCmcSw==}
@@ -8325,6 +8335,10 @@ snapshots:
       '@types/node': 22.14.1
       '@types/responselike': 1.0.3
 
+  '@types/camelcase@5.2.0':
+    dependencies:
+      camelcase: 6.3.0
+
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 22.14.1
@@ -11592,6 +11606,11 @@ snapshots:
 
   react-is@18.3.1: {}
 
+  read-env@2.0.0:
+    dependencies:
+      '@types/camelcase': 5.2.0
+      camelcase: 5.3.1
+
   read-pkg-up@3.0.0:
     dependencies:
       find-up: 2.1.0
@@ -12256,7 +12275,7 @@ snapshots:
   tsx@4.19.4:
     dependencies:
       esbuild: 0.25.0
-      get-tsconfig: 4.10.0
+      get-tsconfig: 4.8.1
     optionalDependencies:
       fsevents: 2.3.3
 

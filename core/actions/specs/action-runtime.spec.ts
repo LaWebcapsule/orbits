@@ -1,20 +1,20 @@
-import { Action, ActionApp } from '../index.js';
+import { Action, ActionRuntime } from '../index.js';
 
 export class TestAction extends Action {}
 
-export class ImportedApp extends ActionApp {
+export class ImportedApp extends ActionRuntime {
     declare = [TestAction];
 }
 
-export class ImportingApp extends ActionApp {
-    imports: (typeof ActionApp)[] = [ImportedApp];
+export class ImportingApp extends ActionRuntime {
+    imports: (typeof ActionRuntime)[] = [ImportedApp];
 }
 
 describe('action app', () => {
 
     describe('registerAction should work', function () {
         it('with permanentRef as array of strings', () => {
-            const app = new ActionApp();
+            const app = new ActionRuntime();
             const action = class testAction extends Action {};
             const expectedActionsRegistry = new Map();
             const expectedInvertedActionsRegistry = new Map();
@@ -33,7 +33,7 @@ describe('action app', () => {
         });
 
         it('with permanentRef as string', () => {
-            const app = new ActionApp();
+            const app = new ActionRuntime();
             const action = class testAction extends Action {};
             const expectedActionsRegistry = new Map();
             const expectedInvertedActionsRegistry = new Map();
@@ -51,7 +51,7 @@ describe('action app', () => {
         });
 
         it('with no permanentRef', () => {
-            const app = new ActionApp();
+            const app = new ActionRuntime();
             const action = class testAction extends Action {};
             const expectedActionsRegistry = new Map();
             const expectedInvertedActionsRegistry = new Map();
