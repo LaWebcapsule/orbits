@@ -8,7 +8,7 @@
 ## Classes
 
 - [Action](classes/Action.md)
-- [ActionApp](classes/ActionApp.md)
+- [ActionRuntime](classes/ActionRuntime.md)
 - [ActionCron](classes/ActionCron.md)
 - [ActionError](classes/ActionError.md)
 - [BreakingActionState](classes/BreakingActionState.md)
@@ -27,7 +27,7 @@
 
 ## Interfaces
 
-- [ActionAppConfig](interfaces/ActionAppConfig.md)
+- [ActionRuntimeConfig](interfaces/ActionRuntimeConfig.md)
 - [ActionSchemaInterface](interfaces/ActionSchemaInterface.md)
 - [AppDb](interfaces/AppDb.md)
 - [Step](interfaces/Step.md)

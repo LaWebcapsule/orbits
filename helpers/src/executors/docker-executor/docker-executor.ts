@@ -1,4 +1,4 @@
-import { Executor, Action, ActionApp, ActionState } from '@wbce/orbits-core';
+import { Executor, Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
 import { utils } from '@wbce/services';
 import { exec } from 'child_process';
 import Docker from 'dockerode';
@@ -62,7 +62,7 @@ export class DockerExecutor extends Executor {
                                         (err, res) =>
                                             err ? reject(err) : resolve(res),
                                         (event) =>
-                                            ActionApp.activeApp.logger.info(
+                                            ActionRuntime.activeRuntime.logger.info(
                                                 event
                                             )
                                     );
@@ -94,11 +94,11 @@ export class DockerExecutor extends Executor {
                     Binds: [
                         '/var/run/docker.sock:/var/run/docker.sock',
                         `${
-                            appPaths.primaryRootFolder || appPaths.rootFolder
+                            appPaths.primaryRootFolder || appPaths.rootFolder || ActionRuntime.activeRuntime.bootstrapPath
                         }:/app:ro`,
                         `${
                             appPaths.primaryCurrentFolder ||
-                            appPaths.currentFolder
+                            appPaths.currentFolder || ActionRuntime.activeRuntime.bootstrapPath
                         }/${executionContext.entrypoint}:/${
                             executionContext.entrypoint
                         }:ro`,
@@ -181,13 +181,8 @@ export class DockerExecutor extends Executor {
         relativeImportPathFromEntrypoint: string; //how to pass to 'entrypoint' to bootstap path
     }> {
         const stackPaths = utils.getStackTracePaths();
-        console.log("here!!!!!!")
-        console.log(stackPaths);
-        const rootFolder = stackPaths[0].substring(
-            0,
-            stackPaths[0].indexOf('node_modules')
-        );
-        const bootstrapPath = ActionApp.activeApp.bootstrapPath;
+        const rootFolder = path.dirname(ActionRuntime.activeRuntime.bootstrapPath);
+        const bootstrapPath = ActionRuntime.activeRuntime.bootstrapPath;
         const relativeEntrypointPathFromRoot = __dirname.replace(
             rootFolder,
             ''

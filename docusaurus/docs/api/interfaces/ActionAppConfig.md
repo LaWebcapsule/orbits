@@ -1,4 +1,4 @@
-# Interface: ActionAppConfig
+# Interface: ActionRuntimeConfig
 
 Defined in: [core/actions/src/app/action-app.ts:19](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/app/action-app.ts#L19)
 

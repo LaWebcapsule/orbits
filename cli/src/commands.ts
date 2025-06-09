@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 
 import {
     Action,
-    ActionApp,
+    ActionRuntime,
     ActionState,
 } from '@wbce/orbits-core';
 
@@ -49,12 +49,12 @@ const runOnActionDb = async (
     fn: (action: Action['dbDoc'] & any) => any
 ) => {
     try {
-        new ActionApp({
+        new ActionRuntime({
             db: { mongo: { url: database } },
             workers: { quantity: 0 },
         });
 
-        await ActionApp.waitForActiveApp;
+        await ActionRuntime.waitForActiveRuntime;
     } catch (error) {
         logErrorAndExit(
             `Cannot bootstrap Orbits app:\n${error}`,
@@ -62,7 +62,7 @@ const runOnActionDb = async (
         );
     }
 
-    ActionApp.activeApp.ActionModel.findOne({
+    ActionRuntime.activeRuntime.ActionModel.findOne({
         _id: actionId,
     })
         .then((action) => {
@@ -83,7 +83,7 @@ const runOnActionDb = async (
 };
 
 const viewAction = async (actionId: string, viewer: ActionsViewer) => {
-    await ActionApp.activeApp.ActionModel.find({
+    await ActionRuntime.activeRuntime.ActionModel.find({
         $or: [
             { _id: actionId },
             { 'definitionFrom.workflow.id': actionId },
@@ -130,12 +130,12 @@ const watchAction = async (
 };
 
 const processWatchCmd = async (actionId: string, opts: any) => {
-    new ActionApp({
+    new ActionRuntime({
         db: { mongo: { url: opts.database } },
         workers: { quantity: 0 },
     });
 
-    await ActionApp.waitForActiveApp;
+    await ActionRuntime.waitForActiveRuntime;
 
     watchAction(
         actionId,
@@ -159,7 +159,7 @@ const processRunCmd = async (
     }
 
     try {
-        new ActionApp({
+        new ActionRuntime({
             db: { mongo: { url: opts.database } },
             workers: {
                 quantity: 0,
@@ -167,7 +167,7 @@ const processRunCmd = async (
             },
         });
 
-        await ActionApp.waitForActiveApp;
+        await ActionRuntime.waitForActiveRuntime;
     } catch (error) {
         logErrorAndExit(
             `Cannot bootstrap Orbits app:\n${error}`,
@@ -217,7 +217,7 @@ const processRunCmd = async (
 
             if (opts.clean) {
                 process.stdout.write('Cleaning database... ');
-                await ActionApp.activeApp.ActionModel.deleteMany({
+                await ActionRuntime.activeRuntime.ActionModel.deleteMany({
                     filter: {
                         cli: true,
                         instance: cliInstanceUUID,

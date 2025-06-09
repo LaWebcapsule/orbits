@@ -46,37 +46,19 @@ export class MyAction extends Action{
   await Action.trackActionAsPromise(action, [ActionState.SUCCESS, ActionState.ERROR]);//this line is optional.
 ```
 
-#### Configure persistent storage
 
-You will need a mongodb connection to store the state of your action.
-Once you have a valid mongodb url, please create an `ActionApp` with the mongodb connection string.
+:::info
+**Configure persistent storage**
 
-```typescript title='src/orbits/orbi.ts'
-const db = {
-    protocol: 'mongodb+srv',
-    url: process.env['MONGO_URL'],
-    name: 'orbits-test',
-    connectQsParams: '?retryWrites=true&w=majority',
-};
-
-new ActionApp({
-    db: {
-        mongo: {
-            url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
-            opts: {},
-        },
-    }
-})
+To store the state of your actions, a connection to a database is required.
+Currently, only MongoDB is supported.
+By default, Orbits attempts to connect to a local MongoDB instance (`localhost`).
+To use a remote MongoDB instance, provide a full MongoDB connection URI via the `ORBITS_DB__MONGO__URL` environment variable.
+**Example** : 
+```bash
+export ORBITS_DB__MONGO__URL='mongodb+srv://orbits:XXXX@myatlas-cluster.mongodb.net/orbits-test?retryWrites=true&w=majority'
 ```
-#### Hook : ensure your app is set
-
-```typescript  title='src/index.ts'
-import {ActionApp} from "@wbce/orbits-core"
-import "./orbits/action-app.ts"
-
-
-    await ActionApp.waitForActiveApp;
-```
+:::
 
 ## Workflow: a chain of actions
 
@@ -104,9 +86,9 @@ export class MyWorkflow extends Workflow{
 }
 ```
 
-Of course, you don't need this to display hello name, but this is for the example.
+Of course, you don’t need this level of complexity just to display “hello, name” — this is simply for demonstration purposes.
 Here, using `this.do` we ensure that, for each execution of `MyWorkflow`, the "hello" step is run once and only once.
-This allows to apply the SEGA principle.
+This approach aligns with the [SAGA principle](https://microservices.io/patterns/data/saga.html).
 
 ### Consume your workflow
 

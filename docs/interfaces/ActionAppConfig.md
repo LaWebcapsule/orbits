@@ -1,6 +1,6 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionAppConfig
+[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionRuntimeConfig
 
-# Interface: ActionAppConfig
+# Interface: ActionRuntimeConfig
 
 Describes how the app can be configured.
 
@@ -8,9 +8,9 @@ Describes how the app can be configured.
 
 ### Properties
 
-- [db](ActionAppConfig.md#db)
-- [logger](ActionAppConfig.md#logger)
-- [workers](ActionAppConfig.md#workers)
+- [db](ActionRuntimeConfig.md#db)
+- [logger](ActionRuntimeConfig.md#logger)
+- [workers](ActionRuntimeConfig.md#workers)
 
 ## Properties
 

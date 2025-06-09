@@ -41,7 +41,7 @@ export class MyAction extends Action{
 ## Configure persistent storage
 
 You will need a mongodb connection to store the state of your action.
-Once you have a valid mongodb url, please create an `ActionApp` with the mongodb connection string.
+Once you have a valid mongodb url, please create an `ActionRuntime` with the mongodb connection string.
 
 ```typescript title='src/orbits/action-app.ts'
 const db = {
@@ -51,7 +51,7 @@ const db = {
     connectQsParams: '?retryWrites=true&w=majority',
 };
 
-new ActionApp({
+new ActionRuntime({
     db: {
         mongo: {
             url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
@@ -99,7 +99,7 @@ app.get('/hello-world', async (req: Request, res: Response) => {
 
 ```typescript title='src/server.ts'
 import express, { Request, Response } from 'express';
-import {Action, ActionApp, ActionState} from "@wbce/orbits-core"
+import {Action, ActionRuntime, ActionState} from "@wbce/orbits-core"
 
 const app = express();
 const port = 3000;
@@ -113,7 +113,7 @@ app.get('/hello-world', async (req: Request, res: Response) => {
 
 app.listen(port, async () => {
   console.log(`Server is running at http://localhost:${port}`);
-  await ActionApp.activeApp;
+  await ActionRuntime.activeRuntime;
   console.log(`orbits app is able to register actions`)
 });
 ``` 

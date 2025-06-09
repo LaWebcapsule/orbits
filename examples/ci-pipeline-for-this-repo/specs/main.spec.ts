@@ -1,4 +1,4 @@
-import { ActionApp } from '@wbce/orbits-core';
+import { ActionRuntime } from '@wbce/orbits-core';
 import jasmin from 'jasmine';
 let j = new jasmin();
 
@@ -14,10 +14,10 @@ j.loadConfig({
 
 process.env['mongo_db'] = 'example-test';
 import('./..')
-    .then((main) => ActionApp.waitForActiveApp)
+    .then((main) => ActionRuntime.waitForActiveRuntime)
     .then(() => {
-        const activeApp = ActionApp.getActiveApp();
-        activeApp.ActionModel.remove({});
+        const activeRuntime = ActionRuntime.getActiveRuntime();
+        activeRuntime.ActionModel.remove({});
     })
     .then(() => {
         j.execute();

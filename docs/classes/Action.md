@@ -170,7 +170,7 @@ ___
 
 ### app
 
-• **app**: [`ActionApp`](ActionApp.md)
+• **app**: [`ActionRuntime`](ActionRuntime.md)
 
 #### Defined in
 

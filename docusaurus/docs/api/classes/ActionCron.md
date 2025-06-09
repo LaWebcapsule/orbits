@@ -32,7 +32,7 @@ Defined in: [core/actions/src/action-job.ts:10](https://github.com/LaWebcapsule/
 
 ### app
 
-> **app**: [`ActionApp`](ActionApp.md) = `ActionApp.activeApp`
+> **app**: [`ActionRuntime`](ActionRuntime.md) = `ActionRuntime.activeRuntime`
 
 Defined in: [core/actions/src/action-job.ts:11](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/action-job.ts#L11)
 

@@ -1,6 +1,6 @@
-import { ActionApp } from "@wbce/orbits-core";
+import { ActionRuntime } from "@wbce/orbits-core";
 
-new ActionApp({
+new ActionRuntime({
     workers: {
         quantity: 1,
     },

@@ -1,4 +1,4 @@
-import { Action, ActionApp, bootstrapApp } from '@wbce/orbits-core';
+import { Action, ActionRuntime, bootstrapApp } from '@wbce/orbits-core';
 import { CdkDeployAction, CdkHelperApp } from '@wbce/orbits-fuel';
 import {
     CdkBootstrapFrontStack,
@@ -13,14 +13,14 @@ import { CiPipeline } from './src/main-workflow';
         },
     },
 })
-export class ExampleApp extends ActionApp {
+export class ExampleApp extends ActionRuntime {
     declare = [CiPipeline, CdkDeployFrontStack, CdkBootstrapFrontStack];
-    imports: (typeof ActionApp)[] = [CdkHelperApp];
+    imports: (typeof ActionRuntime)[] = [CdkHelperApp];
 }
 
-ActionApp.waitForActiveApp.then(() => {
+ActionRuntime.waitForActiveRuntime.then(() => {
     console.log('waitforactive app');
-    ActionApp.activeApp.ActionModel.findOne({
+    ActionRuntime.activeRuntime.ActionModel.findOne({
         filter: {
             principalWorkflow: true,
         },

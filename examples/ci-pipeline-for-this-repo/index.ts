@@ -1,4 +1,4 @@
-import { Action, ActionApp, bootstrapApp } from '@wbce/orbits-core';
+import { Action, ActionRuntime, bootstrapApp } from '@wbce/orbits-core';
 import { HelperApp } from '@wbce/orbits-fuel';
 import { PublishNpmPackage } from './src/actions/publish-npm-package';
 import { RunTest } from './src/actions/run-tests';
@@ -14,14 +14,14 @@ const url = `mongodb://localhost:27017/${process.env['mongo_database'] || 'examp
         },
     },
 })
-export class ExampleApp extends ActionApp {
+export class ExampleApp extends ActionRuntime {
     declare = [PublishNpmPackage, RunTest, UpdateNpmVersions, MasterWorkflow];
     imports = [HelperApp];
 }
 
-ActionApp.waitForActiveApp.then(() => {
+ActionRuntime.waitForActiveRuntime.then(() => {
     console.log('waitforactive app');
-    ActionApp.activeApp.ActionModel.findOne({
+    ActionRuntime.activeRuntime.ActionModel.findOne({
         filter: {
             main: true,
         },

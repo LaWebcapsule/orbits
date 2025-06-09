@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState } from "@wbce/orbits-core";
+import { Action, ActionRuntime, ActionState } from "@wbce/orbits-core";
 import { GreetingResource } from "./greetings-resource.ts";
 
 
@@ -10,7 +10,7 @@ const db = {
 };
 let dbOpts = {};
 
-const app = new ActionApp({
+const app = new ActionRuntime({
     db: {
         mongo: {
             url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
@@ -19,7 +19,7 @@ const app = new ActionApp({
     },
 })
 
-ActionApp.activeApp.waitForBootstrap.then(async ()=>{
+ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
     const greetingOfTheDay = new GreetingResource().setArgument({
         name: "John Doe",
         date: String(new Date().toISOString().split("T")[0])

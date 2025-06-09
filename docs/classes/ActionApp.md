@@ -1,61 +1,61 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionApp
+[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionRuntime
 
-# Class: ActionApp
+# Class: ActionRuntime
 
 ## Hierarchy
 
-- **`ActionApp`**
+- **`ActionRuntime`**
 
-  ↳ [`CoreActionApp`](CoreActionApp.md)
+  ↳ [`CoreActionRuntime`](CoreActionRuntime.md)
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](ActionApp.md#constructor)
+- [constructor](ActionRuntime.md#constructor)
 
 ### Properties
 
-- [ActionModel](ActionApp.md#actionmodel)
-- [actionFilter](ActionApp.md#actionfilter)
-- [actionsRegistry](ActionApp.md#actionsregistry)
-- [db](ActionApp.md#db)
-- [declare](ActionApp.md#declare)
-- [imports](ActionApp.md#imports)
-- [invertedActionsRegistry](ActionApp.md#invertedactionsregistry)
-- [logger](ActionApp.md#logger)
-- [numberOfWorker](ActionApp.md#numberofworker)
-- [activeApp](ActionApp.md#activeapp)
-- [appImportedRegistry](ActionApp.md#appimportedregistry)
-- [bootstrapPath](ActionApp.md#bootstrappath)
-- [rejectBootstrap](ActionApp.md#rejectbootstrap)
-- [resolveBootstrap](ActionApp.md#resolvebootstrap)
-- [waitForActiveApp](ActionApp.md#waitforactiveapp)
+- [ActionModel](ActionRuntime.md#actionmodel)
+- [actionFilter](ActionRuntime.md#actionfilter)
+- [actionsRegistry](ActionRuntime.md#actionsregistry)
+- [db](ActionRuntime.md#db)
+- [declare](ActionRuntime.md#declare)
+- [imports](ActionRuntime.md#imports)
+- [invertedActionsRegistry](ActionRuntime.md#invertedactionsregistry)
+- [logger](ActionRuntime.md#logger)
+- [numberOfWorker](ActionRuntime.md#numberofworker)
+- [activeRuntime](ActionRuntime.md#activeruntime)
+- [appImportedRegistry](ActionRuntime.md#appimportedregistry)
+- [bootstrapPath](ActionRuntime.md#bootstrappath)
+- [rejectBootstrap](ActionRuntime.md#rejectbootstrap)
+- [resolveBootstrap](ActionRuntime.md#resolvebootstrap)
+- [waitForActiveRuntime](ActionRuntime.md#waitforactiveruntime)
 
 ### Accessors
 
-- [boostrapPath](ActionApp.md#boostrappath)
+- [boostrapPath](ActionRuntime.md#boostrappath)
 
 ### Methods
 
-- [bootstrap](ActionApp.md#bootstrap)
-- [getActionFromRegistry](ActionApp.md#getactionfromregistry)
-- [getActionRefFromRegistry](ActionApp.md#getactionreffromregistry)
-- [import](ActionApp.md#import)
-- [registerAction](ActionApp.md#registeraction)
-- [getActiveApp](ActionApp.md#getactiveapp)
+- [bootstrap](ActionRuntime.md#bootstrap)
+- [getActionFromRegistry](ActionRuntime.md#getactionfromregistry)
+- [getActionRefFromRegistry](ActionRuntime.md#getactionreffromregistry)
+- [import](ActionRuntime.md#import)
+- [registerAction](ActionRuntime.md#registeraction)
+- [getActiveRuntime](ActionRuntime.md#getactiveruntime)
 
 ## Constructors
 
 ### constructor
 
-• **new ActionApp**(`opts?`)
+• **new ActionRuntime**(`opts?`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `opts?` | [`ActionAppConfig`](../interfaces/ActionAppConfig.md) |
+| `opts?` | [`ActionRuntimeConfig`](../interfaces/ActionRuntimeConfig.md) |
 
 #### Defined in
 
@@ -118,7 +118,7 @@ ___
 
 ### imports
 
-• **imports**: typeof [`ActionApp`](ActionApp.md)[] = `[]`
+• **imports**: typeof [`ActionRuntime`](ActionRuntime.md)[] = `[]`
 
 #### Defined in
 
@@ -156,9 +156,9 @@ ___
 
 ___
 
-### activeApp
+### activeRuntime
 
-▪ `Static` **activeApp**: [`ActionApp`](ActionApp.md)
+▪ `Static` **activeRuntime**: [`ActionRuntime`](ActionRuntime.md)
 
 #### Defined in
 
@@ -206,9 +206,9 @@ ___
 
 ___
 
-### waitForActiveApp
+### waitForActiveRuntime
 
-▪ `Static` **waitForActiveApp**: `Promise`<`unknown`\>
+▪ `Static` **waitForActiveRuntime**: `Promise`<`unknown`\>
 
 #### Defined in
 
@@ -324,13 +324,13 @@ Register action in App registries.
 
 ___
 
-### getActiveApp
+### getActiveRuntime
 
-▸ `Static` **getActiveApp**(): [`ActionApp`](ActionApp.md)
+▸ `Static` **getActiveRuntime**(): [`ActionRuntime`](ActionRuntime.md)
 
 #### Returns
 
-[`ActionApp`](ActionApp.md)
+[`ActionRuntime`](ActionRuntime.md)
 
 #### Defined in
 

@@ -1,4 +1,4 @@
-import { Action, ActionApp, ActionState, Workflow } from '../index';
+import { Action, ActionRuntime, ActionState, Workflow } from '../index';
 
 export class TestActionWithWatcherEnding extends Action {
     main() {
@@ -155,6 +155,6 @@ export class TestRollBack extends Workflow {
     }
 }
 
-export class WorkflowApp extends ActionApp {
+export class WorkflowApp extends ActionRuntime {
     declare = [TestRollBack, TestActionWithRollBack, BasicWorkflow];
 }

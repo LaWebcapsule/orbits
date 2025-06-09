@@ -3,7 +3,7 @@ import { accessSync } from 'fs';
 import path from 'path';
 import winston from 'winston';
 
-import { Action, ActionApp, bootstrapApp } from '@wbce/orbits-core';
+import { Action, ActionRuntime, bootstrapApp } from '@wbce/orbits-core';
 
 import { DEFAULT_ACTION, DEFAULT_APP, exitCodes } from './commands.js';
 
@@ -42,7 +42,7 @@ export const runAction = async (
     cliInstanceUUID: string,
     logFile: string
 ) => {
-    let AppConstructor: typeof ActionApp;
+    let AppConstructor: typeof ActionRuntime;
     let ActionConstructor: typeof Action;
     let module: any;
 
@@ -97,7 +97,7 @@ export const runAction = async (
             },
         })(AppConstructor);
 
-        await ActionApp.waitForActiveApp;
+        await ActionRuntime.waitForActiveRuntime;
     } catch (error) {
         throwError(
             `Cannot bootstrap Orbits app:\n${error}`,
@@ -105,7 +105,7 @@ export const runAction = async (
         );
     }
 
-    ActionApp.activeApp.ActionModel.findOne({
+    ActionRuntime.activeRuntime.ActionModel.findOne({
         actionRef: ActionConstructor.permanentRef,
         filter: { cli: true, cliInstance: cliInstanceUUID },
     })

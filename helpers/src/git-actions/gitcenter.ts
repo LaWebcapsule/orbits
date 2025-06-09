@@ -1,4 +1,4 @@
-import { ActionApp } from '@wbce/orbits-core';
+import { ActionRuntime } from '@wbce/orbits-core';
 import { AddGitWebHookAction, WaitForNewCommits } from './gitactions.js';
 import { GithubApi } from './github.js';
 import { GitlabApi } from './gitlab.js';
@@ -38,6 +38,6 @@ export const gitCenter = {
 gitCenter.registry.set(gitProviders.GITHUB, GithubApi);
 gitCenter.registry.set(gitProviders.GITLAB, GitlabApi);
 
-export class GitHelperApp extends ActionApp {
+export class GitHelperApp extends ActionRuntime {
     declare = [AddGitWebHookAction, WaitForNewCommits];
 }

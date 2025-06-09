@@ -2,7 +2,7 @@ import {
     AwsCdkCli,
     ICloudAssemblyDirectoryProducer,
 } from '@aws-cdk/cli-lib-alpha';
-import { Action, ActionApp, ActionState } from '@wbce/orbits-core';
+import { Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
 import { Cli } from '@wbce/services';
 import * as cdk from 'aws-cdk-lib';
 import { existsSync, readFileSync } from 'fs';
@@ -254,7 +254,7 @@ export class CdkDestroyAction extends CdkAction {
     };
 }
 
-export class CdkHelperApp extends ActionApp {
+export class CdkHelperApp extends ActionRuntime {
     declare = [
         CdkBoostrapAction,
         CdkBootstrapAction,

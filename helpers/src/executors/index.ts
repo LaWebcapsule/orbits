@@ -1,4 +1,4 @@
-import { ActionApp } from '@wbce/orbits-core';
+import { ActionRuntime } from '@wbce/orbits-core';
 import { DockerBuildAction } from './docker-executor/docker-build-action.js';
 
 export * from './docker-executor/docker-executor.js';

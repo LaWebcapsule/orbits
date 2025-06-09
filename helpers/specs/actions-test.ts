@@ -1,6 +1,6 @@
 import {
     Action,
-    ActionApp,
+    ActionRuntime,
     ActionState,
 } from '@wbce/orbits-core';
 import { Cli } from '@wbce/services';

@@ -216,11 +216,11 @@ export class ActionRuntime {
         this.resolveBootstrap = resolve;
     });
     bootstrap() {
-        const isActiveApp = ActionRuntime.activeRuntime === this;
-        if (isActiveApp) {
+        const isActiveRuntime = ActionRuntime.activeRuntime === this;
+        if (isActiveRuntime) {
             setLogger(this);
         }
-        if (isActiveApp && !(this.opts?.autostart === false)) {
+        if (isActiveRuntime && !(this.opts?.autostart === false)) {
             setDbConnection(this)
             return this.recursiveImport(this.bootstrapPath)
                 .then(() => {
@@ -250,13 +250,13 @@ export class ActionRuntime {
         new ActionRuntime(config);
     }
 
-    static async getActiveApp(
+    static async getActiveRuntime(
         opts = { timeout: 60 * 1000 }
     ): Promise<ActionRuntime> {
         return new Promise((resolve, reject) => {
-            let activeApp, isResolved;
+            let activeRuntime, isResolved;
             setTimeout(() => {
-                if (!activeApp && !isResolved) {
+                if (!activeRuntime && !isResolved) {
                     isResolved = true;
                     reject(
                         new ActionError('no active app found ; reached timeout')

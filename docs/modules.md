@@ -12,11 +12,11 @@
 ### Classes
 
 - [Action](classes/Action.md)
-- [ActionApp](classes/ActionApp.md)
+- [ActionRuntime](classes/ActionRuntime.md)
 - [ActionCron](classes/ActionCron.md)
 - [ActionError](classes/ActionError.md)
 - [BreakingActionState](classes/BreakingActionState.md)
-- [CoreActionApp](classes/CoreActionApp.md)
+- [CoreActionRuntime](classes/CoreActionRuntime.md)
 - [Executor](classes/Executor.md)
 - [RejectAction](classes/RejectAction.md)
 - [ResolveAction](classes/ResolveAction.md)
@@ -27,7 +27,7 @@
 
 ### Interfaces
 
-- [ActionAppConfig](interfaces/ActionAppConfig.md)
+- [ActionRuntimeConfig](interfaces/ActionRuntimeConfig.md)
 - [ActionSchemaInterface](interfaces/ActionSchemaInterface.md)
 - [AppDb](interfaces/AppDb.md)
 - [Step](interfaces/Step.md)
@@ -63,7 +63,7 @@ Bootstrap an app, used as decorator.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `opts` | [`ActionAppConfig`](interfaces/ActionAppConfig.md) \| () => [`ActionAppConfig`](interfaces/ActionAppConfig.md) \| `Promise`<[`ActionAppConfig`](interfaces/ActionAppConfig.md)\> | `ActionAppConfig \| (() => (ActionAppConfig\|Promise<ActionAppConfig>))` Either an object of class `ActionAppConfig` or a callback returning a Promise that return an `ActionAppConfig`. |
+| `opts` | [`ActionRuntimeConfig`](interfaces/ActionRuntimeConfig.md) \| () => [`ActionRuntimeConfig`](interfaces/ActionRuntimeConfig.md) \| `Promise`<[`ActionRuntimeConfig`](interfaces/ActionRuntimeConfig.md)\> | `ActionRuntimeConfig \| (() => (ActionRuntimeConfig\|Promise<ActionRuntimeConfig>))` Either an object of class `ActionRuntimeConfig` or a callback returning a Promise that return an `ActionRuntimeConfig`. |
 
 #### Returns
 

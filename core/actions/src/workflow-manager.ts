@@ -325,7 +325,7 @@ export class Workflow extends Action {
         if(this.bag.registeredActions.find((descriptor)=>{
             return descriptor.ref === ref
         })){
-            //ActionApp.activeApp.logger.warning("your workflow has the same ref multiple times, which can be tricky. See docs for more information.")
+            //ActionRuntime.activeRuntime.logger.warning("your workflow has the same ref multiple times, which can be tricky. See docs for more information.")
         }
     }
 

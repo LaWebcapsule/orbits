@@ -1,17 +1,17 @@
 ---
-title: Application
+title: Runtime
 sidebar_position: 4
 ---
-# Application documentation
+# Runtime documentation
 
-Application manages connection to your database and serves as the central bootstrap point for your Orbits application.
+Runtime manages connection to your database and serves as the central bootstrap point for your Orbits runtime.
 
-## Bootstrapping an Application
+## Bootstrapping a runtime
 
-To initialize your application, create a new `ActionApp` instance with your database configuration:
+To initialize your runtime, create a new `ActionRuntime` instance with your database configuration:
 
 ```typescript
-new ActionApp({
+new ActionRuntime({
     db: {
         mongo: {
             url: 'mongodb://localhost:27017/example'
@@ -20,15 +20,15 @@ new ActionApp({
 })
 ```
 
-The `ActionApp` constructor requires a database configuration object. Currently, MongoDB is supported through the `mongo` property, which accepts a connection URL.
+The `ActionRuntime` constructor requires a database configuration object. Currently, MongoDB is supported through the `mongo` property, which accepts a connection URL.
 
 ### Waiting for Bootstrap Completion
 
-After instantiating the application, wait for the bootstrapping process to complete before creating Actions or Resources:
-To wait for the end of the bootstrapping process, you can consume the `ActionApp.waitForActiveApp` promise. Then, you are ready to save your first Action !
+After instantiating the runtime, wait for the bootstrapping process to complete before creating Actions or Resources:
+To wait for the end of the bootstrapping process, you can consume the `ActionRuntime.waitForActiveRuntime` promise. Then, you are ready to save your first Action !
 
 ```typescript
-ActionApp.waitForActiveApp.then(() => {
+ActionRuntime.activeRuntime.waitForActiveRuntime.then(() => {
     const action = new MyAction();
     action.save();
 })
@@ -40,7 +40,7 @@ ActionApp.waitForActiveApp.then(() => {
 Be cautious when creating Actions directly after bootstrap. If multiple processes run this script simultaneously or if the same script is run multiple times, duplicate Actions will be created. This is typically not the desired behavior.Instead, use Resources, which properly manage their lifecycle hooks:
 
 ```typescript
-ActionApp.waitForActiveApp.then(()=>{
+ActionRuntime.waitForActiveRuntime.then(()=>{
     const resource = new MyResource();
     resource.save();
 })
@@ -55,9 +55,9 @@ In general:
 
 ### Recommended Project Structure
 
-You can bootstrap the application anywhere you want in your codebase.
+You can bootstrap the runtime anywhere you want in your codebase.
 However, we recomend using this pattern : 
-- create an `orbi.ts` file at the root of your orbit application folder
+- create an `orbi.ts` file at the root of your orbit runtime folder
 - instanciante the app in `orbit.ts`
 - import your `orbi.ts` file from your `index.ts`
 
@@ -74,10 +74,10 @@ my-project/
 
 #### Bootstrap file (`orbi.ts`)
 
-Create an `orbi.ts` file in your orbits directory to contain the application initialization:
+Create an `orbi.ts` file in your orbits directory to contain the runtime initialization:
 
 ```typescript title='src/orbits/orbi.ts'
-new ActionApp({
+new ActionRuntime({
     db: {
         mongo: {
             url: 'mongodb://localhost:27017/example'
@@ -88,17 +88,17 @@ new ActionApp({
 
 #### Main entrypoint (`index.ts`)
 
-Import the bootstrap file in your main entry point and wait for the application to be ready:
+Import the bootstrap file in your main entry point and wait for the runtime to be ready:
 
 ```typescript title='src/index.ts'
 import './orbits/orbi.js'
-import { ActionApp } from '@wbce/orbits-core'
+import { ActionRuntime } from '@wbce/orbits-core'
 
-// Your application context
+// Your runtime context
 async function main() {
-    await ActionApp.waitForActiveApp
+    await ActionRuntime.waitForActiveRuntime
     
-    // Your application logic here
+    // Your runtime logic here
 }
 
 main().catch(console.error)
@@ -107,13 +107,13 @@ main().catch(console.error)
 
 ### Ensuring Action Discoverability
 
-For complex applications (e.g. using executors), ensure your Actions are discoverable by the application through proper import chains.
+For complex runtimes (e.g. using executors), ensure your Actions are discoverable by the runtime through proper import chains.
 You have two choice.
 
 
 #### Method 1: Recursive import
 
-Structure your imports so the application can discover all Actions through the dependency chain:
+Structure your imports so the runtime can discover all Actions through the dependency chain:
 
 ```typescript title='src/orbits/my-action.ts'
 //ensure you export the action
@@ -135,7 +135,7 @@ export class MyWorkflow extends Workflow{
 // Import workflow, which imports action, ensuring discoverability
 import "./my-workflow.ts"
 //...
-new ActionApp({
+new ActionRuntime({
     db: {
         mongo: {
             url: 'mongodb://localhost:27017/example'
@@ -157,7 +157,7 @@ class MySecondAction extends Action {
 export class MyWorkflow extends Workflow {
    define() {
        // ...something
-       await this.do("second-step", new MySecondAction()); // ❌ MySecondAction is not exported, so it won't be registered in the application catalog
+       await this.do("second-step", new MySecondAction()); // ❌ MySecondAction is not exported, so it won't be registered in the runtime catalog
    }
 }
 ```
@@ -173,12 +173,12 @@ Alternatively, you can explicitly declare all Actions and Workflows in your boot
 import { MyAction } from "./my-action.ts"
 import { MyWorkflow } from "./my-workflow.ts"
 
-export class MyApp extends ActionApp {
+export class MyApp extends ActionRuntime {
    declare = [MyAction, MyWorkflow]
    register = [
        // You can register other apps here
-       // ActionApp is included by default, shown here for example
-       ActionApp
+       // ActionRuntime is included by default, shown here for example
+       ActionRuntime
    ]
 }
 ```
@@ -189,13 +189,13 @@ Must remember to add new Actions/Workflows to the declare array
 
 ## Under the hood
 
-### ActionApp and Actions Catalog
+### ActionRuntime and Actions Catalog
 
-ActionApp maintains two special properties: `actionsRegistry` and `invertedActionsRegistry`.
+ActionRuntime maintains two special properties: `actionsRegistry` and `invertedActionsRegistry`.
 
 #### Actions Registry
 
-The `actionsRegistry` serves as the catalog of all `Actions` available in your application. This registry is crucial for the application's ability to execute workflows and actions dynamically.
+The `actionsRegistry` serves as the catalog of all `Actions` available in your runtime. This registry is crucial for the runtime's ability to execute workflows and actions dynamically.
 
 
 #### How Action Resolution Works
@@ -211,11 +211,11 @@ When a worker encounters a workflow in a pending state or an action waiting for 
 
 #### Why Action Discovery Matters
 
-If ActionApp cannot discover your action constructor during bootstrap, the following problems occur:
+If ActionRuntime cannot discover your action constructor during bootstrap, the following problems occur:
 
 - The action won't be added to the `actionsRegistry`
 - Workers cannot resolve database references to action constructors
 - Runtime errors are thrown when attempting to execute the action
 - Workflows that depend on the action will fail
 
-This is why proper action registration through exports and imports is essential for application functionality.
+This is why proper action registration through exports and imports is essential for runtime functionality.
