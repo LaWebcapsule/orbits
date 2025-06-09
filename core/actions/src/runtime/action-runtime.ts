@@ -101,7 +101,6 @@ export class ActionRuntime {
         this.bootstrapPath = opts?.entrypoint;
         if(!opts?.entrypoint){
             this.bootstrapPath = process.argv[1];
-            console.log(this.bootstrapPath);
         };
         this.bootstrap();
         global.orbitsRuntimeEvent.emit('runtime', this);

@@ -35,9 +35,7 @@ export function setDbConnection(runtime: ActionRuntime) {
         );
         return;
     }
-    console.log("here!!!!!")
-    const conn = mongoose
-    .createConnection(runtime.db.mongo.url!, runtime.db.mongo.opts);
+    const conn = mongoose.createConnection(runtime.db.mongo.url!, runtime.db.mongo.opts);
     runtime.db.mongo.conn = conn;
     runtime.ActionModel = conn.model<ActionSchemaInterface>(
         'Action',
