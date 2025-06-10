@@ -10,7 +10,8 @@
     "license": "ISC",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "prettier --write --ignore-unknown **/*.ts",
+        "format": "prettier --check --ignore-unknown **/*.ts",
+        "format:fix": "prettier --write --ignore-unknown **/*.ts",
         "build": "npx tsc",
         "dev": "npx tsc --watch",
         "publish-package": "pnpm run build && pnpm publish --access public"
