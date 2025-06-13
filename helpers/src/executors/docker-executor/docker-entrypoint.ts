@@ -1,4 +1,4 @@
-import { ActionRuntime, Action } from '@wbce/orbits-core';
+import { Action, ActionRuntime } from '@wbce/orbits-core';
 
 const params = {
     bootstrapPath: process.argv[2],

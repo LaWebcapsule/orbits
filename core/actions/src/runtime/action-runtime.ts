@@ -1,18 +1,17 @@
-import { utils } from '@wbce/services';
-import mongoose, { set } from 'mongoose';
+import EventEmitter from 'events';
+import { resolve } from 'import-meta-resolve';
+import mongoose from 'mongoose';
 import path from 'path';
 import precinct from 'precinct';
+import { pathToFileURL } from 'url';
 import * as winston from 'winston';
 import { Action, ActionSchemaInterface } from '../../index.js';
 import { ActionCron } from '../action-job.js';
 import { ActionError } from '../error/error.js';
 import { ResourceSchemaInterface } from '../models/resource.js';
 import { RuntimeDb, setDbConnection } from './db-connection.js';
-import { defaultLogger, setLogger } from './logger.js';
-import { pathToFileURL } from 'url';
-import {resolve} from 'import-meta-resolve';
 import { getEnv } from './get-env.js';
-import EventEmitter from 'events';
+import { defaultLogger, setLogger } from './logger.js';
 
 /**
  * Describes how the runtime can be configured.
@@ -94,14 +93,14 @@ export class ActionRuntime {
             ActionRuntime.activeRuntime = this;
         }
         ActionRuntime.runtimes.push(this);
-        global.orbitsRuntimes = [...global.orbitsRuntimes || [], this];
-        if(!global.orbitsRuntimeEvent){
+        global.orbitsRuntimes = [...(global.orbitsRuntimes || []), this];
+        if (!global.orbitsRuntimeEvent) {
             global.orbitsRuntimeEvent = new EventEmitter();
         }
         this.bootstrapPath = opts?.entrypoint;
-        if(!opts?.entrypoint){
+        if (!opts?.entrypoint) {
             this.bootstrapPath = process.argv[1];
-        };
+        }
         this.bootstrap();
         global.orbitsRuntimeEvent.emit('runtime', this);
     }
@@ -133,7 +132,7 @@ export class ActionRuntime {
         let [ref, ...previousRefs] = Array.isArray(action.permanentRef)
             ? action.permanentRef
             : [action.permanentRef];
-        return ref || action.name; 
+        return ref || action.name;
     }
 
     async scanModuleImport(moduleImport) {
@@ -170,11 +169,11 @@ export class ActionRuntime {
                         pathFile.replace('.js', '.ts'),
                         {
                             ts: {
-                                skipTypeImports: true
+                                skipTypeImports: true,
                             },
                             tsx: {
-                                skipTypeImports: true
-                            }
+                                skipTypeImports: true,
+                            },
                         } as any
                     );
                 } catch (err2) {
@@ -203,7 +202,7 @@ export class ActionRuntime {
             } else {
                 //import an npm module
                 const url = await resolve(file, pathToFileURL(pathFile) as any);
-                const moduleImport = await import(url);                 
+                const moduleImport = await import(url);
                 this.scanModuleImport(moduleImport);
             }
         }
@@ -221,7 +220,7 @@ export class ActionRuntime {
             setLogger(this);
         }
         if (isActiveRuntime && !(this.opts?.autostart === false)) {
-            setDbConnection(this)
+            setDbConnection(this);
             return this.recursiveImport(this.bootstrapPath)
                 .then(() => {
                     for (let i = 0; i < this.numberOfWorker; i++) {
@@ -233,11 +232,11 @@ export class ActionRuntime {
                     ActionRuntime.resolveBootstrap();
                 });
         } else {
-            return this.recursiveImport(this.bootstrapPath).then(()=>{
+            return this.recursiveImport(this.bootstrapPath).then(() => {
                 return ActionRuntime.waitForActiveRuntime.then(() => {
                     this.resolveBootstrap();
                 });
-            }) 
+            });
         }
     }
 

@@ -11,9 +11,6 @@ j.loadConfig({
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 
 ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
-        console.log('launching the tests');
-        j.execute();
+    console.log('launching the tests');
+    j.execute();
 });
-
-
-

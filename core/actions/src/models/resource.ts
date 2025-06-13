@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import { errorCodes } from '../error/errorcodes.js';
-import { ActionError } from '../error/error.js';
 
 export enum ResourceState {
     /**
@@ -19,38 +17,40 @@ export enum ResourceState {
     REVERTED,
 }
 
-export interface ResourceSchemaInterface<
-> extends mongoose.Document {
-    identity : string,
-    actionRef: string,
-    version : string,
-    locks: [{
-        name: String
-    }]
-    output : any,
+export interface ResourceSchemaInterface<>extends mongoose.Document {
+    identity: string;
+    actionRef: string;
+    version: string;
+    locks: [
+        {
+            name: String;
+        },
+    ];
+    output: any;
     cycle: {
-        frequency: number
-    },
-    info: any,
+        frequency: number;
+    };
+    info: any;
 }
 
 export const resourceSchema = new mongoose.Schema(
     {
-        identity: {type : String},
+        identity: { type: String },
         actionRef: String,
-        locks: [{
-            name: String
-        }],
-        version : String,
+        locks: [
+            {
+                name: String,
+            },
+        ],
+        version: String,
         cycle: {
             frequency: {
                 type: Number,
-                default: 60*60*1000
-            }
+                default: 60 * 60 * 1000,
+            },
         },
-        output : { type: mongoose.Schema.Types.Mixed, default: {} },
-        info : { type: mongoose.Schema.Types.Mixed, default: {} },
-
+        output: { type: mongoose.Schema.Types.Mixed, default: {} },
+        info: { type: mongoose.Schema.Types.Mixed, default: {} },
     },
     {
         timestamps: true,
@@ -58,14 +58,13 @@ export const resourceSchema = new mongoose.Schema(
     }
 );
 
-
 resourceSchema.index(
-    { identity: 1, actionRef: 1},
+    { identity: 1, actionRef: 1 },
     {
-      unique: true,
-      partialFilterExpression: {
-        identity: { $exists: true },
-        generatorCount: { $exists: true }
-      }
+        unique: true,
+        partialFilterExpression: {
+            identity: { $exists: true },
+            generatorCount: { $exists: true },
+        },
     }
 );

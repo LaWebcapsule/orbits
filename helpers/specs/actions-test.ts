@@ -1,15 +1,8 @@
-import {
-    Action,
-    ActionRuntime,
-    ActionState,
-} from '@wbce/orbits-core';
+import { Action, ActionState } from '@wbce/orbits-core';
 import { Cli } from '@wbce/services';
 import * as cdk from 'aws-cdk-lib';
 import { DockerExecutor, PublicRegistry } from '../index.js';
-import {
-    CdkBootstrapAction,
-    CdkDeployAction,
-} from '../src/standards-actions/cdk/cdk-action.js';
+import { CdkDeployAction } from '../src/standards-actions/cdk/cdk-action.js';
 
 export class DockerAction extends Action {
     executor = new DockerExecutor({
@@ -23,12 +16,10 @@ export class DockerAction extends Action {
     cli = new Cli();
 
     main() {
-        return this.cli.command('node', ['--version']).then(
-            () => {
-                this.result.z = 10;
-                return ActionState.SUCCESS;
-            }
-        );
+        return this.cli.command('node', ['--version']).then(() => {
+            this.result.z = 10;
+            return ActionState.SUCCESS;
+        });
     }
 }
 

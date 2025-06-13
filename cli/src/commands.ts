@@ -7,11 +7,7 @@ import { randomUUID } from 'crypto';
 import { unlinkSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 
-import {
-    Action,
-    ActionRuntime,
-    ActionState,
-} from '@wbce/orbits-core';
+import { Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
 
 import { ActionsViewer } from './viewer/actions-viewer.js';
 import { ACTION_STATE_FORMAT } from './viewer/constants.js';
@@ -326,9 +322,9 @@ const processReplayCmd = async (actionId: string, opts: any) => {
 };
 
 export {
+    processPauseCmd,
+    processReplayCmd,
+    processResumeCmd,
     processRunCmd,
     processWatchCmd,
-    processReplayCmd,
-    processPauseCmd,
-    processResumeCmd,
 };

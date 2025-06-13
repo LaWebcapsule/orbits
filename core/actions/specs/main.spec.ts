@@ -1,10 +1,5 @@
 import jasmin from 'jasmine';
 import { ActionRuntime } from '../index.js';
-import {
-    TestAction,
-    TestActionWithError,
-    TestActionWithWatcherEnding,
-} from './test-action.js';
 
 let j = new jasmin();
 
@@ -26,7 +21,6 @@ j.loadConfig({
         //'resource.spec.ts',
     ],
 });
-
 
 ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
     console.log('launching the tests');

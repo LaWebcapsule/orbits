@@ -1,9 +1,9 @@
 import { FilterQuery } from 'mongoose';
 import { Action } from './action-manager.js';
-import { ActionRuntime } from './runtime/action-runtime.js';
 import { ActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { ActionRuntime } from './runtime/action-runtime.js';
 
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
@@ -13,7 +13,7 @@ export class ActionCron {
 
     constructor(filter?: Object) {
         this.filter = filter;
-        if(!this.filter && process.env['orbits_worker_filter']){
+        if (!this.filter && process.env['orbits_worker_filter']) {
             this.filter = JSON.parse(process.env['orbits_worker_filter']);
         }
         this.cycle();
@@ -131,7 +131,10 @@ export class ActionCron {
                     'cronActivity.lastActivity': currentDate,
                 },
             }
-        ).then(()=>{console.log("after update one")})
+        )
+            .then(() => {
+                console.log('after update one');
+            })
             .then(() => action.resyncWithDb())
             .then(() => {
                 if (

@@ -6,5 +6,8 @@ export type { RuntimeDb as AppDb } from './src/runtime/db-connection.js';
 export * from './src/error/error.js';
 export { errorCodes } from './src/error/errorcodes.js';
 export * from './src/models/action.js';
+// order is important between workflow and generator
+// prettier-ignore
 export * from './src/workflow-manager.js';
+// prettier-ignore
 export * from './src/coalescing-manager.js';
