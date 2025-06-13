@@ -1,4 +1,4 @@
-import { Resource } from '@wbce/orbits-core/index.js';
+import { Resource } from '@wbce/orbits-core';
 import { CdkAction } from '../../standards-actions/cdk/cdk-action.js';
 
 export class CdkStackResource extends Resource {

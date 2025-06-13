@@ -1,6 +1,6 @@
 {
     "name": "@wbce/orbits-core",
-    "version": "0.0.44",
+    "version": "0.0.46",
     "description": "Flow for DevOps - a simple way to write state machine",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
-        "publish-package": "pnpm run build && pnpm publish --access public",
+        "publish-package": "pnpm run build && pnpm publish --access public --no-git-checks",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier --check --ignore-unknown '**/*.ts'",
         "format:fix": "prettier --write --ignore-unknown '**/*.ts'"
@@ -42,6 +42,7 @@
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "read-env": "^2.0.0",
+        "ts-deepmerge": "^7.0.3",
         "winston": "catalog:"
     },
     "type": "module"

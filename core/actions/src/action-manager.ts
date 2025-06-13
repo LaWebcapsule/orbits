@@ -1,5 +1,6 @@
 import { utils, wbceAsyncStorage } from '@wbce/services';
 import { JSONObject } from '@wbce/services/src/utils.js';
+import { fileURLToPath } from 'url';
 import { ActionRuntime, Workflow } from '../index.js';
 import { Executor } from './action-executor.js';
 import { ActionError, BreakingActionState } from './error/error.js';
@@ -8,12 +9,20 @@ import { ActionSchemaInterface, ActionState } from './models/action.js';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
+export const ACTION_TAG = Symbol.for('orbits/Action');
+
 /**
  * Structure actions.
  *
  * Extends this class to build new actions behaviors.
  */
 export class Action {
+    /**
+     * allow checking for Action in an context
+     * where there are different copies of orbits-core
+     */
+    static [ACTION_TAG] = true;
+
     /**
      * Id of the action stored in database.
      * It should be a permanent id that designates the action instance.
@@ -212,6 +221,11 @@ export class Action {
         const actionRef = this.runtime.getActionRefFromCtr(
             this.constructor as any
         );
+        const __filename = fileURLToPath(import.meta.url);
+
+        // wait for active runtime to be bootstrapped
+        console.log('action in ', __filename);
+
         this.dbDoc = new this.runtime.ActionModel({
             actionRef,
             state: ActionState.SLEEPING,

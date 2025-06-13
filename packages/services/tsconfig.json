@@ -9,7 +9,9 @@
       "rootDir": ".",
       "useUnknownInCatchVariables": false,
       "declaration": false,
-      "outDir": "dist"
+      "outDir": "dist",
+      "esModuleInterop": true
     },
-    "exclude": ["specs/", "dist/"]
+    "exclude": ["dist/"]
   }
+  

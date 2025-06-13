@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
-        "publish-package": "pnpm run build && pnpm  publish --access public",
+        "publish-package": "pnpm run build && pnpm publish --access public",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier --check --ignore-unknown '**/*.ts'",
         "format:fix": "prettier --write --ignore-unknown '**/*.ts'"
@@ -27,11 +27,16 @@
     "devDependencies": {
         "@tsconfig/node16": "catalog:",
         "@types/node": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-organize-imports": "catalog:",
         "ts-node": "catalog:",
         "tslib": "catalog:",
-        "typescript": "catalog:",
-        "prettier": "catalog:",
-        "prettier-plugin-organize-imports": "catalog:"
+        "tsx": "catalog:",
+        "typescript": "catalog:"
     },
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "@kubernetes/client-node": "^1.2.0",
+        "winston": "catalog:"
+    }
 }

@@ -1,5 +1,5 @@
-import colors from 'colors';
 import blessed, { Widgets } from 'blessed';
+import colors from 'colors';
 import { copy } from 'copy-paste';
 
 import { ActionState } from '@wbce/orbits-core';

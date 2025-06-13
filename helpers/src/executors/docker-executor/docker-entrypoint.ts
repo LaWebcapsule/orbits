@@ -13,7 +13,7 @@ import(params.bootstrapPath)
     })
     .then(async () => {
         ActionRuntime.activeRuntime.logger.info('after bootstrap');
-        const app = await ActionRuntime.getActiveApp();
+        const app = await ActionRuntime.getActiveRuntime();
         return app.ActionModel.findById(params.actionId);
     })
     .then(async (actionDb) => {

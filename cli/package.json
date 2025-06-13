@@ -1,6 +1,6 @@
 {
     "name": "@wbce/orbits-cli",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Cli to run your Orbits App",
     "repository": {
         "type": "git",
@@ -14,7 +14,7 @@
         "format:fix": "prettier --write --ignore-unknown **/*.ts",
         "build": "npx tsc",
         "dev": "npx tsc --watch",
-        "publish-package": "pnpm run build && pnpm publish --access public"
+        "publish-package": "pnpm run build && pnpm publish --access public --no-git-checks"
     },
     "dependencies": {
         "@wbce/orbits-core": "workspace:",
@@ -26,14 +26,14 @@
         "winston": "catalog:"
     },
     "devDependencies": {
-        "@tsconfig/node16": "catalog:",
-        "tslib": "catalog:",
-        "tsx": "catalog:",
-        "typescript": "catalog:",
+        "@tsconfig/node22": "catalog:",
+        "@types/blessed": "^0.1.25",
+        "@types/copy-paste": "^1.1.33",
         "prettier": "catalog:",
         "prettier-plugin-organize-imports": "catalog:",
-        "@types/blessed": "^0.1.25",
-        "@types/copy-paste": "^1.1.33"
+        "tslib": "catalog:",
+        "tsx": "catalog:",
+        "typescript": "catalog:"
     },
     "files": [
         "dist"

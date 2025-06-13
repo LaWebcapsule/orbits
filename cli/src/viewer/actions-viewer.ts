@@ -1,8 +1,8 @@
-import { ActionSchemaInterface, ActionState } from '@wbce/orbits-core';
+import { ActionSchemaInterface } from '@wbce/orbits-core';
 
 import { ActionsBlessedRenderer } from './blessed-renderer.js';
-import { ActionsTextRenderer } from './text-renderer.js';
 import { ActionsViewerAction } from './constants.js';
+import { ActionsTextRenderer } from './text-renderer.js';
 
 export class ActionsViewer {
     private top: string;

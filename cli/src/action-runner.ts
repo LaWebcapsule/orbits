@@ -1,77 +1,35 @@
-import * as colors from 'colors';
+import colors from 'colors';
 import { accessSync } from 'fs';
 import path from 'path';
 import winston from 'winston';
 
-import { Action, ActionRuntime, bootstrapApp } from '@wbce/orbits-core';
+import type { Action, ActionRuntime } from '@wbce/orbits-core';
 
-import { DEFAULT_ACTION, DEFAULT_APP, exitCodes } from './commands.js';
+import { exitCodes } from './constants.js';
 
 const throwError = (msg: string, code: exitCodes) => {
     process.stderr.write(JSON.stringify({ msg, code }));
-    process.exit(1);
-};
-
-const getConstructorFromImport = (
-    exportName: string,
-    module: any,
-    isDefault: boolean
-) => {
-    const constructor = isDefault
-        ? module.default[exportName]
-        : module[exportName];
-
-    if (!constructor) {
-        throwError(
-            isDefault
-                ? `Could not find default export ${colors.italic.bold(exportName)}`
-                : `Could not find requested ${colors.italic.bold(exportName)}, did you export it?`,
-            exitCodes.INVALID_PARAMETER
-        );
-    }
-
-    return constructor;
+    return process.exit(1);
 };
 
 export const runAction = async (
     actionPath: string,
     actionArgs: string[],
-    action: string,
-    app: string,
+    actionRef: string,
     database: string,
     cliInstanceUUID: string,
     logFile: string
 ) => {
-    let AppConstructor: typeof ActionRuntime;
-    let ActionConstructor: typeof Action;
-    let module: any;
-
     actionPath = path.join(process.cwd(), actionPath);
     try {
         accessSync(actionPath);
-    } catch (error) {
+    } catch {
         throwError(
-            `Provided path (${actionPath}) does not exist`,
-            exitCodes.INVALID_PATH
+            `Cannot find ${colors.italic(colors.bold(actionPath))}.\n` +
+                `Please provide an orbit.ts file at the root of your project`,
+            exitCodes.NOT_FOUND
         );
     }
-
-    try {
-        module = await import(actionPath);
-    } catch (error) {
-        throwError(
-            `Cannot import provided file:\n\n${error}`,
-            exitCodes.INVALID_PARAMETER
-        );
-    }
-
-    ActionConstructor = getConstructorFromImport(
-        action,
-        module,
-        action === DEFAULT_ACTION
-    );
-
-    AppConstructor = getConstructorFromImport(app, module, app === DEFAULT_APP);
 
     const args: any = {};
     for (const arg of actionArgs) {
@@ -83,54 +41,115 @@ export const runAction = async (
         }
     }
 
-    try {
-        bootstrapApp({
-            db: { mongo: { url: database } },
-            logger: winston.createLogger({
-                transports: [
-                    new winston.transports.File({ filename: logFile }),
-                ],
-            }),
-            workers: {
-                quantity: 1,
-                filter: { cli: true, instance: cliInstanceUUID },
-            },
-        })(AppConstructor);
+    let currRuntime: ActionRuntime | undefined;
+    let resolveWaitForRuntime: (value?: any) => void;
+    const waitForRuntime = new Promise((resolve) => {
+        resolveWaitForRuntime = resolve;
+    });
 
-        await ActionRuntime.waitForActiveRuntime;
-    } catch (error) {
-        throwError(
-            `Cannot bootstrap Orbits app:\n${error}`,
-            exitCodes.DATABASE_ERROR
-        );
+    const timeout = 10;
+    const interval = 1000;
+
+    // import the given action file
+    // it will start an actionRuntime
+    console.log('import ', actionPath);
+    console.log(await import(actionPath));
+
+    if (!global.orbitsRuntimeEvent) {
+        await new Promise((resolve, reject) => {
+            const start = Date.now();
+            const check = () => {
+                console.log(
+                    'global.orbitsRuntimeEvent:',
+                    global.orbitsRuntimeEvent
+                );
+                if (global.orbitsRuntimeEvent)
+                    return resolve(global.orbitsRuntimeEvent);
+
+                if (Date.now() - start > timeout * 1000) {
+                    return reject(
+                        new Error(
+                            `Timeout: global.orbitsRuntimeEvent was not defined after ${timeout} seconds.`
+                        )
+                    );
+                }
+
+                setTimeout(check, interval);
+            };
+
+            check();
+        });
     }
 
-    ActionRuntime.activeRuntime.ActionModel.findOne({
-        actionRef: ActionConstructor.permanentRef,
-        filter: { cli: true, cliInstance: cliInstanceUUID },
-    })
-        .then(async (actionDb) => {
-            let action: Action;
-            if (actionDb) {
-                process.stdout.write('msg=Action already exists, resuming');
-                action = await Action.constructFromDb(actionDb);
-            } else {
-                action = new ActionConstructor();
-                action.setFilter({ cli: true, instance: cliInstanceUUID });
-                action.setArgument(args);
-                await action.save();
-            }
-
-            action.resume();
-
-            process.stdout.write(JSON.stringify({ id: action._id }));
-        })
-        .catch((error) => {
-            throwError(
-                `Error creating action ${colors.bold.italic(ActionConstructor.permanentRef as string)}:\n${error}`,
-                exitCodes.INVALID_PARAMETER
+    global.orbitsRuntimeEvent.on(
+        'runtime',
+        async function (runtime: ActionRuntime) {
+            console.log('NEW RUNTIME:', runtime);
+            runtime.name = 'MyNewName';
+            runtime.setLogger(
+                winston.createLogger({
+                    transports: [
+                        new winston.transports.File({ filename: logFile }),
+                    ],
+                })
             );
-        });
+            await runtime.waitForBootstrap;
+
+            await runtime.recursiveImport(actionPath);
+
+            resolveWaitForRuntime();
+
+            console.log(global.orbitsRuntimes.length);
+            console.log('bootstrap done');
+
+            currRuntime = runtime;
+        }
+    );
+
+    await waitForRuntime;
+
+    console.log(global.orbitsRuntimes);
+
+    if (!currRuntime) {
+        return;
+    }
+
+    console.log(
+        'invertedActionsRegistry:',
+        currRuntime['invertedActionsRegistry']
+    );
+    console.log('ActionModel:', currRuntime.ActionModel);
+
+    const ActionConstructor = currRuntime.getActionFromRegistry(actionRef);
+
+    if (!ActionConstructor) {
+        throwError(`Cannot find specified action`, exitCodes.NOT_FOUND);
+        return; // for type checking
+    }
+
+    currRuntime.ActionModel.findOne({
+        actionRef,
+        filter: { cli: true, cliInstance: cliInstanceUUID },
+    }).then(async (actionDb: any) => {
+        let action: Action;
+        if (actionDb) {
+            process.stdout.write('msg=Action already exists, resuming');
+            action = await ActionConstructor.constructFromDb(actionDb);
+        } else {
+            action = new ActionConstructor();
+            action.setFilter({ cli: true, instance: cliInstanceUUID });
+            action.setArgument(args);
+            await action.save();
+        }
+        action.resume();
+        process.stdout.write(JSON.stringify({ id: action._id }));
+    });
+    // .catch((error: any) => {
+    //     throwError(
+    //         `Error creating action ${colors.bold.italic(actionRef)}:\n${error}`,
+    //         exitCodes.INVALID_PARAMETER
+    //     );
+    // });
 };
 
 let {
@@ -138,8 +157,7 @@ let {
     actionPath,
     actionArgs,
     database,
-    action,
-    app,
+    actionRef,
     cliInstanceUUID,
     logFile,
 } = JSON.parse(process.argv[2]);
@@ -148,8 +166,7 @@ if (isRunner) {
     runAction(
         actionPath,
         actionArgs,
-        action,
-        app,
+        actionRef,
         database,
         cliInstanceUUID,
         logFile

@@ -1,14 +1,14 @@
 import { Action, ActionRuntime } from '@wbce/orbits-core';
 
 export class ActionApi {
-    app: ActionRuntime;
+    runtime: ActionRuntime;
 
     constructor() {
-        this.app = ActionRuntime.getActiveRuntime();
+        this.runtime = ActionRuntime.activeRuntime;
     }
 
-    list(query: any) {
-        return this.app.ActionModel.find(query).then((data) => {
+    async list(query: any) {
+        return (await this.runtime).ActionModel.find(query).then((data) => {
             const result = [];
             for (const actionDb of data) {
                 result.push(Action.constructFromDb(actionDb));
@@ -17,21 +17,23 @@ export class ActionApi {
         });
     }
 
-    getOne(query: any) {
-        return this.app.ActionModel.findOne(query).then((actionDb) => {
-            if (!actionDb) {
-                throw new Error('not found');
+    async getOne(query: any) {
+        return (await this.runtime).ActionModel.findOne(query).then(
+            (actionDb) => {
+                if (!actionDb) {
+                    throw new Error('not found');
+                }
+                return Action.constructFromDb(actionDb);
             }
-            return Action.constructFromDb(actionDb);
-        });
+        );
     }
 
-    createOne(constructorName: string, argument: any, filter?: any) {
+    async createOne(constructorName: string, argument: any, filter?: any) {
         let newAction: Action;
         return Promise.resolve()
             .then(() => {
                 const ActionCtr =
-                    this.app.getActionFromRegistry(constructorName);
+                    this.runtime.getActionFromRegistry(constructorName);
                 if (!ActionCtr) {
                     throw new Error('constructor not found');
                 }
@@ -43,8 +45,8 @@ export class ActionApi {
             .then(() => newAction);
     }
 
-    resumeOne(query: any) {
-        return this.app.ActionModel.findOne(query)
+    async resumeOne(query: any) {
+        return (await this.runtime).ActionModel.findOne(query)
             .then((actionDb) => {
                 if (!actionDb) {
                     throw new Error('not found');

@@ -1,4 +1,5 @@
 import { readEnv } from 'read-env';
+import { merge } from 'ts-deepmerge';
 import { RuntimeDb } from './db-connection.js';
 
 /**
@@ -34,5 +35,5 @@ const defaultConfig: RuntimeConfig = {
 };
 
 export function getEnv(): RuntimeConfig {
-    return { ...defaultConfig, ...readEnv('ORBITS') };
+    return merge(defaultConfig, readEnv('ORBITS'));
 }
