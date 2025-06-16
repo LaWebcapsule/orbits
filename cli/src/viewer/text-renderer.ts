@@ -3,8 +3,8 @@ import colors from 'colors';
 import { ActionState } from '@wbce/orbits-core';
 
 import {
-    type ActionsViewerAction,
     type ActionsRenderer,
+    type ActionsViewerAction,
     ACTION_STATE_FORMAT,
 } from './constants.js';
 

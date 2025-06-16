@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 
 import { Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
 
+import winston from 'winston';
 import { exitCodes } from './constants.js';
 import { ActionsViewer } from './viewer/actions-viewer.js';
 import { ACTION_STATE_FORMAT } from './viewer/constants.js';
@@ -91,14 +92,42 @@ const viewAction = async (actionId: string, viewer: ActionsViewer) => {
     }
 };
 
+const watchLogs = async (logfile: string, viewer: ActionsViewer) => {
+    let lastSize = 0;
+
+    fs.watchFile(logfile, { interval: 1000 }, (curr, prev) => {
+        if (curr.size > lastSize) {
+            try {
+                const buffer = Buffer.alloc(curr.size - lastSize);
+                const fd = fs.openSync(logfile, 'r');
+                fs.readSync(fd, buffer, 0, buffer.length, lastSize);
+                fs.closeSync(fd);
+
+                const lines = buffer
+                    .toString('utf-8')
+                    .split(/\r?\n/)
+                    .filter(Boolean);
+                viewer.appendLogs(lines);
+                lastSize = curr.size;
+            } catch (err) {
+                console.error(`Failed to read new logs: ${err}`);
+            }
+        }
+    });
+};
+
 const watchAction = async (
     actionId: string,
     refresh: boolean = true,
     timeInterval: number = 1,
     simpleViewer: boolean = true,
-    exit: Function
+    exit: Function,
+    logfile?: string
 ) => {
     viewer = new ActionsViewer(actionId, refresh, simpleViewer, exit);
+    if (logfile) watchLogs(logfile, viewer);
+
+    await viewAction(actionId, viewer);
     if (!refresh && simpleViewer) {
         viewer.destroy();
         exit();
@@ -137,6 +166,28 @@ const processRunCmd = async (
         opts.keepBackground = true;
     }
 
+    try {
+        new ActionRuntime({
+            db: { mongo: { url: opts.database } },
+            logger: winston.createLogger({
+                transports: [
+                    new winston.transports.File({ filename: '/dev/null' }),
+                ],
+            }),
+
+            workers: {
+                quantity: 0,
+                filter: { cli: true, instance: cliInstanceUUID },
+            },
+        });
+        await ActionRuntime.waitForActiveRuntime;
+    } catch (error) {
+        logErrorAndExit(
+            `Cannot bootstrap Orbits runtime:\n${error}`,
+            exitCodes.DATABASE_ERROR
+        );
+    }
+
     const child = child_process.fork(
         path.join(__dirname, 'action-runner.js'),
         [
@@ -168,7 +219,9 @@ const processRunCmd = async (
         );
     }
 
-    fs.writeFileSync(`orbits-${cliInstanceUUID}.pid`, `${child.pid}`);
+    const pidFile = `orbits-${cliInstanceUUID}.pid`;
+
+    fs.writeFileSync(pidFile, `${child.pid}`);
 
     const exitWithMessageAndDbCleaning =
         (pid: number, id: string, errorCode: number = 0) =>
@@ -181,7 +234,7 @@ const processRunCmd = async (
                         `\n> ${path.basename(process.argv[1])} watch ${actionId} --database ${opts.database}\n\n`
                 );
             } else {
-                fs.unlinkSync(`orbits-${cliInstanceUUID}.pid`);
+                fs.unlinkSync(pidFile);
                 process.kill(pid);
             }
 
@@ -216,7 +269,8 @@ const processRunCmd = async (
                         exitWithMessageAndDbCleaning(
                             child.pid as number,
                             childData.id
-                        )
+                        ),
+                        opts.logfile
                     );
                 } else {
                     exitWithMessageAndDbCleaning(
@@ -226,9 +280,15 @@ const processRunCmd = async (
                 }
             }
         } catch (error) {
-            // print out anything that comes from child stdout
-            // that is not JSON formatted
-            console.error(colors.yellow(data.toString()));
+            // print anything that comes from child stdout
+            // that is not JSON formatted to logfile
+            if (viewer)
+                viewer.appendLogs([
+                    JSON.stringify({
+                        level: 'info',
+                        message: data.toString(),
+                    }),
+                ]);
         }
     });
 
@@ -239,7 +299,13 @@ const processRunCmd = async (
             code = codeFromChild;
             logError(`Error from Orbits job:\n${msg}`);
         } catch (error: any) {
-            console.error(colors.yellow(data.toString()));
+            if (viewer)
+                viewer.appendLogs([
+                    JSON.stringify({
+                        level: 'error',
+                        message: data.toString(),
+                    }),
+                ]);
             // if child is still running then it's just some
             // warning printed out on stderr
             // sending 0 will just check for existence
