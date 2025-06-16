@@ -1,31 +1,20 @@
-import colors from 'colors';
-
 import child_process from 'child_process';
-import path from 'path';
-
+import colors from 'colors';
 import { randomUUID } from 'crypto';
-import { unlinkSync, writeFileSync } from 'fs';
+import * as fs from 'fs';
+import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
 
+import { exitCodes } from './constants.js';
 import { ActionsViewer } from './viewer/actions-viewer.js';
 import { ACTION_STATE_FORMAT } from './viewer/constants.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export enum exitCodes {
-    SUCCESS,
-    INVALID_PATH,
-    INVALID_PARAMETER,
-    NOT_FOUND,
-    DATABASE_ERROR,
-    ORBITS_JOB_ERROR,
-}
-
-export const DEFAULT_APP = 'app';
-export const DEFAULT_ACTION = 'action';
+export const DEFAULT_ACTIONS_FILE = 'orbi.ts';
 
 export const logError = (str: string) => {
     console.error(colors.red(`ERROR: ${str}`));
@@ -49,7 +38,6 @@ const runOnActionDb = async (
             db: { mongo: { url: database } },
             workers: { quantity: 0 },
         });
-
         await ActionRuntime.waitForActiveRuntime;
     } catch (error) {
         logErrorAndExit(
@@ -58,51 +46,49 @@ const runOnActionDb = async (
         );
     }
 
-    ActionRuntime.activeRuntime.ActionModel.findOne({
-        _id: actionId,
-    })
-        .then((action) => {
-            if (!action) {
-                logErrorAndExit(
-                    `No action found matching ID ${colors.italic.bold(actionId)}`,
-                    exitCodes.NOT_FOUND
-                );
-            }
-            fn(action);
-        })
-        .catch((error) => {
-            logErrorAndExit(
-                `Error retrieving action ${colors.bold.italic(actionId)} from database:\n${error}`,
-                exitCodes.INVALID_PARAMETER
-            );
+    try {
+        const action = await ActionRuntime.activeRuntime.ActionModel.findOne({
+            _id: actionId,
         });
+        if (!action)
+            logErrorAndExit(
+                `No action found matching ID ${colors.italic.bold(actionId)}`,
+                exitCodes.NOT_FOUND
+            );
+        fn(action);
+    } catch (error) {
+        logErrorAndExit(
+            `Error retrieving action ${colors.bold.italic(actionId)} from database:\n${error}`,
+            exitCodes.INVALID_PARAMETER
+        );
+    }
 };
 
 const viewAction = async (actionId: string, viewer: ActionsViewer) => {
-    await ActionRuntime.activeRuntime.ActionModel.find({
-        $or: [
-            { _id: actionId },
-            { 'definitionFrom.workflow.id': actionId },
-            { 'workflowStack._id': actionId },
-        ],
-    })
-        .then((actions) => {
-            if (!actions.length) {
-                viewer.destroy();
-                logErrorAndExit(
-                    `No actions found matching ID ${colors.italic.bold(actionId)}`,
-                    exitCodes.NOT_FOUND
-                );
-            }
-            viewer.setActions(actions);
-        })
-        .catch((error) => {
+    try {
+        const actions = await ActionRuntime.activeRuntime.ActionModel.find({
+            $or: [
+                { _id: actionId },
+                { 'definitionFrom.workflow.id': actionId },
+                { 'workflowStack._id': actionId },
+            ],
+        });
+
+        if (!actions.length) {
             viewer.destroy();
             logErrorAndExit(
-                `Error retrieving action ${colors.bold.italic(actionId)} from database:\n${error}`,
-                exitCodes.DATABASE_ERROR
+                `No actions found matching ID ${colors.italic.bold(actionId)}`,
+                exitCodes.NOT_FOUND
             );
-        });
+        }
+        viewer.setActions(actions);
+    } catch (error) {
+        viewer.destroy();
+        logErrorAndExit(
+            `Error retrieving action ${colors.bold.italic(actionId)} from database:\n${error}`,
+            exitCodes.DATABASE_ERROR
+        );
+    }
 };
 
 const watchAction = async (
@@ -113,12 +99,10 @@ const watchAction = async (
     exit: Function
 ) => {
     viewer = new ActionsViewer(actionId, refresh, simpleViewer, exit);
-    viewAction(actionId, viewer).then(() => {
-        if (!refresh && simpleViewer) {
-            viewer.destroy();
-            exit();
-        }
-    });
+    if (!refresh && simpleViewer) {
+        viewer.destroy();
+        exit();
+    }
 
     setInterval(async () => {
         await viewAction(actionId, viewer);
@@ -130,7 +114,6 @@ const processWatchCmd = async (actionId: string, opts: any) => {
         db: { mongo: { url: opts.database } },
         workers: { quantity: 0 },
     });
-
     await ActionRuntime.waitForActiveRuntime;
 
     watchAction(
@@ -145,7 +128,7 @@ const processWatchCmd = async (actionId: string, opts: any) => {
 };
 
 const processRunCmd = async (
-    actionPath: string,
+    actionRef: string,
     actionArgs: string[],
     opts: any
 ) => {
@@ -154,38 +137,28 @@ const processRunCmd = async (
         opts.keepBackground = true;
     }
 
-    try {
-        new ActionRuntime({
-            db: { mongo: { url: opts.database } },
-            workers: {
-                quantity: 0,
-                filter: { cli: true, instance: cliInstanceUUID },
-            },
-        });
-
-        await ActionRuntime.waitForActiveRuntime;
-    } catch (error) {
-        logErrorAndExit(
-            `Cannot bootstrap Orbits app:\n${error}`,
-            exitCodes.DATABASE_ERROR
-        );
-    }
-
     const child = child_process.fork(
         path.join(__dirname, 'action-runner.js'),
         [
             JSON.stringify({
                 isRunner: true,
-                actionPath,
+                actionPath: opts.actionsFile,
                 actionArgs,
                 cliInstanceUUID,
                 database: opts.database,
-                action: opts.action,
+                actionRef: actionRef,
                 app: opts.app,
                 logFile: opts.logfile,
             }),
         ],
-        { stdio: 'pipe', detached: true }
+        {
+            stdio: 'pipe',
+            detached: true,
+            env: {
+                ...process.env,
+                ORBITS_AUTOSTART: 'false',
+            },
+        }
     );
 
     if (!child.pid) {
@@ -195,7 +168,7 @@ const processRunCmd = async (
         );
     }
 
-    writeFileSync(`orbits-${cliInstanceUUID}.pid`, `${child.pid}`);
+    fs.writeFileSync(`orbits-${cliInstanceUUID}.pid`, `${child.pid}`);
 
     const exitWithMessageAndDbCleaning =
         (pid: number, id: string, errorCode: number = 0) =>
@@ -208,7 +181,8 @@ const processRunCmd = async (
                         `\n> ${path.basename(process.argv[1])} watch ${actionId} --database ${opts.database}\n\n`
                 );
             } else {
-                unlinkSync(`orbits-${cliInstanceUUID}.pid`);
+                fs.unlinkSync(`orbits-${cliInstanceUUID}.pid`);
+                process.kill(pid);
             }
 
             if (opts.clean) {
@@ -222,6 +196,7 @@ const processRunCmd = async (
                 process.stdout.write('DONE\n');
             }
 
+            process.stdout.write(colors.reset(''));
             process.exit(errorCode);
         };
 
@@ -251,8 +226,9 @@ const processRunCmd = async (
                 }
             }
         } catch (error) {
-            // ignore anything that comes from child stdout
+            // print out anything that comes from child stdout
             // that is not JSON formatted
+            console.error(colors.yellow(data.toString()));
         }
     });
 
@@ -263,6 +239,7 @@ const processRunCmd = async (
             code = codeFromChild;
             logError(`Error from Orbits job:\n${msg}`);
         } catch (error: any) {
+            console.error(colors.yellow(data.toString()));
             // if child is still running then it's just some
             // warning printed out on stderr
             // sending 0 will just check for existence
