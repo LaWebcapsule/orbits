@@ -17,7 +17,7 @@ export interface RuntimeDb {
     noDatabase?: boolean;
 }
 
-export function setDbConnection(runtime: ActionRuntime) {
+export async function setDbConnection(runtime: ActionRuntime) {
     if (runtime.db.noDatabase) {
         runtime.logger.warn(
             'noDatabase option: this can cause problem if you retrieve or save new actions'
@@ -37,10 +37,10 @@ export function setDbConnection(runtime: ActionRuntime) {
             );
         return;
     }
-    const conn = mongoose.createConnection(
-        runtime.db.mongo.url!,
-        runtime.db.mongo.opts
-    );
+    const conn = await mongoose
+        .createConnection(runtime.db.mongo.url!, runtime.db.mongo.opts)
+        .asPromise();
+
     runtime.db.mongo.conn = conn;
     runtime.ActionModel = conn.model<ActionSchemaInterface>(
         'Action',

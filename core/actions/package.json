@@ -42,6 +42,7 @@
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "read-env": "^2.0.0",
+        "ts-deepmerge": "^7.0.3",
         "winston": "catalog:"
     },
     "type": "module"

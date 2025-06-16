@@ -8,12 +8,20 @@ import { ActionSchemaInterface, ActionState } from './models/action.js';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
+export const ACTION_TAG = Symbol.for('orbits/Action');
+
 /**
  * Structure actions.
  *
  * Extends this class to build new actions behaviors.
  */
 export class Action {
+    /**
+     * allow checking for Action in an context
+     * where there are different copies of orbits-core
+     */
+    static [ACTION_TAG] = true;
+
     /**
      * Id of the action stored in database.
      * It should be a permanent id that designates the action instance.
@@ -209,6 +217,10 @@ export class Action {
         if (nInheritanceForDefaultDelay < nInheritanceForDefaultDelays) {
             defaultDelays[ActionState.IN_PROGRESS] = defaultDelay;
         }
+        if (!this.runtime) {
+            // will pick global one if it exists
+            this.runtime = new ActionRuntime();
+        }
         const actionRef = this.runtime.getActionRefFromCtr(
             this.constructor as any
         );
@@ -222,8 +234,6 @@ export class Action {
             cronDefaultSettings.activityFrequence ||
             cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
-
-        this.runtime = ActionRuntime.activeRuntime;
     }
 
     /**
@@ -232,8 +242,8 @@ export class Action {
      * @returns an action for which dbDoc property is equal to actionDb
      */
     static _constructFromDb(actionDb: ActionSchemaInterface<any>): Action {
-        const app = ActionRuntime.activeRuntime;
-        const ActionCtr = app.getActionFromRegistry(actionDb.actionRef);
+        const runtime = ActionRuntime.activeRuntime ?? new ActionRuntime();
+        const ActionCtr = runtime.getActionFromRegistry(actionDb.actionRef);
         let action: Action;
         try {
             action = new ActionCtr();

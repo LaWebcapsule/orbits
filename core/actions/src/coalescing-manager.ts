@@ -191,7 +191,7 @@ export class ResourceController<T extends Resource> extends Workflow {
 
     async init() {
         await super.init();
-        const ActionCtr = ActionRuntime.activeRuntime.getActionFromRegistry(
+        const ActionCtr = this.runtime.getActionFromRegistry(
             this.argument.actionRef
         );
         const resource = new ActionCtr() as T;

@@ -1,21 +1,25 @@
-import EventEmitter from 'events';
 import { resolve } from 'import-meta-resolve';
 import mongoose from 'mongoose';
 import path from 'path';
 import precinct from 'precinct';
 import { pathToFileURL } from 'url';
 import * as winston from 'winston';
-import { Action, ActionSchemaInterface } from '../../index.js';
+import { Action, ACTION_TAG, ActionSchemaInterface } from '../../index.js';
 import { ActionCron } from '../action-job.js';
 import { ActionError } from '../error/error.js';
 import { ResourceSchemaInterface } from '../models/resource.js';
+import { BufferedEmitter } from './buffered-emitter.js';
 import { RuntimeDb, setDbConnection } from './db-connection.js';
 import { getEnv } from './get-env.js';
 import { defaultLogger, setLogger } from './logger.js';
 
-/**
- * Describes how the runtime can be configured.
- */
+declare global {
+    var orbitsRuntimeEvent: BufferedEmitter;
+    namespace globalThis {
+        var orbitsRuntimes: ActionRuntime[];
+    }
+}
+
 export interface RuntimeConfig {
     /** db configuration */
     name?: string;
@@ -52,7 +56,6 @@ export class ActionRuntime {
 
     private actionsRegistry = new Map<string, typeof Action>();
     private invertedActionsRegistry = new Map<typeof Action, string>();
-    static importRuntimeConfig;
 
     logger = defaultLogger;
 
@@ -78,7 +81,17 @@ export class ActionRuntime {
 
     bootstrapPath: string;
 
+    name: string;
+
     constructor(private opts?: RuntimeConfig) {
+        this.name = opts?.name ?? 'orbits-runtime';
+        const existingRuntime = (global.orbitsRuntimes || []).find(
+            (runtime) => runtime.name === this.name
+        );
+        if (existingRuntime) {
+            ActionRuntime.activeRuntime = existingRuntime;
+            return existingRuntime;
+        }
         if (opts?.logger) {
             this.logger = opts.logger;
         }
@@ -89,13 +102,11 @@ export class ActionRuntime {
             this.numberOfWorker = opts?.workers.quantity;
             this.actionFilter = opts?.workers.filter;
         }
-        if (!ActionRuntime.activeRuntime) {
-            ActionRuntime.activeRuntime = this;
-        }
+        ActionRuntime.activeRuntime = this;
         ActionRuntime.runtimes.push(this);
         global.orbitsRuntimes = [...(global.orbitsRuntimes || []), this];
         if (!global.orbitsRuntimeEvent) {
-            global.orbitsRuntimeEvent = new EventEmitter();
+            global.orbitsRuntimeEvent = new BufferedEmitter();
         }
         this.bootstrapPath = opts?.entrypoint;
         if (!opts?.entrypoint) {
@@ -138,7 +149,7 @@ export class ActionRuntime {
     async scanModuleImport(moduleImport) {
         for (const key in moduleImport) {
             const value = moduleImport[key];
-            if (value?.prototype instanceof Action || value === Action) {
+            if (value && value[ACTION_TAG]) {
                 this.logger.info(`registering ${key}`);
                 this.registerAction(value);
             }
@@ -156,26 +167,28 @@ export class ActionRuntime {
 
     async recursiveImport(pathFile: string) {
         this.logger.info(`dealing with ${pathFile}`);
+
+        // import actions from current file
+        const moduleImport = await import(pathFile);
+        this.scanModuleImport(moduleImport);
+
         let deps: string[];
         try {
-            deps = await precinct.paperwork(pathFile);
+            deps = precinct.paperwork(pathFile);
         } catch (err) {
             if (err.code === 'ENOENT') {
                 this.logger.info(
                     `cannot read ${pathFile} ; fallback to ts extension`
                 );
                 try {
-                    deps = await precinct.paperwork(
-                        pathFile.replace('.js', '.ts'),
-                        {
-                            ts: {
-                                skipTypeImports: true,
-                            },
-                            tsx: {
-                                skipTypeImports: true,
-                            },
-                        } as any
-                    );
+                    deps = precinct.paperwork(pathFile.replace('.js', '.ts'), {
+                        ts: {
+                            skipTypeImports: true,
+                        },
+                        tsx: {
+                            skipTypeImports: true,
+                        },
+                    } as any);
                 } catch (err2) {
                     this.logger.info(
                         `cannot read ts extension neither ; got ${err2}`
@@ -186,22 +199,26 @@ export class ActionRuntime {
                 throw err;
             }
         }
-        const notDealthDeps = deps.filter((d) => !this.importedFiles.has(d));
+        const notDealtWithDeps = deps.filter((d) => !this.importedFiles.has(d));
         const baseDir = path.dirname(pathFile);
         this.logger.info(`found deps: ${deps}`);
-
-        for (const file of notDealthDeps) {
+        for (const file of notDealtWithDeps) {
             this.logger.info(`exploring dep: ${file}`);
             this.importedFiles.add(file);
+
+            // ignore json
+            if (file.endsWith('.json')) {
+                this.logger.info(`ignoring json file ${file}`);
+                continue;
+            }
+
             if (file.startsWith('.')) {
                 //import another file in same module
                 let filePath = path.join(baseDir, file);
-                const moduleImport = await import(filePath);
-                this.scanModuleImport(moduleImport);
                 await this.recursiveImport(filePath);
             } else {
                 //import an npm module
-                const url = await resolve(file, pathToFileURL(pathFile) as any);
+                const url = resolve(file, pathToFileURL(pathFile) as any);
                 const moduleImport = await import(url);
                 this.scanModuleImport(moduleImport);
             }
@@ -214,30 +231,28 @@ export class ActionRuntime {
         this.rejectBootstrap = reject;
         this.resolveBootstrap = resolve;
     });
-    bootstrap() {
-        const isActiveRuntime = ActionRuntime.activeRuntime === this;
-        if (isActiveRuntime) {
-            setLogger(this);
+    async bootstrap() {
+        if (ActionRuntime.activeRuntime !== this) return;
+
+        setLogger(this);
+
+        try {
+            await setDbConnection(this);
+        } catch (error) {
+            throw new ActionError(
+                `Error setting database connection: ${error}`
+            );
         }
-        if (isActiveRuntime && !(this.opts?.autostart === false)) {
-            setDbConnection(this);
-            return this.recursiveImport(this.bootstrapPath)
-                .then(() => {
-                    for (let i = 0; i < this.numberOfWorker; i++) {
-                        new ActionCron(this.actionFilter);
-                    }
-                })
-                .then(() => {
-                    this.resolveBootstrap();
-                    ActionRuntime.resolveBootstrap();
-                });
-        } else {
-            return this.recursiveImport(this.bootstrapPath).then(() => {
-                return ActionRuntime.waitForActiveRuntime.then(() => {
-                    this.resolveBootstrap();
-                });
-            });
+
+        await this.recursiveImport(this.bootstrapPath);
+
+        for (let i = 0; i < this.numberOfWorker; i++) {
+            new ActionCron(this.actionFilter);
         }
+
+        ActionRuntime.resolveBootstrap();
+        this.resolveBootstrap();
+        console.log('bootstrap done');
     }
 
     setLogger(logger: winston.Logger) {
@@ -273,4 +288,4 @@ export class ActionRuntime {
 
 const env = getEnv();
 
-new ActionRuntime(env);
+if (env.autostart) new ActionRuntime(env);
