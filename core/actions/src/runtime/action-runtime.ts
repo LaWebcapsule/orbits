@@ -252,7 +252,6 @@ export class ActionRuntime {
 
         ActionRuntime.resolveBootstrap();
         this.resolveBootstrap();
-        console.log('bootstrap done');
     }
 
     setLogger(logger: winston.Logger) {

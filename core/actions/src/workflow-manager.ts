@@ -1,7 +1,13 @@
 import { utils } from '@wbce/services';
 import { JSONObject } from '@wbce/services/src/utils.js';
 import mongoose from 'mongoose';
-import { Action, ActionRuntime, CoalescingWorkflow, Sleep } from '../index.js';
+import {
+    Action,
+    ACTION_TAG,
+    ActionRuntime,
+    CoalescingWorkflow,
+    Sleep,
+} from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 
@@ -570,8 +576,8 @@ export class Workflow extends Action {
     ) {
         let action: Action;
         try {
-            if (opts instanceof Action) {
-                action = opts;
+            if (opts instanceof Action || opts[ACTION_TAG]) {
+                action = opts as Action;
             } else if (typeof opts['main'] === 'function') {
                 action = new Action();
                 action['main'] = opts['main'];
@@ -597,7 +603,10 @@ export class Workflow extends Action {
                     stepIndex: this.bag.currentStepIndex,
                     marker: ref,
                 };
-            } else if (opts['dynamicAction'] instanceof Action) {
+            } else if (
+                opts['dynamicAction'] instanceof Action ||
+                opts['dynamicAction'][ACTION_TAG]
+            ) {
                 action = opts['dynamicAction'];
                 action.dbDoc.definitionFrom.workflow = {
                     _id: this.dbDoc._id.toString(),
@@ -616,6 +625,10 @@ export class Workflow extends Action {
                     marker: ref,
                 };
             }
+
+            if (this.runtime.actionFilter)
+                action.setFilter(this.runtime.actionFilter);
+
             const actionDb = await this.findIfEquivalentActionAlreadyExists(
                 ref,
                 action
@@ -655,8 +668,15 @@ export class Workflow extends Action {
             //in case we didn't success in manipulating the action
             //we just exit and will be retried later
             //maybe we should have a max. number of exit before erroring
+            // this.internalLog(
+            //     `global runtimes: ${JSON.stringify(global.orbitsRuntimes)}`
+            // );
             this.internalLog(
-                `body of do method didn't succeed ; got error : ${err}`
+                `${JSON.stringify(this.runtime['invertedActionsRegistry'])}`
+            );
+            console.error(err);
+            this.internalLog(
+                `body of do method didn't succeed ; got error : ${err}, ${(err as Error).stack} with action ${action.constructor.name}`
             );
             this.internalLogError(err);
             this.resolveDefineIteration(ActionState.UNKNOWN); //Unknow ensure here we don't change the state and so we don't have an infinite loop

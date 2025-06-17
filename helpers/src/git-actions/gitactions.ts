@@ -4,7 +4,7 @@ import { Commit } from './gitrepo.js';
 
 export class GitAction extends Action {
     //to note : this action is not registered. It serves as a base for the other actions.
-    IArgument: {
+    IArgument: Action['IArgument'] & {
         repoName: string;
         gitProviderName: gitProviders;
     };
@@ -69,7 +69,7 @@ export class WaitForNewCommits extends GitAction {
         }[];
     } & GitAction['IArgument'];
 
-    IResult: {
+    IResult: GitAction['IResult'] & {
         branches: {
             name: string;
             commits: Commit[];

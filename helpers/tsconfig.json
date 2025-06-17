@@ -14,7 +14,7 @@
       "strictPropertyInitialization": false,
       "exactOptionalPropertyTypes":false,
       "experimentalDecorators": true,
-      "importsNotUsedAsValues":"preserve",
+      "verbatimModuleSyntax": false,
       "strict": false,
       "outDir": "dist"
     },

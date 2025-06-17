@@ -165,19 +165,20 @@ export class Action {
      * @returns a promise that resolves when the action has been saved
      */
     save() {
+        this.internalLog(`from action: ${JSON.stringify(this.runtime['invertedActionsRegistry'])}`)
         return this.runtime.waitForBootstrap.then(() => {
-            const actionRef = this.runtime.getActionRefFromRegistry(
-                this.constructor as any
-            );
-            if (!actionRef) {
-                throw new ActionError(
-                    'Please declare this action in a bootstrapped app before saving it',
-                    errorCodes.NOT_ACCEPTABLE,
-                    {
-                        ctrName: this.constructor.name,
-                    }
-                );
-            }
+            // const actionRef = this.runtime.getActionRefFromRegistry(
+            //     this.constructor as any
+            // );
+            // if (!actionRef) {
+            //     throw new ActionError(
+            //         'Please declare this action in a bootstrapped app before saving it',
+            //         errorCodes.NOT_ACCEPTABLE,
+            //         {
+            //             ctrName: this.constructor.name,
+            //         }
+            //     );
+            // }
             return this.dbDoc.save();
         });
     }
@@ -221,6 +222,7 @@ export class Action {
             // will pick global one if it exists
             this.runtime = new ActionRuntime();
         }
+
         const actionRef = this.runtime.getActionRefFromCtr(
             this.constructor as any
         );
