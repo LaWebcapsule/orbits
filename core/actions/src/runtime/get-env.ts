@@ -1,6 +1,6 @@
-import { readEnv } from "read-env";
-import { RuntimeDb } from "./db-connection.js";
-
+import { readEnv } from 'read-env';
+import { merge } from 'ts-deepmerge';
+import { RuntimeDb } from './db-connection.js';
 
 /**
  * Describes how the runtime can be configured.
@@ -19,21 +19,21 @@ export interface RuntimeConfig {
 }
 
 const defaultConfig: RuntimeConfig = {
-    name: "orbits-runtime",
+    name: 'orbits-runtime',
     autostart: true,
     db: {
         mongo: {
-            url: "mongodb://localhost:27017/orbits",
+            url: 'mongodb://localhost:27017/orbits',
             opts: {
-                tls: true
+                tls: true,
             },
         },
     },
     workers: {
         quantity: 3,
-    }
-}
+    },
+};
 
-export function getEnv(): RuntimeConfig{
-    return {...defaultConfig, ...readEnv("ORBITS")};
+export function getEnv(): RuntimeConfig {
+    return merge(defaultConfig, readEnv('ORBITS'));
 }

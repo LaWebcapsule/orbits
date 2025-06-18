@@ -1,10 +1,5 @@
 import jasmin from 'jasmine';
 import { ActionRuntime } from '../index.js';
-import {
-    TestAction,
-    TestActionWithError,
-    TestActionWithWatcherEnding,
-} from './test-action.js';
 
 let j = new jasmin();
 
@@ -20,13 +15,13 @@ j.loadConfig({
         //'action-in-workflow.spec.ts',
         //'action-job.spec.ts',
         //'action.spec.ts',
-        'workflow.spec.ts',
+        // 'workflow.spec.ts',
         //'generator.spec.ts',
         //'other-action.spec.ts',
         //'resource.spec.ts',
+        'get-env.spec.ts'
     ],
 });
-
 
 ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
     console.log('launching the tests');

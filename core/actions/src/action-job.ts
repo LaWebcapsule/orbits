@@ -1,19 +1,20 @@
 import { FilterQuery } from 'mongoose';
 import { Action } from './action-manager.js';
-import { ActionRuntime } from './runtime/action-runtime.js';
 import { ActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { ActionRuntime } from './runtime/action-runtime.js';
 
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
     actions: ActionSchemaInterface<any>[] = [];
-    app = ActionRuntime.activeRuntime;
+    runtime = ActionRuntime.activeRuntime;
     filter?: Object;
 
     constructor(filter?: Object) {
+        if (!this.runtime) this.runtime = new ActionRuntime();
         this.filter = filter;
-        if(!this.filter && process.env['orbits_worker_filter']){
+        if (!this.filter && process.env['orbits_worker_filter']) {
             this.filter = JSON.parse(process.env['orbits_worker_filter']);
         }
         this.cycle();
@@ -67,7 +68,7 @@ export class ActionCron {
         });
     }
 
-    getAction() {
+    async getAction() {
         let query = {
             state: { $lte: ActionState.CLOSED },
             $or: [
@@ -90,8 +91,7 @@ export class ActionCron {
         } as FilterQuery<ActionSchemaInterface>;
 
         if (this.filter) query.filter = this.filter;
-
-        return this.app.ActionModel.findOne(query)
+        return this.runtime.ActionModel.findOne(query)
             .sort('cronActivity.lastActivity')
             .then((action) => action);
     }
@@ -110,7 +110,7 @@ export class ActionCron {
                 `could not construct action with id : ${actionDb._id}, ref : ${actionDb.actionRef}; got ${err} `
             );
             actionDb.updateNextActivity();
-            return this.app.ActionModel.updateOne(
+            return this.runtime.ActionModel.updateOne(
                 { _id: actionDb._id },
                 {
                     $set: {
@@ -123,7 +123,7 @@ export class ActionCron {
         // Use a direct update to avoid overwriting data (especially bag)
         const previousNextActivity = action.cronActivity.nextActivity;
         const currentDate = new Date();
-        return this.app.ActionModel.updateOne(
+        return this.runtime.ActionModel.updateOne(
             { _id: action.dbDoc._id },
             {
                 $set: {
@@ -131,7 +131,10 @@ export class ActionCron {
                     'cronActivity.lastActivity': currentDate,
                 },
             }
-        ).then(()=>{console.log("after update one")})
+        )
+            .then(() => {
+                console.log('after update one');
+            })
             .then(() => action.resyncWithDb())
             .then(() => {
                 if (
@@ -161,7 +164,7 @@ export class ActionCron {
                     // do not overwrite the change
                     action.dbDoc.updateNextActivity();
                 }
-                return this.app.ActionModel.updateOne(
+                return this.runtime.ActionModel.updateOne(
                     { _id: action.dbDoc._id },
                     {
                         $set: {
@@ -186,13 +189,13 @@ export class ActionCron {
     }
 
     resyncWithDb(action) {
-        return this.app.ActionModel.findById(action.dbDoc._id.toString()).then(
-            (actionDb) => {
-                if (actionDb) {
-                    return Action.constructFromDb(actionDb as any);
-                }
-                return;
+        return this.runtime.ActionModel.findById(
+            action.dbDoc._id.toString()
+        ).then((actionDb) => {
+            if (actionDb) {
+                return Action.constructFromDb(actionDb as any);
             }
-        );
+            return;
+        });
     }
 }

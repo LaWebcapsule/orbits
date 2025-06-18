@@ -10,7 +10,8 @@
     "license": "ISC",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "prettier --write --ignore-unknown **/*.ts",
+        "format": "prettier --check --ignore-unknown **/*.ts",
+        "format:fix": "prettier --write --ignore-unknown **/*.ts",
         "build": "npx tsc",
         "dev": "npx tsc --watch",
         "publish-package": "pnpm run build && pnpm publish --access public"
@@ -25,14 +26,14 @@
         "winston": "catalog:"
     },
     "devDependencies": {
-        "@tsconfig/node16": "catalog:",
-        "tslib": "catalog:",
-        "tsx": "catalog:",
-        "typescript": "catalog:",
+        "@tsconfig/node22": "catalog:",
+        "@types/blessed": "^0.1.25",
+        "@types/copy-paste": "^1.1.33",
         "prettier": "catalog:",
         "prettier-plugin-organize-imports": "catalog:",
-        "@types/blessed": "^0.1.25",
-        "@types/copy-paste": "^1.1.33"
+        "tslib": "catalog:",
+        "tsx": "catalog:",
+        "typescript": "catalog:"
     },
     "files": [
         "dist"

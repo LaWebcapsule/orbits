@@ -4,11 +4,7 @@ export const deepCopy = (src: any, dest: any) => {
     Object.assign(dest, src);
     for (const key in dest) {
         if (dest[key] && typeof dest[key] === 'object') {
-            if (Array.isArray(dest[key])) {
-                dest[key] = [];
-            } else {
-                dest[key] = {};
-            }
+            dest[key] = Array.isArray(dest[key]) ? [] : {};
             deepCopy(src[key], dest[key]);
         }
     }
@@ -38,11 +34,18 @@ export type BasicType =
     | 'date'
     | 'buffer';
 
-export type JSONLeafType = string | number | bigint | boolean 
+export type JSONLeafType = string | number | bigint | boolean;
 
-export type JSONObject = JSONLeafType | {
-    [key: string]: JSONLeafType | JSONLeafType[] | JSONObject | JSONObject[]
-} | JSONObject[]
+export type JSONObject =
+    | JSONLeafType
+    | {
+          [key: string]:
+              | JSONLeafType
+              | JSONLeafType[]
+              | JSONObject
+              | JSONObject[];
+      }
+    | JSONObject[];
 
 export const getBasicType = (object: any): BasicType => {
     let currentType: BasicType = typeof object;
@@ -88,4 +91,7 @@ export const getStackTracePaths: () => string[] = () => {
 export function capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
-  
+
+export const base64Decode = function (str: string) {
+    return Buffer.from(str, 'base64').toString('utf-8');
+};

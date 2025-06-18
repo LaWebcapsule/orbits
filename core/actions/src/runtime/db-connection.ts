@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { actionSchema, ActionSchemaInterface } from '../models/action.js';
-import type { ActionRuntime } from './action-runtime.js';
 import { resourceSchema, ResourceSchemaInterface } from '../models/resource.js';
+import type { ActionRuntime } from './action-runtime.js';
 
 /**
  * Describes the structure of the `app.db` object.
@@ -17,7 +17,7 @@ export interface RuntimeDb {
     noDatabase?: boolean;
 }
 
-export function setDbConnection(runtime: ActionRuntime) {
+export async function setDbConnection(runtime: ActionRuntime) {
     if (runtime.db.noDatabase) {
         runtime.logger.warn(
             'noDatabase option: this can cause problem if you retrieve or save new actions'
@@ -25,17 +25,22 @@ export function setDbConnection(runtime: ActionRuntime) {
         return;
     }
     if (runtime.db.mongo.conn) {
-        runtime.ActionModel = runtime.db.mongo.conn.model<ActionSchemaInterface>(
-            'Action',
-            actionSchema
-        );
-        runtime.ResourceModel = runtime.db.mongo.conn.model<ResourceSchemaInterface>(
-            'Resource',
-            resourceSchema
-        );
+        runtime.ActionModel =
+            runtime.db.mongo.conn.model<ActionSchemaInterface>(
+                'Action',
+                actionSchema
+            );
+        runtime.ResourceModel =
+            runtime.db.mongo.conn.model<ResourceSchemaInterface>(
+                'Resource',
+                resourceSchema
+            );
         return;
     }
-    const conn = mongoose.createConnection(runtime.db.mongo.url!, runtime.db.mongo.opts);
+    const conn = await mongoose
+        .createConnection(runtime.db.mongo.url!, runtime.db.mongo.opts)
+        .asPromise();
+
     runtime.db.mongo.conn = conn;
     runtime.ActionModel = conn.model<ActionSchemaInterface>(
         'Action',
@@ -45,5 +50,5 @@ export function setDbConnection(runtime: ActionRuntime) {
         'Resource',
         resourceSchema
     );
-    return conn
+    return conn;
 }
