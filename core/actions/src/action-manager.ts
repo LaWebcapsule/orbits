@@ -259,24 +259,20 @@ export class Action {
     static async _constructFromWorkflow(
         dbDoc: ActionSchemaInterface<any>
     ) {
-        try {
-            const workflowDoc = await ActionRuntime.activeRuntime.ActionModel.findById(
-                dbDoc.definitionFrom.workflow._id
-            );
-            const workflow = (await Action.constructFromDb(
-                workflowDoc
-            )) as Workflow;
-            await workflow.initialization();
-            return workflow.defineDynamicAction(dbDoc);
-        } catch (err) {
-            if (
-                dbDoc.state >= ActionState.SUCCESS &&
-                dbDoc.state < ActionState.REVERTING
-            ) {
-                return Action._constructFromDb(dbDoc);
-            }
-            throw err;
+        if (
+            dbDoc.state >= ActionState.SUCCESS &&
+            dbDoc.state < ActionState.REVERTING
+        ) {
+            return Action._constructFromDb(dbDoc);
         }
+        const workflowDoc = await ActionRuntime.activeRuntime.ActionModel.findById(
+            dbDoc.definitionFrom.workflow._id
+        );
+        const workflow = (await Action.constructFromDb(
+            workflowDoc
+        )) as Workflow;
+        await workflow.initialization();
+        return workflow.defineDynamicAction(dbDoc);
     }
 
     /**

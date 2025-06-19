@@ -13,6 +13,7 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import {resolve} from 'import-meta-resolve';
 import { getEnv } from './get-env.js';
 import EventEmitter from 'events';
+import { createRequire } from 'module';
 
 /**
  * Describes how the runtime can be configured.
@@ -158,11 +159,18 @@ export class ActionRuntime {
     }
     static executedVia = ActionRuntime.setExecutedVia();
 
-    async recursiveImport(pathFile: string) {
-        this.logger.info(`dealing with ${pathFile}`);
+    private listDependenciesOfFile(pathFile: string){
         let deps: string[];
+        if(!path.extname(pathFile)){
+            //probably using commonjs here : try to get exact path file
+            const require = createRequire(import.meta.url);
+            pathFile = require.resolve(pathFile);
+        }
+        this.logger.info(
+            `reading ${pathFile}`
+        );
         try {
-            deps = await precinct.paperwork(pathFile, {
+            deps = precinct.paperwork(pathFile, {
                 includeCore: false
             });
         } catch (err) {
@@ -171,18 +179,15 @@ export class ActionRuntime {
                     `cannot read ${pathFile} ; fallback to ts extension`
                 );
                 try {
-                    deps = await precinct.paperwork(
-                        pathFile.replace('.js', '.ts'),
-                        {
-                            includeCore: false,
-                            ts: {
-                                skipTypeImports: true
-                            },
-                            tsx: {
-                                skipTypeImports: true
-                            }
-                        } as any
-                    );
+                    deps = precinct.paperwork(pathFile.replace('.js', '.ts'), {
+                        includeCore: false,
+                        ts: {
+                            skipTypeImports: true,
+                        },
+                        tsx: {
+                            skipTypeImports: true,
+                        },
+                    } as any);
                 } catch (err2) {
                     this.logger.info(
                         `cannot read ts extension neither ; got ${err2}`
@@ -193,6 +198,13 @@ export class ActionRuntime {
                 throw err;
             }
         }
+        return deps;
+    }
+
+    async recursiveImport(pathFile: string) {
+        this.logger.info(`dealing with ${pathFile}`);
+        const deps = this.listDependenciesOfFile(pathFile);
+        
         const notDealthDeps = deps.filter((d) => !this.importedFiles.has(d));
         const baseDir = path.dirname(pathFile);
         this.logger.info(`found deps: ${deps}`);
