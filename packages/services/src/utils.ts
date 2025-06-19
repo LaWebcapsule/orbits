@@ -1,18 +1,32 @@
 export const deepCopy = (src: any, dest: any) => {
     // this copy has to be free of prototype pollution
     // hence the recursive assign
+    if(getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
+        return src;
+    }
     Object.assign(dest, src);
     for (const key in dest) {
         if (dest[key] && typeof dest[key] === 'object') {
-            if (Array.isArray(dest[key])) {
-                dest[key] = [];
-            } else {
-                dest[key] = {};
-            }
+            dest[key] = Array.isArray(dest[key]) ? [] : {};
             deepCopy(src[key], dest[key]);
         }
     }
+    return dest;
 };
+
+export const deepMerge = (src: any, dest: any) => {
+    if(getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
+        return;
+    }
+    for(const key in src) {
+        if (!dest[key]) {
+            dest[key] = deepCopy(src[key], Array.isArray(src[key]) ? [] : {});
+        }
+        else{
+            deepMerge(src[key], dest[key]);
+        }
+    }
+}
 
 export const testPath = (obj: any, ...args: string[]) => {
     for (const key of args) {

@@ -1,5 +1,6 @@
 import { readEnv } from "read-env";
 import { RuntimeDb } from "./db-connection.js";
+import { utils } from "@wbce/services";
 
 
 /**
@@ -35,5 +36,8 @@ const defaultConfig: RuntimeConfig = {
 }
 
 export function getEnv(): RuntimeConfig{
-    return {...defaultConfig, ...readEnv("ORBITS")};
+    const result = {};
+    utils.deepMerge(readEnv("ORBITS"), result);
+    utils.deepMerge(defaultConfig, result);
+    return result;
 }
