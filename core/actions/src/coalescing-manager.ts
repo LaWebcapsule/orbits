@@ -43,16 +43,20 @@ export abstract class CoalescingWorkflow extends Workflow{
                         $lt : ActionState.SUCCESS
                 }
             }).sort("createdAt")
+            let substitionDoc : ActionSchemaInterface;
             if(pendingActionsWithSameIdentity.length){
-                this.dbDoc = this.substitute(pendingActionsWithSameIdentity)
+                substitionDoc = this.substitute(pendingActionsWithSameIdentity);
             }
-            if(!this.dbDoc){
+            if(!substitionDoc){
                 this.dbDoc.identity = this.stringifyIdentity();
                 const actionsWithSameIdentity = await ActionRuntime.activeRuntime.ActionModel.find({
                     actionRef: this.dbDoc.actionRef,
                     identity: this.dbDoc.identity
                 }).sort({"generatorCount": -1})
                 this.dbDoc.generatorCount = (actionsWithSameIdentity?.[0]?.generatorCount || 0) + 1;
+            }
+            else{
+                this.dbDoc = substitionDoc;
             }
         }
         return super.save().catch((err)=>{
@@ -374,10 +378,7 @@ export class Resource extends CoalescingWorkflow{
         if(this.resourceDbDoc.version !== this.version){
             changes.push(new ScopeOfChanges('install'));
         }
-        if(this.resourceDbDoc.version){
-            //meaning a deploy already occurs
-            changes.push(new ScopeOfChanges('update'));
-        }
+        changes.push(new ScopeOfChanges('update'));
         return changes;
     }
 

@@ -154,13 +154,6 @@ export class ActionRuntime {
     }
 
     importedFiles = new Set<string>();
-    static setExecutedVia(): 'ts' | 'js' {
-        if (process['_preload_modules'].includes('/tsx/')) {
-            return 'ts';
-        }
-        return 'js';
-    }
-    static executedVia = ActionRuntime.setExecutedVia();
 
     private listDependenciesOfFile(pathFile: string){
         let deps: string[];
@@ -207,26 +200,39 @@ export class ActionRuntime {
     async recursiveImport(pathFile: string) {
         this.logger.info(`dealing with ${pathFile}`);
         const deps = this.listDependenciesOfFile(pathFile);
-        
-        const notDealthDeps = deps.filter((d) => !this.importedFiles.has(d));
+
+        const moduleImport = await import(pathFile);
+        await this.scanModuleImport(moduleImport);
+
         const baseDir = path.dirname(pathFile);
         this.logger.info(`found deps: ${deps}`);
 
-        for (const file of notDealthDeps) {
-            this.logger.info(`exploring dep: ${file}`);
-            this.importedFiles.add(file);
+        for (const file of deps) {
+            let importPath : string;
             if (file.startsWith('.')) {
                 //import another file in same module
-                let filePath = path.join(baseDir, file);
-                const moduleImport = await import(filePath);
-                await this.scanModuleImport(moduleImport);
-                await this.recursiveImport(filePath);
+                importPath = path.join(baseDir, file);
             } else {
                 //import an npm module
                 const url = await resolve(file, pathToFileURL(pathFile) as any);
-                const moduleImport = await import(url);                 
+                importPath = fileURLToPath(url);
+            }
+
+            if(this.importedFiles.has(importPath)){
+                continue;
+            }
+            this.importedFiles.add(importPath)
+
+            this.logger.info(`exploring dep: ${file}`);
+
+            if (file.startsWith('.')) {
+                //import another file in same module
+                await this.recursiveImport(importPath);
+            } else {
+                //import an npm module
+                const moduleImport = await import(importPath);                 
                 if(await this.scanModuleImport(moduleImport)){
-                    await this.recursiveImport(fileURLToPath(url));
+                    await this.recursiveImport(importPath);
                 }
             }
         }
@@ -256,11 +262,14 @@ export class ActionRuntime {
                     ActionRuntime.resolveBootstrap();
                 });
         } else {
-            return this.recursiveImport(this.bootstrapPath).then(()=>{
-                return ActionRuntime.waitForActiveRuntime.then(() => {
-                    this.resolveBootstrap();
-                });
-            }) 
+            return Promise.resolve([
+                ActionRuntime.activeRuntime.recursiveImport(this.bootstrapPath),
+                //this.recursiveImport(this.bootstrapPath)
+            ]).then(()=>{
+                return ActionRuntime.waitForActiveRuntime;
+            }).then(() => {
+                this.resolveBootstrap();
+            })
         }
     }
 

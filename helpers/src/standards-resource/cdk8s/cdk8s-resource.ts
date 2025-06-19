@@ -5,7 +5,7 @@ import { Cli } from '@wbce/services';
 
 import * as cdk8s from 'cdk8s';
 import { mkdir, rm, writeFile } from 'fs/promises';
-import { KubeApi } from '../../../kubernetes/kubernetes-api.js';
+import { KubeApi } from '../../kubernetes/kubernetes-api.js';
 
 
 
@@ -151,6 +151,25 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
             this.storeNewChartMain.bind(this),
             { [ActionState.ERROR]: 2 }
         );
+    }
+
+    async defineUninstall(){
+        await this.do('DeleteStack', {
+            dynamicAction : ()=>{
+                const pruneAction = new Action();
+                pruneAction.main = this.pruneMain.bind(this);
+                this.generateStack = ()=>{
+                    //empty stack
+                    return new cdk8s.Chart(this.cdkApp, this.argument.stackName || this.bag.stackName)
+                }
+                pruneAction.setRepeat({ [ActionState.ERROR]: 2 });
+
+                return pruneAction;
+            }
+        })
+        await this.do("DeleteSecret", ()=>{
+            return this.kubeApi.deleteSecret(this.genSecretName());
+        });
     }
 
     /**

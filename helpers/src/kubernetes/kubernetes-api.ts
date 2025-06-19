@@ -112,6 +112,16 @@ export class KubeApi {
         return this.createSecret(mainKey, value, opts);
     }
 
+    async deleteSecret(mainKey: string,
+        opts = {
+            ns: 'default',
+    }){
+        return this.coreApi.deleteNamespacedSecret({
+            name: mainKey,
+            namespace: opts.ns
+        })
+    }
+
     generateSecretString() {
         const chars =
             '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ';

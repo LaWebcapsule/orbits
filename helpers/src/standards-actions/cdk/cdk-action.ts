@@ -47,14 +47,14 @@ export class CdkAction
 
     async produce(context: Record<string, any>) {
         this.cdkApp = new cdk.App({ context });
-        this.generateStack();
+        this.generateStack(this.cdkApp);
         this.stack.addMetadata('actionId', this._id.toString());
         return this.cdkApp.synth().directory;
     }
 
-    generateStack() {
+    generateStack(app : cdk.App) {
         this.stack = new this.StackConstructor(
-            this.cdkApp,
+            app,
             this.argument.stackName || this.bag.stackName,
             this.argument.stackProps
         );
@@ -223,6 +223,10 @@ export class CdkAction
                 }
                 throw err;
             });
+    }
+
+    bootstrapWatcher(){
+        
     }
 }
 

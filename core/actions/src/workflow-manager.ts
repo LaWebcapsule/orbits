@@ -601,7 +601,7 @@ export class Workflow extends Action {
                 }
             }
             else{           
-                this.internalLog("using a new action")   
+                this.internalLog(`using a new action for step ${ref}`)   
                 if(this.defineCallMode === 'main'){
                     await this.startAction(ref, action);
                 }
@@ -619,7 +619,7 @@ export class Workflow extends Action {
             //in case we didn't success in manipulating the action
             //we just exit and will be retried later
             //maybe we should have a max. number of exit before erroring
-            this.internalLog(`body of do method didn't succeed ; got error : ${err}`);
+            this.internalLog(`body of do method didn't succeed ; ref: ${ref}, got error : ${err}`);
             this.internalLogError(err);
             this.resolveDefineIteration(ActionState.UNKNOWN);//Unknow ensure here we don't change the state and so we don't have an infinite loop
             this.resolveDynamicActionFinding();
