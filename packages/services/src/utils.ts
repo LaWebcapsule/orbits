@@ -102,4 +102,8 @@ export const getStackTracePaths: () => string[] = () => {
 export function capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function base64Decode(str: string) {
+    return Buffer.from(str, 'base64').toString('utf-8');
+};
   

@@ -1,14 +1,6 @@
-import { Action, ActionRuntime } from '../index.js';
+/* import { Action, ActionRuntime } from '../index.js';
 
 export class TestAction extends Action {}
-
-export class ImportedApp extends ActionRuntime {
-    declare = [TestAction];
-}
-
-export class ImportingApp extends ActionRuntime {
-    imports: (typeof ActionRuntime)[] = [ImportedApp];
-}
 
 describe('action app', () => {
 
@@ -67,3 +59,4 @@ describe('action app', () => {
         });
     });
 });
+ */

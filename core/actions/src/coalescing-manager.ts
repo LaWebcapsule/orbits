@@ -1,8 +1,16 @@
 import {utils} from "@wbce/services";
 import { Action, ActionRuntime, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
+import { actionKind, actionKindSymbols } from "./runtime/action-kind.js";
+
+const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(actionKind.WORKFLOW);
+const RESOURCE_TAG = actionKindSymbols.get(actionKind.RESOURCE);
+const RESOURCE_CONTROLLER_TAG = actionKindSymbols.get(actionKind.RESOURCE_CONTROLLER);
+
 
 export abstract class CoalescingWorkflow extends Workflow{
+
+    [COALESCING_WORKFLOW_TAG] = true;
 
     identity():any{
         return;
@@ -159,6 +167,7 @@ export class ResourceController<T extends Resource> extends Workflow{
         actionRef: string
     }
 
+    [RESOURCE_CONTROLLER_TAG] = true;
 
     constructor(resource? : T){
         super()
@@ -227,6 +236,8 @@ type ResourceCommands<T> = {
 }[keyof T];
 
 export class Resource extends CoalescingWorkflow{
+
+    [RESOURCE_TAG] = true;
 
     declare IArgument: { commandName?: string;};
 

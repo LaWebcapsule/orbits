@@ -6,8 +6,12 @@ import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { JSONObject } from '@wbce/services/src/utils.js';
 import { level } from 'winston';
+import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
+import { register } from 'module';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+const ACTION_TAG = actionKindSymbols.get(actionKind.ACTION);
 
 /**
  * Structure actions.
@@ -15,6 +19,13 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
  * Extends this class to build new actions behaviors.
  */
 export class Action {
+
+    /**
+     * allow checking for Action in an context
+     * where there are different copies of orbits-core
+     */
+    static [ACTION_TAG] = true;
+
     /**
      * Id of the action stored in database.
      * It should be a permanent id that designates the action instance.
@@ -170,6 +181,19 @@ export class Action {
                         ctrName: this.constructor.name,
                     }
                 );
+            }
+            //check that we can go from actionRef to the constructor of the action
+            const ActionCtr = this.runtime.getActionFromRegistry(actionRef);
+            if(!(ActionCtr === this.constructor || ActionCtr.name !== this.constructor.name)){
+                throw new ActionError(
+                    'Another action with the same actionRef is already registered',
+                    errorCodes.NOT_ACCEPTABLE,
+                    {
+                        actionRef: actionRef,
+                        currentCtrName: this.constructor.name,
+                        registeredCtrName: ActionCtr.name,
+                    }
+                )
             }
             return this.dbDoc.save();
         })

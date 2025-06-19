@@ -4,6 +4,7 @@ import { Action, ActionRuntime, CoalescingWorkflow, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { JSONObject } from '@wbce/services/src/utils.js';
+import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 
 export type StepResult = {
     state: ActionState.SUCCESS | ActionState.ERROR;
@@ -30,10 +31,16 @@ export interface Step{
 
 class DoPromise<T> extends Promise<T>{}
 
+const ACTION_TAG = actionKindSymbols.get(actionKind.ACTION);
+const WORKFLOW_TAG = actionKindSymbols.get(actionKind.WORKFLOW);
+const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(actionKind.COALESCING_WORKFLOW);
+
 export class Workflow extends Action {
     // a workflow will never be in ERROR state due to a timeout
     // ERROR state will be reported by its actions
     static defaultDelay = Infinity;
+
+    static [WORKFLOW_TAG] = true;
 
     dBSession?: mongoose.ClientSession;
 
@@ -346,7 +353,7 @@ export class Workflow extends Action {
             }
         }
         if(!actionDbDoc){
-            if(action instanceof CoalescingWorkflow){
+            if(action.constructor[COALESCING_WORKFLOW_TAG]){
                 //this is for classic call of generator
                 //check if we have registered an action for this ref in previous execution
                 const actionDescriptor = this.bag.registeredActions.find((descriptor)=>{
@@ -362,13 +369,13 @@ export class Workflow extends Action {
                 }
                 else{
                     const actionsWithSameIdentity = await ActionRuntime.activeRuntime.ActionModel.find({
-                        "identity": action.stringifyIdentity(),
+                        "identity": (action as CoalescingWorkflow).stringifyIdentity(),
                         "actionRef": action.dbDoc.actionRef,
                         "state": {
                             $lt : ActionState.SUCCESS
                         }
                     }).sort("createdAt");
-                    actionDbDoc = action.substitute(actionsWithSameIdentity);
+                    actionDbDoc = (action as CoalescingWorkflow).substitute(actionsWithSameIdentity);
                 }  
             }
         }
@@ -394,8 +401,8 @@ export class Workflow extends Action {
                         })
                         action.dbDoc.workflowId = this._id.toString();
                         action.dbDoc.workflowRef = ref;
-                        if(this instanceof CoalescingWorkflow){
-                            action.dbDoc.workflowIdentity = this.stringifyIdentity();   
+                        if(this.constructor[COALESCING_WORKFLOW_TAG]){
+                            action.dbDoc.workflowIdentity = (this as Workflow as CoalescingWorkflow).stringifyIdentity();   
                         }
                         action.dbDoc.$session(this.dBSession);
                         promises.push(action.save());
@@ -532,8 +539,8 @@ export class Workflow extends Action {
     } | (() => Promise<any>), params = {nCall : 0} ){
         let action : Action; 
         try{
-            if(opts instanceof Action){
-                action = opts;
+            if(opts?.constructor?.[ACTION_TAG]){
+                action = opts as Action;
             }
             else if(typeof opts['main'] === 'function'){
                 action = new Action();
@@ -562,7 +569,7 @@ export class Workflow extends Action {
                     marker : ref
                 }
             }
-            else if(opts['dynamicAction'] instanceof Action){
+            else if(opts['dynamicAction'].constructor?.[ACTION_TAG]){
                 action = opts['dynamicAction'];
                 action.dbDoc.definitionFrom.workflow = {
                     _id : this.dbDoc._id.toString(),

@@ -14,6 +14,7 @@ import {resolve} from 'import-meta-resolve';
 import { getEnv } from './get-env.js';
 import EventEmitter from 'events';
 import { createRequire } from 'module';
+import { actionKind, actionKindSymbols } from './action-kind.js';
 
 /**
  * Describes how the runtime can be configured.
@@ -32,6 +33,8 @@ export interface RuntimeConfig {
     notActive?: boolean;
     entrypoint?: string;
 }
+
+export const ACTION_TAG = actionKindSymbols.get(actionKind.ACTION);
 
 export class ActionRuntime {
     static activeRuntime: ActionRuntime;
@@ -141,7 +144,7 @@ export class ActionRuntime {
         let hasAction = false;
         for (const key in moduleImport) {
             const value = moduleImport[key];
-            if (value?.prototype instanceof Action || value === Action) {
+            if (value?.[ACTION_TAG]) {
                 this.logger.info(`registering ${key}`);
                 this.registerAction(value);
                 hasAction = true;

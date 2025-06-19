@@ -1,3 +1,4 @@
+export * from './src/runtime/action-kind.js'
 export * from './src/action-executor.js';
 export * from './src/action-job.js';
 export * from './src/action-manager.js';
