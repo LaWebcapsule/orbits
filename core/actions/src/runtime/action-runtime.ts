@@ -9,7 +9,7 @@ import { ActionError } from '../error/error.js';
 import { ResourceSchemaInterface } from '../models/resource.js';
 import { RuntimeDb, setDbConnection } from './db-connection.js';
 import { defaultLogger, setLogger } from './logger.js';
-import { pathToFileURL } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import {resolve} from 'import-meta-resolve';
 import { getEnv } from './get-env.js';
 import EventEmitter from 'events';
@@ -137,13 +137,16 @@ export class ActionRuntime {
     }
 
     async scanModuleImport(moduleImport) {
+        let hasAction = false;
         for (const key in moduleImport) {
             const value = moduleImport[key];
             if (value?.prototype instanceof Action || value === Action) {
                 this.logger.info(`registering ${key}`);
                 this.registerAction(value);
+                hasAction = true;
             }
         }
+        return hasAction;
     }
 
     importedFiles = new Set<string>();
@@ -159,7 +162,9 @@ export class ActionRuntime {
         this.logger.info(`dealing with ${pathFile}`);
         let deps: string[];
         try {
-            deps = await precinct.paperwork(pathFile);
+            deps = await precinct.paperwork(pathFile, {
+                includeCore: false
+            });
         } catch (err) {
             if (err.code === 'ENOENT') {
                 this.logger.info(
@@ -169,6 +174,7 @@ export class ActionRuntime {
                     deps = await precinct.paperwork(
                         pathFile.replace('.js', '.ts'),
                         {
+                            includeCore: false,
                             ts: {
                                 skipTypeImports: true
                             },
@@ -198,13 +204,15 @@ export class ActionRuntime {
                 //import another file in same module
                 let filePath = path.join(baseDir, file);
                 const moduleImport = await import(filePath);
-                this.scanModuleImport(moduleImport);
+                await this.scanModuleImport(moduleImport);
                 await this.recursiveImport(filePath);
             } else {
                 //import an npm module
                 const url = await resolve(file, pathToFileURL(pathFile) as any);
                 const moduleImport = await import(url);                 
-                this.scanModuleImport(moduleImport);
+                if(await this.scanModuleImport(moduleImport)){
+                    await this.recursiveImport(fileURLToPath(url));
+                }
             }
         }
     }
