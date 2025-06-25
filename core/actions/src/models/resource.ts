@@ -19,19 +19,19 @@ export enum ResourceState {
     REVERTED,
 }
 
-export interface ResourceSchemaInterface<
-> extends mongoose.Document {
+export interface ResourceSchemaInterface<IOutput,
+Iinfo> extends mongoose.Document {
     identity : string,
     actionRef: string,
     version : string,
     locks: [{
         name: String
     }]
-    output : any,
+    output : IOutput,
     cycle: {
         frequency: number
     },
-    info: any,
+    info: Iinfo,
 }
 
 export const resourceSchema = new mongoose.Schema(
@@ -65,7 +65,7 @@ resourceSchema.index(
       unique: true,
       partialFilterExpression: {
         identity: { $exists: true },
-        generatorCount: { $exists: true }
+        actionRef: { $exists: true }
       }
     }
 );

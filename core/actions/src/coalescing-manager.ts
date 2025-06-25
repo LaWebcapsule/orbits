@@ -2,15 +2,16 @@ import {utils} from "@wbce/services";
 import { Action, ActionRuntime, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
 import { actionKind, actionKindSymbols } from "./runtime/action-kind.js";
+import { JSONObject } from "@wbce/services/src/utils.js";
 
-const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(actionKind.WORKFLOW);
+const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(actionKind.COALESCING_WORKFLOW);
 const RESOURCE_TAG = actionKindSymbols.get(actionKind.RESOURCE);
 const RESOURCE_CONTROLLER_TAG = actionKindSymbols.get(actionKind.RESOURCE_CONTROLLER);
 
 
 export abstract class CoalescingWorkflow extends Workflow{
 
-    [COALESCING_WORKFLOW_TAG] = true;
+    static [COALESCING_WORKFLOW_TAG] = true;
 
     identity():any{
         return;
@@ -165,13 +166,13 @@ export class Sleep extends Action{
     }
 }
 
-export class ResourceController<T extends Resource> extends Workflow{
+export class ResourceController<T extends Resource> extends CoalescingWorkflow{
 
     declare IArgument: T['IArgument'] & {
         actionRef: string
     }
 
-    [RESOURCE_CONTROLLER_TAG] = true;
+    static [RESOURCE_CONTROLLER_TAG] = true;
 
     constructor(resource? : T){
         super()
@@ -184,16 +185,31 @@ export class ResourceController<T extends Resource> extends Workflow{
     }
 
     resource: T;
-    resourceDbDoc: ResourceSchemaInterface;
+    resourceDbDoc: T['resourceDbDoc'];
 
-    async init(){
-        await super.init();
+    identity() {
+        this.constructResource();
+        return this.resource.identity();
+    }
+
+
+    constructResource(){
+        if(this.resource){
+            return this.resource;
+        }
         const ActionCtr = ActionRuntime.activeRuntime.getActionFromRegistry(this.argument.actionRef);
         const resource = new ActionCtr() as T;
         resource.setArgument({
             ...this.argument,
             actionRef: undefined
         });
+        this.resource = resource;
+        return resource;
+    }
+
+    async init(){
+        await super.init();
+        const resource = this.constructResource()
         await resource.getResourceDoc();
         this.resource = resource;
         this.resourceDbDoc = resource.resourceDbDoc;
@@ -206,10 +222,8 @@ export class ResourceController<T extends Resource> extends Workflow{
         await this.do('sleep', sleep);
         
         try{
-            await this.do("cycle", async ()=>{
-                this.resource.setCommand('cycle' as any);
-                return this.resource.clone();
-            })
+            this.resource.setCommand('cycle' as any)
+            await this.do("cycle", this.resource.clone());
         }
         catch(err){
             this.internalLog(`Error during cycle execution: ${err}`);
@@ -241,17 +255,21 @@ type ResourceCommands<T> = {
 
 export class Resource extends CoalescingWorkflow{
 
-    [RESOURCE_TAG] = true;
+    static [RESOURCE_TAG] = true;
 
     declare IArgument: { commandName?: string;};
-
 
     async init(){
         await this.getResourceDoc();
         await super.init();
     }
 
-    resourceDbDoc: ResourceSchemaInterface;
+    declare IResult : this['IOutput'] 
+
+    IOutput: JSONObject;
+    IInfo: JSONObject;
+
+    resourceDbDoc: ResourceSchemaInterface<this['IOutput'], this['IInfo']>;
     async getResourceDoc(){
         if (this.resourceDbDoc) {
 			return Promise.resolve(this.resourceDbDoc);
@@ -274,7 +292,10 @@ export class Resource extends CoalescingWorkflow{
         }
     }
 
-    createResourceDoc(){
+    async createResourceDoc(){
+        if(await this.getResourceDoc()){
+            return;//already exists
+        }
         this.resourceDbDoc = new this.runtime.ResourceModel({
             ...this.defaultResourceSettings,
             identity : this.stringifyIdentity(),
@@ -293,6 +314,10 @@ export class Resource extends CoalescingWorkflow{
     async getResourceOutput(){
        const resourceDbDoc = await this.getResourceDoc();
        return resourceDbDoc.output;
+    }
+
+    setArgument(args: Omit<this["IArgument"], 'commandName'>): this {
+        return super.setArgument(args)
     }
 
     setCommand(commandName : ResourceCommands<this>){
@@ -366,9 +391,16 @@ export class Resource extends CoalescingWorkflow{
                 this.resourceDbDoc.version = this.version;
                 return this.resourceDbDoc.save();
             })
-            await this.do("endDigestor", ()=>{
-                return this.endDigestor();
-            });
+            try{
+                await this.repeatDo("endDigestor", ()=>{
+                    return this.endDigestor();
+                }, {
+                    [ActionState.ERROR] : 2
+                });
+            }
+            catch(err){
+                //do nothing here.
+            }
             return this.resourceDbDoc.output;
         }        
     }
@@ -383,14 +415,12 @@ export class Resource extends CoalescingWorkflow{
     }
 
     defineUpdate(){
-        
     }
 
     defineUninstall(){
-
     }
 
-    async setOutput(): Promise<any>{
+    async setOutput(): Promise<this['IOutput']>{
         return;
     }
 
@@ -413,203 +443,3 @@ export class Resource extends CoalescingWorkflow{
 }
 
 type x = ResourceCommands<Resource>
-
-
-/**
- * 
- * 
- * 
- * first case : do is not re-executed
- * 
- * define(){
- *  await this.do("a", new Action())
- * 
- * }
- * 
- * How do I do to update ?
- * 
- * So, do is always reexecuted but : 
- * 
- * await this.do("a", new Action())--> is recreated
- * 
- * await this.do("b", new Resource()) --> is not recreated, I get last install workflow
- * 
- * exact syntax for this should be : 
- * 
- * await this.do("b", resource.send('install', new ExecutionToken())); --> then you configure the execution token
- * 
- * consequence in the resource : 
- * 
- * export class Resource{
- *  identity(){}
- * 
- *  send('install', )
- *  send(){
- * 
- *  }
- * 
- *  proxyInstall(){
- *      const actionList = 
- * 
- *  }
- * 
- *  install(){
- *  }
- * 
- * }
- * 
- * export class Resource{
- * 
- * 
- *  define(){
- *      await this.do("...", install());
- *      await this.do("...", install());
- *      await this.do("...", new MergeStagingToProd());
- *      await this.deploy();
- *      await this.do("...", installRefresh())
- * 
- *  }
- * 
- *  deploy(){
- *      await this.build()
- *  }
- * 
- * }
- * 
- * 
- * export class Resource{
- * 
- *  install(){
- *      await this.do("...", install()); 
- *      await this.do("...", new MergeStagingToProd);
- *      await this.cron("...");
- *  }
- * 
- * 
- * }
- * 
- * How do I do install vs update ?
- * 
- * Si je lance install : 
- * --> installe tout si pas déjà installé
- * Si je relance installe : 
- * --> installe tout si pas déjà installé mais ne check pas les dernières versions
- * Si je lance deploy : 
- * --> n'installe pas et prend pour acquis l'installation
- * Si je lance update : 
- * --> installe et déploye
- * Si je lance update In depth : 
- * 
- * 
- * export class Resource{
- * 
- *      install(){
- *          await SocleGenerator.beInstalled(this);
- *          const kc = new Keycloak();
- *          if(await this.do("kc", kc.isInstalled(this))){
- *              await this.do("")
- *          }  
- *      }
- * 
- *      update(){
- *      }
- * 
- *         
- * }
- * 
- * How do I launch a service and make to have available commands depending on the state ?
- * 
- * export class DirectusApp{
- * 
- * 
- *  install(){
- * 
- *  }
- * 
- *  save(){
- * 
- *  }
- * 
- *  onCommit(){
- * 
- *  }
- * 
- *  update(){
- *      
- *  }
- * 
- * 
- * }
- * 
- * How do I write a deployment ?
- * 
- * export class DeployWorkflow{
- * 
- * 
- *  map(){
- *      this.dict.map()
- *  }
- * 
- *  define(){
- *      try{
- *          await this.send(new Token({}));
- *      }
- *      catch(err){
- * 
- *      }
- *  }
- * 
- * }
- * 
- * 
- * 
- * export class Deploy extends DeployWorkflow{
- * 
- *      map(){
- *          this.map(new ExecutionToken(), "define")
- *      }
- *      
- *      defineDeploy(){
- * 
- *      }
- * 
- * }
- * 
- * 
- * 
- * export class XanoDeployWorkflow extends DeployWorkflow{
- * 
- *      defineDeploy(){
- *  
- *          
- *      }
- * 
- * }
- * 
- * export class XanoGenerator extends Cdk8sGenerator{
- * 
- *       identity(){
- *       }
- * 
- *       hasChanged(){
- * 
- *      }
- * 
- *      define(){
- *      }
- * 
- * }
- * 
- * export class XanoFirstDeploy extends InitTechnoWorkflow{
- * 
- *      define(){
- *          
- * 
- *      }
- * 
- * 
- * }
- * 
- * 
- * 
- */

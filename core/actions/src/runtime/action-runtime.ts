@@ -79,7 +79,7 @@ export class ActionRuntime {
     };
 
     ActionModel: mongoose.Model<ActionSchemaInterface>;
-    ResourceModel: mongoose.Model<ResourceSchemaInterface>;
+    ResourceModel: mongoose.Model<ResourceSchemaInterface<any, any>>;
 
     bootstrapPath: string;
 

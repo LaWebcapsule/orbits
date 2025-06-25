@@ -74,7 +74,7 @@ export class WaitForNewCommits extends GitAction {
             name: string;
             commits: Commit[];
         }[];
-    };
+    } & GitAction['IResult'];
 
     static cronDefaultSettings = {
         activityFrequency: 24 * 60 * 60 * 1000,

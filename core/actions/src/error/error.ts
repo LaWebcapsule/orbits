@@ -27,7 +27,7 @@ export class InWorkflowActionError extends Error{
     constructor(workflow: Workflow, ref: string, action: ActionSchemaInterface){
         super();
         this.message = (action.result as Error).message || action.result;
-        this.rootAction = (action.result instanceof InWorkflowActionError) ? action.result.rootAction : {
+        this.rootAction = (action.result['rootAction']) ? action.result.rootAction : {
             _id : action.id,
             actionRef : action.actionRef
         }

@@ -35,7 +35,7 @@ describe('Test action', () => {
 
     it('should  be a success', () => {
         expect(testAction.dbDoc.state).toEqual(ActionState.SUCCESS);
-        expect(testAction.result).toEqual(10);
+        expect(testAction.result as any).toEqual(10);
     });
 
     afterAll(() => {

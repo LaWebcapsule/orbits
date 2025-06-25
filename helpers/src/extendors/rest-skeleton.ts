@@ -4,7 +4,7 @@ export class ActionApi {
     app: ActionRuntime;
 
     constructor() {
-        this.app = ActionRuntime.getActiveRuntime();
+        this.app = ActionRuntime.activeRuntime;
     }
 
     list(query: any) {

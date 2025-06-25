@@ -8,7 +8,6 @@ describe('Resource', () => {
     let testResourceUpdate = new BlankResource();
     let testResourceChangeVersion = new BlankResource();
     testResourceChangeVersion.setArgument({
-        commandName: 'xyz',
         version : '2.0.0'
     })
 
@@ -70,7 +69,7 @@ describe('Resource', () => {
     it("should have correct output", async ()=>{
         const resource = new BlankResource();
         const output = await resource.getResourceOutput();
-        expect(output).toEqual({
+        expect(output as any).toEqual({
             "xyz": "abc"
         })
     })

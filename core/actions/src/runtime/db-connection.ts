@@ -29,7 +29,7 @@ export function setDbConnection(runtime: ActionRuntime) {
             'Action',
             actionSchema
         );
-        runtime.ResourceModel = runtime.db.mongo.conn.model<ResourceSchemaInterface>(
+        runtime.ResourceModel = runtime.db.mongo.conn.model<ResourceSchemaInterface<any, any>>(
             'Resource',
             resourceSchema
         );
@@ -41,7 +41,7 @@ export function setDbConnection(runtime: ActionRuntime) {
         'Action',
         actionSchema
     );
-    runtime.ResourceModel = conn.model<ResourceSchemaInterface>(
+    runtime.ResourceModel = conn.model<ResourceSchemaInterface<any, any>>(
         'Resource',
         resourceSchema
     );

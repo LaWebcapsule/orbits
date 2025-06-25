@@ -154,7 +154,13 @@ export class ThrowErrorBasicWorkflow extends Workflow{
             const result = await this.do("t1", new TestAction());
             await this.do("t3", new TestAction());
             throw new Error("xyz");
-            return {};
+    }
+}
+
+export class ThrowErrorComplexWorkflow extends Workflow{
+
+    async define(){
+        await this.do("basicError", new ThrowErrorBasicWorkflow());
     }
 }
 

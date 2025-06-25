@@ -1,24 +1,6 @@
 import { Action, ActionRuntime, ActionState } from "@wbce/orbits-core";
 import { GreetingResource } from "./greetings-resource.ts";
 
-
-const db = {
-    protocol: 'mongodb+srv',
-    url: process.env['MONGO_URL'],
-    name: 'orbits-hello-world',
-    connectQsParams: '?retryWrites=true&w=majority',
-};
-let dbOpts = {};
-
-const app = new ActionRuntime({
-    db: {
-        mongo: {
-            url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
-            opts: dbOpts,
-        },
-    },
-})
-
 ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
     const greetingOfTheDay = new GreetingResource().setArgument({
         name: "John Doe",
@@ -33,5 +15,4 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
     })
     greetingOfTheDay2.save();
     await Action.trackActionAsPromise(greetingOfTheDay2, [ActionState.SUCCESS, ActionState.ERROR])
-
 })

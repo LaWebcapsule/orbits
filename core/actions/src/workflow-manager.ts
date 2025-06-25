@@ -252,23 +252,19 @@ export class Workflow extends Action {
         this.dynamicActionFound = undefined;
         return new Promise((resolve, reject)=>{
             let resolveNotCalled = true;
-            this.resolveDynamicActionFinding = ()=>{
-                if(resolveNotCalled){
-                    resolveNotCalled = false;
+            const resolveIfActionFound = ()=>{
+                if(!resolveNotCalled){
+                    return;
+                }
+                resolveNotCalled = false;
+                if(this.dynamicActionFound){
                     resolve(this.dynamicActionFound)
                 }
-            };
-
-            const resolveIfActionFound = ()=>{
-                if(this.dynamicActionFound){
-                    this.resolveDynamicActionFinding()
-                }
                 else{
-                    resolveNotCalled = false;
                     reject(new ActionError(`action not found in definition - ${actionDb._id}, ${actionDb.actionRef}, ${actionDb.workflowStack[0]?.ref} `) )
                 }
             }
-
+            this.resolveDynamicActionFinding = resolveIfActionFound;
             this.define().then(resolveIfActionFound, resolveIfActionFound)
         }).finally(()=>{
             this.executingDefine = false;
@@ -445,7 +441,7 @@ export class Workflow extends Action {
             })
             .then(() => {
                 this.internalLog(
-                    `action started : ${this.dbDoc.bag.currentStepIndex}`
+                    `action started : ${action._id.toString()}, ${action.dbDoc.actionRef}`
                 );
             });
     }
@@ -464,7 +460,7 @@ export class Workflow extends Action {
             
                 default:
                     this.resolveDynamicActionFinding();
-                    this.resolveDefineIteration();
+                    this.resolveDefineIteration();    
                     break;
             }
         })
@@ -608,6 +604,7 @@ export class Workflow extends Action {
             }
             if(this.defineCallMode === 'main'){
                 await action.resume();
+                await action.resyncWithDb();
             }
         }
         catch(err){
@@ -625,7 +622,7 @@ export class Workflow extends Action {
             this.resolveDynamicActionFinding();
             return new DoPromise((resolve, reject)=>{});
         }
-        return await this.toPromise(ref, action.dbDoc);
+        return this.toPromise(ref, action.dbDoc);//no await here : has to been done in the parent call
     }
 
     /**

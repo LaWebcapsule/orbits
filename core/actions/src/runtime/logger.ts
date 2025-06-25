@@ -2,7 +2,7 @@ import { wbceAsyncStorage } from '@wbce/services';
 import * as winston from 'winston';
 import type { ActionRuntime } from './action-runtime.js';
 
-const expendError = (obj: any) => {
+const expendError = (obj: any, opts = {depth : 0}) => {
     if (obj instanceof Error) {
         return {
             ...obj,
@@ -10,10 +10,13 @@ const expendError = (obj: any) => {
             message: obj.message,
             stack: obj.stack,
         };
-    } else if (obj instanceof Object) {
+    } else if (obj instanceof Object && opts.depth < 5) {
         const result: any = {};
         for (const x in obj) {
-            result[x] = expendError(obj[x]);
+            result[x] = expendError(obj[x], {
+                ...opts,
+                depth : opts.depth+1
+            });
         }
         return result;
     }

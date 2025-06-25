@@ -38,7 +38,6 @@
         "typescript": "catalog:"
     },
     "dependencies": {
-        "@aws-cdk/cli-lib-alpha": "^2.1003.0-alpha.0",
         "@aws-cdk/toolkit-lib": "^1.2.0",
         "@aws-sdk/client-cloudformation": "^3.758.0",
         "@aws-sdk/client-ecr": "^3.758.0",

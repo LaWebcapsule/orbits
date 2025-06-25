@@ -1,42 +1,78 @@
-import { Resource } from "@wbce/orbits-core/index.js";
-import { CdkAction } from "../../standards-actions/cdk/cdk-action.js";
-
+import { Resource } from "@wbce/orbits-core";
+import * as cdk from 'aws-cdk-lib';
+import { CdkBootstrapAction, CdkDeployAction, CdkDestroyAction } from "../../standards-actions/cdk/cdk-action.js";
+import { Action, ActionState } from "@wbce/orbits-core";
+import { utils } from "@wbce/services";
+import { CdkHelper } from "../../standards-actions/cdk/cdk-helper.js";
 
 
 export class CdkStackResource extends Resource{
 
-    IArgument: { stackName : string; stackProps: any};
+    declare IArgument: Resource['IArgument'] & CdkBootstrapAction['IArgument'] & Record<'stackProps', Partial<ConstructorParameters<this['StackConstructor']>[2]>>
+
+    StackConstructor: typeof cdk.Stack
+
+    IInfo: {
+        cdkContext: utils.JSONObject
+    };
 
     identity() {
-        return this.argument.stackName;
+        return {
+            name : this.argument.stackName,
+            region: this.argument.stackProps.env.region,
+            account : this.argument.stackProps.env.account
+        };
     }
 
-    defineBootstrap(){
-
+    async defineInstall() {
+        const bootstrapAction = new CdkBootstrapAction()
+        bootstrapAction.setArgument(this.argument);
+        bootstrapAction.setRepeat({
+            [ActionState.ERROR]: 2
+        })
+        await this.do("bootstrap", bootstrapAction);
     }
 
-    defineInstall(): void {
-        
-    }
-
-    defineUpdate(){
-        const output = this.do("bootstrap", ()=>{
-            const action = new CdkAction();
-            action.stack = this.generateStack.bind(this);
-            return action;
+    async defineUpdate(){
+        const deployAction = new CdkDeployAction();
+        deployAction.setArgument({
+            ...this.argument as CdkBootstrapAction['IArgument'] as any,
+            cdkContext: this.resourceDbDoc.info.cdkContext
         });
-        await this.do("deploy", ()=>{
-            
+        deployAction.setRepeat({
+            [ActionState.ERROR]:2
+        })
+        deployAction.StackConstructor = this.StackConstructor
+        const context = await this.do("deploy", { dynamicAction: deployAction});
+        await this.repeatDo("saveContext", ()=>{
+            this.resourceDbDoc.info.cdkContext = context as utils.JSONObject;
+            return this.resourceDbDoc.save()
+        }, {
+            [ActionState.ERROR]: 2
         })
     }
 
-    defineUninstall(){
-        await this.do("delete", ()=>{
-
+    async setOutput(): Promise<any> {
+        const opts = {};
+        opts['region'] =
+            this.argument.stackProps?.env.region;
+        opts['profile'] = this.argument.awsProfileName;
+        const cdkHelper = new CdkHelper(opts)
+        return cdkHelper.describeStackFromName(this.argument.stackName).then((res)=>{
+            const result = {};
+            for(const output of res.Outputs){
+                result[output.OutputKey] = output.OutputValue;
+            }
+            return result;
         })
     }
 
-    launchCdkCommand(){
-
+    async defineUninstall(){
+        const destroyAction = new CdkDestroyAction()
+        destroyAction.setArgument(this.argument);
+        destroyAction.setRepeat({
+            [ActionState.ERROR]: 2
+        })
+        await this.do("delete", destroyAction);
     }
 }

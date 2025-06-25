@@ -37,7 +37,3 @@ export const gitCenter = {
 
 gitCenter.registry.set(gitProviders.GITHUB, GithubApi);
 gitCenter.registry.set(gitProviders.GITLAB, GitlabApi);
-
-export class GitHelperApp extends ActionRuntime {
-    declare = [AddGitWebHookAction, WaitForNewCommits];
-}

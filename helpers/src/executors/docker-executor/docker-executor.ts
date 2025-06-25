@@ -81,6 +81,7 @@ export class DockerExecutor extends Executor {
                     `wbce_id=${this.registry.url}:${this.registry.tag}`
                 );
                 const executionContext = this.calculateExecutionContext();
+                console.log(appPaths);
                 const dockerConfig = {
                     WorkingDir: `/app`,
                     NetworkMode: 'host',
@@ -127,6 +128,8 @@ export class DockerExecutor extends Executor {
                     appPaths.relativeImportPathFromEntrypoint,
                     action._id.toString(),
                 ];
+                console.log(dockerConfig)
+                console.log(cmd);
                 return docker.run(
                     `${this.registry.url}:${this.registry.tag}`,
                     cmd,

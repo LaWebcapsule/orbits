@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wbce/orbits-core": "workspace:^"
+    "@wbce/orbits-core": "workspace:^",
+    "typescript": "catalog:"
   },
   "devDependencies": {
     "tsx": "^4.19.4"

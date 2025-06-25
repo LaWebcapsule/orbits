@@ -1,5 +1,5 @@
 import { Action, ActionError, ActionRuntime, ActionState, InWorkflowActionError, Workflow } from '../index.js';
-import { BasicWorkflow, ThrowErrorBasicWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition, WorkflowWithRepeat } from './test-action.js';
+import { BasicWorkflow, ThrowErrorBasicWorkflow, ThrowErrorComplexWorkflow, WithActionErrorBasicWorkflow, WorkflowWithDynamicDefinition, WorkflowWithRepeat } from './test-action.js';
 
 
 function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, expectedResult : any, numberOfChildActions : number, timeBeforeRunningTest?: number}){
@@ -20,12 +20,13 @@ function testAWorkflow(w: Workflow, opts: {expectedActionState : ActionState, ex
 
     it(`should have correct result`, ()=>{
         let result : any = w.dbDoc.result;
-        if((result as ActionError).stack){
+        if(w.dbDoc.state === ActionState.ERROR){
             (result as Error).stack = undefined;
             opts.expectedResult.stack = undefined;
+            result.formatedError = undefined;
             result = jasmine.objectContaining(opts.expectedResult)
         }
-        expect(result as any).toEqual(result)
+        expect(result as any).toEqual(opts.expectedResult)
     })
 
     it('should have launched sub-actions', () =>
@@ -57,7 +58,21 @@ describe('throw Error in Workflow', ()=>{
         expectedActionState : ActionState.ERROR, 
         expectedResult : {message: "xyz", stack : undefined}, 
         numberOfChildActions : 2,
-        timeBeforeRunningTest : 10
+    })
+})
+
+describe('throw error in Workflow from children', ()=>{
+    const throwErrorWorkflow = new ThrowErrorComplexWorkflow();
+    const throwBasicErr = new ThrowErrorBasicWorkflow();
+    throwBasicErr.setResult({
+        message: "xyz",
+        stack: undefined
+    })
+
+    testAWorkflow(throwErrorWorkflow, {
+        expectedActionState: ActionState.ERROR,
+        expectedResult: new InWorkflowActionError(throwErrorWorkflow, 'basicError', throwBasicErr.dbDoc),
+        numberOfChildActions: 1,
     })
 })
 

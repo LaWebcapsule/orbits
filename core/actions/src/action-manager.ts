@@ -1,13 +1,14 @@
 import { utils, wbceAsyncStorage } from '@wbce/services';
 import { ActionRuntime, Workflow } from '../index.js';
 import { Executor } from './action-executor.js';
-import { ActionError, BreakingActionState } from './error/error.js';
+import { ActionError, BreakingActionState, InWorkflowActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { JSONObject } from '@wbce/services/src/utils.js';
 import { level } from 'winston';
 import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 import { register } from 'module';
+import {format, inspect} from "util"
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -104,7 +105,7 @@ export class Action {
     /**
      * Action result
      */
-    IResult: JSONObject|Error;
+    IResult: JSONObject|Error|void;
 
     /**
      * Action Database Document
@@ -392,7 +393,7 @@ export class Action {
                     return err.actionState;
                 }
                 this.internalLogError(err);
-                this.result = err;
+                err ? this.setErrorAsResult(err): undefined;
                 return ActionState.ERROR;
             });
     }
@@ -467,6 +468,18 @@ export class Action {
         }
         this.dbDoc.markModified('result');
         return this;
+    }
+
+    private setErrorAsResult(err: Error | ActionError | InWorkflowActionError){
+        const formatError = (err as any)?.formatedError || format('%s', err);
+        this.setResult({
+            code : (err as ActionError)?.code,
+            message : err?.message,
+            stack: err?.stack,
+            worflowTrace: (err as InWorkflowActionError)?.workflowTrace,
+            rootAction: (err as InWorkflowActionError)?.rootAction,
+            formatedError: formatError
+        });
     }
 
     /**
@@ -575,7 +588,7 @@ export class Action {
                 })
                 .then((actionState) => {
                     if (actionState === ActionState.UNKNOWN) {
-                        this.setResult(timeoutError);
+                        this.setErrorAsResult(timeoutError);
                         return ActionState.ERROR;
                     }
                     return actionState;
@@ -592,8 +605,7 @@ export class Action {
                         }
                         return err.actionState;
                     } else {
-                        this.internalLogError(err);
-                        this.result = err;
+                        err ? this.setErrorAsResult(err): undefined;
                         return ActionState.ERROR;
                     }
                 });
@@ -945,6 +957,24 @@ export class Action {
             }, 10*1000)
         })
     }
+
+    /**
+     * Send a signal to indicate that the action is still in progress..
+     * Useful for preventing timeouts when the action's duration is long but not precisely predictable.
+     */
+    notifyHealthPromise : Promise<any> | undefined = undefined;
+    notifyHealth(){
+        if(this.notifyHealthPromise){
+            return this.notifyHealthPromise;
+        }
+        this.notifyHealthPromise = Promise.resolve().then(()=>{
+            this.dbDoc.stateUpdatedAt = new Date();
+            return this.dbDoc.save()
+        }).finally(()=>{
+            this.notifyHealthPromise = undefined;
+        });
+    }
+    
 
 }
 
