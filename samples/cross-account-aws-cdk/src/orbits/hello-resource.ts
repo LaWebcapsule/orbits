@@ -37,6 +37,11 @@ export class HelloResource extends Resource{
         await this.do("updateLambda", this.constructLambdaResource(paramOutput))
     }
 
+    async defineUninstall(){
+        await this.do("uninstallLambda", this.constructLambdaResource().setCommand("Uninstall"));
+        await this.do("uninstallParam", this.constructParamResource().setCommand("Uninstall"))
+    }
+
     constructLambdaResource(paramOutput? : ParamResource['IOutput']){
         return new LambdaResource().setArgument({
             stackName: "lambda",
@@ -50,7 +55,6 @@ export class HelloResource extends Resource{
                 }
             }
         })
-
     }
 
     constructParamResource(lambdaOutput? : LambdaResource['IOutput']){

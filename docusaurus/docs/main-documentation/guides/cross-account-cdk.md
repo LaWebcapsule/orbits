@@ -2,6 +2,51 @@
 
 A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example : it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
 
+## Problem statement
+
+Using AWS CDK and CloudFormation, consuming cross-account resources is difficult because stacks cannot directly reference resources from other AWS accounts. The core issue is that CloudFormation stacks cannot directly reference resources from other AWS accounts, requiring manual coordination and hardcoded values
+Common problematic scenarios include:
+- Accessing Docker images built in account A from account B
+- Using secrets from account A in account B applications
+- Establishing VPC peering between accounts
+- Granting cross-account S3 bucket access
+- Sharing Lambda layers across accounts
+- Writing values into the DNS zone of account A from account B
+
+This limitation is shown in this example:
+```typescript
+const app = new cdk.App()
+
+const paramA = new ParamStack(app, 'stack-A', {
+    ...,
+    env: {
+        account: "account-A"
+    }
+})
+
+const lambdaB = new LambdaStack(app, 'stack-A', {
+    ...,
+    parameterArn : paramA.parameter.arn, // ❌ you can not reference a resource from a stack from another account
+    env: {
+        account: "account-B"
+    }
+})
+```
+
+With orbits, cross-account resource sharing works seamlessly:
+```typescript
+const paramOutput = await this.do("updateParam", new ParamResource());
+
+await this.do("updateLambda", new LambdaResource().setArgument({
+    stackProps : {
+        parameterArn: paramOutput.parameterArn,// ✅ you can reference any stack
+        env: {
+            account : this.argument.accountA.id
+        }
+    }
+}))
+```
+
 ## Architecture Overview
 
 Account A (Parameter Store)     Account B (Lambda Consumer)

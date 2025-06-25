@@ -2,7 +2,7 @@ import { ActionRuntime } from "@wbce/orbits-core";
 import { HelloResource } from "./hello-resource.js";
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
-    new HelloResource().setArgument({
+    const helloResource = new HelloResource().setArgument({
         accountA: {
             id: process.env['AWS_ACCOUNT_A'],
             profile: process.env['AWS_ACCOUNT_A_PROFILE']
@@ -13,5 +13,9 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
 
         },
         region: process.env['AWS_REGION']
-    }).save();
+    })
+    if(process.env['HELLO_COMMAND']==="uninstall"){
+        helloResource.setCommand("Uninstall");
+    }
+    helloResource.save();
 })

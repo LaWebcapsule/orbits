@@ -5,9 +5,9 @@
     "className": "red",
     "link": {
       "type": "generated-index",
-      "title": "Core concepts"
+      "title": "Guides"
     },
     "customProps": {
-      "description": "This description can be used in the swizzled DocCard"
+      "description": "Usage guides for common use cases"
     }
   }
