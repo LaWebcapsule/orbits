@@ -173,3 +173,13 @@ A resource is an action, so you consume it like an action
   await resource2.save();//the action will be executed ; "goodbye" will appear in the console
   await Action.trackActionAsPromise(resource2, [ActionState.SUCCESS, ActionState.ERROR]);
 ```
+
+## Next Steps
+
+:::tip What's Next?
+Here are three recommended next steps to continue your journey:
+
+1. **👋 [Hello world example](./guides/hello-world.md)** - Build your first Orbits application with our step-by-step tutorial and see immediate results
+2. **⚙️ [Core-concepts](/docs/category/core-concepts)** - Master the fundamental architecture principles and design patterns that power Orbits  
+3. **🛤️ [Guides](/docs/category/guides)** - Explore hands-on tutorials ranging from beginner-friendly to advanced implementation techniques
+:::

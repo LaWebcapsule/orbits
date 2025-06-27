@@ -1,6 +1,6 @@
 # Class: ScopeOfChanges\<T\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:214](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/coalescing-manager.ts#L214)
+Defined in: [core/actions/src/coalescing-manager.ts:241](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/coalescing-manager.ts#L241)
 
 ## Type Parameters
 
@@ -14,7 +14,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:214](https://github.com/LaWe
 
 > **new ScopeOfChanges**\<`T`\>(`commandName`, `opts?`): `ScopeOfChanges`\<`T`\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:216](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/coalescing-manager.ts#L216)
+Defined in: [core/actions/src/coalescing-manager.ts:243](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/coalescing-manager.ts#L243)
 
 #### Parameters
 
@@ -36,7 +36,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:216](https://github.com/LaWe
 
 > **commandName**: `T`
 
-Defined in: [core/actions/src/coalescing-manager.ts:216](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/coalescing-manager.ts#L216)
+Defined in: [core/actions/src/coalescing-manager.ts:243](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/coalescing-manager.ts#L243)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [core/actions/src/coalescing-manager.ts:216](https://github.com/LaWe
 
 > `optional` **opts**: `any`
 
-Defined in: [core/actions/src/coalescing-manager.ts:216](https://github.com/LaWebcapsule/orbits/blob/bf61656fb93c3816eb39d899bbc365fbc0c278b9/core/actions/src/coalescing-manager.ts#L216)
+Defined in: [core/actions/src/coalescing-manager.ts:243](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/coalescing-manager.ts#L243)

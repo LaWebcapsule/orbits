@@ -19,4 +19,4 @@
       "esModuleInterop": true,
     },
     "exclude":["dist/"]
-  }
+}

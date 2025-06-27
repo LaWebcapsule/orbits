@@ -10,6 +10,7 @@ If you've ever tried to build a multi-account AWS architecture using CDK or Clou
 
 This post walks through a practical example that demonstrates both the problem and a solution using orbits, a tool designed to seamless orchestrate all of your IaC with code.
 
+<!-- truncate -->
 ## The Cross-Account Problem
 
 AWS CDK and CloudFormation have a limitation: stacks cannot directly reference resources from other AWS accounts. This creates friction for common architectural patterns like:
@@ -150,10 +151,12 @@ export class LambdaResource extends CdkStackResource{
 
 Let's go line by line.
 - `StackConstructor = LambdaStack` : this tells the orchestrator that `LambdaResource` will use the `LambdaStack` class constructor to define and manage its infrastructure.
-- ```typescript 
+- 
+```typescript 
 declare IOutput : {
         "roleArn": string
-} ```
+} 
+```
 The CloudFormation stack for the Lambda function exports a single output: "roleArn", which is the ARN of the Lambda's execution role.
 The IOutput declaration is used for type safety—it informs the developer that this resource will expose an output matching that structure.
 

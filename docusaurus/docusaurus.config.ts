@@ -37,6 +37,7 @@ const config: Config = {
       'classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: './sidebars.ts',
         },
         blog: {
@@ -77,7 +78,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentation',
         },
         {
           type: 'docSidebar',
@@ -86,9 +87,6 @@ const config: Config = {
           label: 'API',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          type: 'docsVersionDropdown',
-        },
         {
           href: 'https://github.com/LaWebcapsule/orbits',
           label: 'GitHub',
@@ -160,6 +158,7 @@ const config: Config = {
           // './packages'
         ],
         entryPointStrategy: 'packages',
+        tsconfig: "./../core/actions/tsconfig.json",
         externalPattern: [
           '**/node_modules/**'
         ],
