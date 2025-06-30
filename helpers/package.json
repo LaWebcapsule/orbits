@@ -50,7 +50,7 @@
         "@wbce/services": "workspace:^",
         "aws-cdk": "^2.1010.0",
         "aws-cdk-lib": "^2.190.0",
-        "dockerode": "^4.0.5",
+        "dockerode": "^4.0.7",
         "express": "^4.21.2",
         "mongoose": "catalog:",
         "octokit": "^4.1.3",
