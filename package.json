@@ -2,6 +2,7 @@
   "name": "@wbce/orbits",
   "version": "1.0.0",
   "description": "Flow for DevOps - a simple way to write state machine",
+  "private": true,
   "scripts": {
     "generate-doc": "npx typedoc --options typedoc.ts",
     "ci:publish": "pnpm publish -r"
