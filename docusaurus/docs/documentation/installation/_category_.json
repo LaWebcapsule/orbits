@@ -1,14 +1,14 @@
 {
-    "label": "Core Concepts",
-    "position": "2",
+    "label": "Installation",
     "collapsible": true,
     "collapsed": true,
+    "position": "1",
     "className": "red",
     "link": {
       "type": "generated-index",
-      "title": "Core concepts"
+      "title": "Installation"
     },
     "customProps": {
-      "description": "This description can be used in the swizzled DocCard"
+      "description": "Install orbits in your own infrastructure"
     }
   }

@@ -1,6 +1,6 @@
 # Interface: ActionSchemaInterface\<TArgument, TBag, TResult\>
 
-Defined in: [core/actions/src/models/action.ts:22](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L22)
+Defined in: [core/actions/src/models/action.ts:22](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L22)
 
 ## Extends
 
@@ -99,7 +99,7 @@ Set this property to add additional query filters when Mongoose saves this docum
 
 > **actionRef**: `string`
 
-Defined in: [core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L32)
+Defined in: [core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L32)
 
 ***
 
@@ -107,7 +107,7 @@ Defined in: [core/actions/src/models/action.ts:32](https://github.com/LaWebcapsu
 
 > **argument**: `TArgument`
 
-Defined in: [core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L29)
+Defined in: [core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L29)
 
 ***
 
@@ -115,7 +115,7 @@ Defined in: [core/actions/src/models/action.ts:29](https://github.com/LaWebcapsu
 
 > **bag**: `TBag`
 
-Defined in: [core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L30)
+Defined in: [core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L30)
 
 ***
 
@@ -151,7 +151,7 @@ Collection the model uses.
 
 > **createdAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:73](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L73)
+Defined in: [core/actions/src/models/action.ts:73](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L73)
 
 ***
 
@@ -159,7 +159,7 @@ Defined in: [core/actions/src/models/action.ts:73](https://github.com/LaWebcapsu
 
 > **cronActivity**: `object`
 
-Defined in: [core/actions/src/models/action.ts:62](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L62)
+Defined in: [core/actions/src/models/action.ts:62](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L62)
 
 #### ~~frequence?~~
 
@@ -205,7 +205,7 @@ Connection the model uses.
 
 > `optional` **definitionFrom**: `object`
 
-Defined in: [core/actions/src/models/action.ts:74](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L74)
+Defined in: [core/actions/src/models/action.ts:74](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L74)
 
 #### workflow
 
@@ -237,7 +237,7 @@ Defined in: [core/actions/src/models/action.ts:74](https://github.com/LaWebcapsu
 
 > **delay**: `number`
 
-Defined in: [core/actions/src/models/action.ts:57](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L57)
+Defined in: [core/actions/src/models/action.ts:57](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L57)
 
 ***
 
@@ -245,7 +245,7 @@ Defined in: [core/actions/src/models/action.ts:57](https://github.com/LaWebcapsu
 
 > **delays**: `object`
 
-Defined in: [core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L58)
+Defined in: [core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L58)
 
 #### 1
 
@@ -275,7 +275,7 @@ Returns the current validation errors.
 
 > **filter**: `Object`
 
-Defined in: [core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L34)
+Defined in: [core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L34)
 
 ***
 
@@ -283,7 +283,7 @@ Defined in: [core/actions/src/models/action.ts:34](https://github.com/LaWebcapsu
 
 > **generatorCount**: `number`
 
-Defined in: [core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L45)
+Defined in: [core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L45)
 
 ***
 
@@ -305,7 +305,7 @@ The string version of this documents _id.
 
 > **identity**: `string`
 
-Defined in: [core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L33)
+Defined in: [core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L33)
 
 ***
 
@@ -327,7 +327,7 @@ Boolean flag specifying if the document is new.
 
 > **lockAndSave**: () => `Promise`\<`void`\>
 
-Defined in: [core/actions/src/models/action.ts:85](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L85)
+Defined in: [core/actions/src/models/action.ts:85](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L85)
 
 #### Returns
 
@@ -339,7 +339,7 @@ Defined in: [core/actions/src/models/action.ts:85](https://github.com/LaWebcapsu
 
 > **locked**: `Boolean`
 
-Defined in: [core/actions/src/models/action.ts:47](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L47)
+Defined in: [core/actions/src/models/action.ts:47](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L47)
 
 ***
 
@@ -347,7 +347,7 @@ Defined in: [core/actions/src/models/action.ts:47](https://github.com/LaWebcapsu
 
 > **lockedAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:48](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L48)
+Defined in: [core/actions/src/models/action.ts:48](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L48)
 
 ***
 
@@ -355,7 +355,7 @@ Defined in: [core/actions/src/models/action.ts:48](https://github.com/LaWebcapsu
 
 > **nExecutions**: `object`
 
-Defined in: [core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L53)
+Defined in: [core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L53)
 
 #### 4
 
@@ -371,7 +371,7 @@ Defined in: [core/actions/src/models/action.ts:53](https://github.com/LaWebcapsu
 
 > **nTimes**: `number`
 
-Defined in: [core/actions/src/models/action.ts:46](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L46)
+Defined in: [core/actions/src/models/action.ts:46](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L46)
 
 ***
 
@@ -379,7 +379,7 @@ Defined in: [core/actions/src/models/action.ts:46](https://github.com/LaWebcapsu
 
 > **optimisticLock**: () => `Promise`\<`void`\>
 
-Defined in: [core/actions/src/models/action.ts:84](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L84)
+Defined in: [core/actions/src/models/action.ts:84](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L84)
 
 #### Returns
 
@@ -391,7 +391,7 @@ Defined in: [core/actions/src/models/action.ts:84](https://github.com/LaWebcapsu
 
 > **repeat**: `object`
 
-Defined in: [core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L49)
+Defined in: [core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L49)
 
 #### 4?
 
@@ -407,7 +407,7 @@ Defined in: [core/actions/src/models/action.ts:49](https://github.com/LaWebcapsu
 
 > **result**: `TResult`
 
-Defined in: [core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L31)
+Defined in: [core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L31)
 
 ***
 
@@ -429,7 +429,7 @@ The document's schema.
 
 > **state**: [`ActionState`](../enumerations/ActionState.md)
 
-Defined in: [core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L27)
+Defined in: [core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L27)
 
 ***
 
@@ -437,7 +437,7 @@ Defined in: [core/actions/src/models/action.ts:27](https://github.com/LaWebcapsu
 
 > **stateUpdatedAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L28)
+Defined in: [core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L28)
 
 ***
 
@@ -445,7 +445,7 @@ Defined in: [core/actions/src/models/action.ts:28](https://github.com/LaWebcapsu
 
 > **updatedAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:72](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L72)
+Defined in: [core/actions/src/models/action.ts:72](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L72)
 
 ***
 
@@ -453,7 +453,7 @@ Defined in: [core/actions/src/models/action.ts:72](https://github.com/LaWebcapsu
 
 > **updateNextActivity**: () => `void`
 
-Defined in: [core/actions/src/models/action.ts:83](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L83)
+Defined in: [core/actions/src/models/action.ts:83](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L83)
 
 #### Returns
 
@@ -465,7 +465,7 @@ Defined in: [core/actions/src/models/action.ts:83](https://github.com/LaWebcapsu
 
 > `optional` **workflowId**: `string`
 
-Defined in: [core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L35)
+Defined in: [core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L35)
 
 ***
 
@@ -473,7 +473,7 @@ Defined in: [core/actions/src/models/action.ts:35](https://github.com/LaWebcapsu
 
 > `optional` **workflowIdentity**: `string`
 
-Defined in: [core/actions/src/models/action.ts:38](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L38)
+Defined in: [core/actions/src/models/action.ts:38](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L38)
 
 ***
 
@@ -481,7 +481,7 @@ Defined in: [core/actions/src/models/action.ts:38](https://github.com/LaWebcapsu
 
 > `optional` **workflowRef**: `string`
 
-Defined in: [core/actions/src/models/action.ts:37](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L37)
+Defined in: [core/actions/src/models/action.ts:37](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L37)
 
 ***
 
@@ -489,7 +489,7 @@ Defined in: [core/actions/src/models/action.ts:37](https://github.com/LaWebcapsu
 
 > **workflowStack**: `object`[]
 
-Defined in: [core/actions/src/models/action.ts:39](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L39)
+Defined in: [core/actions/src/models/action.ts:39](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L39)
 
 #### \_id
 
@@ -513,7 +513,7 @@ Defined in: [core/actions/src/models/action.ts:39](https://github.com/LaWebcapsu
 
 > `optional` **workflowStep**: `number`
 
-Defined in: [core/actions/src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L36)
+Defined in: [core/actions/src/models/action.ts:36](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L36)
 
 ## Methods
 

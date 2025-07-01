@@ -1,6 +1,6 @@
 # Interface: AppDb
 
-Defined in: [core/actions/src/runtime/db-connection.ts:11](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/runtime/db-connection.ts#L11)
+Defined in: [core/actions/src/runtime/db-connection.ts:11](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/runtime/db-connection.ts#L11)
 
 Describes the structure of the `app.db` object.
 For now, only mongo is supported.
@@ -12,7 +12,7 @@ Either `url` or `conn` should be present.
 
 > `optional` **mongo**: `object`
 
-Defined in: [core/actions/src/runtime/db-connection.ts:12](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/runtime/db-connection.ts#L12)
+Defined in: [core/actions/src/runtime/db-connection.ts:12](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/runtime/db-connection.ts#L12)
 
 #### conn?
 
@@ -32,4 +32,4 @@ Defined in: [core/actions/src/runtime/db-connection.ts:12](https://github.com/La
 
 > `optional` **noDatabase**: `boolean`
 
-Defined in: [core/actions/src/runtime/db-connection.ts:17](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/runtime/db-connection.ts#L17)
+Defined in: [core/actions/src/runtime/db-connection.ts:17](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/runtime/db-connection.ts#L17)

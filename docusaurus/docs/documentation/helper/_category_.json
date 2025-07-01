@@ -1,11 +1,12 @@
 {
-    "label": "Program your IaC",
+    "label": "Pilot your IaC",
     "collapsible": true,
-    "collapsed": false,
+    "collapsed": true,
+    "position": "3",
     "className": "red",
     "link": {
       "type": "generated-index",
-      "title": "Program your IaC"
+      "title": "Pilot your IaC"
     },
     "customProps": {
       "description": "Toolbox to help programmatically manage your Infrastructure as Code (IaC)"

@@ -1,6 +1,6 @@
 # Enumeration: ActionState
 
-Defined in: [core/actions/src/models/action.ts:5](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L5)
+Defined in: [core/actions/src/models/action.ts:5](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L5)
 
 ## Enumeration Members
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/models/action.ts:5](https://github.com/LaWebcapsul
 
 > **CLOSED**: `6`
 
-Defined in: [core/actions/src/models/action.ts:17](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L17)
+Defined in: [core/actions/src/models/action.ts:17](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L17)
 
 ***
 
@@ -16,7 +16,7 @@ Defined in: [core/actions/src/models/action.ts:17](https://github.com/LaWebcapsu
 
 > **ERROR**: `5`
 
-Defined in: [core/actions/src/models/action.ts:16](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L16)
+Defined in: [core/actions/src/models/action.ts:16](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L16)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/actions/src/models/action.ts:16](https://github.com/LaWebcapsu
 
 > **EXECUTING\_MAIN**: `1`
 
-Defined in: [core/actions/src/models/action.ts:12](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L12)
+Defined in: [core/actions/src/models/action.ts:12](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L12)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/actions/src/models/action.ts:12](https://github.com/LaWebcapsu
 
 > **IN\_PROGRESS**: `2`
 
-Defined in: [core/actions/src/models/action.ts:13](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L13)
+Defined in: [core/actions/src/models/action.ts:13](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L13)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/actions/src/models/action.ts:13](https://github.com/LaWebcapsu
 
 > **PAUSED**: `3`
 
-Defined in: [core/actions/src/models/action.ts:14](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L14)
+Defined in: [core/actions/src/models/action.ts:14](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L14)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [core/actions/src/models/action.ts:14](https://github.com/LaWebcapsu
 
 > **REVERTED**: `8`
 
-Defined in: [core/actions/src/models/action.ts:19](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L19)
+Defined in: [core/actions/src/models/action.ts:19](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L19)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [core/actions/src/models/action.ts:19](https://github.com/LaWebcapsu
 
 > **REVERTING**: `7`
 
-Defined in: [core/actions/src/models/action.ts:18](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L18)
+Defined in: [core/actions/src/models/action.ts:18](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L18)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [core/actions/src/models/action.ts:18](https://github.com/LaWebcapsu
 
 > **SLEEPING**: `0`
 
-Defined in: [core/actions/src/models/action.ts:11](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L11)
+Defined in: [core/actions/src/models/action.ts:11](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L11)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [core/actions/src/models/action.ts:11](https://github.com/LaWebcapsu
 
 > **SUCCESS**: `4`
 
-Defined in: [core/actions/src/models/action.ts:15](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L15)
+Defined in: [core/actions/src/models/action.ts:15](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L15)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [core/actions/src/models/action.ts:15](https://github.com/LaWebcapsu
 
 > **UNKNOW**: `-1`
 
-Defined in: [core/actions/src/models/action.ts:9](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L9)
+Defined in: [core/actions/src/models/action.ts:9](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L9)
 
 #### Deprecated
 
@@ -92,4 +92,4 @@ use UNKNOWN
 
 > **UNKNOWN**: `-1`
 
-Defined in: [core/actions/src/models/action.ts:10](https://github.com/LaWebcapsule/orbits/blob/9744d8dd614b8250f9482ba0dbdd854f4b4fbc37/core/actions/src/models/action.ts#L10)
+Defined in: [core/actions/src/models/action.ts:10](https://github.com/LaWebcapsule/orbits/blob/9be74e5c31084014a08e6e69ff99691ccdea4a5d/core/actions/src/models/action.ts#L10)
