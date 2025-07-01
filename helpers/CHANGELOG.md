@@ -1,5 +1,11 @@
 # @wbce/orbits-fuel
 
+## 0.0.56
+
+### Patch Changes
+
+- 0d7862b: fix build method
+
 ## 0.0.54
 
 ### Patch Changes
