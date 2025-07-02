@@ -1,39 +1,48 @@
 ---
-title: Runtime
+title: Environment variables and runtime
 sidebar_position: 4
 ---
-# Runtime documentation
+# Configure your runtime
 
-Runtime manages connection to your database and serves as the central bootstrap point for your Orbits runtime.
+> **Advanced Feature**  
+> This section describes advanced usage of Orbits runtime. Use it if you're customizing how your runtime initializes or need precise control over bootstrapping.
 
-## Bootstrapping a runtime
+The runtime is responsible for establishing the database connection, configuring logging, and preparing the environment to run your Actions and Workflows. It's the central bootstrap point for any Orbits-based application.
 
-To initialize your runtime, create a new `ActionRuntime` instance with your database configuration:
+## Bootstrapping processus
 
-```typescript
-new ActionRuntime({
-    db: {
-        mongo: {
-            url: 'mongodb://localhost:27017/example'
-        }
-    }
-})
-```
+- Generates the [Action catalog](#actions-registry)
+- Connects to the database
+- Configures logging
+- Launches the `ActionJob` cron
 
-The `ActionRuntime` constructor requires a database configuration object. Currently, MongoDB is supported through the `mongo` property, which accepts a connection URL.
+You can control many of these behaviors through environment variables. See [Customizing Environment Values](#customizing-environment-values) for more details.
 
 ### Waiting for Bootstrap Completion
 
-After instantiating the runtime, wait for the bootstrapping process to complete before creating Actions or Resources:
+After instantiating the runtime, you can expliclty wait for the bootstrapping process to complete before creating Actions or Resources:
 To wait for the end of the bootstrapping process, you can consume the `ActionRuntime.waitForActiveRuntime` promise. Then, you are ready to save your first Action !
 
-```typescript
+```typescript title="src/index.ts"
 ActionRuntime.activeRuntime.waitForActiveRuntime.then(() => {
     const action = new MyAction();
     action.save();
 })
 ```
 
+:::info
+If you don't specify anything, actions by themself will wait the completion process before being saved.
+The following is, as a consequence, equivalent to the previous one (but less explit) : 
+
+
+```typescript title="src/index.ts"
+ActionRuntime.activeRuntime.waitForActiveRuntime.then(() => {
+    const action = new MyAction();
+    action.save();
+})
+```
+
+:::
 
 :::warning
 
@@ -57,9 +66,10 @@ In general:
 
 You can bootstrap the runtime anywhere you want in your codebase.
 However, we recomend using this pattern : 
+- in the `orbits` folder, only write and export classes
 - create an `orbi.ts` file at the root of your orbit runtime folder
-- instanciante the app in `orbit.ts`
 - import your `orbi.ts` file from your `index.ts`
+
 
 ```bash
 my-project/
@@ -70,20 +80,6 @@ my-project/
 │   │   ├── my-workflow.ts
 │   └── index.ts
 └── package.json
-```
-
-#### Bootstrap file (`orbi.ts`)
-
-Create an `orbi.ts` file in your orbits directory to contain the runtime initialization:
-
-```typescript title='src/orbits/orbi.ts'
-new ActionRuntime({
-    db: {
-        mongo: {
-            url: 'mongodb://localhost:27017/example'
-        }
-    }
-})
 ```
 
 #### Main entrypoint (`index.ts`)
@@ -108,10 +104,10 @@ main().catch(console.error)
 ### Ensuring Action Discoverability
 
 For complex runtimes (e.g. using executors), ensure your Actions are discoverable by the runtime through proper import chains.
-You have two choice.
+The discovery of actions is done through a recursive import algorithm.
 
 
-#### Method 1: Recursive import
+#### Recursive import
 
 Structure your imports so the runtime can discover all Actions through the dependency chain:
 
@@ -164,28 +160,6 @@ export class MyWorkflow extends Workflow {
 
 Even if MySecondAction is only consumed by MyWorkflow, you should export it.
 :::
-
-#### Method 2: Direct Registration
-
-Alternatively, you can explicitly declare all Actions and Workflows in your bootstrap file using a custom App class:
-
-```typescript title='src/orbits/orbi.ts'
-import { MyAction } from "./my-action.ts"
-import { MyWorkflow } from "./my-workflow.ts"
-
-export class MyApp extends ActionRuntime {
-   declare = [MyAction, MyWorkflow]
-   register = [
-       // You can register other apps here
-       // ActionRuntime is included by default, shown here for example
-       ActionRuntime
-   ]
-}
-```
-
-**Trade-off:**
-Must remember to add new Actions/Workflows to the declare array
-
 
 ## Under the hood
 
