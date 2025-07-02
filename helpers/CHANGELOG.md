@@ -1,5 +1,11 @@
 # @wbce/orbits-fuel
 
+## 0.0.57
+
+### Patch Changes
+
+- 26d63d9: update orbits-core dependency
+
 ## 0.0.56
 
 ### Patch Changes
