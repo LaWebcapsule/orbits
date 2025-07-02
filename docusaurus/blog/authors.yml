@@ -1,29 +1,29 @@
 louis:
   name: Louis Dussarps
-  title: CEO @ Webcapsule
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+  title: Platform engineer @Webcapsule
+  url: https://github.com/orgs/LaWebcapsule/people/louisdussarps
+  image_url: /img/personnage_bonobo.png
   page: true
   socials:
     x: yangshunz
     github: yangshun
 
-yangshun:
-  name: Yangshun Tay
-  title: Front End Engineer @ Facebook
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+loic:
+  name: Loïc Dechamps
+  title: Platform Engineer @Webcapsule
+  url: https://github.com/orgs/LaWebcapsule/people/ldechamps
+  image_url: /img/personnage_gorille.png
   page: true
   socials:
-    x: yangshunz
-    github: yangshun
+    x: Loïc
+    github: Loïc
 
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
+arthur:
+  name: Arthur Rouzoul
+  title: Product Owner @Webcapsule
+  url: https://github.com/orgs/LaWebcapsule/people/Grouzoul
+  image_url: img/personnage_orang_outan.png
   page:
     # customize the url of the author page at /blog/authors/<permalink>
     permalink: '/all-sebastien-lorber-articles'
@@ -31,4 +31,3 @@ slorber:
     x: sebastienlorber
     linkedin: sebastienlorber
     github: slorber
-    newsletter: https://thisweekinreact.com

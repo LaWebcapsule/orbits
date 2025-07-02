@@ -6,6 +6,8 @@ sidebar_position: 4
 
 Runtime manages connection to your database and serves as the central bootstrap point for your Orbits runtime.
 
+<img src="/img/singe_runtime.png" alt="Workflow Orbits"/>
+
 ## Bootstrapping a runtime
 
 To initialize your runtime, create a new `ActionRuntime` instance with your database configuration:

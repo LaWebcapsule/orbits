@@ -1,6 +1,6 @@
 ---
 slug: manifesto
 title: Infra is code
-authors: [slorber, yangshun]
+authors: [louis, loic]
 tags: [hola, docusaurus]
 ---

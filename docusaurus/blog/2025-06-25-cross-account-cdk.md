@@ -1,7 +1,7 @@
 ---
 slug: cross-account-cdk
 title: Solving cross-account resources for AWS CDK
-authors: [slorber, yangshun]
+authors: [loic, arthur]
 tags: [aws-cdk, orbits]
 ---
 # Solving AWS Cross-Account Resource Access through CDK Orchestration
