@@ -148,10 +148,7 @@ This will ensure this workflow has a result.
 
 ## The Greetings Resources
 
-```typescript title='src/greeting-resource.ts'
-import { Resource } from "@wbce/orbits-core";
-import { HelloWorkflow } from "./hello-workflow.ts";
-
+```typescript title='src/orbits/greeting-resource.ts'
 export class GreetingResource extends Resource {
 
     declare IResult: string;
@@ -169,7 +166,10 @@ export class GreetingResource extends Resource {
         const greeting = await this.do("greeting", new HelloWorkflow().setArgument({
             name: this.argument.name
         }));
-        console.log(`${greeting}  👋👋👋`);
+        await this.do("display-greeting", ()=>{
+            console.log(`${greeting}  👋👋👋`);
+            return Promise.resolve();
+        })
     }
 
     async defineUpdate() {
@@ -178,10 +178,29 @@ export class GreetingResource extends Resource {
     }
 
     async defineUninstall() {
-        console.log(`Goodbye my dear friend ${this.argument.name}`);
+        await this.do("display-goodbye", ()=>{
+            console.log(`Goodbye my dear friend ${this.argument.name} 👋👋👋`);
+            return Promise.resolve();
+        });
     }
 }
 ```
+The `GreetingResource` take a name and a date as parameter and is responsible for doing the greetings.
+Let's explore the syntax step-by-step.
+
+### Type declarations
+
+```typescript
+declare IResult: string;
+
+declare IArgument: {
+    name: string;
+    date: string
+} & Resource["IArgument"]
+```
+These lines are useful as typing. They have the same function as for the [workflow](#type-declarations).
+Note 
+
 
 the workflow will run twice. How do you do to have it run once ?
 This is managed by the concept of [`Resource`](./core-concepts/resource.md).
