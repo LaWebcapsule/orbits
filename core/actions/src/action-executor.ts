@@ -1,4 +1,5 @@
 import { Action } from './action-manager.js';
+import { Resource } from './../index.js';
 import { ActionState } from './models/action.js';
 
 export class Executor {
@@ -7,12 +8,7 @@ export class Executor {
      */
     scope?: ActionState[];
 
-    createInstallAction(): Action | Promise<Action> {
-        return Action.resolve();
-    }
-
-    createUninstallAction(): Action | Promise<Action> {
-        return Action.reject();
+    generateSupportResource():Resource|void{
     }
 
     resume(action) {
