@@ -31,9 +31,8 @@ ActionRuntime.activeRuntime.waitForActiveRuntime.then(() => {
 ```
 
 :::info
-If you don't specify anything, actions by themself will wait the completion process before being saved.
-The following is, as a consequence, equivalent to the previous one (but less explit) : 
-
+Actions automatically wait for runtime bootstrapping before being saved.
+The following pattern is therefore equivalent, though less explicit:
 
 ```typescript title="src/index.ts"
 ActionRuntime.activeRuntime.waitForActiveRuntime.then(() => {
@@ -160,6 +159,18 @@ export class MyWorkflow extends Workflow {
 
 Even if MySecondAction is only consumed by MyWorkflow, you should export it.
 :::
+
+### Customizing environment values
+You can configure the runtime through environment variables. These are especially useful for deployment environments or fine-tuning runtime behavior.
+
+Here are some commonly used variables:
+
+|  Variable 	|  Description 	| Default  	|
+|---	|------	|---	|
+| ORBITS_DB__MONGO__URL   	| the url to connect to mongodb  	| `mongodb://localhost:27017/orbits`  	|
+|   ORBITS_WORKERS__QUANTITY	| the number of `ActionJob` that will be launched  	|  3 	|
+
+
 
 ## Under the hood
 

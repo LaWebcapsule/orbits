@@ -31,10 +31,43 @@ export class MyAction extends Action{
     main(){
         console.log("hello");
         this.setResult("hello!")
-        return ActionState.Success;
+        return ActionState.SUCCESS;
     }
 }
 ```
+
+### Use a watcher
+
+Sometimes, a mutating process doesn't complete immediately. It may involve delays, external systems, or asynchronous validation. In such cases, Orbits allows you to track progress over time using the `watcher()` method.
+
+When your main() function returns `ActionState.IN_PROGRESS`, Orbits will continue to invoke `watcher()` periodically to determine whether the action has ultimately succeeded, failed, or is still in progress.
+
+
+```typescript title='src/orbits/my-action.ts'
+import {Action} from "@wbce/orbits-core"
+
+export class MyAction extends Action{
+
+    main(){
+        this.setResult("hello!")
+        return ActionState.IN_PROGRESS;
+    }
+
+    watcher() {
+        // In a real scenario, you'd check whether the "hello" mutation
+        // has completed (e.g., a message was received, a job succeeded, etc.)
+        // For this example, we just simulate success after 10am.
+        if (new Date().getHours() > 10) {
+            return ActionState.SUCCESS;
+        } else {
+            console.log("Waiting until after 10am before confirming success...");
+            return ActionState.IN_PROGRESS;
+        }
+    }
+}
+```
+
+Using a watcher helps your actions stay reactive and robust, even when their effects unfold over time. This pattern is especially useful when interacting with eventually consistent systems, long-running jobs, or third-party APIs.
 
 ### Consume your action
 
@@ -78,16 +111,16 @@ export class MyWorkflow extends Workflow{
     define(){
         const resultOfMyAction = await this.do("hello", new MyAction());
         const name = await this.do("name", ()=>{
+            console.log(`${resultOfMyAction}, ${this.argument.name}!`)
             return Promise.resolve(this.argument.name)
         })
-        console.log(`${resultOfMyAction}, ${name}!`)
         return `${resultOfMyAction}, ${name}!`
     }
 }
 ```
 
 Of course, you don’t need this level of complexity just to display “hello, name” — this is simply for demonstration purposes.
-Here, using `this.do` we ensure that, for each execution of `MyWorkflow`, the "hello" step is run once and only once.
+Here, using `this.do` we ensure that, for each execution of `MyWorkflow`, the "hello" step is run once and only once. Same, the "name" step is run once and only once.
 This approach aligns with the [SAGA principle](https://microservices.io/patterns/data/saga.html).
 
 ### Consume your workflow
