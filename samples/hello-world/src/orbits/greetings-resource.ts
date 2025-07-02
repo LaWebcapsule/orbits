@@ -18,7 +18,10 @@ export class GreetingResource extends Resource {
         const greeting = await this.do("greeting", new HelloWorkflow().setArgument({
             name: this.argument.name
         }));
-        console.log(`${greeting}  👋👋👋`);
+        await this.do("display-greeting", ()=>{
+            console.log(`${greeting}  👋👋👋`);
+            return Promise.resolve();
+        })
     }
 
     async defineUpdate() {
@@ -27,6 +30,9 @@ export class GreetingResource extends Resource {
     }
 
     async defineUninstall() {
-        console.log(`Goodbye my dear friend ${this.argument.name}`);
+        await this.do("display-goodbye", ()=>{
+            console.log(`Goodbye my dear friend ${this.argument.name} 👋👋👋`);
+            return Promise.resolve();
+        });
     }
 }
