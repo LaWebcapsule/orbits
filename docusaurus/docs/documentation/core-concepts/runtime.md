@@ -169,6 +169,7 @@ Here are some commonly used variables:
 |---	|------	|---	|
 | ORBITS_DB__MONGO__URL   	| the url to connect to mongodb  	| `mongodb://localhost:27017/orbits`  	|
 |   ORBITS_WORKERS__QUANTITY	| the number of `ActionJob` that will be launched  	|  3 	|
+|   ORBITS_LOGGING__LEVEL	| the level that will be use by the logger to filter the log  	|  'info' 	|
 
 
 

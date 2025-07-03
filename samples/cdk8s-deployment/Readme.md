@@ -1,73 +1,15 @@
-# CDK Cross-Account Resource Example
+# Ephemeral headlamp Example
 
-A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example : it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
-
-## Problem statement
-
-Using AWS CDK and CloudFormation, consuming cross-account resources is difficult because stacks cannot directly reference resources from other AWS accounts. The core issue is that CloudFormation stacks cannot directly reference resources from other AWS accounts, requiring manual coordination and hardcoded values
-Common problematic scenarios include:
-- Accessing Docker images built in account A from account B
-- Using secrets from account A in account B applications
-- Establishing VPC peering between accounts
-- Granting cross-account S3 bucket access
-- Sharing Lambda layers across accounts
-- Writing values into the DNS zone of account A from account B
-
-This limitation is shown in this example:
-```typescript
-const app = new cdk.App()
-
-const paramA = new ParamStack(app, 'stack-A', {
-    ...,
-    env: {
-        account: "account-A"
-    }
-})
-
-const lambdaB = new LambdaStack(app, 'stack-A', {
-    ...,
-    parameterArn : paramA.parameter.arn, // ❌ you can not reference a resource from a stack from another account
-    env: {
-        account: "account-B"
-    }
-})
-```
-
-With orbits, cross-account resource sharing works seamlessly:
-```typescript
-const paramOutput = await this.do("updateParam", new ParamResource());
-
-await this.do("updateLambda", new LambdaResource().setArgument({
-    stackProps : {
-        parameterArn: paramOutput.parameterArn,// ✅ you can reference any stack
-        env: {
-            account : this.argument.accountA.id
-        }
-    }
-}))
-```
+A practical example demonstrating how to add headlamp in any of your kube cluster, for only one hour.
 
 ## Architecture Overview
 
-```mermaid
----
-config:
-  flowchart:
-    htmlLabels: false
----
-flowchart LR
-    legend@{ label: "Account A (Parameter Store)" } ~~~ B@{ label: "Account B (Lambda Consumer)" }
-    markdown["SSM Parameter Store
-    Key:  /my/param
-    Value: 'Hello World'
-    "] <--> newLines["Lambda Function
-    Reads cross-account parameter
-    "]
-    legend@{ shape: rect}
-    B@{ shape: rect}
-    style legend stroke:none
-    style B stroke:none
-```
+Account A (Parameter Store)     Account B (Lambda Consumer)
+┌───────────────────────────────┐    ┌───────────────────────────────┐
+│  SSM Parameter Store          │    │  Lambda Function              │
+│  Key:  /my/param              │◄───┤  Reads cross-account          │
+│  Value: "Hello World"         │    │  parameter                    │
+└───────────────────────────────┘    └───────────────────────────────┘
 
 ## Prerequisites
 
@@ -142,10 +84,6 @@ npx tsx src/orbits/orbi.ts
 ├── package.json
 └── README.md
 ```
-
-## Step-by-step explanation
-
-For a detailed walkthrough of the different files and how they work together, check out [this blog post](/blog/2025-06-25-cross-account-cdk.md).
 
 ## Security Considerations
 

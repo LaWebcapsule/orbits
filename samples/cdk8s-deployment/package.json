@@ -1,0 +1,24 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@wbce/orbits-core": "workspace:^",
+    "@wbce/orbits-fuel": "workspace:^",
+    "aws-cdk-lib": "^2.182.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "catalog:",
+    "tsx": "^4.19.4",
+    "typescript": "catalog:"
+  },
+  "type": "module"
+}

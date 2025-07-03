@@ -93,6 +93,13 @@ export ORBITS_DB__MONGO__URL='mongodb+srv://orbits:XXXX@myatlas-cluster.mongodb.
 ```
 :::
 
+:::tip
+To enable verbose logs while debugging, set the logging level to `debug`:
+```bash
+export ORBITS_LOGGING_LEVEL='debug'
+```
+:::
+
 ## Workflow: a chain of actions
 
 You will quickly want to exploit the result of your action and not just launch a process in background.
