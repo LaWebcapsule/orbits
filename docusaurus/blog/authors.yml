@@ -31,3 +31,9 @@ arthur:
     x: sebastienlorber
     linkedin: sebastienlorber
     github: slorber
+
+slorber:
+  name: Sébastien Lorber
+  title: Core Docusaurus Maintainer
+  url: https://sebastienlorber.com
+  image_url: https://github.com/slorber.png
