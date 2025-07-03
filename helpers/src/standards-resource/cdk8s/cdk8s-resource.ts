@@ -27,14 +27,23 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
 
     IArgument: Resource['IArgument'] & {
         stackName: string;
-        stackProps?: cdk8s.ChartProps;
-    };
+        clusterName?: string;
+    } & Partial<Record<'stackProps', Partial<ConstructorParameters<this['StackConstructor']>[2]>>>
 
     IBag: Workflow['IBag'] & {
         stackName?: string;
     };
 
     IResult: any;
+
+    identity() {
+        const identity = {};
+        identity['stackName'] = this.argument.stackName;
+        if( this.argument.clusterName) {
+            identity['clusterName'] = this.argument.clusterName;
+        }
+        return identity;
+    }
 
     configFilePath: string;
 

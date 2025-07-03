@@ -1,6 +1,6 @@
 # Class: Executor
 
-Defined in: [core/actions/src/action-executor.ts:4](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/action-executor.ts#L4)
+Defined in: [core/actions/src/action-executor.ts:5](https://github.com/LaWebcapsule/orbits/blob/42af65597593f8c50f768c18320806c3c62c52e8/core/actions/src/action-executor.ts#L5)
 
 ## Constructors
 
@@ -18,7 +18,7 @@ Defined in: [core/actions/src/action-executor.ts:4](https://github.com/LaWebcaps
 
 > `optional` **scope**: [`ActionState`](../enumerations/ActionState.md)[]
 
-Defined in: [core/actions/src/action-executor.ts:8](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/action-executor.ts#L8)
+Defined in: [core/actions/src/action-executor.ts:9](https://github.com/LaWebcapsule/orbits/blob/42af65597593f8c50f768c18320806c3c62c52e8/core/actions/src/action-executor.ts#L9)
 
 #### Default
 
@@ -28,27 +28,15 @@ undefined all ActionStates
 
 ## Methods
 
-### createInstallAction()
+### generateSupportResource()
 
-> **createInstallAction**(): [`Action`](Action.md) \| `Promise`\<[`Action`](Action.md)\>
+> **generateSupportResource**(): `void` \| [`Resource`](Resource.md)
 
-Defined in: [core/actions/src/action-executor.ts:10](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/action-executor.ts#L10)
-
-#### Returns
-
-[`Action`](Action.md) \| `Promise`\<[`Action`](Action.md)\>
-
-***
-
-### createUninstallAction()
-
-> **createUninstallAction**(): [`Action`](Action.md) \| `Promise`\<[`Action`](Action.md)\>
-
-Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/action-executor.ts#L14)
+Defined in: [core/actions/src/action-executor.ts:11](https://github.com/LaWebcapsule/orbits/blob/42af65597593f8c50f768c18320806c3c62c52e8/core/actions/src/action-executor.ts#L11)
 
 #### Returns
 
-[`Action`](Action.md) \| `Promise`\<[`Action`](Action.md)\>
+`void` \| [`Resource`](Resource.md)
 
 ***
 
@@ -56,7 +44,7 @@ Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcap
 
 > **resume**(`action`): `any`
 
-Defined in: [core/actions/src/action-executor.ts:18](https://github.com/LaWebcapsule/orbits/blob/6895cda59136b41404e10b621a12b265954f126a/core/actions/src/action-executor.ts#L18)
+Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcapsule/orbits/blob/42af65597593f8c50f768c18320806c3c62c52e8/core/actions/src/action-executor.ts#L14)
 
 #### Parameters
 

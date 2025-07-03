@@ -753,14 +753,13 @@ export class Action {
             // no state return here
             // change state and wait for next iteration when cron runs again (min 10min)
             this.dbDoc.nExecutions[this.dbDoc.state]++;
-            if (
-                this.dbDoc.cronActivity.nextActivity.getTime() - Date.now() <
-                10 * 60 * 1000
-            ) {
-                this.dbDoc.cronActivity.nextActivity = new Date(
-                    Date.now() + 10 * 60 * 1000
-                );
-            }
+            this.dbDoc.cronActivity.nextActivity = new Date(
+                Math.max(
+                    Date.now() + 10 * 60 * 1000,
+                    this.dbDoc.cronActivity.nextActivity.getTime()
+                )
+            );
+            this.dbDoc.markModified('cronActivity.nextActivity');
             return this.changeState(ActionState.SLEEPING);
         } else if (this.dbDoc.workflowId) {
             return Workflow.findPendingWorkflowUsingAction(this.dbDoc).then(
@@ -937,7 +936,7 @@ export class Action {
      * @param states - The states to reach.
      * @returns A promise that resolves when the action reaches one of the given states. The promise resolves with the state reached.
      */
-    static trackActionAsPromise(action: Action, states : ActionState[]){
+    static trackActionAsPromise(action: Action, states : ActionState[] = [ActionState.SUCCESS, ActionState.ERROR]){
         return new Promise((resolve, reject)=>{
             const intervalRef = setInterval(async ()=>{
                 await action.resyncWithDb();
