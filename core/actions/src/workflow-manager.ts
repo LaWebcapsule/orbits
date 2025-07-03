@@ -787,4 +787,8 @@ export class TrackPromise extends Action{
         return Promise.resolve(ActionState.ERROR)
     }
 
+    internalLog(message: string, opts = {level : 'debug'}){
+
+    }
+
 }

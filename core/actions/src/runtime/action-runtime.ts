@@ -145,7 +145,7 @@ export class ActionRuntime {
         for (const key in moduleImport) {
             const value = moduleImport[key];
             if (value?.[ACTION_TAG]) {
-                this.logger.info(`registering ${key}`);
+                this.logger.debug(`registering ${key}`);
                 this.registerAction(value);
                 hasAction = true;
             }
@@ -162,7 +162,7 @@ export class ActionRuntime {
             const require = createRequire(import.meta.url);
             pathFile = require.resolve(pathFile);
         }
-        this.logger.info(
+        this.logger.debug(
             `reading ${pathFile}`
         );
         try {
@@ -171,7 +171,7 @@ export class ActionRuntime {
             });
         } catch (err) {
             if (err.code === 'ENOENT') {
-                this.logger.info(
+                this.logger.debug(
                     `cannot read ${pathFile} ; fallback to ts extension`
                 );
                 try {
@@ -185,7 +185,7 @@ export class ActionRuntime {
                         },
                     } as any);
                 } catch (err2) {
-                    this.logger.info(
+                    this.logger.debug(
                         `cannot read ts extension neither ; got ${err2}`
                     );
                     throw err;
@@ -198,14 +198,14 @@ export class ActionRuntime {
     }
 
     async recursiveImport(pathFile: string) {
-        this.logger.info(`dealing with ${pathFile}`);
+        this.logger.debug(`dealing with ${pathFile}`);
         const deps = this.listDependenciesOfFile(pathFile);
 
         const moduleImport = await import(pathFile);
         await this.scanModuleImport(moduleImport);
 
         const baseDir = path.dirname(pathFile);
-        this.logger.info(`found deps: ${deps}`);
+        this.logger.debug(`found deps: ${deps}`);
 
         for (const file of deps) {
             let importPath : string;
@@ -223,7 +223,7 @@ export class ActionRuntime {
             }
             this.importedFiles.add(importPath)
 
-            this.logger.info(`exploring dep: ${file}`);
+            this.logger.debug(`exploring dep: ${file}`);
 
             if (file.startsWith('.')) {
                 //import another file in same module

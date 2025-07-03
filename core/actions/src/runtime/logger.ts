@@ -1,6 +1,7 @@
 import { wbceAsyncStorage } from '@wbce/services';
 import * as winston from 'winston';
 import type { ActionRuntime } from './action-runtime.js';
+import { getEnv } from './get-env.js';
 
 const expendError = (obj: any, opts = {depth : 0}) => {
     if (obj instanceof Error) {
@@ -36,6 +37,8 @@ const addLogZoneInfo = winston.format((info: any) => {
     };
 });
 
+const env = getEnv()
+
 export const defaultLogger = winston.createLogger({
     transports: [
         new winston.transports.Console({
@@ -44,6 +47,7 @@ export const defaultLogger = winston.createLogger({
                 filterError(),
                 winston.format.json()
             ),
+            level: env.logging?.level,
         }),
     ],
 });

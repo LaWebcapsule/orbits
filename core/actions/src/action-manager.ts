@@ -703,7 +703,7 @@ export class Action {
         this.dbDoc.state = actionState;
         return this.dbDoc.lockAndSave().then(() => {
             this.internalLog(
-                `state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`
+                `state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`,
             );
         });
     }
@@ -783,15 +783,6 @@ export class Action {
     }
 
     private quit() {
-        if (
-            !(this.dbDoc.state === ActionState.REVERTED)
-        ) {
-            // freeze action waiting for a future rollback
-            this.dbDoc.cronActivity.nextActivity = new Date(4022, 1, 1);
-            return this.dbDoc.save().then(
-                () => ActionState.UNKNOWN // short circuit
-            );
-        }
         const timeFromEnd = Date.now() - this.dbDoc.stateUpdatedAt.getTime();
         if (timeFromEnd >= ONE_DAY_MS) {
             return this.destroy().then(
@@ -876,7 +867,7 @@ export class Action {
      * }
      * ```
      */
-    internalLog(message: string, opts = {level: 'info'}) {
+    internalLog(message: string, opts = {level: 'debug'}) {
         let defFromWorkflow: any;
         if (this.dbDoc.definitionFrom.workflow.marker) {
             defFromWorkflow = (

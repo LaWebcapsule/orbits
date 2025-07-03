@@ -1,6 +1,7 @@
 import { readEnv } from "read-env";
 import { RuntimeDb } from "./db-connection.js";
 import { utils } from "@wbce/services";
+import * as winston from 'winston';
 
 
 /**
@@ -15,6 +16,9 @@ export interface RuntimeConfig {
     workers?: {
         quantity: number;
         filter?: Object;
+    };
+    logging?:{
+        level?: string;
     };
     entrypoint?: string;
 }
@@ -32,7 +36,10 @@ const defaultConfig: RuntimeConfig = {
     },
     workers: {
         quantity: 3,
-    }
+    },
+    logging: {
+        level: "info",
+    },
 }
 
 export function getEnv(): RuntimeConfig{
