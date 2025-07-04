@@ -1,6 +1,6 @@
-# Ephemeral headlamp Example
+# CDK Cross-Account Resource Example
 
-A practical example demonstrating how to add headlamp in any of your kube cluster, for only one hour.
+A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example : it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
 
 ## Architecture Overview
 

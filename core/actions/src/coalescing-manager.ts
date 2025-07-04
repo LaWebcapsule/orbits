@@ -230,9 +230,9 @@ export class ResourceController<T extends Resource> extends CoalescingWorkflow{
             //do nothing
         }
 
-        await this.do("launchClone", ()=>{
+        await this.do("launchClone", async ()=>{
             const clone = this.clone();
-            return clone.save()
+            await clone.save();
         }) 
         return {};
     }

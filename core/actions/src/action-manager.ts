@@ -703,7 +703,7 @@ export class Action {
         this.dbDoc.state = actionState;
         return this.dbDoc.lockAndSave().then(() => {
             this.internalLog(
-                `state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`
+                `state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`,
             );
         });
     }
@@ -753,14 +753,13 @@ export class Action {
             // no state return here
             // change state and wait for next iteration when cron runs again (min 10min)
             this.dbDoc.nExecutions[this.dbDoc.state]++;
-            if (
-                this.dbDoc.cronActivity.nextActivity.getTime() - Date.now() <
-                10 * 60 * 1000
-            ) {
-                this.dbDoc.cronActivity.nextActivity = new Date(
-                    Date.now() + 10 * 60 * 1000
-                );
-            }
+            this.dbDoc.cronActivity.nextActivity = new Date(
+                Math.max(
+                    Date.now() + 10 * 60 * 1000,
+                    this.dbDoc.cronActivity.nextActivity.getTime()
+                )
+            );
+            this.dbDoc.markModified('cronActivity.nextActivity');
             return this.changeState(ActionState.SLEEPING);
         } else if (this.dbDoc.workflowId) {
             return Workflow.findPendingWorkflowUsingAction(this.dbDoc).then(
@@ -783,15 +782,6 @@ export class Action {
     }
 
     private quit() {
-        if (
-            !(this.dbDoc.state === ActionState.REVERTED)
-        ) {
-            // freeze action waiting for a future rollback
-            this.dbDoc.cronActivity.nextActivity = new Date(4022, 1, 1);
-            return this.dbDoc.save().then(
-                () => ActionState.UNKNOWN // short circuit
-            );
-        }
         const timeFromEnd = Date.now() - this.dbDoc.stateUpdatedAt.getTime();
         if (timeFromEnd >= ONE_DAY_MS) {
             return this.destroy().then(
@@ -876,7 +866,7 @@ export class Action {
      * }
      * ```
      */
-    internalLog(message: string, opts = {level: 'info'}) {
+    internalLog(message: string, opts = {level: 'debug'}) {
         let defFromWorkflow: any;
         if (this.dbDoc.definitionFrom.workflow.marker) {
             defFromWorkflow = (
@@ -946,7 +936,7 @@ export class Action {
      * @param states - The states to reach.
      * @returns A promise that resolves when the action reaches one of the given states. The promise resolves with the state reached.
      */
-    static trackActionAsPromise(action: Action, states : ActionState[]){
+    static trackActionAsPromise(action: Action, states : ActionState[] = [ActionState.SUCCESS, ActionState.ERROR]){
         return new Promise((resolve, reject)=>{
             const intervalRef = setInterval(async ()=>{
                 await action.resyncWithDb();

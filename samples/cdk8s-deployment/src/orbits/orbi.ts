@@ -1,21 +1,14 @@
-import { ActionRuntime } from "@wbce/orbits-core";
-import { HelloResource } from "./hello-resource.js";
+import { Action, ActionRuntime } from "@wbce/orbits-core";
+import { BasicResource } from "./basic-resource.js";
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
-    const helloResource = new HelloResource().setArgument({
-        accountA: {
-            id: process.env['AWS_ACCOUNT_A'],
-            profile: process.env['AWS_ACCOUNT_A_PROFILE']
-        },
-        accountB: {
-            id: process.env['AWS_ACCOUNT_B'],
-            profile: process.env['AWS_ACCOUNT_B_PROFILE']
-
-        },
-        region: process.env['AWS_REGION']
-    })
-    if(process.env['HELLO_COMMAND']==="uninstall"){
+    const helloResource = new BasicResource().setArgument({
+        stackName: "cdk8s-basic"
+    });
+    if(process.env['CDK8S_COMMAND']==="uninstall"){
         helloResource.setCommand("Uninstall");
     }
     helloResource.save();
+    await Action.trackActionAsPromise(helloResource);
+    console.log(await helloResource.getResourceOutput());
 })
