@@ -23,7 +23,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     };
 
     IArgument: Resource['IArgument'] & {
-        config?: {
+        kubeConfig?: {
             from: {
                 file?: string;
                 cluster?: boolean;
@@ -109,7 +109,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     }
 
     async setKubeApi() {
-        this.kubeApi = new KubeApi();
+        this.kubeApi = new KubeApi(this.argument.kubeConfig);
     }
 
     /**
