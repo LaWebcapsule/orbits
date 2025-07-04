@@ -1,6 +1,6 @@
 ---
 sidebar_position: 0.2
-title: Quickstart
+title: Hello world
 ---
 
 # Hello world example

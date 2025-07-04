@@ -1,4 +1,5 @@
-# CDK Resources
+# Cdk8s Resources
+
 CDK8S Resources let you programmatically manage and deploy your CDK8S charts.
 It provides an enhanced way of working with the CDK8S, enabling you to:
 - Consistently deploy your charts with built-in rollback mechanisms in case of failure  
@@ -202,7 +203,7 @@ To do this, you can override the asynchronous `setKubeApi` method:
 
 ```typescript
 export class MyChartResource extends Cdk8sResource {
-  
+
   override async setKubeApi() {
     // Download the kubeconfig file, e.g., from your cloud provider
     await getConfigFile(this.argument.clusterName);
