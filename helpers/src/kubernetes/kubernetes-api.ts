@@ -10,9 +10,22 @@ export class KubeApi {
     customObjectApi: k8s.CustomObjectsApi;
     batchApi: k8s.BatchV1Api;
 
-    constructor() {
+    constructor(opts? : {
+        from : {
+            file?: string;
+            cluster?: boolean;
+        }
+    }) {
         this.config = new k8s.KubeConfig();
-        this.config.loadFromDefault();
+        if(opts?.from?.file) {
+            this.config.loadFromFile(opts.from.file);
+        }
+        else if(opts?.from?.cluster) {
+            this.config.loadFromCluster();
+        }
+        else {
+            this.config.loadFromDefault();
+        }
         this.client = this.config.makeApiClient(k8s.AppsV1Api);
         this.coreApi = this.config.makeApiClient(k8s.CoreV1Api);
         this.extensionApi = this.config.makeApiClient(k8s.ApiextensionsV1Api);
