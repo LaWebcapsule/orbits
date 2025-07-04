@@ -1,7 +1,5 @@
 import { Cdk8sResource } from "@wbce/orbits-fuel";
-import { Chart } from "cdk8s";
-import { BasicChart } from "../cdk/basic-cdk8s.js";
-
+import { BasicChart } from "../cdk8s/basic-cdk8s.js";
 
 export class BasicResource extends Cdk8sResource {
 
