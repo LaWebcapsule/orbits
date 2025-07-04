@@ -23,6 +23,12 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     };
 
     IArgument: Resource['IArgument'] & {
+        config?: {
+            from: {
+                file?: string;
+                cluster?: boolean;
+            }
+        }
         stackName: string;
         clusterName?: string;
     } & Partial<Record<'stackProps', Partial<ConstructorParameters<this['StackConstructor']>[2]>>>
@@ -96,10 +102,14 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
 
     async init() {
         try {
-            this.kubeApi = new KubeApi();
+            await this.setKubeApi();
         } catch (error) {
             throw new ActionError(`Unable to configure Kube api: ${error}`);
         }
+    }
+
+    async setKubeApi() {
+        this.kubeApi = new KubeApi();
     }
 
     /**
