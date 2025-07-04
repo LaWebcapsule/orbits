@@ -13,10 +13,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     cli = new Cli();
     kubeApi: KubeApi;
 
-    cdkApp = new cdk8s.App({
-        outdir: `/tmp/cdk8s/${this._id.toString()}`,
-        resolvers: [this],
-    });
+    cdkApp : cdk8s.App;
     StackConstructor: typeof cdk8s.Chart;
     stack: cdk8s.Chart;
     apiObjects: Set<cdk8s.ApiObject> = new Set();
@@ -67,6 +64,9 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
 
     resolve(context: cdk8s.ResolutionContext): void {
         this.apiObjects.add(context.obj);
+        if(context.obj.metadata && !(context.obj.metadata.getLabel('orbits/stackName'))) {
+            context.obj.metadata.addLabel('orbits/stackName', this.argument.stackName||this.bag.stackName);    
+        }
     }
 
     /**

@@ -1,15 +1,6 @@
-# CDK Cross-Account Resource Example
+# CDK8S deployment example
 
-A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example : it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
-
-## Architecture Overview
-
-Account A (Parameter Store)     Account B (Lambda Consumer)
-┌───────────────────────────────┐    ┌───────────────────────────────┐
-│  SSM Parameter Store          │    │  Lambda Function              │
-│  Key:  /my/param              │◄───┤  Reads cross-account          │
-│  Value: "Hello World"         │    │  parameter                    │
-└───────────────────────────────┘    └───────────────────────────────┘
+A practical example demonstrating how to manage kube resources through CDK8S and orbits. 
 
 ## Prerequisites
 
@@ -19,52 +10,45 @@ Account A (Parameter Store)     Account B (Lambda Consumer)
 - Install npm dependencies : 
 `npm i`
 
-### Setup AWS environment
-You'll need access to two AWS accounts with the following permissions:
+### Setup kube environment
 
-Account A: CloudFormation deployment rights
-Account B: CloudFormation deployment rights
+You'll need access to a Kubernetes environment.
 
-#### Configure environment values
+- `kubectl` must be installed and properly configured.
 
-- Copy the environment template:
-```bash cp .base.env .env```
-- Edit .env file with your account details.
+This sample will use your current Kubernetes context, so ensure you're connected to the correct cluster before running any commands.
+
 
 ## Deployment
 
-- Load environment variables:
-```bash export $(cat .env | xargs)```
 - Define your mongo_url : 
 ```bash export ORBITS_DB__MONGO__URL=your-mongo-url```
-- Deploy Cross-Account Infrastructure
+- Deploy Cdk8s basic stack : 
 ```bash npx tsx src/orbits/orbi.ts```
 This command will:
+- Create a new Kubernetes namespace
+- Deploy a scheduled Job named hello-world that runs daily at 10:00 AM
+- Output the namespace and job names in the console
 
-- Deploy the SSM parameter in Account A
-- Create the Lambda function in Account B with appropriate cross-account permissions
-- Set up the necessary IAM roles and policies for cross-account access
+### Verify the result
 
-### Verify the result of Lambda Function
+Get the namespace : 
+```bash
+kubectl get namespaces -l orbits/stackName=cdk8s-basic
+```
 
-- Navigate to the AWS Console for Account B
-- Go to Lambda service
-- Find the deployed function (typically named with a stack prefix)
-- Click Test to create a test event
-- Execute the test
-
-- Expected Output
-The Lambda function should successfully retrieve the parameter from Account A and should display the value of parameter A in its logs.
-```typescript console.log('Param:', param.Parameter.Value); ```
- The default value of parameter is "hello-world".
+Get the job
+```bash
+export NS=$(kubectl get ns -l orbits/stackName=cdk8s-basic -o jsonpath='{.items[0].metadata.name}')
+kubectl get all --namespace $NS -l orbits/stackName=cdk8s-basic
+```
 
 ## Cleanup
 To remove all deployed resources from both accounts:
 ```bash 
-export HELLO_COMMAND=uninstall
+export CDK8S_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts
 ```
-⚠️ Warning: This will permanently delete all resources created by this example. Make sure you want to remove everything before running this command.
 
 ## Project Structure
 
@@ -72,21 +56,9 @@ npx tsx src/orbits/orbi.ts
 ├── src/
 │   ├── orbits/
 │   │   └── orbi.ts # Main orchestration script
-│   │   ├── lambda-resource.ts # lambda resource definition
-│   │   ├── param-resource.ts # Param resource definition
-│   │   ├── hello-resource.ts # Hello resource definition : the resource that make the junction between param and lambda
-
-│   ├── cdk/              # CDK stack definitions
-│   │   ├── lambda.ts # lambda CDK stack
-│   │   ├── param.ts # Param CDK stack
-├── .base.env                # Environment template
-├── .env                     # Your environment variables (git-ignored)
+│   │   ├── basic-resource.ts # Basic resource definition
+│   ├── cdk/              # CDK8S chart definitions
+│   │   ├── basic-cdk8s.ts # basic chart definition
 ├── package.json
 └── README.md
 ```
-
-## Security Considerations
-
-The cross-account access follows the principle of least privilege
-Parameters are accessed using IAM roles, not hardcoded credentials
-CloudFormation stacks can be easily audited for security compliance
