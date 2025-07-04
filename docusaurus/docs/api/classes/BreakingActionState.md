@@ -1,6 +1,6 @@
 # Class: BreakingActionState
 
-Defined in: [core/actions/src/error/error.ts:46](https://github.com/LaWebcapsule/orbits/blob/fdabe4406970f5d9afffe326fe940d326210b361/core/actions/src/error/error.ts#L46)
+Defined in: [core/actions/src/error/error.ts:46](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L46)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/error/error.ts:46](https://github.com/LaWebcapsule
 
 > **new BreakingActionState**(`actionState`, `result?`): `BreakingActionState`
 
-Defined in: [core/actions/src/error/error.ts:47](https://github.com/LaWebcapsule/orbits/blob/fdabe4406970f5d9afffe326fe940d326210b361/core/actions/src/error/error.ts#L47)
+Defined in: [core/actions/src/error/error.ts:47](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L47)
 
 #### Parameters
 
@@ -30,7 +30,7 @@ Defined in: [core/actions/src/error/error.ts:47](https://github.com/LaWebcapsule
 
 > **actionState**: [`ActionState`](../enumerations/ActionState.md)
 
-Defined in: [core/actions/src/error/error.ts:48](https://github.com/LaWebcapsule/orbits/blob/fdabe4406970f5d9afffe326fe940d326210b361/core/actions/src/error/error.ts#L48)
+Defined in: [core/actions/src/error/error.ts:48](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L48)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [core/actions/src/error/error.ts:48](https://github.com/LaWebcapsule
 
 > `optional` **result**: `any`
 
-Defined in: [core/actions/src/error/error.ts:49](https://github.com/LaWebcapsule/orbits/blob/fdabe4406970f5d9afffe326fe940d326210b361/core/actions/src/error/error.ts#L49)
+Defined in: [core/actions/src/error/error.ts:49](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L49)

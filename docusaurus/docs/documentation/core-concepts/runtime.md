@@ -9,6 +9,10 @@ sidebar_position: 4
 
 The runtime is responsible for establishing the database connection, configuring logging, and preparing the environment to run your Actions and Workflows. It's the central bootstrap point for any Orbits-based application.
 
+<img src="/img/singe_runtime.png" alt="Workflow Orbits"/>
+
+## Bootstrapping a runtime
+
 ## Bootstrapping processus
 
 - Generates the [Action catalog](#actions-registry)

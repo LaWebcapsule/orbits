@@ -7,6 +7,8 @@ sidebar_position: 2
 A Workflow is a way to chain Actions. The syntax is similar to how async/await syntax works.
 A Workflow is also a specific type of `Action`, so you can chain Workflows in other Workflows.
 
+<img src="/img/workflow_orbits.png" alt="Workflow Orbits"/>
+
 ## Write a Workflow
 
 A Workflow, same as an `Action`, has an `init()` method.

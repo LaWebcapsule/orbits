@@ -4,6 +4,7 @@ title: Quickstart
 ---
 
 # Hello world
+<img src="/img/hello-world.png" alt="Hello Monkey"/>
 This is a basic guide to get your first resource working.
 
 ## Install

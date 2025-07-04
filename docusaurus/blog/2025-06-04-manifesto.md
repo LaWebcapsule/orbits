@@ -33,4 +33,3 @@ increasingly, infrastructure benefits from being written in standard code: CDKs 
 Thus, IaC must be enhanced, orchestrated, and managed — as much as possible through standard code.
 We began working under these assumptions three years ago, and it has allowed us to build numerous engineering platforms since then. As we found nothing that met our criteria, we built our own orchestration framework: Orbits (aka Orbi.ts).
 It is now mature enough to fly on its own: since freedom is not won alone, we present it today to the community, hoping it can help build infrastructures and deployment pipelines that are more flexible, more robust, and more sovereign.
-Because deep down, infrastructure is code — and code is a tool to gain autonomy.
