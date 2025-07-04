@@ -4912,7 +4912,7 @@
   font-size: var(--ai-gen-82921b10-4b39-48f0-b346-808cf4903d29-1746526196439---text-lg--lg-text-size);
   line-height: var(--ai-gen-82921b10-4b39-48f0-b346-808cf4903d29-1746526196439---text-lg--lg-text-line-height);
   letter-spacing: var(--ai-gen-82921b10-4b39-48f0-b346-808cf4903d29-1746526196439---text-lg--lg-text-letter-spacing);
-  color: color-mix(in srgb, currentColor 70%, transparent);
+  color: color-mix(in srgb, currentColor 100%, transparent);
 }
 
 .on-accent-icon {
