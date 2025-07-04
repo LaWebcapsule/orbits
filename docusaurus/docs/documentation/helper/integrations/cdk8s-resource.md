@@ -178,12 +178,42 @@ The type of `myChartOutput` will be `MyChart['IOutput']`.
 
 ## Kube credentials
 
-If you don't specify anything, the default kube config of your local environment will be use to deploy your stack to kubernetes.
-You can specify the way kubeConfig is chosen overriding .
+By default, the stack will be deployed using the local kubeconfig of your environment.
+However, you can explicitly define how the kubeconfig is selected.
+
+** Example: Using a specific kubeconfig file **
+You can specify the way kubeConfig is chosen .
 ```typescript
-new LambdaResource().setArgument({
-    awsProfile: "my-profile"
+new MyChartResource().setArgument({
+    kubeConfig: {
+      from : {
+        file : '/tmp/my-file', //path to the file
+        cluster: boolean
+      }
+    }
 })
+```
+
+** Advanced Use Cases **
+
+In more complex scenarios, you might need to download the `kubeconfig` dynamically before deploying.
+You may also want to standardize how kube credentials are handled across all your actions, instead of specifying kubeConfig every time you instantiate a chart resource.
+To do this, you can override the asynchronous `setKubeApi` method:
+
+```typescript
+export class MyChartResource extends Cdk8sResource {
+  
+  override async setKubeApi() {
+    // Download the kubeconfig file, e.g., from your cloud provider
+    await getConfigFile(this.argument.clusterName);
+
+    this.kubeApi = new KubeApi({
+      from: {
+        file: '/path/to/the/downloaded/config'
+      }
+    });
+  }
+}
 ```
 
 
