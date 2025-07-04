@@ -1,5 +1,5 @@
 # CDK Resources
-CDK Resources allow you to programmatically manage and deploy your CDK stacks.
+CDK Resources let you programmatically manage and deploy your CDK stacks.
 It provides an enhanced way of working with the CDK, enabling you to:
 - Easily write cross-account or cross-region resource sharing
 - Extend your IaC logic where necessary (e.g. using SDK calls to create AWS account programmatically)
@@ -81,8 +81,8 @@ export class MyWorkflow extends Workflow{
 The install step checks whether the target AWS environment has been bootstrapped with CDK.
 If not, it automatically bootstraps it.
 
-### Deploy step
-The deploy step launches the CDK stack, using argument.stackProps as input to the StackConstructor.
+### Update step
+The update step launches the CDK stack, using argument.stackProps as input to the StackConstructor.
 
 :::info
 For advanced scenarios (e.g. when needing secrets or dynamic inputs), you can override the init method.
