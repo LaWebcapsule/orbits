@@ -598,11 +598,12 @@ export class Workflow extends Action {
             }
             else{           
                 this.internalLog(`using a new action for step ${ref}`)   
-                if(this.defineCallMode === 'main'){
+                if (this.defineCallMode === 'main'){
                     await this.startAction(ref, action);
                 }
             }
             if(this.defineCallMode === 'main'){
+                action.dbDoc.cronActivity.pending = this.dbDoc.cronActivity.pending;
                 await action.resume();
                 await action.resyncWithDb();
             }

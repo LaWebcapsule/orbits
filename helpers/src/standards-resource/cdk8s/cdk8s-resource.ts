@@ -59,6 +59,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     async produce() {
         // this process is synchronous
         if (this.isProduced) return;
+        this.cdkApp = this.generateApp();
         this.stack = await this.generateStack();
         this.cdkApp.synth();
         this.isProduced = true;
@@ -66,6 +67,18 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
 
     resolve(context: cdk8s.ResolutionContext): void {
         this.apiObjects.add(context.obj);
+    }
+
+    /**
+     * Generate the cdk8s app.
+     * Useful in order to clear previous objects
+     * @returns the app.
+     */
+    generateApp(): cdk8s.App{
+        return new cdk8s.App({
+            outdir: `/tmp/cdk8s/${this._id.toString()}`,
+            resolvers: [this],
+        });
     }
 
     /**
@@ -167,6 +180,9 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
             dynamicAction : ()=>{
                 const pruneAction = new Action();
                 pruneAction.main = this.pruneMain.bind(this);
+                //refresh the production of the stack;
+                this.isProduced = false;
+                //define an empty stack and prune from this.
                 this.generateStack = ()=>{
                     //empty stack
                     return new cdk8s.Chart(this.cdkApp, this.argument.stackName || this.bag.stackName)
@@ -179,6 +195,10 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
         await this.do("DeleteSecret", ()=>{
             return this.kubeApi.deleteSecret(this.genSecretName());
         });
+        await this.do('ResetOutput', ()=>{
+            this.resourceDbDoc.output = {};
+            return this.resourceDbDoc.save();
+        })
     }
 
     /**
@@ -244,7 +264,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
         const pruneExclusions = ['PersistentVolumeClaim', 'Namespace'];
         const [previousChart, newChart] = await Promise.all([
             this.retrievePreviousChart(),
-            Promise.resolve(this.generateStack()).then(() =>
+            Promise.resolve(this.produce()).then(() =>
                 this.cdkApp.synthYaml()
             ),
         ]);
