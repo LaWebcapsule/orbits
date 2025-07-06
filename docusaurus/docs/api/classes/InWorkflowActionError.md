@@ -1,6 +1,6 @@
 # Class: InWorkflowActionError
 
-Defined in: [core/actions/src/error/error.ts:15](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L15)
+Defined in: [core/actions/src/error/error.ts:15](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L15)
 
 ## Extends
 
@@ -12,7 +12,7 @@ Defined in: [core/actions/src/error/error.ts:15](https://github.com/LaWebcapsule
 
 > **new InWorkflowActionError**(`workflow`, `ref`, `action`): `InWorkflowActionError`
 
-Defined in: [core/actions/src/error/error.ts:27](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L27)
+Defined in: [core/actions/src/error/error.ts:27](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L27)
 
 #### Parameters
 
@@ -78,7 +78,7 @@ Defined in: docusaurus/node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 > **rootAction**: `object`
 
-Defined in: [core/actions/src/error/error.ts:22](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L22)
+Defined in: [core/actions/src/error/error.ts:22](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L22)
 
 #### \_id
 
@@ -106,7 +106,7 @@ Defined in: docusaurus/node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 > **workflowTrace**: `object`[] = `[]`
 
-Defined in: [core/actions/src/error/error.ts:16](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L16)
+Defined in: [core/actions/src/error/error.ts:16](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L16)
 
 #### ref
 

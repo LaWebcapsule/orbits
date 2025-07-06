@@ -1,6 +1,6 @@
 # Class: ActionError
 
-Defined in: [core/actions/src/error/error.ts:5](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L5)
+Defined in: [core/actions/src/error/error.ts:5](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L5)
 
 ## Extends
 
@@ -12,7 +12,7 @@ Defined in: [core/actions/src/error/error.ts:5](https://github.com/LaWebcapsule/
 
 > **new ActionError**(`message`, `code`, `otherInfo`): `ActionError`
 
-Defined in: [core/actions/src/error/error.ts:6](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L6)
+Defined in: [core/actions/src/error/error.ts:6](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L6)
 
 #### Parameters
 
@@ -54,7 +54,7 @@ Defined in: docusaurus/node\_modules/typescript/lib/lib.es2022.error.d.ts:26
 
 > **code**: [`errorCodes`](../enumerations/errorCodes.md) = `errorCodes.OTHER`
 
-Defined in: [core/actions/src/error/error.ts:8](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L8)
+Defined in: [core/actions/src/error/error.ts:8](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L8)
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: [core/actions/src/error/error.ts:8](https://github.com/LaWebcapsule/
 
 > **message**: `string` = `''`
 
-Defined in: [core/actions/src/error/error.ts:7](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L7)
+Defined in: [core/actions/src/error/error.ts:7](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L7)
 
 #### Inherited from
 
@@ -86,7 +86,7 @@ Defined in: docusaurus/node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 > **otherInfo**: `any` = `null`
 
-Defined in: [core/actions/src/error/error.ts:9](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/error/error.ts#L9)
+Defined in: [core/actions/src/error/error.ts:9](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/error/error.ts#L9)
 
 ***
 

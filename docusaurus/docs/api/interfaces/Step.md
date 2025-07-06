@@ -1,6 +1,6 @@
 # Interface: Step
 
-Defined in: [core/actions/src/workflow-manager.ts:19](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L19)
+Defined in: [core/actions/src/workflow-manager.ts:19](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L19)
 
 ## Properties
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/workflow-manager.ts:19](https://github.com/LaWebca
 
 > `optional` **4**: `boolean`
 
-Defined in: [core/actions/src/workflow-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L20)
+Defined in: [core/actions/src/workflow-manager.ts:20](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L20)
 
 ***
 
@@ -16,7 +16,7 @@ Defined in: [core/actions/src/workflow-manager.ts:20](https://github.com/LaWebca
 
 > `optional` **5**: `boolean`
 
-Defined in: [core/actions/src/workflow-manager.ts:21](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L21)
+Defined in: [core/actions/src/workflow-manager.ts:21](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L21)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/actions/src/workflow-manager.ts:21](https://github.com/LaWebca
 
 > `optional` **cb**: (...`args`) => `void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[] \| `Promise`\<`void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[]\>
 
-Defined in: [core/actions/src/workflow-manager.ts:22](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L22)
+Defined in: [core/actions/src/workflow-manager.ts:22](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L22)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [core/actions/src/workflow-manager.ts:22](https://github.com/LaWebca
 
 > `optional` **name**: `string`
 
-Defined in: [core/actions/src/workflow-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L25)
+Defined in: [core/actions/src/workflow-manager.ts:25](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L25)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [core/actions/src/workflow-manager.ts:25](https://github.com/LaWebca
 
 > `optional` **opts**: `object`
 
-Defined in: [core/actions/src/workflow-manager.ts:26](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L26)
+Defined in: [core/actions/src/workflow-manager.ts:26](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L26)
 
 #### retry
 
@@ -62,7 +62,7 @@ Defined in: [core/actions/src/workflow-manager.ts:26](https://github.com/LaWebca
 
 > `optional` **rollback**: (...`args`) => `void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[] \| `Promise`\<`void` \| [`Action`](../classes/Action.md) \| [`Action`](../classes/Action.md)[]\>
 
-Defined in: [core/actions/src/workflow-manager.ts:29](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/workflow-manager.ts#L29)
+Defined in: [core/actions/src/workflow-manager.ts:29](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/workflow-manager.ts#L29)
 
 #### Parameters
 

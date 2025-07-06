@@ -2,4 +2,4 @@
 
 > `const` **actionKindSymbols**: `Map`\<[`actionKind`](../enumerations/actionKind.md), `symbol`\>
 
-Defined in: [core/actions/src/runtime/action-kind.ts:15](https://github.com/LaWebcapsule/orbits/blob/d6777e77541b2fbfeaf2842fc76fa5acb92d285a/core/actions/src/runtime/action-kind.ts#L15)
+Defined in: [core/actions/src/runtime/action-kind.ts:15](https://github.com/LaWebcapsule/orbits/blob/30e938b858685d894dcebd3c8a52edd777da8c78/core/actions/src/runtime/action-kind.ts#L15)

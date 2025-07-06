@@ -3,7 +3,7 @@ position: 2
 title: Core Concepts
 ---
 
-At its core, orbits enfore the [SAGA principle](https://microservices.io/patterns/data/saga.html), ensuring that your applications are robust and resilient.
+At its core, orbits enfore the [SAGA principle](https://microservices.io/patterns/data/saga.html), ensuring that your applications are crash-proof.
 Orbits introduces three main primitives:
 - [Actions](./action.md) are used to represents a mutating process
 - [Workflow](./workflow.md) allow you to compose actions using expressive syntax. Thanks to built-in syntactic sugar, you can model complex business logic without having to alter your typescript way of thinking.

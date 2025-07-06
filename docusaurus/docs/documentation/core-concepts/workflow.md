@@ -143,14 +143,126 @@ export class CorrectWorkflow extends Workflow {
 
 ### Action Step definition
 
+The `do()` method accepts an `Action` instance as its argument:
+
+```typescript
+  await this.do("step-a", new MyAction().setArgument({"some": "argument"}));
+```
+
+The action will be persisted in the database and executed in an isolated context.
+- The result of the `await` will be the result of the action.
+- If the final action's state is `ActionState.ERROR`, the do() method will throw the error — allowing standard error handling using try/catch.
+
 ### On the fly promise definition
 
+The `do()` method also accepts a callback that returns a Promise.
+
+```typescript
+  await this.do("step-a", ()=>{
+    return Promise.resolve()
+  });
+
+  await this.do("step-b", myAsyncFunction.bind("some", "argument"))
+```
+- The promise will be executed once and only once.
+- The result of the await will be the resolved value of the promise.
+- If an error occurs, it will be thrown by `do()` and can be handled via `try/catch`.
+
+
 ### Dynamic definition
+
+Dynamic definitions are useful when you need to pass non-serializable parameters, such as functions.
+Since actions are stored in the database, only `JSONObject`-compatible properties can be persisted.
+To pass methods or closures through the chain of actions, use the dynamicAction option:
+
+```typescript
+const action = new MyAction();
+//override a method of your action
+action.getCredentials = ()=>{
+  return this.specificConfig.getCredentials()
+}
+await this.do("step-a", {dynamicAction: action});
+```
+The action will be persisted in the database and executed in an isolated context.
+When executed, `getCredentials` will be overriden with this definition specific to the workflow context.
+- The result of the `await` will be the result of the action.
+- If the final action's state is `ActionState.ERROR`, the do() method will throw the error — allowing standard error handling using try/catch.
 
 ### Under the hood
 
 Under the hood the do method return a standard javascript promise.
 However this promises not always resolve.
+
+Let's say we have a workflow with two steps : 
+
+```typescript
+export class MyWorkflow extends Workflow{
+
+  define(){
+    const result = await this.do("step-a", new LongTermAction());
+    await this.do("step-b", new MyAction().setArgument(result));
+  }
+}
+```
+
+Here is the flow of calls that happens.
+
+```mermaid
+
+stateDiagram-v2
+  direction LR
+  state "Workflow is sleeping" as WSleep{
+    [*]
+  }
+
+  WSleep --> WMain1
+  state "Workflow is executing main" as WMain1 {
+      define --> stepA
+      stepA --> actionA
+      actionA --> actionAInProgress
+      actionAInProgress --> inProgress
+      inProgress --> inProgress2
+      actionAInProgress
+      define: define() is called
+      stepA: do("step-a",...) is called
+      actionA: actionA is started
+      actionAInProgress: actionA is in progress
+      inProgress: do("step-a",...) never returns
+      inProgress2: define() never returns
+  }
+
+  WMain1 --> WProgress
+  state "Workflow is in progress" as WProgress{
+      [*] --> IsPositive
+      IsPositive: check actionA state
+      state if_state <<choice>>
+      IsPositive --> if_state
+      if_state --> IsPositive: if actionA is in progress
+      if_state --> actionA3: if actionA succeeded
+      actionA3: workflow entering main
+
+  } 
+
+  WProgress --> WMain2
+  state "Workflow is executing main again" as WMain2{
+    define2-->stepA2
+    stepA2 --> stepA3
+    stepA3 --> stepA4
+    stepA4 --> stepA5
+    stepA5 --> defineEnd
+    define2: define() is called
+    stepA2: do("step-a",...) is called
+    stepA3: do("step-a",...) returns the result of the "LongTermAction"
+    stepA4: do("step-b",...) is called
+    stepA5: do("step-b",...) returns
+    defineEnd: define returns
+  }
+
+  WMain2 --> WSuccess
+  state "Workflow is a success" as WSuccess{
+    [*]
+  }
+```
 
 ## repeat and transform
 
