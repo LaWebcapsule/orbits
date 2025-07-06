@@ -199,7 +199,8 @@ Let's say we have a workflow with two steps :
 export class MyWorkflow extends Workflow{
 
   define(){
-    const result = await this.do("step-a", new LongTermAction());
+    const actionA = new LongTermAction()
+    const result = await this.do("step-a", actionA);
     await this.do("step-b", new MyAction().setArgument(result));
   }
 }
