@@ -1,0 +1,10 @@
+  {
+    "label": "Comparison",
+    "position": "5",
+    "collapsible": true,
+    "collapsed": true,
+    "className": "red",
+    "customProps": {
+      "description": "Comparison to alternative solutions"
+    }
+  }
