@@ -1,0 +1,14 @@
+{
+    "label": "Installation",
+    "collapsible": true,
+    "collapsed": true,
+    "position": "1",
+    "className": "red",
+    "link": {
+      "type": "generated-index",
+      "title": "Installation"
+    },
+    "customProps": {
+      "description": "Install orbits in your own infrastructure"
+    }
+  }

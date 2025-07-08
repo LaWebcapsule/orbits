@@ -1,6 +1,7 @@
 {
-    "name": "@wbce/services",
-    "version": "0.0.17",
+    "name": "@orbi-ts/services",
+    "version": "0.1.1",
+    "private": false,
     "description": "Tools for the actions repository",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

@@ -1,0 +1,9 @@
+{
+    "label": "Integrations",
+    "collapsible": true,
+    "collapsed": true,
+    "position": 1,
+    "customProps": {
+      "description": "Constructor to turn IaC templates into orchestrated workflows"
+    }
+  }

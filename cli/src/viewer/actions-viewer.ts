@@ -1,8 +1,8 @@
-import { ActionSchemaInterface, ActionState } from '@wbce/orbits-core';
+import { ActionSchemaInterface } from '@orbi-ts/core';
 
 import { ActionsBlessedRenderer } from './blessed-renderer.js';
-import { ActionsTextRenderer } from './text-renderer.js';
 import { ActionsViewerAction } from './constants.js';
+import { ActionsTextRenderer } from './text-renderer.js';
 
 export class ActionsViewer {
     private top: string;
@@ -47,6 +47,25 @@ export class ActionsViewer {
         this.renderer.setActions(this.actionsMap);
     }
 
+    private appendLogsLock: Promise<void> = Promise.resolve();
+
+    /**
+     * Process given logs and update the view.
+     * Only applies to the blessed renderer
+     * @param logs
+     */
+    appendLogs(logs: string[]) {
+        this.appendLogsLock = this.appendLogsLock.then(() =>
+            this.appendLockInternal(logs)
+        );
+    }
+
+    private async appendLockInternal(logs: string[]) {
+        if (this.renderer instanceof ActionsBlessedRenderer) {
+            this.renderer.appendLogs(this.formatLogs(logs));
+        }
+    }
+
     private formatActions(actions: ActionSchemaInterface[]) {
         actions.forEach((action) => {
             this.actionsMap.set(action.id, {
@@ -85,6 +104,16 @@ export class ActionsViewer {
                         (this.actionsMap.get(b)?.step ?? 0)
                 );
         }
+    }
+
+    private formatLogs(logs: string[]) {
+        return logs.map((log) => {
+            try {
+                return JSON.parse(log);
+            } catch (error) {
+                return { message: log };
+            }
+        });
     }
 
     destroy() {

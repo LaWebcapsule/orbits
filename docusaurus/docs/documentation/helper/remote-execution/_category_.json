@@ -1,0 +1,9 @@
+{
+    "label": "Executions",
+    "collapsible": true,
+    "collapsed": true,
+    "position": 2,
+    "customProps": {
+      "description": "Launch actions in remote environments"
+    }
+  }

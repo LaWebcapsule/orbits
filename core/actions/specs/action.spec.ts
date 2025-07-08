@@ -17,7 +17,7 @@ describe('Test action', () => {
     });
 
     it('should be written in database', () =>
-        testAction.app.ActionModel.findById(testAction.dbDoc._id).then(
+        testAction.runtime.ActionModel.findById(testAction.dbDoc._id).then(
             (dbDoc) => {
                 expect(dbDoc).not.toBeUndefined();
             }

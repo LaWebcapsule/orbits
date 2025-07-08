@@ -1,14 +1,16 @@
-import colors from 'colors';
 import blessed, { Widgets } from 'blessed';
+import colors from 'colors';
 import { copy } from 'copy-paste';
 
-import { ActionState } from '@wbce/orbits-core';
+import { ActionState } from '@orbi-ts/core';
 
 import {
     ACTION_STATE_FORMAT,
     type ActionsRenderer,
     type ActionsViewerAction,
 } from './constants.js';
+
+const SCROLLBAR_STYLE = { style: { bg: 'yellow' }, track: 'grey' };
 
 class BoxesWithLoader {
     private FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
@@ -150,6 +152,10 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
 
     private alertBox!: Widgets.TextElement;
 
+    private logsBox!: Widgets.BoxElement;
+    private logsBoxContainer!: Widgets.BoxElement;
+    private logsButton!: Widgets.TextElement;
+
     private borders: Map<string, Widgets.BoxElement> = new Map();
 
     /**
@@ -197,17 +203,55 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.refreshDisplay();
     }
 
+    insertLogs(
+        logs: {
+            level: string;
+            actionRef?: string;
+            definedIn?: { ref?: string };
+            message: string;
+        }[]
+    ) {
+        this.logsBoxContainer.insertBottom(
+            logs.map((log) => {
+                let color;
+                switch (log.level) {
+                    case 'error':
+                        color = colors.red;
+                        break;
+                    case 'warn':
+                        color = colors.yellow;
+                        break;
+                    case 'info':
+                        color = colors.white;
+                        break;
+                    default:
+                        color = colors.grey.italic;
+                }
+                if (log.definedIn?.ref || log.actionRef)
+                    return color(
+                        colors.italic.bold(
+                            `${log.definedIn?.ref || log.actionRef} `
+                        ) + log.message
+                    );
+                return colors.grey(log.message);
+            })
+        );
+    }
+
+    appendLogs(logs: { level: string; message: string }[]) {
+        this.insertLogs(logs);
+        if (this.logsBox.visible) {
+            // auto scroll if scroll was at the bottom
+            if (this.logsBoxContainer.getScrollPerc() === 100)
+                this.logsBoxContainer.setScrollPerc(100);
+            this.render('new logs');
+        }
+    }
+
     renders = 0;
 
     private render(from: string) {
-        this.renders++;
-        this.debug(
-            this.renders,
-            'render from ',
-            from,
-            this.xMax,
-            this.mainBox.width
-        );
+        this.debug(`${++this.renders} — render from q${from}`);
         this.borders.forEach((border) => border.setFront());
 
         if (this.refresh) {
@@ -288,7 +332,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.screen = blessed.screen({
             fastCSR: true,
             // useBCE: true,
-            debug: true,
+            debug: true, // use F12 to print debug messages
             // warnings: true,
             border: {
                 type: 'line',
@@ -333,11 +377,8 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.screen.on('resize', () => {
             this.setBorders();
 
-            // make sure infoBox has a min width of 50, otherwise it takes 30%
-            this.infoBox.width = Math.max(
-                50,
-                Math.ceil(0.3 * (this.screen.width as number))
-            );
+            this.infoBox.width = this.clampWidth(70, 0.5, 2);
+            this.logsBox.width = this.clampWidth(70, 0.5, 2);
         });
 
         this.mainBox = blessed.box({
@@ -351,7 +392,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             mouse: true,
             alwaysScroll: true,
             scrollable: true,
-            scrollbar: { style: { bg: 'yellow' }, track: 'grey' },
+            scrollbar: SCROLLBAR_STYLE,
         });
 
         // info box
@@ -361,7 +402,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             top: 1,
             right: 2,
             bottom: 1,
-            width: Math.max(50, Math.ceil(0.3 * (this.screen.width as number))),
+            width: this.clampWidth(70, 0.5, 2),
             hidden: true,
             border: { type: 'line' },
             style: { border: { fg: 'magenta' } },
@@ -374,7 +415,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             keys: true,
             alwaysScroll: true,
             scrollable: true,
-            scrollbar: { style: { bg: 'yellow' }, track: 'grey' },
+            scrollbar: SCROLLBAR_STYLE,
             padding: { left: 1 },
         });
 
@@ -482,6 +523,39 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             },
         });
 
+        // Logs box
+
+        this.logsBox = blessed.box({
+            parent: this.screen,
+            top: 1,
+            right: 2,
+            bottom: 1,
+            width: this.clampWidth(70, 0.5, 2),
+            hidden: true,
+            border: { type: 'line' },
+            style: { border: { fg: 'magenta' } },
+            shrink: true,
+        });
+
+        this.logsBoxContainer = blessed.box({
+            parent: this.logsBox,
+            mouse: true,
+            keys: true,
+            alwaysScroll: true,
+            scrollable: true,
+            scrollbar: SCROLLBAR_STYLE,
+            padding: { left: 1 },
+        });
+
+        this.logsButton = blessed.text({
+            parent: this.screen,
+            right: 1,
+            bottom: 1,
+            content: ` ${colors.italic.underline('Show logs')} `,
+        });
+
+        this.logsButton.on('click', () => this.toggleLogs());
+
         // Quit on Escape, q, or Control-C.
         this.screen.key(['escape', 'q', 'C-c'], () => {
             this.screen.destroy();
@@ -496,12 +570,13 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             this.keyScroll(this.mainBox, 'left');
         });
 
-        // hide infoBox on click outside
+        // hide infoBox and logsBox on click outside
         this.mainBox.on('click', () => {
             if (this.infoBox.visible) {
                 this.infoBox.toggle();
                 this.render('mainbox click');
             }
+            if (this.logsBox.visible) this.toggleLogs();
         });
     }
 
@@ -723,6 +798,23 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.render('refresh');
     }
 
+    private toggleLogs() {
+        this.logsButton.content = ` ${colors.italic.underline(`${this.logsBox.visible ? 'Show' : 'Hide'} logs`)} `;
+        this.logsBox.toggle();
+        this.render('logsBox');
+    }
+
+    private clampWidth(
+        minWidth: number,
+        percentage: number,
+        padding: number = 0
+    ) {
+        const screenWidth = this.screen.width as number;
+        return Math.min(
+            screenWidth - padding * 2,
+            Math.max(Math.ceil(percentage * screenWidth), minWidth)
+        );
+    }
     destroy() {
         this.screen.destroy();
     }

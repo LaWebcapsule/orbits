@@ -1,8 +1,13 @@
-import { Executor, Action, ActionApp, ActionState } from '@wbce/orbits-core';
-import { utils } from '@wbce/services';
+import { Executor, Action, ActionRuntime, ActionState } from '@orbi-ts/core';
+import { utils } from '@orbi-ts/services';
 import { exec } from 'child_process';
 import Docker from 'dockerode';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 export class DockerExecutor extends Executor {
     registry: {
@@ -57,7 +62,7 @@ export class DockerExecutor extends Executor {
                                         (err, res) =>
                                             err ? reject(err) : resolve(res),
                                         (event) =>
-                                            ActionApp.activeApp.logger.info(
+                                            ActionRuntime.activeRuntime.logger.info(
                                                 event
                                             )
                                     );
@@ -73,9 +78,10 @@ export class DockerExecutor extends Executor {
                     envVariables.push(`${k}=${this.dockerConfig.env[k]}`);
                 }
                 envVariables.push(
-                    `wbce_id=${this.registry.url}:${this.registry.tag}`
+                    `orbits_id=${this.registry.url}:${this.registry.tag}`
                 );
                 const executionContext = this.calculateExecutionContext();
+                console.log(appPaths);
                 const dockerConfig = {
                     WorkingDir: `/app`,
                     NetworkMode: 'host',
@@ -89,11 +95,11 @@ export class DockerExecutor extends Executor {
                     Binds: [
                         '/var/run/docker.sock:/var/run/docker.sock',
                         `${
-                            appPaths.primaryRootFolder || appPaths.rootFolder
+                            appPaths.primaryRootFolder || appPaths.rootFolder || ActionRuntime.activeRuntime.bootstrapPath
                         }:/app:ro`,
                         `${
                             appPaths.primaryCurrentFolder ||
-                            appPaths.currentFolder
+                            appPaths.currentFolder || ActionRuntime.activeRuntime.bootstrapPath
                         }/${executionContext.entrypoint}:/${
                             executionContext.entrypoint
                         }:ro`,
@@ -122,6 +128,8 @@ export class DockerExecutor extends Executor {
                     appPaths.relativeImportPathFromEntrypoint,
                     action._id.toString(),
                 ];
+                console.log(dockerConfig)
+                console.log(cmd);
                 return docker.run(
                     `${this.registry.url}:${this.registry.tag}`,
                     cmd,
@@ -176,11 +184,8 @@ export class DockerExecutor extends Executor {
         relativeImportPathFromEntrypoint: string; //how to pass to 'entrypoint' to bootstap path
     }> {
         const stackPaths = utils.getStackTracePaths();
-        const rootFolder = stackPaths[0].substring(
-            0,
-            stackPaths[0].indexOf('node_modules')
-        );
-        const bootstrapPath = ActionApp.bootstrapPath;
+        const rootFolder = path.dirname(ActionRuntime.activeRuntime.bootstrapPath);
+        const bootstrapPath = ActionRuntime.activeRuntime.bootstrapPath;
         const relativeEntrypointPathFromRoot = __dirname.replace(
             rootFolder,
             ''
@@ -252,13 +257,14 @@ export class DockerExecutor extends Executor {
             .then((data) => data.Mounts)
             .catch((err) => {
                 //we don't care of an error in this case
+                console.log(err);
                 return;
             });
     }
 
     isInsideDocker() {
         return (
-            process.env['wbce_id'] ===
+            process.env['orbits_id'] ===
             `${this.registry.url}:${this.registry.tag}`
         );
     }

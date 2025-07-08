@@ -1,4 +1,4 @@
-import { Action, ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 import { gitCenter, GitProvider, gitProviders } from './gitcenter.js';
 import { Commit } from './gitrepo.js';
 
@@ -74,7 +74,7 @@ export class WaitForNewCommits extends GitAction {
             name: string;
             commits: Commit[];
         }[];
-    };
+    } & GitAction['IResult'];
 
     static cronDefaultSettings = {
         activityFrequency: 24 * 60 * 60 * 1000,

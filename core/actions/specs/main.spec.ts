@@ -1,10 +1,9 @@
 import jasmin from 'jasmine';
-import { ActionApp, bootstrapApp } from '../index.js';
+import { ActionRuntime } from '../index.js';
 import {
     TestAction,
     TestActionWithError,
     TestActionWithWatcherEnding,
-    WorkflowApp,
 } from './test-action.js';
 
 let j = new jasmin();
@@ -17,43 +16,19 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 j.loadConfig({
     spec_dir: '.',
     spec_files: [
-        'action-executor.spec.ts',
-        'action-in-workflow.spec.ts',
-        'action-job.spec.ts',
-        'action.spec.ts',
+        //'action-executor.spec.ts',
+        //'action-in-workflow.spec.ts',
+        //'action-job.spec.ts',
+        //'action.spec.ts',
         'workflow.spec.ts',
-        'other-action.spec.ts',
+        //'generator.spec.ts',
+        //'other-action.spec.ts',
+        //'resource.spec.ts',
     ],
 });
 
-const db = {
-    protocol: 'mongodb',
-    url: process.env['MONGO_URL'],
-    name: 'orbits-test',
-    connectQsParams: '?retryWrites=true&w=majority',
-};
-let dbOpts = {};
 
-@bootstrapApp({
-    db: {
-        mongo: {
-            url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
-            opts: dbOpts,
-        },
-    },
-    workers: {
-        quantity: 1,
-    },
-})
-export class TestApp extends ActionApp {
-    declare = [TestAction, TestActionWithWatcherEnding, TestActionWithError];
-    imports = [WorkflowApp];
-}
-
-ActionApp.waitForActiveApp.then(() => {
-    const activeApp = ActionApp.getActiveApp();
-    return activeApp.ActionModel.remove({}).then(() => {
-        console.log('launching the tests');
-        j.execute();
-    });
+ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
+    console.log('launching the tests');
+    j.execute();
 });

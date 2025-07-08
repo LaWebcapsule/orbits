@@ -1,4 +1,4 @@
-import { utils } from '@wbce/services';
+import { utils } from '@orbi-ts/services';
 import { gitProviders } from './gitcenter.js';
 
 export interface Commit {

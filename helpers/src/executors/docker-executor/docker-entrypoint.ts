@@ -1,4 +1,4 @@
-import { ActionApp, Action } from '@wbce/orbits-core';
+import { ActionRuntime, Action } from '@orbi-ts/core';
 
 const params = {
     bootstrapPath: process.argv[2],
@@ -9,26 +9,26 @@ console.log('inside docker starting!');
 import(params.bootstrapPath)
     .then((test) => {
         console.log('after import!');
-        return ActionApp.waitForActiveApp;
+        return ActionRuntime.waitForActiveRuntime;
     })
-    .then(() => {
-        ActionApp.activeApp.logger.info('after bootstrap');
-        const app = ActionApp.getActiveApp();
+    .then(async () => {
+        ActionRuntime.activeRuntime.logger.info('after bootstrap');
+        const app = await ActionRuntime.getActiveRuntime();
         return app.ActionModel.findById(params.actionId);
     })
     .then(async (actionDb) => {
-        ActionApp.activeApp.logger.info('finding in db');
+        ActionRuntime.activeRuntime.logger.info('finding in db');
         const action = await Action.constructFromDb(actionDb);
         process.chdir('/tmp');
         return action.resume();
     })
     .then(() => {
-        ActionApp.activeApp.logger.info('adios');
+        ActionRuntime.activeRuntime.logger.info('adios');
         process.exit();
     })
     .catch((err) => {
-        ActionApp.activeApp.logger.error('error in the entrypoint');
-        ActionApp.activeApp.logger.error(err);
+        ActionRuntime.activeRuntime.logger.error('error in the entrypoint');
+        ActionRuntime.activeRuntime.logger.error(err);
         const errCode = 1000 + (err.code || 0); //1000 because we have errorCodes values of -1, 0, ...
         process.exit(errCode);
     });

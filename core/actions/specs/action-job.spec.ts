@@ -1,6 +1,6 @@
 import { ActionCron } from '../src/action-job.js';
 import { Action } from '../src/action-manager.js';
-import { ActionApp } from '../src/app/action-app.js';
+import { ActionRuntime } from '../src/runtime/action-runtime.js';
 import { ActionState } from '../src/models/action.js';
 import { TestActionWithWatcherEnding } from './test-action.js';
 
@@ -33,7 +33,7 @@ describe('actionCron with two actions to manage', () => {
         wrongDefAction = new TestActionWithWatcherEnding();
         wrongDefAction.dbDoc.definitionFrom.workflow._id = 'xyz';
         actionJob.nDatabaseEmpty = 0;
-        return ActionApp.activeApp.ActionModel.deleteMany({}).then(
+        return ActionRuntime.activeRuntime.ActionModel.deleteMany({}).then(
             () =>
                 new Promise<void>((resolve) => {
                     a1.save()
@@ -49,7 +49,7 @@ describe('actionCron with two actions to manage', () => {
     });
 
     it('- actions should be a success', () =>
-        ActionApp.activeApp.ActionModel.find({}).then((actions) => {
+        ActionRuntime.activeRuntime.ActionModel.find({}).then((actions) => {
             expect(actions.length).toEqual(3);
             expect(
                 actions.filter((a) => a.state === ActionState.SUCCESS).length

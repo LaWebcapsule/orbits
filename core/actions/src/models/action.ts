@@ -30,15 +30,19 @@ export interface ActionSchemaInterface<
     bag: TBag;
     result: TResult;
     actionRef: string;
+    identity : string;
     filter: Object;
     workflowId?: string;
     workflowStep?: number;
+    workflowRef? : string;
+    workflowIdentity?: string;
     workflowStack: {
         ref: string;
         stepIndex: number;
         stepName: string;
         _id: string;
     }[];
+    generatorCount : number,
     nTimes: number;
     locked: Boolean;
     lockedAt: Date;
@@ -85,6 +89,7 @@ export const actionSchema = new mongoose.Schema(
     {
         state: Number,
         stateUpdatedAt: Date,
+        identity : String,//used by generator
         argument: { type: mongoose.Schema.Types.Mixed, default: {} },
         bag: { type: mongoose.Schema.Types.Mixed, default: {} },
         result: { type: mongoose.Schema.Types.Mixed, default: {} },
@@ -92,6 +97,9 @@ export const actionSchema = new mongoose.Schema(
         actionRef: String,
         workflowId: String,
         workflowStep: Number,
+        workflowRef : String,
+        workflowIdentity: String,
+        generatorCount : Number,
         workflowStack: [
             {
                 ref: String,
@@ -135,6 +143,17 @@ export const actionSchema = new mongoose.Schema(
     {
         timestamps: true,
         minimize: false,
+    }
+);
+
+actionSchema.index(
+    { identity: 1, actionRef: 1, generatorCount : 1 },
+    {
+      unique: true,
+      partialFilterExpression: {
+        identity: { $exists: true },
+        generatorCount: { $exists: true }
+      }
     }
 );
 

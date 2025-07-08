@@ -1,4 +1,4 @@
-import { ActionState } from "@wbce/orbits-core";
+import { ActionState } from "@orbi-ts/core";
 
 export const ACTION_STATE_FORMAT = {
     [ActionState.UNKNOWN]: { short: '?', full: 'UNKNOWN', color: 'grey'},

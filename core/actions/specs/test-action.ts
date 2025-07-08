@@ -1,13 +1,19 @@
-import { Cli } from '@wbce/services';
+import { Cli } from '@orbi-ts/services';
 import {
     Action,
-    ActionApp,
+    ActionRuntime,
     ActionState,
     Executor,
     Workflow,
+    CoalescingWorkflow,
+    Sleep,
+    Resource
 } from '../index.js';
 
 export class TestActionWithWatcherEnding extends Action {
+
+    declare IResult: number;
+
     main() {
         return Promise.resolve(ActionState.IN_PROGRESS);
     }
@@ -17,12 +23,32 @@ export class TestActionWithWatcherEnding extends Action {
     }
 }
 
+export class TestActionWithTimeTemporization extends Action{
+
+    static cronDefaultSettings = {
+        activityFrequency: 3 * 1000,
+    };
+
+    main() {
+        return Promise.resolve(ActionState.IN_PROGRESS);
+    }
+
+    watcher() {
+        if(this.dbDoc.createdAt.getTime() < Date.now()- 10*1000){
+            return Promise.resolve(ActionState.SUCCESS)
+        }
+        return Promise.resolve(ActionState.IN_PROGRESS);
+    }
+
+}
+
 export class TestActionWithError extends Action {
-    IBag: {
+     
+    declare IBag: {
         x: number;
     };
 
-    IArgument: {
+    declare IArgument: {
         y: number;
     };
 
@@ -35,6 +61,7 @@ export class TestActionWithError extends Action {
     }
 
     main() {
+        this.result = "xyz";
         return Promise.resolve(ActionState.ERROR);
     }
 
@@ -59,13 +86,15 @@ export class TestActionMainTimeout extends Action {
 }
 
 export class TestAction extends Action {
-    IBag: {
+    declare IBag: {
         x: number;
     };
 
-    IArgument: {
+    declare IArgument: {
         y: number;
     };
+
+    declare IResult: number;
 
     init() {
         return new Promise<void>((resolve) => {
@@ -90,86 +119,134 @@ export class TestAction extends Action {
 }
 
 export class BasicWorkflow extends Workflow {
-    IBag: {
+    declare IBag: {
         n: number;
     } & Workflow['IBag'];
 
-    constructor() {
-        super();
-        this.next(() => {
-            const a = new TestAction();
-            return [a];
-        })
-            .next(() => {
-                const a = new TestActionWithWatcherEnding();
-                const b = new TestActionWithError();
-                return [a, b];
-            })
-            .next(() => Action.resolve('ok'))
-            .catch(() => {
-                const a = new TestAction();
-                return [a];
-            })
-            .next(
-                () =>
-                    new Promise<void>((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                        }, 1000);
-                    })
-            );
+    async define(){
+        try{
+            await this.do("t1", new TestAction());
+            await this.do("t2", new TestActionWithError());
+        }
+        catch(err){
+            await this.do("t3", new TestActionWithTimeTemporization());
+            await this.do("t4", new TestActionWithWatcherEnding());
+            await this.do("t5", new TestAction());
+        }
+        return 10;
+    }
+
+}
+
+export class WithActionErrorBasicWorkflow extends Workflow{
+
+    async define(){
+            await this.do("t1", new TestAction());
+            await this.do("t2", new TestActionWithError());
+            await this.do("t3", new TestAction());
+            return {};
     }
 }
 
-export let x = 0;
-export class TestActionWithRollBack extends Action {
-    main() {
-        x += 20;
-        return Promise.resolve(ActionState.SUCCESS);
-    }
+export class ThrowErrorBasicWorkflow extends Workflow{
 
-    rollBack() {
-        x -= 20;
-        return Promise.resolve(ActionState.SUCCESS);
+    async define(){
+            const result = await this.do("t1", new TestAction());
+            await this.do("t3", new TestAction());
+            throw new Error("xyz");
     }
 }
 
-export class TestRollBack extends Workflow {
-    constructor() {
-        super();
-        this.next(() => {
-            x++;
+export class ThrowErrorComplexWorkflow extends Workflow{
+
+    async define(){
+        await this.do("basicError", new ThrowErrorBasicWorkflow());
+    }
+}
+
+export class WorkflowWithDynamicDefinition extends Workflow{
+
+    declare IBag : Workflow['IBag'] & {
+        x : number
+    }
+
+    declare IResult: number;
+
+    async init(){
+        if(!this.bag.x){
+            this.bag.x = 0
+        }
+        return;
+    }
+
+    async define(){
+        await this.do("t1", ()=>{
+            return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    this.bag.x = 2;
+                    resolve(2)
+                }, 1000)
+            })
         })
-            .rollback(() => {
-                x--;
-            })
-            .next(() => {
-                x++;
-                return Action.reject(3);
-            })
-            .rollback(() => {
-                x--;
-            })
-            .next(() => {
-                x += 2;
-            })
-            .rollback(() => {
-                x -= 2;
-            })
-            .catch(() => {
-                x += 2;
-            })
-            .rollback(() => {
-                x -= 2;
-            })
-            .next(() => {
-                if (x < 10) {
-                    return new TestRollBack();
+
+
+        await this.do("t2", {
+            dynamicAction: ()=>{
+                const action = new TestAction();
+                action['main'] = ()=>{
+                    this.bag.x++
+                    return this.save().then(()=>ActionState.IN_PROGRESS)
                 }
-            })
-            .next(() => new TestActionWithRollBack());
+                action['watcher'] = function(this: Action){
+                    if(this.dbDoc.createdAt.getTime() < (Date.now()-5*1000)){
+                        return Promise.resolve(ActionState.SUCCESS)
+                    }
+                    return Promise.resolve(ActionState.IN_PROGRESS)
+                }
+                action.cronActivity.frequency = 2*1000;
+                return action;
+        }})
+
+        await this.do("t3", {
+            main : ()=>{
+                this.bag.x++
+                return this.save().then(()=>ActionState.SUCCESS)
+            }
+        })
+
+        return this.bag.x;
     }
 }
+
+export class WorkflowWithRepeat extends Workflow{
+
+    async define(){
+        let i = 0;
+        await this.repeatDo("repeatSucces", ()=>{
+            i++
+            return Promise.resolve()
+        },{
+            [ActionState.SUCCESS]: 2,
+            elapsedTime: 10 
+        })
+
+        try{
+            await this.repeatDo("repeatOnFailure", ()=>{
+                i++
+                return Promise.reject()
+            }, {
+                [ActionState.ERROR]: 2,
+                elapsedTime: 10
+            })
+        }
+        catch(err){
+
+        }
+        return i;
+    }
+}
+
+
 
 export class TestExecutor extends Executor {
     resume(action) {
@@ -180,7 +257,7 @@ export class TestExecutor extends Executor {
 export class TestExecutorAction extends Action {
     cli = new Cli();
 
-    defineExecutor(): Promise<undefined> | undefined {
+    setExecutor(): Promise<undefined> | undefined {
         return;
     }
 
@@ -192,87 +269,96 @@ export class TestExecutorAction extends Action {
     }
 }
 
-export class TestActionInWorkflow extends Workflow {
-    static permanentRef: string | string[] = ['xx', 'xxx'];
+export class SleepGenerator extends CoalescingWorkflow{
 
-    define(): Promise<void> | void {
-        this.next(() => Action.resolve())
-            .name('actionInWorkflow')
-            .next(async () => {
-                const inWorkflowAction = this.inWorkflowStepAction(
-                    'inWorkflowSuccess',
-                    () => Promise.resolve({ x: 1 })
-                );
-                const inWorkflowError = this.inWorkflowStepAction(
-                    'inWorkflowError',
-                    () => Promise.reject(new Error('test'))
-                );
-                const modifiedInWorkflowAction = this.inWorkflowRedefineAction(
-                    'inWorkflowRedefine',
-                    () => {
-                        const action = new TestAction();
-                        action.main = () => {
-                            action.setResult({
-                                x: '10',
-                            });
-                            return Promise.resolve(ActionState.ERROR);
-                        };
-                        return action;
-                    }
-                );
-                return [
-                    inWorkflowAction,
-                    inWorkflowError,
-                    await modifiedInWorkflowAction,
-                ];
-            })
-            .name('catch')
-            .catch(() => {
-                const inWorkflowAction = this.inWorkflowStepAction(
-                    'inWorkflowSuccess2',
-                    () => Promise.resolve()
-                );
-                return [
-                    new TestAction(),
-                    inWorkflowAction,
-                    new BasicWorkflow(),
-                    Action.reject('xyz'),
-                ];
-            })
-            .name('workflowInWorkflow')
-            .catch(() => {
-                const workflow = new Workflow();
-                workflow
-                    .name('start')
-                    .next(() => {
-                        const action = workflow.inWorkflowStepAction(
-                            'error',
-                            () => Promise.reject()
-                        );
-                        return action;
-                    })
-                    .name('end')
-                    .catch(() => {
-                        const action = workflow.inWorkflowStepAction(
-                            'success',
-                            () => Promise.resolve()
-                        );
-                        return action;
-                    });
-                workflow.dynamicallyDefineFromWorkflowStep(this, 'wInW');
-                return workflow;
-            });
+    identity() {
+        return "sleep"
+    }
+
+    async define(){
+        await this.do("sleep", new Sleep().setArgument({time : 10*1000}));
+        return {}
     }
 }
 
-export class WorkflowApp extends ActionApp {
-    declare = [
-        TestRollBack,
-        TestActionWithRollBack,
-        BasicWorkflow,
-        TestExecutorAction,
-        TestActionInWorkflow,
-        TestActionMainTimeout,
-        Workflow,
-    ];
+let x = 0;
+export class TestGenerator extends CoalescingWorkflow{
+
+    declare IArgument: { commandName: string; name : string };
+
+    identity() {
+        return this.argument.name
+    }
+
+    async define(){
+        const result = await this.once("once", ()=>{
+            return Promise.resolve(3)
+        })
+
+        await this.do("sleep", new Sleep().setArgument({time: 2*1000}));
+        
+        await this.do("sleepWithAGenerator", new SleepGenerator())
+        
+        if(result as number > 0){
+            await this.do("increment", ()=>{
+                x++;
+                return Promise.resolve()
+            })
+        }
+
+        
+        return x;
+    }
+}
+
+export class BlankResource extends Resource{
+
+    declare IArgument: { commandName: string; version?: string};
+
+    async init(){
+        if(this.argument.version){
+            this.version = this.argument.version;
+        }
+        return super.init();
+    }
+
+    identity(){
+        return "blank"
+    }
+
+    version = "1.0.0"
+
+    incrementCommandCount(commandName:string){
+        const n = this.resourceDbDoc.info[`n${commandName}`] || 0
+        this.resourceDbDoc.info[`n${commandName}`] = n+1
+        this.resourceDbDoc.markModified("info");
+    }
+
+    async defineInstall() {
+        await this.do("install", ()=>{
+            this.incrementCommandCount("install");
+            return this.resourceDbDoc.save();
+        })
+    }
+
+    async defineUpdate(){
+        await this.do("update", ()=>{
+            this.incrementCommandCount("update")
+            return this.resourceDbDoc.save();
+        })
+    }
+
+    async defineUninstall() {
+        await this.do("uninstall", ()=>{
+            this.incrementCommandCount("uninstall")
+            return this.resourceDbDoc.save();
+        })
+
+    }
+
+    async setOutput(): Promise<any> {
+        return {
+            "xyz":"abc"
+        }
+    }
 }
