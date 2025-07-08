@@ -107,7 +107,7 @@ const config: Config = {
           items: [
             {
               label: 'Tutorial',
-              to: '/docs/intro',
+              to: 'https://orbits.do/documentation/quick-start',
             },
           ],
         },
@@ -115,17 +115,17 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Slack',
+              href: 'https://join.slack.com/t/orbitsgroupe/shared_invite/zt-394jwf72o-utjAV~odD32GhyKnhjnDFQ',
             },
-            {
+            /*{
               label: 'Discord',
               href: 'https://discordapp.com/invite/docusaurus',
             },
             {
               label: 'X',
               href: 'https://x.com/docusaurus',
-            },
+            },*/
           ],
         },
         {
@@ -137,12 +137,12 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/LaWebcapsule/orbits',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Webcapsule`,
     },
     prism: {
       theme: prismThemes.github,

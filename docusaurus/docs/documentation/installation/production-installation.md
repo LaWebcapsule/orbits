@@ -44,4 +44,4 @@ You also benefit from:
 - Persistent logging  
 - Insights into your actions, workflows, and resources  
 - Permissions and secrets management over actions, workflows, and resources  
-If you’re interested in accessing the beta, [click here](#).
+If you’re interested in accessing the beta, [click here](https://form.typeform.com/to/nuQSZn2y).
