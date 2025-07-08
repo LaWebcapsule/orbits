@@ -1,0 +1,14 @@
+{
+    "label": "Sponsors",
+    "collapsible": true,
+    "collapsed": true,
+    "position": "6",
+    "className": "red",
+    "link": {
+      "type": "generated-index",
+      "title": "Sponsors"
+    },
+    "customProps": {
+      "description": "Sponsors of the Orbits framework"
+    }
+  }
