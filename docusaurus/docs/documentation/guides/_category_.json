@@ -1,0 +1,10 @@
+{
+    "label": "Guides",
+    "position": "4",
+    "collapsible": true,
+    "collapsed": true,
+    "className": "red",
+    "customProps": {
+      "description": "Usage guides for common use cases"
+    }
+  }

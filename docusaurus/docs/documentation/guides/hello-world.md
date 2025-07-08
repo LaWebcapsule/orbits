@@ -1,18 +1,20 @@
 ---
 sidebar_position: 0.2
-title: Quickstart
+title: Hello world
 ---
 
 # Hello world example
-A pratical example that guides you to write your first applications using orbits.
+A practical example to help you write your first application using Orbits.
+
 
 ## Scope
 
-For the sake of demonstration, we will an "hello-world" application.
-The aim is quite simple : 
-- after 10 am, say hello
-- say hello only once in a day
-- say goodbye if we quit.
+
+In this example, we’ll create a simple “hello-world” application. The behavior is straightforward:
+
+- After 10 AM, say hello  
+- Say hello only once per day  
+- Say goodbye when the resource is uninstalled
 
 ## Prerequisites
 
@@ -55,10 +57,7 @@ export class HelloAction extends Action{
 
 This simple action logs a greeting and completes immediately.
 
-The main() method is the entry point of an action. It is guaranteed to run once and only once, so you can be confident that console.log('Hello 👋') will not be called multiple times — even if the action is retried, resumed, or observed over time.
-
-This design is critical for ensuring that side effects remain idempotent and predictable.
-
+The main() method is the entry point for the action and is guaranteed to run exactly once—even across retries or resumptions. This ensures predictable and idempotent side effects.
 
 
 ## The Hello Workflow
@@ -87,9 +86,6 @@ export class HelloWorkflow extends Workflow{
 }
 ```
 
-The `HelloWorkflow` take a name as a parameter and return "hello-name".
-Let's explore the syntax step-by-step.
-
 ### Type declarations
 
 ```typescript
@@ -99,59 +95,41 @@ declare IArgument: {
     name: string;
 }
 ```
-These lines are useful for typing.
-With `IResult` we precise the type of the return of the Workflow.
-As a consequence, if you call the `HelloWorkflow` in another `Workflow`, you can enjoy type completion and type checking.
-```typescript 
-    const result = await this.do("hello", new HelloWorkflow());//result has type "string"
-```
+- `IResult` defines the return type of the workflow.
+- `IArgument` defines the expected input arguments.
 
-With `IArgument`, we precise the type of the argument of the workflow.
-As a consequence, in the same workflow, you can enjoy type completion and type checking for the `argument` property.
-```typescript
-    console.log(this.argument);//type of this.argument is IArgument
-    console.log(this.argument.name); //OK : the property name exists in the argument object
-    console.log(this.argument.surname);//KO: the property does not exist.
-```
-Also, if you call the `HelloWorkflow` in another `Workflow`, you can enjoy type completion and type checking for the argument parameter.
-```
 ```typescript 
-    const result = await this.do("hello", new HelloWorkflow().setArgument({name: "John Doe"}));//setArgument expects an argument of type IArgument
+const result = await this.do("hello", new HelloWorkflow()); // `result` is typed as string
+```
+```typescript
+    new HelloWorkflow().setArgument({ name: "Alice" }); // type-checked argument
 ```
 
 ### Define() method
 
-In the define(), you can chain actions.
-The define() method is a special async function.
-You must consume all promise through the `this.do()` methods. You shouldn't use any promise outside `do()`
+The define() method describes the logic of the workflow and must use this.do() for any asynchronous operations. Directly using raw promises is discouraged.
 
-Here, we chain two actions, one for the prefix, one for the suffix.
-Each action will be called once and only once.
-The define() method will be called an undertimanate but multiple times. If you want to illustrate this behaviour, just add a console.log() in the `define()` method.
+Example illustrating execution behavior:
 ```typescript
-async define(){
-    ...
-    console.log("I will be called multiple times");
-    await this.do("log", ()=>{
-        console.log("I will be called only once");
+async define() {
+    console.log("Called multiple times");
+    await this.do("log", () => {
+        console.log("Called only once");
         return Promise.resolve();
-    })
+    });
 }
 ``` 
 This approach aligns with the [SAGA principle](https://microservices.io/patterns/data/saga.html).
-The `do()` has other nice possibilities, please see the [core documentation]() to get more infos.
+See the [Orbits Core documentation](./../core-concepts/workflow.md#the-do-method) for more on `this.do()`
 
 ### Result
 
-At the end of define, we return a string.
-This will ensure this workflow has a result.
+At the end of define(), we return a string which becomes the result of the workflow.
+
 
 ## The Greetings Resources
 
-```typescript title='src/greeting-resource.ts'
-import { Resource } from "@wbce/orbits-core";
-import { HelloWorkflow } from "./hello-workflow.ts";
-
+```typescript title='src/orbits/greeting-resource.ts'
 export class GreetingResource extends Resource {
 
     declare IResult: string;
@@ -169,7 +147,10 @@ export class GreetingResource extends Resource {
         const greeting = await this.do("greeting", new HelloWorkflow().setArgument({
             name: this.argument.name
         }));
-        console.log(`${greeting}  👋👋👋`);
+        await this.do("display-greeting", ()=>{
+            console.log(`${greeting}  👋👋👋`);
+            return Promise.resolve();
+        })
     }
 
     async defineUpdate() {
@@ -178,80 +159,151 @@ export class GreetingResource extends Resource {
     }
 
     async defineUninstall() {
-        console.log(`Goodbye my dear friend ${this.argument.name}`);
+        await this.do("display-goodbye", ()=>{
+            console.log(`Goodbye my dear friend ${this.argument.name} 👋👋👋`);
+            return Promise.resolve();
+        });
     }
 }
 ```
 
-the workflow will run twice. How do you do to have it run once ?
-This is managed by the concept of [`Resource`](./core-concepts/resource.md).
+### Type declarations
 
-```typescript title='src/orbits/my-resource.ts'
-    export class MyGreetings extends Resource{
-        IArgument: {
-            name : string
-            date: string
-        }
+```typescript
+declare IResult: string;
 
-        identity(){
-            return `${this.argument.name}-${this.argument.date}`
-        }
+declare IArgument: {
+    name: string;
+    date: string
+} & Resource["IArgument"]
+```
+Same as for workflows, this enables type checking and autocompletion.
 
-        defineInstall(){
-            //say hello
-            await this.do("hello", new MyWorkflow().setArgument({
-                name: this.argument.name
-            }))
-        }
+### Identity method
 
-        defineUpdate(){
-            //do nothing, I already have seen you
-        }
+The `identity()` method uniquely identifies a resource instance.
+If two instances share the same identity, they refer to the same real-world object and will share state.
+ 
+```typescript
+identity() {
+        return `${this.argument.name}-${this.argument.date}`;
+}
+```
+That means that a greeting resource is unique by name and by date.
 
-        defineUninstall(){
-            //say goodbye
-            const goodbye = await this.do("goodbye", ()=>{
-                console.log("goodbye")
-                return "goodbye ; it was a great day";
-            })
-            return `${goodbye} ${this.argument.name}`
-        }
+### Install hook
 
+Runs once when the resource is first created.
+
+```typescript
+async defineInstall() {
+    const greeting = await this.do("greeting", new HelloWorkflow().setArgument({
+        name: this.argument.name
+    }));
+    await this.do("display-greeting", ()=>{
+        console.log(`${greeting}  👋👋👋`);
+        return Promise.resolve();
+    })
+}
+```
+
+### Update hook
+```typescript
+async defineUpdate() {
+        //do nothing
+        console.log(`(I have already seen you.)👻`);
+}
+```
+Runs every time the resource is reused with the same identity.
+
+### Uninstall hook
+
+```typescript
+async defineUninstall() {
+        await this.do("display-goodbye", ()=>{
+            console.log(`Goodbye my dear friend ${this.argument.name} 👋👋👋`);
+            return Promise.resolve();
+        });
     }
 ```
 
-### Consume your resources
-
-A resource is an action, so you consume it like an action
-```typescript title='src/anywhere-in-your-app.ts'
-  const resource = new MyGreetings().setArgument({
-    name: "John Doe",
-    date: "01-01-01"
-  });
-  await resource.save();//the action will be executed in the background. the greetings will appear in the console
-  await Action.trackActionAsPromise(resource, [ActionState.SUCCESS, ActionState.ERROR]); 
-  
-  const resource2 = new MyGreetings().setArgument({
-    name: "John Doe",
-    date: "01-01-01"
-  });
-  await resource2.save();//the action will be executed but nothing will appear in the console.log, as we already installed the resource
-  await Action.trackActionAsPromise(resource2, [ActionState.SUCCESS, ActionState.ERROR]); 
-
-  const resource3 = new MyGreetings().setArgument({
-    name: "John Doe",
-    date: "01-01-01"
-  }).setCommand("goodbye");
-  await resource2.save();//the action will be executed ; "goodbye" will appear in the console
-  await Action.trackActionAsPromise(resource2, [ActionState.SUCCESS, ActionState.ERROR]);
+To trigger it:
+```typescript
+    new GreetingResource().setArgument(...).setCommand('Uninstall');
 ```
+
+### Go further : cycle hook
+
+We don't use it in our sample, but resources offer the possibility to launch a cycle command at fixed intervals.
+This can be useful for recurring tasks like polling, cleanup, or reporting.
+Please [see the documentation](./../core-concepts/resource.md#cycle) to learn more.
+
+## Orbi.ts
+
+In orbi.ts, we do : 
+
+```typescript title="src/orbi.ts"
+import { Action, ActionRuntime, ActionState } from "@wbce/orbits-core";
+import { GreetingResource } from "./greetings-resource.ts";
+
+ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
+    const greetingOfTheDay = new GreetingResource().setArgument({
+        name: "John Doe",
+        date: String(new Date().toISOString().split("T")[0])
+    })
+    greetingOfTheDay.save();
+    await Action.trackActionAsPromise(greetingOfTheDay, [ActionState.SUCCESS, ActionState.ERROR])
+
+    const greetingOfTheDay2 = new GreetingResource().setArgument({
+        name: "John Doe",
+        date: String(new Date().toISOString().split("T")[0])
+    })
+    greetingOfTheDay2.save();
+    await Action.trackActionAsPromise(greetingOfTheDay2, [ActionState.SUCCESS, ActionState.ERROR])
+})
+```
+We launch two times the same Resource.
+This shows evidence that : 
+- during the first run, you will see greeting in console.log
+- during the second run, you will only see the "I have already seen you" console.log
+
+## Running the sample
+
+### Run the Script
+
+```bash
+export ORBITS_MONGO__URL="your-mongo-cluster"
+npx tsx src/orbi.ts 
+```
+Expected Output
+- First run: logs the greeting
+- Subsequent runs: logs "I have already seen you"
+
+### Run the uninstall command
+
+Edit `orbi.ts` : 
+```typescript title="src/orbi.ts"
+ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{
+    const greetingOfTheDay = new GreetingResource().setArgument({
+        name: "John Doe",
+        date: String(new Date().toISOString().split("T")[0])
+    }).setCommand("Uninstall")
+    greetingOfTheDay.save();
+)
+```
+Then run:
+```bash
+export ORBITS_MONGO__URL="your-mongo-cluster"
+npx tsx src/orbi.ts 
+```
+You should see the goodbye message in the console.
 
 ## Next Steps
 
 :::tip What's Next?
 Here are three recommended next steps to continue your journey:
 
-1. **👋 [Hello world example](./guides/hello-world.md)** - Build your first Orbits application with our step-by-step tutorial and see immediate results
+1. **🧩 [Cross-account cdk examples](./cross-account-cdk.md)** - Show how to use infrastructure templates in conjonction with orbits
 2. **⚙️ [Core-concepts](/docs/category/core-concepts)** - Master the fundamental architecture principles and design patterns that power Orbits  
 3. **🛤️ [Guides](/docs/category/guides)** - Explore hands-on tutorials ranging from beginner-friendly to advanced implementation techniques
 :::

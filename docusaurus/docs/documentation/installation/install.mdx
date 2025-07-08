@@ -1,0 +1,80 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+# Local installation
+
+## Requirements
+
+<Tabs>
+  <TabItem value="new-project" label="Create a new project from stratch" default>
+    - Install [Node.js](https://nodejs.org/) (version 22 or higher recommended) on your machine. 
+    - Create a new project with `npm init`
+    - Install [typescript](https://www.typescriptlang.org/download/) in your project 
+    - Install `tsx` for debugging purpose : 
+    - ```npm i --save-dev tsx```
+    - Install orbits and orbits-fuel : 
+     ```npm i @wbce/orbits-core @wbce/orbits-fuel```
+  </TabItem>
+  <TabItem value="existing-project" label="Integrate into an existing typescript project" default>
+     - Install orbits and orbits-fuel : 
+     ```npm i @wbce/orbits-core @wbce/orbits-fuel```
+  </TabItem>
+</Tabs>
+
+
+## Test with Docker-compose
+
+Copy the following `docker-compose.yml` file into your project folder:
+
+```yaml title="docker-compose.yaml"
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  nodejs:
+    image: node:22-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: ["npx", "tsx", "index.ts"]
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:
+```
+
+Run with:
+
+```bash
+docker compose up
+```
+
+Modify your source codes and then relaunch the node container : 
+```bash
+docker compose down nodejs
+docker compose up nodejs
+```
+
+
+## Test without docker-compose
+
+### Local mongodb
+
+Install MongoDB locally following the [official guide](https://www.mongodb.com/docs/manual/installation/) for your OS.
+
+### External MongoDB
+
+Set the environment variable `ORBITS_DB__MONGO__URL` to point to your MongoDB cluster URI before running the app:
+```bash
+export ORBITS_DB__MONGO__URL="mongodb+srv://...."
+npx tsx index.ts
+```

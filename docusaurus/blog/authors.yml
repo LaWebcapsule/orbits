@@ -1,34 +1,58 @@
 louis:
   name: Louis Dussarps
   title: CEO @ Webcapsule
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+  url: https://github.com/louisdussarps
+  image_url: /img/authors/louis.png
   page: true
   socials:
-    x: yangshunz
-    github: yangshun
+    linkedin: louisdussarps
+    github: louisdussarps
 
-yangshun:
-  name: Yangshun Tay
-  title: Front End Engineer @ Facebook
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+loic:
+  name: Loïc Déchamps
+  title: CTO @ Webcapsule
+  url: https://github.com/ldechamps
+  image_url: /img/authors/loic.png
   page: true
   socials:
-    x: yangshunz
-    github: yangshun
+    linkedin: loicdechamps
+    github: ldechamps
 
-
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
-  page:
-    # customize the url of the author page at /blog/authors/<permalink>
-    permalink: '/all-sebastien-lorber-articles'
+arthur:
+  name: Arthur Rouzoul
+  title: COO @ Webcapsule
+  url: https://linkedin.com/in/arthurrouzoul
+  image_url: /img/authors/arthur.png
+  page: true
   socials:
-    x: sebastienlorber
-    linkedin: sebastienlorber
-    github: slorber
-    newsletter: https://thisweekinreact.com
+    linkedin: arthurrouzoul
+
+tom:
+  name: Tom Marcuzzi
+  title: Head of engineering @ Webcapsule
+  url: https://linkedin.com/in/tom-marcuzzi
+  image_url: /img/authors/tom.png
+  page: true
+  socials:
+    github: tommarcuzzi
+    linkedin: tommarcuzzi
+
+sofia:
+  name: Sofia Chakir
+  title: Head of cybersecurity @ Webcapsule
+  url: https://linkedin.com/in/sofia-chakir
+  image_url: /img/authors/sofia.png
+  page: true
+  socials:
+    github: sofiachakir
+    linkedin: sofiachakir    
+
+antoine:
+  name: Antoine Dussarps
+  title: Tech advisor @ Webcapsule
+  url: https://linkedin.com/in/antoine-dussarps
+  image_url: /img/authors/antoine.png
+  page: true
+  socials:
+    github: antoinedussarps
+    linkedin: antoinedussarps    
