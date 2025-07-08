@@ -15,9 +15,13 @@ Account A (Parameter Store)     Account B (Lambda Consumer)
 
 ### Clone this repository
 
-- Clone this repository
-- Install npm dependencies : 
-`npm i`
+- Clone [this repository](https://github.com/LaWebcapsule/orbits)
+- Go to this directory : 
+```bash
+cd samples/cross-account-aws-cdk
+```
+- Install node.js dependencies : 
+`npm i``
 
 ### Setup AWS environment
 You'll need access to two AWS accounts with the following permissions:

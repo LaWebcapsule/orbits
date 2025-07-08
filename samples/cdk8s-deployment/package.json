@@ -11,17 +11,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@orbi-ts/core": "workspace:^",
-    "@orbi-ts/fuel": "workspace:^",
+    "@orbi-ts/core": "latest",
+    "@orbi-ts/fuel": "latest",
     "aws-cdk-lib": "^2.182.0",
     "cdk8s": "^2.69.68",
     "cdk8s-plus-32": "^2.1.6",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@tsconfig/node16": "catalog:",
+    "@tsconfig/node16": "16.1.3",
     "tsx": "^4.19.4",
-    "typescript": "catalog:"
+    "typescript": "5.8.3"
   },
   "type": "module"
 }

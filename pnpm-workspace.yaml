@@ -2,7 +2,6 @@ packages:
   - core/actions
   - helpers
   - cli
-  - samples/*
   - packages/*
 
 catalog:

@@ -20,8 +20,12 @@ In this example, we’ll create a simple “hello-world” application. The beha
 
 ### Clone this repository
 
-- Clone this repository
-- Install npm dependencies : 
+- Clone [this repository](https://github.com/LaWebcapsule/orbits)
+- Go to this directory : 
+```bash
+cd samples/hello-world
+```
+- Install node.js dependencies : 
 `npm i`
 
 ## Project Structure

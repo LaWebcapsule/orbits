@@ -6,9 +6,13 @@ A practical example demonstrating how to manage kube resources through CDK8S and
 
 ### Clone this repository
 
-- Clone this repository
-- Install npm dependencies : 
-`npm i`
+- Clone [this repository](https://github.com/LaWebcapsule/orbits)
+- Go to this directory : 
+```bash
+cd samples/cdk8s-deployment
+```
+- Install node.js dependencies : 
+`npm i``
 
 ### Setup kube environment
 
