@@ -1,5 +1,5 @@
 import Docker from 'dockerode';
-import { Action, ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 
 import { DockerExecutor } from './docker-executor.js';
 import { EcrRegistry } from './ecr-registry.js';

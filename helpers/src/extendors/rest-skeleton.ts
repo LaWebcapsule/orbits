@@ -1,10 +1,10 @@
-import { Action, ActionApp } from '@wbce/orbits-core';
+import { Action, ActionRuntime } from '@orbi-ts/core';
 
 export class ActionApi {
-    app: ActionApp;
+    app: ActionRuntime;
 
     constructor() {
-        this.app = ActionApp.getActiveApp();
+        this.app = ActionRuntime.activeRuntime;
     }
 
     list(query: any) {

@@ -1,0 +1,10 @@
+{
+    "label": "Pilot your IaC",
+    "collapsible": true,
+    "collapsed": true,
+    "position": "3",
+    "className": "red",
+    "customProps": {
+      "description": "Toolbox to help programmatically manage your Infrastructure as Code (IaC)"
+    }
+  }

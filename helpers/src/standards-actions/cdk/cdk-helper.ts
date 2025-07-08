@@ -1,6 +1,7 @@
 import {
     CloudFormationClient,
     CloudFormationClientConfig,
+    DeleteStackCommand,
     DescribeStackResourceCommand,
     DescribeStacksCommand,
     GetTemplateSummaryCommand,
@@ -43,5 +44,12 @@ export class CdkHelper {
             StackName: stackName,
         });
         return this.cfnClient.send(command).then((res) => res);
+    }
+    
+    deleteStack(stackName: string){
+        const command = new DeleteStackCommand({
+            StackName: stackName
+        })
+        return this.cfnClient.send(command)
     }
 }

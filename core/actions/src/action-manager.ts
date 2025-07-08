@@ -1,11 +1,18 @@
-import { utils, wbceAsyncStorage } from '@wbce/services';
-import { ActionApp, RevertAction, Workflow } from '../index.js';
+import { utils, orbitsAsyncStorage } from '@orbi-ts/services';
+import { ActionRuntime, Workflow } from '../index.js';
 import { Executor } from './action-executor.js';
-import { ActionError, BreakingActionState } from './error/error.js';
+import { ActionError, BreakingActionState, InWorkflowActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { JSONObject } from '@orbi-ts/services/src/utils.js';
+import { level } from 'winston';
+import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
+import { register } from 'module';
+import {format, inspect} from "util"
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+const ACTION_TAG = actionKindSymbols.get(actionKind.ACTION);
 
 /**
  * Structure actions.
@@ -13,6 +20,13 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
  * Extends this class to build new actions behaviors.
  */
 export class Action {
+
+    /**
+     * allow checking for Action in an context
+     * where there are different copies of core
+     */
+    static [ACTION_TAG] = true;
+
     /**
      * Id of the action stored in database.
      * It should be a permanent id that designates the action instance.
@@ -24,7 +38,7 @@ export class Action {
      */
     executor?: Executor;
 
-    app: ActionApp = ActionApp.getActiveApp();
+    runtime = ActionRuntime.activeRuntime;
 
     /**
      * Shortcut to {@link Action.defaultDelays[ActionState.IN_PROGRESS]}.
@@ -81,17 +95,17 @@ export class Action {
     /**
      * Action argument
      */
-    IArgument: {};
+    IArgument: JSONObject;
 
     /**
      * Action bag
      */
-    IBag: {};
+    IBag: JSONObject;
 
     /**
      * Action result
      */
-    IResult: {};
+    IResult: JSONObject|Error|void;
 
     /**
      * Action Database Document
@@ -151,23 +165,43 @@ export class Action {
         return this.dbDoc._id;
     }
 
-    save() {
-        return this.dbDoc.save();
+    /**
+     * Save an action in the database. Will then be managed by the worker.
+     * @returns a promise that resolves when the action has been saved
+     */
+    save(){
+        return this.runtime.waitForBootstrap.then(()=>{
+            const actionRef = this.runtime.getActionRefFromRegistry(
+                this.constructor as any
+            );
+            if (!actionRef) {
+                throw new ActionError(
+                    'Please declare this action in a bootstrapped app before saving it',
+                    errorCodes.NOT_ACCEPTABLE,
+                    {
+                        ctrName: this.constructor.name,
+                    }
+                );
+            }
+            //check that we can go from actionRef to the constructor of the action
+            const ActionCtr = this.runtime.getActionFromRegistry(actionRef);
+            if(!(ActionCtr === this.constructor || ActionCtr.name !== this.constructor.name)){
+                throw new ActionError(
+                    'Another action with the same actionRef is already registered',
+                    errorCodes.NOT_ACCEPTABLE,
+                    {
+                        actionRef: actionRef,
+                        currentCtrName: this.constructor.name,
+                        registeredCtrName: ActionCtr.name,
+                    }
+                )
+            }
+            return this.dbDoc.save();
+        })
     }
 
     constructor() {
-        const actionRef = this.app.getActionRefFromRegistry(
-            this.constructor as any
-        );
-        if (!actionRef) {
-            throw new ActionError(
-                'Please declare this action in a bootstrapped app before using it',
-                errorCodes.NOT_ACCEPTABLE,
-                {
-                    ctrName: this.constructor.name,
-                }
-            );
-        }
+        
         // Copy the static properties to create the dynamic ones
         // Check whether defaultDelay has priority over defaultDelays[ActionState.SUCCESS]
         // (if and only if it was set before in the inheritance chain)
@@ -202,8 +236,8 @@ export class Action {
         if (nInheritanceForDefaultDelay < nInheritanceForDefaultDelays) {
             defaultDelays[ActionState.IN_PROGRESS] = defaultDelay;
         }
-
-        this.dbDoc = new this.app.ActionModel({
+        const actionRef = this.runtime.getActionRefFromCtr(this.constructor as any);
+        this.dbDoc = new this.runtime.ActionModel({
             actionRef,
             state: ActionState.SLEEPING,
             bag: {},
@@ -214,7 +248,7 @@ export class Action {
             cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
 
-        this.app = ActionApp.getActiveApp();
+        this.runtime = ActionRuntime.activeRuntime;
     }
 
     /**
@@ -223,7 +257,7 @@ export class Action {
      * @returns an action for which dbDoc property is equal to actionDb
      */
     static _constructFromDb(actionDb: ActionSchemaInterface<any>): Action {
-        const app = ActionApp.getActiveApp();
+        const app = ActionRuntime.activeRuntime;
         const ActionCtr = app.getActionFromRegistry(actionDb.actionRef);
         let action: Action;
         try {
@@ -242,50 +276,44 @@ export class Action {
         return action;
     }
 
+     /**
+     * Construct an action from a document stored in the database and whose definition depends on a workflow.
+     * @param actionDb a document coming from the database
+     * @returns an action for which dbDoc property is equal to actionDb
+     */
+    static async _constructFromWorkflow(
+        dbDoc: ActionSchemaInterface<any>
+    ) {
+        if (
+            dbDoc.state >= ActionState.SUCCESS &&
+            dbDoc.state < ActionState.REVERTING
+        ) {
+            return Action._constructFromDb(dbDoc);
+        }
+        const workflowDoc = await ActionRuntime.activeRuntime.ActionModel.findById(
+            dbDoc.definitionFrom.workflow._id
+        );
+        const workflow = (await Action.constructFromDb(
+            workflowDoc
+        )) as Workflow;
+        await workflow.initialization();
+        return workflow.defineDynamicAction(dbDoc);
+    }
+
+    /**
+     * Construct an action from a document stored in the database.
+     * @param actionDb a document coming from the database
+     * @returns an action for which dbDoc property is equal to actionDb
+     */
     static async constructFromDb(actionDb: ActionSchemaInterface<any>) {
         if (actionDb.definitionFrom?.workflow?._id) {
-            return this.dynamicDefinitionFromWorkflowStep(actionDb);
+            return Action._constructFromWorkflow(actionDb);
         } else {
             return Action._constructFromDb(actionDb);
         }
     }
 
-    static async dynamicDefinitionFromWorkflowStep(
-        dbDoc: ActionSchemaInterface<any>
-    ) {
-        try {
-            const workflowDoc = await ActionApp.activeApp.ActionModel.findById(
-                dbDoc.definitionFrom.workflow._id
-            );
-            const workflow = (await Action.constructFromDb(
-                workflowDoc
-            )) as Workflow;
-            await workflow.initialization();
-            const stepsActions = await workflow.getActionsOfStep(
-                dbDoc.definitionFrom.workflow
-            );
-            let action: Action;
-            if (Array.isArray(stepsActions)) {
-                action = stepsActions.find(
-                    (a) =>
-                        a.dbDoc.definitionFrom.workflow.marker ===
-                        dbDoc.definitionFrom.workflow.marker
-                );
-            } else if (stepsActions instanceof Action) {
-                action = stepsActions;
-            }
-            action.dbDoc = dbDoc;
-            return action;
-        } catch (err) {
-            if (
-                dbDoc.state >= ActionState.SUCCESS &&
-                dbDoc.state < ActionState.REVERTING
-            ) {
-                return Action._constructFromDb(dbDoc);
-            }
-            throw err;
-        }
-    }
+    
 
     /**
      * @deprecated use dynamicallyDefineFromWorkflowStep
@@ -310,7 +338,7 @@ export class Action {
      * @returns a promise that resolves when the document has been loaded
      */
     resyncWithDb() {
-        return this.app.ActionModel.findById(this.dbDoc._id.toString()).then(
+        return this.runtime.ActionModel.findById(this.dbDoc._id.toString()).then(
             (newDb) => {
                 if (newDb) {
                     this.dbDoc = newDb as any;
@@ -365,7 +393,7 @@ export class Action {
                     return err.actionState;
                 }
                 this.internalLogError(err);
-                this.result = err;
+                err ? this.setErrorAsResult(err): undefined;
                 return ActionState.ERROR;
             });
     }
@@ -384,18 +412,20 @@ export class Action {
         return Promise.resolve();
     }
 
-    defineExecutor(): void | Promise<void> {
-        return;
-    }
-
     /**
      * Set the `argument` that will be stored in the database.
      * Once set, the argument of an action should not be modified.
      * @param args - The argument to set.
      */
     setArgument(args: this['IArgument']) {
-        this.argument = { ...this.argument, ...args };
+        if(typeof args === 'object'){
+            this.argument = { ...this.argument as object, ...args };
+        }
+        else{
+            this.argument = args;
+        }
         this.dbDoc.markModified('argument');
+        return this;
     }
 
     /**
@@ -408,6 +438,7 @@ export class Action {
             ...this.repeat,
             ...opts,
         };
+        return this;
     }
 
     /**
@@ -421,15 +452,34 @@ export class Action {
     setFilter(filter: Object) {
         this.dbDoc.filter = { ...this.dbDoc.filter, ...filter };
         this.dbDoc.markModified('filter');
+        return this;
     }
 
     /**
      * Set the action result.
      * @param result
      */
-    setResult(result: Object) {
-        this.dbDoc.result = { ...this.dbDoc.result, ...result };
+    setResult(...results) {
+        if(results.length === 1){
+            this.dbDoc.result = results[0]
+        }
+        else{
+            this.dbDoc.result = results;
+        }
         this.dbDoc.markModified('result');
+        return this;
+    }
+
+    private setErrorAsResult(err: Error | ActionError | InWorkflowActionError){
+        const formatError = (err as any)?.formatedError || format('%s', err);
+        this.setResult({
+            code : (err as ActionError)?.code,
+            message : err?.message,
+            stack: err?.stack,
+            worflowTrace: (err as InWorkflowActionError)?.workflowTrace,
+            rootAction: (err as InWorkflowActionError)?.rootAction,
+            formatedError: formatError
+        });
     }
 
     /**
@@ -476,13 +526,26 @@ export class Action {
     }
 
     isExecutorSet = false;
-    private setExecutor() {
+    private async _setExecutor() {
         if (this.isExecutorSet) {
             return Promise.resolve();
         }
         this.isExecutorSet = true;
         this.internalLog('setExecutor');
-        return Promise.resolve(this.defineExecutor());
+        const executor = await Promise.resolve(this.setExecutor());
+        if(executor){
+            this.executor = executor;
+        }
+    }
+
+    /**
+     * Set the executor for this action.
+     * It is called only once when the action is created.
+     * If you want to set an executor, you should override this method.
+     * @returns a promise that resolves when you have set the executor is set
+     */
+    setExecutor(): void | Executor | Promise<void| Executor> {
+        return;
     }
 
     private watch() {
@@ -525,7 +588,7 @@ export class Action {
                 })
                 .then((actionState) => {
                     if (actionState === ActionState.UNKNOWN) {
-                        this.setResult(timeoutError);
+                        this.setErrorAsResult(timeoutError);
                         return ActionState.ERROR;
                     }
                     return actionState;
@@ -542,8 +605,7 @@ export class Action {
                         }
                         return err.actionState;
                     } else {
-                        this.internalLogError(err);
-                        this.result = err;
+                        err ? this.setErrorAsResult(err): undefined;
                         return ActionState.ERROR;
                     }
                 });
@@ -557,7 +619,6 @@ export class Action {
      * It returns a state value.
      * @returns
      */
-
     main(): ActionState | Promise<ActionState> {
         return Promise.resolve(ActionState.ERROR);
     }
@@ -569,7 +630,7 @@ export class Action {
      */
     public resume() {
         this.dbDoc.updateNextActivity(); //set next cron Activity
-        return wbceAsyncStorage.addNestedStorage(
+        return orbitsAsyncStorage.addNestedStorage(
             {
                 logInfo: {
                     actionRef: this.dbDoc.actionRef,
@@ -580,7 +641,7 @@ export class Action {
             () => {
                 let setExecutor = Promise.resolve();
                 if (!this.isExecutorSet) {
-                    setExecutor = this.setExecutor();
+                    setExecutor = this._setExecutor();
                 }
                 return setExecutor.then(() => {
                     if (this.executor) {
@@ -637,17 +698,17 @@ export class Action {
         });
     }
 
-    changeState(actionState: ActionState) {
+    private changeState(actionState: ActionState) {
         const oldState = this.dbDoc.state;
         this.dbDoc.state = actionState;
         return this.dbDoc.lockAndSave().then(() => {
             this.internalLog(
-                `state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`
+                `state changed : ${ActionState[oldState]} --> ${ActionState[actionState]}`,
             );
         });
     }
 
-    onStateNotification(actionState: ActionState = ActionState.UNKNOWN) {
+    private onStateNotification(actionState: ActionState = ActionState.UNKNOWN) {
         if (
             actionState !== ActionState.UNKNOWN &&
             this.dbDoc.state !== actionState
@@ -692,27 +753,28 @@ export class Action {
             // no state return here
             // change state and wait for next iteration when cron runs again (min 10min)
             this.dbDoc.nExecutions[this.dbDoc.state]++;
-            if (
-                this.dbDoc.cronActivity.nextActivity.getTime() - Date.now() <
-                10 * 60 * 1000
-            ) {
-                this.dbDoc.cronActivity.nextActivity = new Date(
-                    Date.now() + 10 * 60 * 1000
-                );
-            }
+            this.dbDoc.cronActivity.nextActivity = new Date(
+                Math.max(
+                    Date.now() + 10 * 60 * 1000,
+                    this.dbDoc.cronActivity.nextActivity.getTime()
+                )
+            );
+            this.dbDoc.markModified('cronActivity.nextActivity');
             return this.changeState(ActionState.SLEEPING);
         } else if (this.dbDoc.workflowId) {
-            return this.app.ActionModel.findById(this.dbDoc.workflowId).then(
-                async (workflowDb) => {
-                    if (workflowDb) {
+            return Workflow.findPendingWorkflowUsingAction(this.dbDoc).then(
+                async (workflowDbs) => {
+                    const trackingResumePromise = []
+                    for(const workflowDb of workflowDbs){
                         const workflow = (await Action.constructFromDb(
                             workflowDb as any
                         )) as unknown as Workflow;
-                        if (workflow.isActionActive(this)) {
-                            return workflow.resume();
-                        }
+                        trackingResumePromise.push(workflow.resume());
+                        await Promise.all(trackingResumePromise);
                     }
-                    return markAsClosed();
+                    if (!workflowDbs.length) {
+                        return markAsClosed();
+                    }
                 }
             );
         }
@@ -720,16 +782,6 @@ export class Action {
     }
 
     private quit() {
-        if (
-            this.isRollBackPossible &&
-            !(this.dbDoc.state === ActionState.REVERTED)
-        ) {
-            // freeze action waiting for a future rollback
-            this.dbDoc.cronActivity.nextActivity = new Date(4022, 1, 1);
-            return this.dbDoc.save().then(
-                () => ActionState.UNKNOWN // short circuit
-            );
-        }
         const timeFromEnd = Date.now() - this.dbDoc.stateUpdatedAt.getTime();
         if (timeFromEnd >= ONE_DAY_MS) {
             return this.destroy().then(
@@ -797,7 +849,24 @@ export class Action {
         });
     }
 
-    internalLog(message: string) {
+    /**
+     * Log a message in the internal logger.
+     * @param message - The message to log.
+     * @param opts - Options for logging, such as the log level.
+     * the final log message will be:
+     * ```
+     * {
+     *   actionRef: this.dbDoc.actionRef,
+     *  actionId: this.dbDoc._id.toString(),
+     *  filter: this.dbDoc.filter,
+     *  definedIn: this.dbDoc.definitionFrom.workflow ? this.dbDoc.definitionFrom.workflow.toObject() : undefined,
+     *  timestamp: new Date().toISOString(),
+     *  level: opts.level || 'info',
+     *  message: message,
+     * }
+     * ```
+     */
+    internalLog(message: string, opts = {level: 'debug'}) {
         let defFromWorkflow: any;
         if (this.dbDoc.definitionFrom.workflow.marker) {
             defFromWorkflow = (
@@ -808,7 +877,7 @@ export class Action {
         if (!Object.keys(filter).length) {
             filter = undefined;
         }
-        this.app.logger.info(message, {
+        this.runtime.logger.log(opts.level, message, {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter,
@@ -817,74 +886,86 @@ export class Action {
         });
     }
 
+    /**
+     * Log an error in the internal logger.
+     * @param err - The error to log.
+     * the final log message will be:
+     * ```
+     * {
+     *   actionRef: this.dbDoc.actionRef,
+     *   actionId: this.dbDoc._id.toString(),
+     *   filter: this.dbDoc.filter,
+     *   definedIn: this.dbDoc.definitionFrom.workflow ? this.dbDoc.definitionFrom.workflow.toObject() : undefined,
+     *   err: err,
+     *   timestamp: new Date().toISOString(),
+     * }
+     */
     internalLogError(err: Error) {
-        this.app.logger.error('!!-.-!!', {
+        let defFromWorkflow: any;
+        if (this.dbDoc.definitionFrom.workflow.marker) {
+            defFromWorkflow = (
+                this.dbDoc.definitionFrom.workflow as any
+            ).toObject();
+        }
+        let filter = this.dbDoc.filter;
+        if (!Object.keys(filter).length) {
+            filter = undefined;
+        }
+        this.runtime.logger.error('!!-.-!!', {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter: this.dbDoc.filter,
+            definedIn: defFromWorkflow,
             err: err,
         });
     }
 
-    get isRollBackPossible() {
-        // check that at least one of the properties has changed from default ones
-        const mockAction = new Action();
-        if (
-            this.RollBackAction !== mockAction.RollBackAction ||
-            this.RollBackWorkflow !== mockAction.RollBackWorkflow ||
-            this.rollBack !== mockAction.rollBack ||
-            this.rollBackWatcher !== mockAction.rollBackWatcher
-        ) {
-            return true;
+    /**
+     * Clone the action.
+     * @returns a new action with the same argument
+     */
+    clone(){
+        const clone = new (this.constructor as any)();
+        clone.setArgument(this.argument);
+        return clone;
+    }
+
+    /**
+     * Track an action until it reaches one of the given states.
+     * @param action - The action to track.
+     * @param states - The states to reach.
+     * @returns A promise that resolves when the action reaches one of the given states. The promise resolves with the state reached.
+     */
+    static trackActionAsPromise(action: Action, states : ActionState[] = [ActionState.SUCCESS, ActionState.ERROR]){
+        return new Promise((resolve, reject)=>{
+            const intervalRef = setInterval(async ()=>{
+                await action.resyncWithDb();
+                if(states.includes(action.dbDoc.state) ){
+                    clearInterval(intervalRef);
+                    resolve(action.dbDoc.state);
+                }
+            }, 10*1000)
+        })
+    }
+
+    /**
+     * Send a signal to indicate that the action is still in progress..
+     * Useful for preventing timeouts when the action's duration is long but not precisely predictable.
+     */
+    notifyHealthPromise : Promise<any> | undefined = undefined;
+    notifyHealth(){
+        if(this.notifyHealthPromise){
+            return this.notifyHealthPromise;
         }
-        return false;
-    }
-
-    /**
-     * Shortcut to configure a rollback.
-     * Will be encapsulated in a larger action
-     */
-    rollBack() {
-        return Promise.resolve(ActionState.SUCCESS);
-    }
-
-    /**
-     * Shortcut to configure the watcher for the rollback.
-     * @returns
-     */
-    rollBackWatcher() {
-        return this.watcher().then((actionState) => {
-            if (actionState !== this.dbDoc.state) {
-                return ActionState.SUCCESS;
-            } else {
-                return ActionState.UNKNOWN;
-            }
+        this.notifyHealthPromise = Promise.resolve().then(()=>{
+            this.dbDoc.stateUpdatedAt = new Date();
+            return this.dbDoc.save()
+        }).finally(()=>{
+            this.notifyHealthPromise = undefined;
         });
     }
+    
 
-    /**
-     * The action that rollback this action.
-     */
-    RollBackAction: typeof Action = RollBackAction;
-
-    /**
-     * Workflow that rollbacks the action.
-     *
-     * Wait for action end then rollback.
-     * Will use {@link RollBackAction}.
-     */
-    RollBackWorkflow: typeof Workflow = RevertAction;
-
-    /**
-     * Instantiate workflow that will rollback this action.
-     */
-    createRollBackWorkflow() {
-        const workflow = new this.RollBackWorkflow();
-        workflow.setArgument({
-            actionId: this.dbDoc._id.toString(),
-        });
-        return workflow;
-    }
 }
 
 /**
@@ -904,8 +985,6 @@ export class ResolveAction extends Action {
  * Action that resolve in ERROR state
  */
 export class RejectAction extends Action {
-    IBag: Object;
-    IArgument: Object;
 
     main() {
         return Promise.resolve(ActionState.ERROR);
@@ -916,35 +995,3 @@ export class RejectAction extends Action {
     }
 }
 
-/**
- * Action that rolls back another Action
- */
-export class RollBackAction<A extends Action> extends Action {
-    IArgument: {
-        actionId: string;
-    };
-
-    oldAction: A;
-
-    init() {
-        return this.app.ActionModel.findById(this.argument.actionId).then(
-            async (dbDoc) => {
-                if (!dbDoc) {
-                    throw new BreakingActionState(ActionState.ERROR);
-                }
-                this.oldAction = (await Action.constructFromDb(
-                    dbDoc as any
-                )) as A;
-                return this.oldAction.initialization();
-            }
-        );
-    }
-
-    main() {
-        return this.oldAction.rollBack();
-    }
-
-    watcher() {
-        return this.oldAction.rollBackWatcher();
-    }
-}

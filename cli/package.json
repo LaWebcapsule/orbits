@@ -1,6 +1,6 @@
 {
-    "name": "@wbce/orbits-cli",
-    "version": "0.0.2",
+    "name": "@orbi-ts/orbits-cli",
+    "version": "0.0.1",
     "description": "Cli to run your Orbits App",
     "repository": {
         "type": "git",
@@ -9,14 +9,15 @@
     "author": "la webcapsule",
     "license": "ISC",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "prettier --write --ignore-unknown **/*.ts",
+        "test": "echo \"Info: no test specified\"",
+        "format": "prettier --check --ignore-unknown **/*.ts",
+        "format:fix": "prettier --write --ignore-unknown **/*.ts",
         "build": "npx tsc",
         "dev": "npx tsc --watch",
         "publish-package": "pnpm run build && pnpm publish --access public"
     },
     "dependencies": {
-        "@wbce/orbits-core": "workspace:^",
+        "@orbi-ts/core": "workspace:",
         "blessed": "^0.1.81",
         "colors": "^1.4.0",
         "commander": "^12.1.0",
@@ -25,7 +26,7 @@
         "winston": "catalog:"
     },
     "devDependencies": {
-        "@tsconfig/node16": "catalog:",
+        "@tsconfig/node22": "catalog:",
         "@types/blessed": "^0.1.25",
         "@types/copy-paste": "^1.1.33",
         "prettier": "catalog:",

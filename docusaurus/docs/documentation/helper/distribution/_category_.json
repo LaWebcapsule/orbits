@@ -1,0 +1,9 @@
+{
+    "label": "Distribution",
+    "collapsible": true,
+    "collapsed": true,
+    "position": 3,
+    "customProps": {
+      "description": "Distribute your IaC templates"
+    }
+  }

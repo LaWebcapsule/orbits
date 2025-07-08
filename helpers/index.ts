@@ -1,18 +1,8 @@
-import { ActionApp } from '@wbce/orbits-core';
+import { ActionRuntime } from '@orbi-ts/core';
 
 export * from './src/executors/index.js';
 export * from './src/git-actions/index.js';
 export * from './src/standards-actions/cdk/cdk-action.js';
 export * from './src/standards-actions/cdk/cdk-helper.js';
-
-import { ExecutorHelperApp } from './src/executors/index.js';
-import { GitHelperApp } from './src/git-actions/gitcenter.js';
-import { CdkHelperApp } from './src/standards-actions/cdk/cdk-action.js';
-
-export class HelperApp extends ActionApp {
-    imports: (typeof ActionApp)[] = [
-        CdkHelperApp,
-        GitHelperApp,
-        ExecutorHelperApp,
-    ];
-}
+export * from './src/standards-resource/cdk/cdk-stack-resource.js';
+export * from './src/standards-resource/cdk8s/cdk8s-resource.js';

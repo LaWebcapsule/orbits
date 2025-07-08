@@ -6,7 +6,7 @@ export interface StorageObject {
     aws?: any;
 }
 
-export class WBCEAsyncStorage extends AsyncLocalStorage<StorageObject> {
+export class OrbitsAsyncStorage extends AsyncLocalStorage<StorageObject> {
     /*
     we can not use promise syntax here
     e.g. we cannot implement something like :
@@ -34,4 +34,4 @@ export class WBCEAsyncStorage extends AsyncLocalStorage<StorageObject> {
     }
 }
 
-export const wbceAsyncStorage = new WBCEAsyncStorage();
+export const orbitsAsyncStorage = new OrbitsAsyncStorage();

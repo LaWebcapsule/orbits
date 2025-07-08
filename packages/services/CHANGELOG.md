@@ -1,4 +1,4 @@
-# @wbce/services
+# @orbi-ts/services
 
 ## 0.0.17
 

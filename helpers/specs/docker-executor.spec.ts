@@ -1,4 +1,4 @@
-import { ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 import { DockerAction } from './actions-test.js';
 
 describe('Test action', () => {
@@ -6,20 +6,13 @@ describe('Test action', () => {
     testAction.setArgument({ y: 1 });
 
     beforeAll(() => {
-        spyOn(testAction, 'init');
         return testAction.dbDoc
             .save()
             .then(
-                () =>
-                    new Promise<void>((resolve) => {
-                        setTimeout(
-                            () => {
-                                resolve();
-                            },
-                            2 * 60 * 1000
-                        );
-                    })
-            )
+                () =>{
+                    const endState = [ActionState.SUCCESS, ActionState.ERROR];
+                    return Action.trackActionAsPromise(testAction, endState);
+                })
             .then(() => testAction.resyncWithDb());
     });
 

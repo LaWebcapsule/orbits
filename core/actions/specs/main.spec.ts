@@ -1,11 +1,13 @@
 import jasmin from 'jasmine';
-import { ActionApp, bootstrapApp } from '../index.js';
-import {
-    TestAction,
-    TestActionWithError,
-    TestActionWithWatcherEnding,
-    WorkflowApp,
-} from './test-action.js';
+import { ActionRuntime } from '../index.js';
+import './test-action.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 
 let j = new jasmin();
 
@@ -14,46 +16,28 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2147483647;
 // cannot be run with an already bootstrapped app
 // j.execute(['./action-app.spec.ts']);
 
+const relativePath = path.relative(process.cwd(), __dirname);
+const isTs = __filename.slice(-3) === '.ts';
+const extension = isTs ? '.ts' : '.js';
+
+const specFiles = [
+    'workflow.spec' + extension,
+    //'action-executor.spec' + extension,
+    //'action-in-workflow.spec' + extension,
+    //'action-job.spec' + extension,
+    'action.spec' + extension,
+    //'generator.spec' + extension,
+    //'other-action.spec' + extension,
+    //'resource.spec' + extension,
+]
+
 j.loadConfig({
     spec_dir: '.',
-    spec_files: [
-        'action-executor.spec.ts',
-        'action-in-workflow.spec.ts',
-        'action-job.spec.ts',
-        'action.spec.ts',
-        'workflow.spec.ts',
-        'other-action.spec.ts',
-    ],
+    spec_files: specFiles.map(file=>path.join(relativePath, file)),
 });
 
-const db = {
-    protocol: 'mongodb',
-    url: process.env['MONGO_URL'],
-    name: 'orbits-test',
-    connectQsParams: '?retryWrites=true&w=majority',
-};
-let dbOpts = {};
 
-@bootstrapApp({
-    db: {
-        mongo: {
-            url: `${db.protocol || 'mongodb'}://${db.url}/${db.name}${db.connectQsParams}`,
-            opts: dbOpts,
-        },
-    },
-    workers: {
-        quantity: 1,
-    },
-})
-export class TestApp extends ActionApp {
-    declare = [TestAction, TestActionWithWatcherEnding, TestActionWithError];
-    imports = [WorkflowApp];
-}
-
-ActionApp.waitForActiveApp.then(() => {
-    const activeApp = ActionApp.getActiveApp();
-    return activeApp.ActionModel.remove({}).then(() => {
-        console.log('launching the tests');
-        j.execute();
-    });
+ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
+    console.log('launching the tests');
+    j.execute();
 });

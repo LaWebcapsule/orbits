@@ -1,10 +1,9 @@
 import {
     Action,
-    ActionApp,
+    ActionRuntime,
     ActionState,
-    bootstrapApp,
-} from '@wbce/orbits-core';
-import { Cli } from '@wbce/services';
+} from '@orbi-ts/core';
+import { Cli } from '@orbi-ts/services';
 import * as cdk from 'aws-cdk-lib';
 import { DockerExecutor, PublicRegistry } from '../index.js';
 import {
@@ -14,7 +13,7 @@ import {
 
 export class DockerAction extends Action {
     executor = new DockerExecutor({
-        registry: new PublicRegistry('node', '16.14.2'),
+        registry: new PublicRegistry('node', '22-slim'),
     });
 
     IResult: {
@@ -28,8 +27,7 @@ export class DockerAction extends Action {
             () => {
                 this.result.z = 10;
                 return ActionState.SUCCESS;
-            },
-            () => ActionState.ERROR
+            }
         );
     }
 }
@@ -62,19 +60,4 @@ export class DeployTestStack extends CdkDeployAction {
             },
         },
     });
-}
-
-export class BootstrapTestStack extends CdkBootstrapAction {
-    StackConstructor: typeof cdk.Stack = TestStack;
-}
-
-@bootstrapApp({
-    db: {
-        mongo: {
-            url: `mongodb+srv://${process.env.MONGO_URL}/test`,
-        },
-    },
-})
-export class TestApp extends ActionApp {
-    declare = [DockerAction, DeployTestStack, BootstrapTestStack];
 }
