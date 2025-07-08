@@ -1,7 +1,7 @@
 import { KubernetesObject, loadAllYaml } from '@kubernetes/client-node';
 
-import { Action, ActionError, ActionState, Resource, Workflow } from '@wbce/orbits-core';
-import { Cli } from '@wbce/services';
+import { Action, ActionError, ActionState, Resource, Workflow } from '@orbi-ts/core';
+import { Cli } from '@orbi-ts/services';
 
 import * as cdk8s from 'cdk8s';
 import { mkdir, rm, writeFile } from 'fs/promises';

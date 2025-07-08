@@ -1,4 +1,4 @@
-import { ActionRuntime } from "@wbce/orbits-core";
+import { ActionRuntime } from "@orbi-ts/core";
 import { HelloResource } from "./hello-resource.js";
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{

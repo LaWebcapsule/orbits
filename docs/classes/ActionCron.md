@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionCron
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / ActionCron
 
 # Class: ActionCron
 

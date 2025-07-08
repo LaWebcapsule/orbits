@@ -8,14 +8,14 @@ It provides an enhanced way of working with the CDK8S, enabling you to:
 
 ## Installation
 
-The `CdkResource` construct is part of the `@wbce/orbits-fuel` package.
+The `CdkResource` construct is part of the `@orbi-ts/fuel` package.
 You need to install it first:
 ```bash
-npm install  @wbce/orbits-fuel
+npm install  @orbi-ts/fuel
 ```
 Then import it : 
 ```typescript
-import {CdkResource} from "@wbce/orbits-fuel
+import {CdkResource} from "@orbi-ts/fuel
 ```
 
 ### Prerequisite

@@ -1,5 +1,5 @@
-import { Executor, Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
-import { utils } from '@wbce/services';
+import { Executor, Action, ActionRuntime, ActionState } from '@orbi-ts/core';
+import { utils } from '@orbi-ts/services';
 import { exec } from 'child_process';
 import Docker from 'dockerode';
 import path from 'path';
@@ -78,7 +78,7 @@ export class DockerExecutor extends Executor {
                     envVariables.push(`${k}=${this.dockerConfig.env[k]}`);
                 }
                 envVariables.push(
-                    `wbce_id=${this.registry.url}:${this.registry.tag}`
+                    `orbits_id=${this.registry.url}:${this.registry.tag}`
                 );
                 const executionContext = this.calculateExecutionContext();
                 console.log(appPaths);
@@ -264,7 +264,7 @@ export class DockerExecutor extends Executor {
 
     isInsideDocker() {
         return (
-            process.env['wbce_id'] ===
+            process.env['orbits_id'] ===
             `${this.registry.url}:${this.registry.tag}`
         );
     }

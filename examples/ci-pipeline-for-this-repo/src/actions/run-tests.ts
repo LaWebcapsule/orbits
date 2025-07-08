@@ -1,5 +1,5 @@
-import { Action, ActionState } from '@wbce/orbits-core';
-import { DockerExecutor, PublicRegistry } from '@wbce/orbits-fuel';
+import { Action, ActionState } from '@orbi-ts/core';
+import { DockerExecutor, PublicRegistry } from '@orbi-ts/fuel';
 import { GitCloneAction } from './git-clone-repo';
 
 export class RunTest extends GitCloneAction {

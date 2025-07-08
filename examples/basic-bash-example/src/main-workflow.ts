@@ -1,11 +1,11 @@
-import { Workflow } from '@wbce/orbits-core';
+import { Workflow } from '@orbi-ts/core';
 import { PrintAction } from './actions/print-action';
 import { WaitAction } from './actions/wait-action';
-import { ActionState } from '@wbce/orbits-core/dist';
+import { ActionState } from '@orbi-ts/core/dist';
 import {
     Action,
     ResolveAction,
-} from '@wbce/orbits-core/dist/src/action-manager';
+} from '@orbi-ts/core/dist/src/action-manager';
 
 export class CiPipeline extends Workflow {
     IBag: {

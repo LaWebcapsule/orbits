@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / RevertAction
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / RevertAction
 
 # Class: RevertAction<ActionToRevert\>
 

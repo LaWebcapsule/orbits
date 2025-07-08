@@ -1,4 +1,4 @@
-import { ActionRuntime } from '@wbce/orbits-core';
+import { ActionRuntime } from '@orbi-ts/core';
 import jasmin from 'jasmine';
 let j = new jasmin();
 

@@ -1,6 +1,6 @@
-import { Action, ActionState, Executor } from '@wbce/orbits-core';
-import { DockerExecutor, PublicRegistry, Commit } from '@wbce/orbits-fuel';
-import { Cli } from '@wbce/services';
+import { Action, ActionState, Executor } from '@orbi-ts/core';
+import { DockerExecutor, PublicRegistry, Commit } from '@orbi-ts/fuel';
+import { Cli } from '@orbi-ts/services';
 import { exec } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import { GitCloneAction } from './git-clone-repo';

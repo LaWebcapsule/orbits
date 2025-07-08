@@ -1,5 +1,5 @@
 {
-    "name": "@wbce/orbits-cli",
+    "name": "@orbi-ts/orbits-cli",
     "version": "0.0.1",
     "description": "Cli to run your Orbits App",
     "repository": {
@@ -17,7 +17,7 @@
         "publish-package": "pnpm run build && pnpm publish --access public"
     },
     "dependencies": {
-        "@wbce/orbits-core": "workspace:",
+        "@orbi-ts/core": "workspace:",
         "blessed": "^0.1.81",
         "colors": "^1.4.0",
         "commander": "^12.1.0",

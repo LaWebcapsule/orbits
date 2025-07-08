@@ -1,4 +1,4 @@
-import { Resource } from "@wbce/orbits-core";
+import { Resource } from "@orbi-ts/core";
 import { HelloWorkflow } from "./hello-workflow.ts";
 
 export class GreetingResource extends Resource {

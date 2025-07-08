@@ -1,8 +1,8 @@
-import { Resource } from "@wbce/orbits-core";
+import { Resource } from "@orbi-ts/core";
 import * as cdk from 'aws-cdk-lib';
 import { CdkBootstrapAction, CdkDeployAction, CdkDestroyAction } from "../../standards-actions/cdk/cdk-action.js";
-import { Action, ActionState } from "@wbce/orbits-core";
-import { utils } from "@wbce/services";
+import { Action, ActionState } from "@orbi-ts/core";
+import { utils } from "@orbi-ts/services";
 import { CdkHelper } from "../../standards-actions/cdk/cdk-helper.js";
 
 

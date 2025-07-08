@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { Action, ActionRuntime, ActionState } from '@wbce/orbits-core';
+import { Action, ActionRuntime, ActionState } from '@orbi-ts/core';
 
 import winston from 'winston';
 import { exitCodes } from './constants.js';

@@ -1,4 +1,4 @@
-import { Action, ActionRuntime, ActionState } from "@wbce/orbits-core";
+import { Action, ActionRuntime, ActionState } from "@orbi-ts/core";
 import { GreetingResource } from "./greetings-resource.ts";
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{

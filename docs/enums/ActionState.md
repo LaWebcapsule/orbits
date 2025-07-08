@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionState
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / ActionState
 
 # Enumeration: ActionState
 

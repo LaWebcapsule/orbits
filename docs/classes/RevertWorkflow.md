@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / RevertWorkflow
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / RevertWorkflow
 
 # Class: RevertWorkflow<WorkflowToRevert\>
 

@@ -6,14 +6,14 @@ It’s also handy when you want to use the same TypeScript code with additional 
 
 ## Installation
 
-The `DockerExecutor` construct is part of the `@wbce/orbits-fuel` package.
+The `DockerExecutor` construct is part of the `@orbi-ts/fuel` package.
 You need to install it first:
 ```bash
-npm install  @wbce/orbits-fuel
+npm install  @orbi-ts/fuel
 ```
 Then import it : 
 ```typescript
-import {DockerExecutor} from "@wbce/orbits-fuel
+import {DockerExecutor} from "@orbi-ts/fuel
 ```
 
 ## Usage

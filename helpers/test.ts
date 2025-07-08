@@ -2,7 +2,7 @@
 import { Chart } from 'cdk8s';
 import { Construct } from 'constructs';
 
-import { ActionRuntime } from '@wbce/orbits-core';
+import { ActionRuntime } from '@orbi-ts/core';
 import { Deployment, Service, ServiceType } from 'cdk8s-plus-32';
 import { Cdk8sResource } from './src/standards-resource/cdk8s/cdk8s-resource.js';
 

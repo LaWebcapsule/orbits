@@ -1,4 +1,4 @@
-import { Action, ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 import { gitCenter, GitProvider, gitProviders } from './gitcenter.js';
 import { Commit } from './gitrepo.js';
 

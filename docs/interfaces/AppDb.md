@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / AppDb
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / AppDb
 
 # Interface: AppDb
 

@@ -1,4 +1,4 @@
-import { ActionState } from '@wbce/orbits-core';
+import { ActionState } from '@orbi-ts/core';
 import { DeployTestStack } from './actions-test.js';
 
 describe('Test action', () => {

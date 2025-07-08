@@ -1,4 +1,4 @@
-import { Cli } from '@wbce/services';
+import { Cli } from '@orbi-ts/services';
 import {
     Action,
     ActionRuntime,

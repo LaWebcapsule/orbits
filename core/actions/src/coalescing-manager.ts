@@ -1,8 +1,8 @@
-import {utils} from "@wbce/services";
+import {utils} from "@orbi-ts/services";
 import { Action, ActionRuntime, ActionError, ActionSchemaInterface, ActionState, errorCodes, Workflow } from "../index.js";
 import { ResourceSchemaInterface } from "./models/resource.js";
 import { actionKind, actionKindSymbols } from "./runtime/action-kind.js";
-import { JSONObject } from "@wbce/services/src/utils.js";
+import { JSONObject } from "@orbi-ts/services/src/utils.js";
 
 const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(actionKind.COALESCING_WORKFLOW);
 const RESOURCE_TAG = actionKindSymbols.get(actionKind.RESOURCE);

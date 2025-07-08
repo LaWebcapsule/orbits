@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / Step
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / Step
 
 # Interface: Step
 

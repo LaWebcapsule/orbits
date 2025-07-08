@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / RollBackAction
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / RollBackAction
 
 # Class: RollBackAction<A\>
 

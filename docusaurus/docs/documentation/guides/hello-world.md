@@ -40,7 +40,7 @@ In this example, we’ll create a simple “hello-world” application. The beha
 ## The Hello Action
 
 ```typescript title="src/orbits/hello-action.ts"
-import { Action, ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 
 
 
@@ -63,7 +63,7 @@ The main() method is the entry point for the action and is guaranteed to run exa
 ## The Hello Workflow
 
 ```typescript title="src/orbits/hello-workflow"
-import { Workflow } from "@wbce/orbits-core";
+import { Workflow } from "@orbi-ts/core";
 import { HelloAction } from "./hello-action.ts";
 
 
@@ -243,7 +243,7 @@ Please [see the documentation](./../core-concepts/resource.md#cycle) to learn mo
 In orbi.ts, we do : 
 
 ```typescript title="src/orbi.ts"
-import { Action, ActionRuntime, ActionState } from "@wbce/orbits-core";
+import { Action, ActionRuntime, ActionState } from "@orbi-ts/core";
 import { GreetingResource } from "./greetings-resource.ts";
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async ()=>{

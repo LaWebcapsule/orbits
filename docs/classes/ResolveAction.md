@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ResolveAction
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / ResolveAction
 
 # Class: ResolveAction
 

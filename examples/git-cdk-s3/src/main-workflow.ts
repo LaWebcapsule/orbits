@@ -1,5 +1,5 @@
-import { Action, Workflow } from '@wbce/orbits-core';
-import { CdkBoostrapAction, CdkHelper, CdkHelperApp } from '@wbce/orbits-fuel';
+import { Action, Workflow } from '@orbi-ts/core';
+import { CdkBoostrapAction, CdkHelper, CdkHelperApp } from '@orbi-ts/fuel';
 import {
     CdkBootstrapFrontStack,
     CdkDeployFrontStack,

@@ -1,4 +1,4 @@
-import { Workflow } from "@wbce/orbits-core";
+import { Workflow } from "@orbi-ts/core";
 import { HelloAction } from "./hello-action.ts";
 
 

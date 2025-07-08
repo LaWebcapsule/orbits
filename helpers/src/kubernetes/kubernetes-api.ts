@@ -1,5 +1,5 @@
 import * as k8s from '@kubernetes/client-node';
-import { utils } from '@wbce/services';
+import { utils } from '@orbi-ts/services';
 
 export class KubeApi {
     config: k8s.KubeConfig;

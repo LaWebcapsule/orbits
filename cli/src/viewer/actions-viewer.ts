@@ -1,4 +1,4 @@
-import { ActionSchemaInterface } from '@wbce/orbits-core';
+import { ActionSchemaInterface } from '@orbi-ts/core';
 
 import { ActionsBlessedRenderer } from './blessed-renderer.js';
 import { ActionsViewerAction } from './constants.js';

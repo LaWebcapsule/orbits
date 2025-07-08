@@ -1,4 +1,4 @@
-import { Action, ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 
 
 

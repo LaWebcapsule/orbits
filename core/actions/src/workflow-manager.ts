@@ -1,9 +1,9 @@
-import { utils } from '@wbce/services';
+import { utils } from '@orbi-ts/services';
 import mongoose from 'mongoose';
 import { Action, ActionRuntime, CoalescingWorkflow, Sleep } from '../index.js';
 import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
-import { JSONObject } from '@wbce/services/src/utils.js';
+import { JSONObject } from '@orbi-ts/services/src/utils.js';
 import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 
 export type StepResult = {

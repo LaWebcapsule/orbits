@@ -1,5 +1,5 @@
 {
-    "name": "@wbce/services",
+    "name": "@orbi-ts/services",
     "version": "0.0.17",
     "description": "Tools for the actions repository",
     "main": "dist/index.js",

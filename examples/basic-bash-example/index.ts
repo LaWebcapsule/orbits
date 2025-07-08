@@ -1,4 +1,4 @@
-import { Action, ActionRuntime, bootstrapApp } from '@wbce/orbits-core';
+import { Action, ActionRuntime, bootstrapApp } from '@orbi-ts/core';
 import { CiPipeline } from './src/main-workflow';
 import { PrintAction } from './src/actions/print-action';
 import { WaitAction } from './src/actions/wait-action';

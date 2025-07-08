@@ -1,4 +1,4 @@
-import { ActionRuntime } from '@wbce/orbits-core';
+import { ActionRuntime } from '@orbi-ts/core';
 import jasmin from 'jasmine';
 import path from 'path';
 import { fileURLToPath } from 'url';

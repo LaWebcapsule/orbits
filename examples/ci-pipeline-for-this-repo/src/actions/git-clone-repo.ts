@@ -1,6 +1,6 @@
-import { Action } from '@wbce/orbits-core';
-import { DockerExecutor, PublicRegistry } from '@wbce/orbits-fuel';
-import { Cli } from '@wbce/services';
+import { Action } from '@orbi-ts/core';
+import { DockerExecutor, PublicRegistry } from '@orbi-ts/fuel';
+import { Cli } from '@orbi-ts/services';
 
 export class GitCloneAction extends Action {
     //this action is only a basis for other action and is not registered as an action itself
@@ -8,7 +8,7 @@ export class GitCloneAction extends Action {
         registry: new PublicRegistry('node', '16.14.2'),
         dockerConfig: {
             env: {
-                git_user: 'ci_wbce',
+                git_user: 'ci_orbits',
                 git_pwd: process.env['git_pwd'],
             },
         },
@@ -37,7 +37,7 @@ export class GitCloneAction extends Action {
                     'config',
                     '--global',
                     'user.email',
-                    'ci_wbce@ci.com',
+                    'ci_orbits@ci.com',
                 ])
             );
     }

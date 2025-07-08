@@ -1,4 +1,4 @@
-import { utils } from '@wbce/services';
+import { utils } from '@orbi-ts/services';
 import mongoose, { set } from 'mongoose';
 import path from 'path';
 import precinct from 'precinct';

@@ -4,20 +4,20 @@ One of the advantage of being over
 
 # Install
 
-Install `@wbce/orbits-core` and `@wbce/orbits-fuel`.
+Install `@orbi-ts/core` and `@orbi-ts/fuel`.
 ```bash
-npm install @wbce/orbits-core @wbce/orbits-fuel --save
+npm install @orbi-ts/core @orbi-ts/fuel --save
 ```
 
 Install it with yarn:
 ```bash
-yarn add @wbce/orbits-core @wbce/orbits-fuel
+yarn add @orbi-ts/core @orbi-ts/fuel
 ```
 
 # Write you first action
 
 ```typescript title='src/orbits/my-action.ts'
-import {Action} from "@wbce/orbits-core"
+import {Action} from "@orbi-ts/core"
 
 export class MyAction extends Action{
 
@@ -82,7 +82,7 @@ app.get('/hello-world', async (req: Request, res: Response) => {
 
 ```typescript title='src/orbits/app.ts'
 import express, { Request, Response } from 'express';
-import {Action, ActionState} from "@wbce/orbits-core"
+import {Action, ActionState} from "@orbi-ts/core"
 
 const app = express();
 const port = 3000;
@@ -99,7 +99,7 @@ app.get('/hello-world', async (req: Request, res: Response) => {
 
 ```typescript title='src/server.ts'
 import express, { Request, Response } from 'express';
-import {Action, ActionRuntime, ActionState} from "@wbce/orbits-core"
+import {Action, ActionRuntime, ActionState} from "@orbi-ts/core"
 
 const app = express();
 const port = 3000;

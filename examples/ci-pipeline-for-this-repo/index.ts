@@ -1,5 +1,5 @@
-import { Action, ActionRuntime, bootstrapApp } from '@wbce/orbits-core';
-import { HelperApp } from '@wbce/orbits-fuel';
+import { Action, ActionRuntime, bootstrapApp } from '@orbi-ts/core';
+import { HelperApp } from '@orbi-ts/fuel';
 import { PublishNpmPackage } from './src/actions/publish-npm-package';
 import { RunTest } from './src/actions/run-tests';
 import { UpdateNpmVersions } from './src/actions/update-npm-versions';

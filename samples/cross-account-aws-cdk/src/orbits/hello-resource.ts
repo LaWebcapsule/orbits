@@ -1,5 +1,5 @@
 import { LambdaResource } from "./lambda-resource.js";
-import { Resource } from "@wbce/orbits-core";
+import { Resource } from "@orbi-ts/core";
 import { ParamResource } from "./param-resource.js";
 
 

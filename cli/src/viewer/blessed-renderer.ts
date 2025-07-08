@@ -2,7 +2,7 @@ import blessed, { Widgets } from 'blessed';
 import colors from 'colors';
 import { copy } from 'copy-paste';
 
-import { ActionState } from '@wbce/orbits-core';
+import { ActionState } from '@orbi-ts/core';
 
 import {
     ACTION_STATE_FORMAT,

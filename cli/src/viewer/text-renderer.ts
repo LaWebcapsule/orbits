@@ -1,6 +1,6 @@
 import colors from 'colors';
 
-import { ActionState } from '@wbce/orbits-core';
+import { ActionState } from '@orbi-ts/core';
 
 import {
     type ActionsRenderer,

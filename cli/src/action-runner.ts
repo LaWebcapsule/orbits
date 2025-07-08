@@ -2,7 +2,7 @@ import colors from 'colors';
 import { accessSync } from 'fs';
 import path from 'path';
 
-import { Action, ActionRuntime } from '@wbce/orbits-core';
+import { Action, ActionRuntime } from '@orbi-ts/core';
 
 import { exitCodes } from './constants.js';
 

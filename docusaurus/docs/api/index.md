@@ -37,12 +37,12 @@ pnpm install
 ### Standard installation in your project
 
 ```bash
-npm install @wbce/orbits-core @wbce/orbits-fuel
+npm install @orbi-ts/core @orbi-ts/fuel
 ```
 
 ### Minimal installation in your project
 ```bash
-npm install @wbce/orbits-core
+npm install @orbi-ts/core
 ```
 
 ## Testing

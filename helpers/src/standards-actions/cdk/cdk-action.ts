@@ -1,5 +1,5 @@
 import { BaseCredentials, BootstrapEnvironments, NonInteractiveIoHost, StackSelectionStrategy, Toolkit } from '@aws-cdk/toolkit-lib';
-import { Action, ActionState } from '@wbce/orbits-core';
+import { Action, ActionState } from '@orbi-ts/core';
 import * as cdk from 'aws-cdk-lib';
 import { CdkHelper } from './cdk-helper.js';
 

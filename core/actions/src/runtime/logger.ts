@@ -1,4 +1,4 @@
-import { wbceAsyncStorage } from '@wbce/services';
+import { orbitsAsyncStorage } from '@orbi-ts/services';
 import * as winston from 'winston';
 import type { ActionRuntime } from './action-runtime.js';
 import { getEnv } from './get-env.js';
@@ -30,7 +30,7 @@ const filterError = winston.format((info: any) => {
 });
 
 const addLogZoneInfo = winston.format((info: any) => {
-    const otherInfo = wbceAsyncStorage.getStore()?.logInfo;
+    const otherInfo = orbitsAsyncStorage.getStore()?.logInfo;
     return {
         ...otherInfo,
         ...info,

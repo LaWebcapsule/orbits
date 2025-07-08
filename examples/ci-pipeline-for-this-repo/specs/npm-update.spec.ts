@@ -1,5 +1,5 @@
-import { Action, ActionState } from '@wbce/orbits-core';
-import { Cli } from '@wbce/services';
+import { Action, ActionState } from '@orbi-ts/core';
+import { Cli } from '@orbi-ts/services';
 
 describe('Test executor with docker', () => {
     const testAction = new Action();

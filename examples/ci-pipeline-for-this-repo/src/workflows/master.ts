@@ -1,5 +1,5 @@
-import { Workflow, Action } from '@wbce/orbits-core';
-import { Commit, WaitForNewCommits, gitProviders } from '@wbce/orbits-fuel';
+import { Workflow, Action } from '@orbi-ts/core';
+import { Commit, WaitForNewCommits, gitProviders } from '@orbi-ts/fuel';
 import { ActionState } from '../../../../core/actions';
 import { PublishNpmPackage } from '../actions/publish-npm-package';
 import { UpdateNpmVersions } from '../actions/update-npm-versions';
@@ -21,9 +21,9 @@ export class MasterWorkflow extends Workflow {
     };
 
     mapPackageDirectory = {
-        '@wbce/orbits-core': 'src/core/actions',
-        '@wbce/orbits-fuel': 'src/helpers',
-        '@wbce/services': 'src/packages/services',
+        '@orbi-ts/core': 'src/core/actions',
+        '@orbi-ts/fuel': 'src/helpers',
+        '@orbi-ts/services': 'src/packages/services',
     };
 
     define() {
@@ -71,7 +71,7 @@ export class MasterWorkflow extends Workflow {
 
         //the following syntax is a bit audacious
         //Our problem is :
-        // - because of dependencies (orbits-fuel depends on orbits-core depends on services)
+        // - because of dependencies (fuel depends on core depends on services)
         //   we have to wait one package has been published to be able to publish the second
         // - not all packages have to be published all the times
         // So in the case we want to publish all the three packages in this repo, we need three steps
@@ -87,13 +87,13 @@ export class MasterWorkflow extends Workflow {
         //In our case, this means that the 'bag.releasesToPublish' array cannot be modified
         //during the publishing following steps.
         const dependencyOrder = [
-            '@wbce/services',
-            '@wbce/orbits-core',
-            '@wbce/orbits-fuel',
+            '@orbi-ts/services',
+            '@orbi-ts/core',
+            '@orbi-ts/fuel',
         ];
-        for (const wbcePackage of dependencyOrder) {
+        for (const orbitsPackage of dependencyOrder) {
             const newReleaseOfPackage = this.bag.releasesToPublish?.find(
-                (r) => r.packageName === wbcePackage
+                (r) => r.packageName === orbitsPackage
             );
             if (newReleaseOfPackage) {
                 this.next(() => {

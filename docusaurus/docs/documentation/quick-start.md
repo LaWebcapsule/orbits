@@ -9,14 +9,14 @@ This is a basic guide to get your first resource working.
 
 ## Install
 
-Install `@wbce/orbits-core` and `@wbce/orbits-fuel`.
+Install `@orbi-ts/core` and `@orbi-ts/fuel`.
 ```bash
-npm install @wbce/orbits-core @wbce/orbits-fuel --save
+npm install @orbi-ts/core @orbi-ts/fuel --save
 ```
 
 Install it with yarn:
 ```bash
-yarn add @wbce/orbits-core @wbce/orbits-fuel
+yarn add @orbi-ts/core @orbi-ts/fuel
 ```
 
 ## Write your first action
@@ -25,7 +25,7 @@ An [`Action`](./core-concepts/action.md) is an object that encapsulate a mutatin
 
 
 ```typescript title='src/orbits/my-action.ts'
-import {Action} from "@wbce/orbits-core"
+import {Action} from "@orbi-ts/core"
 
 export class MyAction extends Action{
 
@@ -45,7 +45,7 @@ When your main() function returns `ActionState.IN_PROGRESS`, Orbits will continu
 
 
 ```typescript title='src/orbits/my-action.ts'
-import {Action} from "@wbce/orbits-core"
+import {Action} from "@orbi-ts/core"
 
 export class MyAction extends Action{
 
@@ -107,7 +107,7 @@ You will quickly want to exploit the result of your action and not just launch a
 To do this, you need to write a [`Workflow`](./core-concepts/workflow.md).
 
 ```typescript title='src/orbits/my-workflow.ts'
-import {Workflow} from "@wbce/orbits-core"
+import {Workflow} from "@orbi-ts/core"
 import {MyAction} from "./my-action.js"
 
 export class MyWorkflow extends Workflow{

@@ -1,5 +1,5 @@
 {
-  "name": "@wbce/orbits-examples",
+  "name": "@orbi-ts/orbits-examples",
   "version": "0.0.1",
   "description": "Flow for DevOps - a simple way to write state machine",
   "main": "index.js",
@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.241.0",
-    "@wbce/orbits-core": "0.0.x",
-    "@wbce/orbits-fuel": "0.0.x",
+    "@orbi-ts/core": "0.0.x",
+    "@orbi-ts/fuel": "0.0.x",
     "aws-cdk-lib": "2.177.0",
     "winston": "^3.8.2"
   }

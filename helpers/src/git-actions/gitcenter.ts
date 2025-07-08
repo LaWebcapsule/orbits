@@ -1,4 +1,4 @@
-import { ActionRuntime } from '@wbce/orbits-core';
+import { ActionRuntime } from '@orbi-ts/core';
 import { AddGitWebHookAction, WaitForNewCommits } from './gitactions.js';
 import { GithubApi } from './github.js';
 import { GitlabApi } from './gitlab.js';

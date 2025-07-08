@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionError
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / ActionError
 
 # Class: ActionError
 

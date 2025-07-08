@@ -1,4 +1,4 @@
-import { ActionRuntime } from '@wbce/orbits-core';
+import { ActionRuntime } from '@orbi-ts/core';
 
 export * from './src/executors/index.js';
 export * from './src/git-actions/index.js';

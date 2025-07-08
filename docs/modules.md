@@ -1,6 +1,6 @@
-[@wbce/orbits](README.md) / Exports
+[@orbi-ts/orbits](README.md) / Exports
 
-# @wbce/orbits
+# @orbi-ts/orbits
 
 ## Table of contents
 

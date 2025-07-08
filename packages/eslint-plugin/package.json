@@ -1,5 +1,5 @@
 {
-  "name": "@wbce/eslint-plugin-orbits",
+  "name": "@orbi-ts/eslint-plugin-orbits",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",

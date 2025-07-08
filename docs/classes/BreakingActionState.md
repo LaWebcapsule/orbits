@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / BreakingActionState
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / BreakingActionState
 
 # Class: BreakingActionState
 

@@ -1,5 +1,5 @@
-import { Action, Workflow } from '@wbce/orbits-core';
-import { CdkHelper, WaitForNewCommits } from '@wbce/orbits-fuel';
+import { Action, Workflow } from '@orbi-ts/core';
+import { CdkHelper, WaitForNewCommits } from '@orbi-ts/fuel';
 
 const defaultEnv = {
     account: '123456789',

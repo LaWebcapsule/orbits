@@ -1,4 +1,4 @@
-import { Action } from '@wbce/orbits-core';
+import { Action } from '@orbi-ts/core';
 import { Router } from 'express';
 import { ActionApi } from './rest-skeleton.js';
 

@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionSchemaInterface
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / ActionSchemaInterface
 
 # Interface: ActionSchemaInterface<TArgument, TBag, TResult\>
 

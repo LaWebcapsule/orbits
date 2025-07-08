@@ -2,8 +2,8 @@ import {
     Action,
     ActionRuntime,
     ActionState,
-} from '@wbce/orbits-core';
-import { Cli } from '@wbce/services';
+} from '@orbi-ts/core';
+import { Cli } from '@orbi-ts/services';
 import * as cdk from 'aws-cdk-lib';
 import { DockerExecutor, PublicRegistry } from '../index.js';
 import {

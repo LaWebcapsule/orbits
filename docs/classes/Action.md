@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / Action
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / Action
 
 # Class: Action
 

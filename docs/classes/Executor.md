@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / Executor
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / Executor
 
 # Class: Executor
 

@@ -1,10 +1,10 @@
-import { utils, wbceAsyncStorage } from '@wbce/services';
+import { utils, orbitsAsyncStorage } from '@orbi-ts/services';
 import { ActionRuntime, Workflow } from '../index.js';
 import { Executor } from './action-executor.js';
 import { ActionError, BreakingActionState, InWorkflowActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
-import { JSONObject } from '@wbce/services/src/utils.js';
+import { JSONObject } from '@orbi-ts/services/src/utils.js';
 import { level } from 'winston';
 import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 import { register } from 'module';
@@ -23,7 +23,7 @@ export class Action {
 
     /**
      * allow checking for Action in an context
-     * where there are different copies of orbits-core
+     * where there are different copies of core
      */
     static [ACTION_TAG] = true;
 
@@ -630,7 +630,7 @@ export class Action {
      */
     public resume() {
         this.dbDoc.updateNextActivity(); //set next cron Activity
-        return wbceAsyncStorage.addNestedStorage(
+        return orbitsAsyncStorage.addNestedStorage(
             {
                 logInfo: {
                     actionRef: this.dbDoc.actionRef,

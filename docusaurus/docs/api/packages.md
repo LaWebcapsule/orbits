@@ -1,4 +1,4 @@
-# @wbce/orbits-core
+# @orbi-ts/core
 
 ## Enumerations
 

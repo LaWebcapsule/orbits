@@ -1,4 +1,4 @@
-import { CdkStackResource } from "@wbce/orbits-fuel";
+import { CdkStackResource } from "@orbi-ts/fuel";
 import { Stack } from "aws-cdk-lib";
 import { LambdaStack } from "../cdk/lambda.js";
 

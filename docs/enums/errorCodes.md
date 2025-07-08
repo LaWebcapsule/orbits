@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / errorCodes
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / errorCodes
 
 # Enumeration: errorCodes
 

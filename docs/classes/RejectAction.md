@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / RejectAction
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / RejectAction
 
 # Class: RejectAction
 

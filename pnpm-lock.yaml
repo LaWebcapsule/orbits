@@ -71,7 +71,7 @@ importers:
 
   cli:
     dependencies:
-      '@wbce/orbits-core':
+      '@orbi-ts/core':
         specifier: 'workspace:'
         version: link:../core/actions
       blessed:
@@ -123,7 +123,7 @@ importers:
       '@aws-sdk/client-sso-oidc':
         specifier: ^3.758.0
         version: 3.758.0
-      '@wbce/services':
+      '@orbi-ts/services':
         specifier: 'workspace:'
         version: link:../../packages/services
       import-meta-resolve:
@@ -196,18 +196,18 @@ importers:
       '@octokit/types':
         specifier: ^13.8.0
         version: 13.8.0
+      '@orbi-ts/core':
+        specifier: 'workspace:'
+        version: link:../core/actions
+      '@orbi-ts/services':
+        specifier: 'workspace:'
+        version: link:../packages/services
       '@types/dockerode':
         specifier: ^3.3.14
         version: 3.3.32
       '@types/express':
         specifier: ^4.17.15
         version: 4.17.21
-      '@wbce/orbits-core':
-        specifier: 'workspace:'
-        version: link:../core/actions
-      '@wbce/services':
-        specifier: 'workspace:'
-        version: link:../packages/services
       aws-cdk:
         specifier: ^2.1003.0
         version: 2.1003.0
@@ -351,10 +351,10 @@ importers:
 
   samples/cdk8s-deployment:
     dependencies:
-      '@wbce/orbits-core':
+      '@orbi-ts/core':
         specifier: workspace:^
         version: link:../../core/actions
-      '@wbce/orbits-fuel':
+      '@orbi-ts/fuel':
         specifier: workspace:^
         version: link:../../helpers
       aws-cdk-lib:
@@ -382,10 +382,10 @@ importers:
 
   samples/cross-account-aws-cdk:
     dependencies:
-      '@wbce/orbits-core':
+      '@orbi-ts/core':
         specifier: workspace:^
         version: link:../../core/actions
-      '@wbce/orbits-fuel':
+      '@orbi-ts/fuel':
         specifier: workspace:^
         version: link:../../helpers
       aws-cdk-lib:
@@ -404,12 +404,12 @@ importers:
 
   samples/diplomacy:
     dependencies:
-      '@wbce/eslint-plugin-orbits':
-        specifier: 'workspace:'
-        version: link:../../packages/eslint-plugin
-      '@wbce/orbits-core':
+      '@orbi-ts/core':
         specifier: 'workspace:'
         version: link:../../core/actions
+      '@orbi-ts/eslint-plugin-orbits':
+        specifier: 'workspace:'
+        version: link:../../packages/eslint-plugin
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.8
@@ -474,7 +474,7 @@ importers:
 
   samples/hello-world:
     dependencies:
-      '@wbce/orbits-core':
+      '@orbi-ts/core':
         specifier: workspace:^
         version: link:../../core/actions
       typescript:

@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wbce/orbits-core": "workspace:^",
-    "@wbce/orbits-fuel": "workspace:^",
+    "@orbi-ts/core": "workspace:^",
+    "@orbi-ts/fuel": "workspace:^",
     "aws-cdk-lib": "^2.182.0"
   },
   "devDependencies": {

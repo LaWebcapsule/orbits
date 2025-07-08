@@ -1,6 +1,6 @@
-import { ActionState } from '@wbce/orbits-core';
-import { DockerExecutor, PublicRegistry } from '@wbce/orbits-fuel';
-import { Cli } from '@wbce/services';
+import { ActionState } from '@orbi-ts/core';
+import { DockerExecutor, PublicRegistry } from '@orbi-ts/fuel';
+import { Cli } from '@orbi-ts/services';
 import { GitCloneAction } from './git-clone-repo';
 
 export class PublishNpmPackage extends GitCloneAction {
@@ -8,7 +8,7 @@ export class PublishNpmPackage extends GitCloneAction {
         registry: new PublicRegistry('node', '16.14.2'),
         dockerConfig: {
             env: {
-                git_user: 'ci_wbce',
+                git_user: 'ci_orbits',
                 git_pwd: process.env['git_pwd'],
                 NPM_TOKEN: process.env['NPM_TOKEN'],
             },

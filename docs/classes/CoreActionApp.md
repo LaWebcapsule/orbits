@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / CoreActionRuntime
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / CoreActionRuntime
 
 # Class: CoreActionRuntime
 

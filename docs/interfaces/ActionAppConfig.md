@@ -1,4 +1,4 @@
-[@wbce/orbits](../README.md) / [Exports](../modules.md) / ActionRuntimeConfig
+[@orbi-ts/orbits](../README.md) / [Exports](../modules.md) / ActionRuntimeConfig
 
 # Interface: ActionRuntimeConfig
 

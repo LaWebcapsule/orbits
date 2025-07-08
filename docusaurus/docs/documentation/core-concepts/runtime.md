@@ -89,7 +89,7 @@ Import the bootstrap file in your main entry point and wait for the runtime to b
 
 ```typescript title='src/index.ts'
 import './orbits/orbi.js'
-import { ActionRuntime } from '@wbce/orbits-core'
+import { ActionRuntime } from '@orbi-ts/core'
 
 // Your runtime context
 async function main() {

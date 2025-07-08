@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wbce/orbits-core": "workspace:^",
+    "@orbi-ts/core": "workspace:^",
     "typescript": "catalog:"
   },
   "devDependencies": {
