@@ -7,7 +7,7 @@ on:
 
 env:
   CI: true
-  ORBITS_DB__MONGO__URL: "${secrets.MONGO_URL}"
+  ORBITS_DB__MONGO__URL: ${{ secrets.MONGO_URL }}
 
 jobs:
  tests:
