@@ -3,49 +3,32 @@
 # Orbits
 Keep your orbit in the cloud galaxy! A typescript framework for DevOps workflow.
 
+## What is Orbits ?
+
+Orbits is an open-source framework for orchestrating long-lived resources and workflows involving long-running processes. It lets you manage your infrastructure templates from a single, unified place using native TypeScript code.
+
+By combining the flexibility of Node.js with a powerful workflow engine, Orbits helps you build modern, adaptable infrastructure operations. It’s ideal for automating processes that self-adapt to their environment and for exposing workflows as reusable, reliable building blocks. It also provides a solid foundation for building crash-resilient Node.js applications.
+
+
+## Key features
+
+- **Reusable Workflow in typescript** : Apply the [SAGA principles](https://www.baeldung.com/cs/saga-pattern-microservices directly in native TypeScript. Build crash-resilient orchestrators that are easy to maintain and evolve
+- **Model-Driven Orchestration for IaC** : Extend your existing tools like Helm or ArgoCD with custom logic. Define infrastructure as models and orchestrate them according to your specific needs.
+- **Multi-Tenant by Design** : Orchestrate deployments across accounts, services, and environments — all from a unified framework..
+- **Local Testing & Repeatability** : Run your CI/CD workflows locally, write unit tests with Jasmine or Mocha, and ensure reliability before deploying.
+- **Built-in Observability** : Get full visibility into your workflows with native tracing, structured logs, and metrics. Easily debug complex executions and track every operation step-by-step
+
+## Getting started
+
+Read the [Hello world quickstart](https://orbits.do/documentation/quick-start)
+
 ## Documentation
 
-Read the documentation :
+Read the [documentation](https://orbits.do/documentation)
 
 ## Install
 
-### Requirements
-
-- Node.js v16
-- MongoDb v4
-- (optional but strongly recommended) Docker
-
-#### Database
-
-Orbits, at this stage, only supports mongodb as database.
-To get a mongodb connection, you can:
-- deploy mongo in local (in this case, you will need to opt for the `replicaset` configuration)
-- use a Mongo Atlas cluster (you can start with a free cluster)
-- use the [docker compose](./docker-compose.yml) file.
-
-### Docker compose
-
-You can use the `docker-compose.yml` file in order to run your app.
-- Put the [docker compose](./docker-compose.yml) file at the root of your Orbits directory (for example, at `./src/examples/basic-bash-example`)
-- launch a docker-compose process with the `docker compose up` command.
-If you opt for this way of working, you still need to [install the dependencies](#standard-installation)
-
-### Standard install
-
-```bash
-pnpm install
-```
-
-### Standard installation in your project
-
-```bash
-npm install @wbce/orbits-core @wbce/orbits-fuel
-```
-
-### Minimal installation in your project
-```bash
-npm install @wbce/orbits-core
-```
+Read the [install tutorial](https://orbits.do/documentation/install)
 
 ## Testing
 In each specific package, go to the `/specs/` folder. There is a `main.spec.ts`.
@@ -65,25 +48,6 @@ This git repository manages three packages:
 
 Also, there is a `/src/examples` folder with some examples.
 
-## Roadmap
+## Community
 
-> We will formalize this roadmap with a more appropriate tool soon or later. At this stage, you can suggest modification by opening an issue, opening a pull request, or [contacting us](#contact-us).
-
-* Executors:
-  - complete the docker executor to build the image from a Dockerfile
-  - add an AWS ECS executor
-  - add a lambda executor
-* Git integration:
-  - simplify the process to manage a git repository, add git hooks...
-  - add Waiters for main git steps (PR, release...)
-* Api integration:
-  - write an example with the API helper
-  - add a better way to interact with Orbits via API
-* Secrets:
-  - propose an integration with a vault
-* IAM and Aws Integration:
-  - propose a way to have granular permission at the level of the Action
-
-## Contact us
-You can contact us to give us feedback or in case of problems:
-equipe@webcapsule.io
+- join us on [slack](https://join.slack.com/t/orbitsgroupe/shared_invite/zt-394jwf72o-utjAV~odD32GhyKnhjnDFQ) 
