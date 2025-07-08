@@ -93,7 +93,6 @@ export class ActionCron {
 
         return this.runtime.ActionModel.findOne(query)
             .sort('cronActivity.lastActivity')
-            .then((action) => action);
     }
 
     async consumeAction(actionDb: ActionSchemaInterface<any>) {

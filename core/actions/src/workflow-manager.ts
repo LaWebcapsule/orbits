@@ -606,6 +606,8 @@ export class Workflow extends Action {
                 action.dbDoc.cronActivity.pending = this.dbDoc.cronActivity.pending;
                 await action.resume();
                 await action.resyncWithDb();
+                action.dbDoc.cronActivity.pending = false;
+                await action.save();
             }
         }
         catch(err){

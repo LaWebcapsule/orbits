@@ -9,7 +9,7 @@
     "author": "la webcapsule",
     "license": "ISC",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "echo \"Info: no test specified\"",
         "format": "prettier --check --ignore-unknown **/*.ts",
         "format:fix": "prettier --write --ignore-unknown **/*.ts",
         "build": "npx tsc",

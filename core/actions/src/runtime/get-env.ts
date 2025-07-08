@@ -38,7 +38,7 @@ const defaultConfig: RuntimeConfig = {
         quantity: 3,
     },
     logging: {
-        level: "info",
+        level: "debug",
     },
 }
 

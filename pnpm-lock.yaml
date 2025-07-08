@@ -133,6 +133,9 @@ importers:
       precinct:
         specifier: ^12.2.0
         version: 12.2.0
+      read-env:
+        specifier: ^2.0.0
+        version: 2.0.0
       winston:
         specifier: 'catalog:'
         version: 3.17.0
@@ -2042,6 +2045,10 @@ packages:
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
+  '@types/camelcase@5.2.0':
+    resolution: {integrity: sha512-zhHaryYYUUsJ1h6Rq4hisPkljY7c2bkC5PFYQbom5fyKloGJEDK+wdsw2L4hnBwXr4plGjW6D/UVJBbNbOzVpQ==}
+    deprecated: This is a stub types definition. camelcase provides its own type definitions, so you do not need this installed.
+
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
@@ -2522,6 +2529,10 @@ packages:
 
   callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
+    engines: {node: '>=6'}
+
+  camelcase@5.3.1:
+    resolution: {integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==}
     engines: {node: '>=6'}
 
   cdk-assets@3.3.1:
@@ -3965,6 +3976,9 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  read-env@2.0.0:
+    resolution: {integrity: sha512-gCuo85JH2aWt23HVeFzUUhpLzCRtc9O0jjvpMDG/3vue2aOp7/XllAQjSyL8xGqBifGNYbnWLE0PAqi4AWMBlA==}
 
   read-yaml-file@1.1.0:
     resolution: {integrity: sha512-VIMnQi/Z4HT2Fxuwg5KrY174U1VdUIASQVWXXyqtNRtxSr9IYkn1rsI6Tb6HsrHCmB7gVpNwX6JxPTHcH6IoTA==}
@@ -8478,6 +8492,10 @@ snapshots:
       '@types/node': 22.14.1
       '@types/responselike': 1.0.3
 
+  '@types/camelcase@5.2.0':
+    dependencies:
+      camelcase: 5.3.1
+
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 22.14.1
@@ -9039,6 +9057,8 @@ snapshots:
       set-function-length: 1.2.2
 
   callsites@3.1.0: {}
+
+  camelcase@5.3.1: {}
 
   cdk-assets@3.3.1(@aws-sdk/client-sso-oidc@3.758.0):
     dependencies:
@@ -10579,6 +10599,11 @@ snapshots:
       unpipe: 1.0.0
 
   react-is@18.3.1: {}
+
+  read-env@2.0.0:
+    dependencies:
+      '@types/camelcase': 5.2.0
+      camelcase: 5.3.1
 
   read-yaml-file@1.1.0:
     dependencies:

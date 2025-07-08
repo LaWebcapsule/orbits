@@ -10,7 +10,7 @@
     "scripts": {
         "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
         "publish-package": "pnpm run build && pnpm publish --access public",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "node dist/specs/main.spec.js",
         "lint": "prettier --write --ignore-unknown **/*.ts"
     },
     "repository": {
@@ -39,6 +39,7 @@
         "import-meta-resolve": "^4.1.0",
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
+        "read-env": "^2.0.0",
         "winston": "catalog:"
     },
     "type": "module"
