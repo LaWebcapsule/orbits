@@ -1,6 +1,6 @@
 {
     "name": "@orbi-ts/core",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Flow for DevOps - a simple way to write state machine",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -35,12 +35,10 @@
         "typescript": "catalog:"
     },
     "dependencies": {
-        "@aws-sdk/client-sso-oidc": "^3.758.0",
         "@orbi-ts/services": "workspace:",
         "import-meta-resolve": "^4.1.0",
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
-        "read-env": "^2.0.0",
         "winston": "catalog:"
     },
     "type": "module"
