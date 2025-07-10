@@ -19,7 +19,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'lawebcapsule', // Usually your GitHub org/user name.
   projectName: 'orbits', // Usually your repo name.
-  trailingSlash: false,
+  //trailingSlash: false,
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -167,6 +167,7 @@ const config: Config = {
         externalPattern: [
           '**/node_modules/**'
         ],
+        readme: 'none',
         excludeExternals:true,
         excludeInternal: true
       },
