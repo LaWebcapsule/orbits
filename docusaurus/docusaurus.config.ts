@@ -70,7 +70,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     metadata: [
-      {name: 'keywords', content: 'Orchestration, DevOps, Cloud, Workflows, Typescript, Automation'},
+      {name: 'keywords', content: 'Orchestration, DevOps, Cloud, Workflows, Typescript, Automation, Platform engineering'},
     ],
     navbar: {
       title: 'Orbits',
