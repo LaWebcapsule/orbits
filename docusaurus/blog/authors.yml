@@ -26,6 +26,7 @@ arthur:
   page: true
   socials:
     linkedin: arthurrouzoul
+    github: Grouzoul
 
 tom:
   name: Tom Marcuzzi
@@ -34,8 +35,9 @@ tom:
   image_url: /img/authors/tom.png
   page: true
   socials:
-    github: tommarcuzzi
     linkedin: tommarcuzzi
+    github: tommarcuzzi
+
 
 sofia:
   name: Sofia Chakir
@@ -44,8 +46,9 @@ sofia:
   image_url: /img/authors/sofia.png
   page: true
   socials:
+    linkedin: sofiachakir
     github: sofiachakir
-    linkedin: sofiachakir    
+   
 
 antoine:
   name: Antoine Dussarps
