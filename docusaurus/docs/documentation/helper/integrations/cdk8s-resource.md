@@ -59,7 +59,8 @@ export class BasicResource extends Cdk8sResource {
 This way, you can, for example : 
 - let the cdk8s generate a namespace name : `this.ns = new kplus.Namespace(this, 'my-namespace')`
 - retrieve and output the generated name : 
-```typescript title="src/cdk/lambda-stack.ts"
+
+```typescript title="src/cdk8s/basic-resource.ts"
 export class BasicResource extends Cdk8sResource {
   StackConstructor = BasicChart ;
   stack: BasicChart;//for typing purpose
@@ -79,17 +80,26 @@ export class BasicResource extends Cdk8sResource {
 You can also want more complex export.
 For example, you maybe need the ip of your loadbalancer in order to set this IP into your DNS.
 - First in your stack, export the load balancer service : 
-```typescript
-````
+```typescript title="src/cdk8s/basic-resource.ts"
+this.loadBalancerService = new kplus.Service(this, "load-balancer") 
+```
 - Then, in the `setOutput()`, query the kube api to have the IP address
 
-
 ```typescript title="src/orbits/lambda-resource.ts"
-export class LambdaResource extends CdkResource{
-    StackConstructor = `LambdaStack`
+export class BasicResource extends CdkResource{
+    StackConstructor = BasicChart
 
-    declare IOutput : {
-        roleArn: string
+    declare IOutput: {
+		 publicIPV4: string;
+	  };
+
+    async setOutput(){
+        const stack = await this.generateStack();
+				const apiServiceInfo = await this.kubeApi.coreApi.readNamespacedService({
+					name: stack.loadBalancerService.name,
+					namespace: stack.loadBalancerService.metadata.namespace || 'default',
+				})
+        return apiServiceInfo.status.loadBalancer.ingress[0].ip;
     }
 }
 ```

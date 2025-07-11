@@ -162,15 +162,18 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
                 },
             });
         }
+        finally{
+            await this.do('Prune', {
+                dynamicAction: () => {
+                    const pruneAction = new Action();
+                    pruneAction.main = this.pruneMain.bind(this, hasRollback);
+                    pruneAction.setRepeat({ [ActionState.ERROR]: 2 });
+                    return pruneAction;
+                },
+            });
+        }
 
-        await this.do('Prune', {
-            dynamicAction: () => {
-                const pruneAction = new Action();
-                pruneAction.main = this.pruneMain.bind(this, hasRollback);
-                pruneAction.setRepeat({ [ActionState.ERROR]: 2 });
-                return pruneAction;
-            },
-        });
+        
 
         if (hasRollback) {
             // Reject with error if rollback was set

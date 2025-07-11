@@ -19,7 +19,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'lawebcapsule', // Usually your GitHub org/user name.
   projectName: 'orbits', // Usually your repo name.
-  trailingSlash: false,
+  //trailingSlash: false,
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -70,7 +70,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     metadata: [
-      {name: 'keywords', content: 'Orchestration, DevOps, Cloud, Workflows, Typescript, Automation'},
+      {name: 'keywords', content: 'Orchestration, DevOps, Cloud, Workflows, Typescript, Automation, Platform engineering'},
     ],
     navbar: {
       title: 'Orbits',
@@ -167,6 +167,7 @@ const config: Config = {
         externalPattern: [
           '**/node_modules/**'
         ],
+        readme: 'none',
         excludeExternals:true,
         excludeInternal: true
       },
