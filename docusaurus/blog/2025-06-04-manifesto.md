@@ -2,7 +2,7 @@
 slug: manifesto
 title: Infra is code
 authors: [louis, loic, arthur, tom, sofia]
-tags: [hola, manifesto, orbits]
+tags: [manifesto, orbits]
 ---
 
 # Manifesto: Infra is Code!

@@ -1,5 +1,5 @@
 {
-    "name": "@orbi-ts/orbits-cli",
+    "name": "@orbi-ts/cli",
     "version": "0.0.1",
     "description": "Cli to run your Orbits App",
     "repository": {
