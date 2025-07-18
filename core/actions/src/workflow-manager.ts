@@ -70,10 +70,6 @@ export class Workflow extends Action {
         currentTrackIds: string[];
         oldResult: StepResult[];
         preserveOldResult: StepResult[];
-        /**
-         * @deprecated
-         */
-        getNextStepAttemp: number;
         isRollBackPossible: boolean;
     };
 
