@@ -18,8 +18,8 @@ export const deepMerge = (src: any, dest: any) => {
     if (getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
         return;
     }
-    for (const key in src) {
-        if (!dest[key]) {
+    for(const key in src) {
+        if (!dest?.hasOwnProperty?.(key)) {
             dest[key] = deepCopy(src[key], Array.isArray(src[key]) ? [] : {});
         } else {
             deepMerge(src[key], dest[key]);

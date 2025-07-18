@@ -26,10 +26,7 @@ const defaultConfig: RuntimeConfig = {
     autostart: true,
     db: {
         mongo: {
-            url: 'mongodb://localhost:27017/orbits',
-            opts: {
-                tls: true,
-            },
+            url: "mongodb://localhost:27017/orbits",
         },
     },
     workers: {
