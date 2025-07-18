@@ -19,7 +19,7 @@ export const deepMerge = (src: any, dest: any) => {
         return;
     }
     for(const key in src) {
-        if (!dest[key]) {
+        if (!dest?.hasOwnProperty?.(key)) {
             dest[key] = deepCopy(src[key], Array.isArray(src[key]) ? [] : {});
         }
         else{
