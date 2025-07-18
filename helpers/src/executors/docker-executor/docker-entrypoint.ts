@@ -1,4 +1,4 @@
-import { ActionRuntime, Action } from '@orbi-ts/core';
+import { Action, ActionRuntime } from '@orbi-ts/core';
 
 const params = {
     bootstrapPath: process.argv[2],

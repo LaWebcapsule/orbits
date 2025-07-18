@@ -1,4 +1,3 @@
-import { Action } from './action-manager.js';
 import { Resource } from './../index.js';
 import { ActionState } from './models/action.js';
 
@@ -8,8 +7,7 @@ export class Executor {
      */
     scope?: ActionState[];
 
-    generateSupportResource():Resource|void{
-    }
+    generateSupportResource(): Resource | void {}
 
     resume(action) {
         return action._resume();

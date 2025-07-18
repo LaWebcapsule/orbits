@@ -1,29 +1,34 @@
 # CDK Cross-Account Resource Example
 
-A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example : it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
+A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example: it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
 
 ## Architecture Overview
 
-Account A (Parameter Store)     Account B (Lambda Consumer)
+```
+   Account A (Parameter Store)          Account B (Lambda Consumer)
 ┌───────────────────────────────┐    ┌───────────────────────────────┐
 │  SSM Parameter Store          │    │  Lambda Function              │
 │  Key:  /my/param              │◄───┤  Reads cross-account          │
 │  Value: "Hello World"         │    │  parameter                    │
 └───────────────────────────────┘    └───────────────────────────────┘
+```
 
 ## Prerequisites
 
 ### Clone this repository
 
 - Clone [this repository](https://github.com/LaWebcapsule/orbits)
-- Go to this directory : 
+- Go to this directory:
 ```bash
 cd samples/cross-account-aws-cdk
 ```
-- Install node.js dependencies : 
-`npm i``
+- Install node.js dependencies:
+```bash
+npm i
+```
 
 ### Setup AWS environment
+
 You'll need access to two AWS accounts with the following permissions:
 
 Account A: CloudFormation deployment rights
@@ -32,17 +37,29 @@ Account B: CloudFormation deployment rights
 #### Configure environment values
 
 - Copy the environment template:
-```bash cp .base.env .env```
+```bash
+cp .base.env .env
+```
+
 - Edit .env file with your account details.
 
 ## Deployment
 
 - Load environment variables:
-```bash export $(cat .env | xargs)```
-- Define your mongo_url : 
-```bash export ORBITS_DB__MONGO__URL=your-mongo-url```
+```bash
+export $(cat .env | xargs)
+```
+
+- Define your mongo_url:
+```bash
+export ORBITS_DB__MONGO__URL=your-mongo-url
+```
+
 - Deploy Cross-Account Infrastructure
-```bash npx tsx src/orbits/orbi.ts```
+```bash
+npx tsx src/orbits/orbi.ts
+```
+
 This command will:
 
 - Deploy the SSM parameter in Account A
@@ -58,16 +75,21 @@ This command will:
 - Execute the test
 
 - Expected Output
-The Lambda function should successfully retrieve the parameter from Account A and should display the value of parameter A in its logs.
-```typescript console.log('Param:', param.Parameter.Value); ```
- The default value of parameter is "hello-world".
+  The Lambda function should successfully retrieve the parameter from Account A and should display the value of parameter A in its logs.
+  ```typescript
+  console.log('Param:', param.Parameter.Value);
+  ```
+  The default value of parameter is "hello-world".
 
 ## Cleanup
+
 To remove all deployed resources from both accounts:
-```bash 
+
+```bash
 export HELLO_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts
 ```
+
 ⚠️ Warning: This will permanently delete all resources created by this example. Make sure you want to remove everything before running this command.
 
 ## Project Structure
@@ -78,8 +100,7 @@ npx tsx src/orbits/orbi.ts
 │   │   └── orbi.ts # Main orchestration script
 │   │   ├── lambda-resource.ts # lambda resource definition
 │   │   ├── param-resource.ts # Param resource definition
-│   │   ├── hello-resource.ts # Hello resource definition : the resource that make the junction between param and lambda
-
+│   │   ├── hello-resource.ts # Hello resource definition: the resource that make the junction between param and lambda
 │   ├── cdk/              # CDK stack definitions
 │   │   ├── lambda.ts # lambda CDK stack
 │   │   ├── param.ts # Param CDK stack
@@ -93,4 +114,4 @@ npx tsx src/orbits/orbi.ts
 
 The cross-account access follows the principle of least privilege
 Parameters are accessed using IAM roles, not hardcoded credentials
-CloudFormation stacks can be easily audited for security compliance
+CloudFormation stacks can be easily audited for security compliance.

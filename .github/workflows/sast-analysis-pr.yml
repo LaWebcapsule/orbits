@@ -1,19 +1,19 @@
 name: CodeQL Analysis
 
 on:
- pull_request:
-  branches:
-   - master
+  pull_request:
+    branches:
+      - main
 
 jobs:
- semgrep:
-  runs-on: ubuntu-latest
-  steps:
-   - name: Checkout repository
-     uses: actions/checkout@v4
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-   - name: Install semgrep
-     run: python3 -m pip install semgrep
+      - name: Install semgrep
+        run: python3 -m pip install semgrep
 
-   - name: Run Semgrep
-     run: semgrep ci
+      - name: Run Semgrep
+        run: semgrep ci

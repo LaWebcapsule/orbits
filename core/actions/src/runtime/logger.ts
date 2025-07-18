@@ -3,7 +3,7 @@ import * as winston from 'winston';
 import type { ActionRuntime } from './action-runtime.js';
 import { getEnv } from './get-env.js';
 
-const expendError = (obj: any, opts = {depth : 0}) => {
+const expendError = (obj: any, opts = { depth: 0 }) => {
     if (obj instanceof Error) {
         return {
             ...obj,
@@ -16,7 +16,7 @@ const expendError = (obj: any, opts = {depth : 0}) => {
         for (const x in obj) {
             result[x] = expendError(obj[x], {
                 ...opts,
-                depth : opts.depth+1
+                depth: opts.depth + 1,
             });
         }
         return result;
@@ -37,7 +37,7 @@ const addLogZoneInfo = winston.format((info: any) => {
     };
 });
 
-const env = getEnv()
+const env = getEnv();
 
 export const defaultLogger = winston.createLogger({
     transports: [
