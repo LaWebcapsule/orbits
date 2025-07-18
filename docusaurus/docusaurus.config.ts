@@ -1,6 +1,8 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import fs from 'fs';
+import path from 'path';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -77,6 +79,8 @@ const config: Config = {
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
+        href: 'https://orbits.do',
+        target: '_self',
       },
       items: [
         {
@@ -172,6 +176,31 @@ const config: Config = {
         excludeInternal: true
       },
     ],
+    async function webflowIntegrationPlugin(context, options) {
+      // ...
+      return {
+        name: 'webflow-integration-plugin',
+        async postBuild() {
+          // ...
+          await fs.promises.cp(
+            path.join(context.siteDir, 'static/home'),
+            path.join(context.outDir),
+            {
+              recursive: true,
+              force: true,
+            }
+          )
+          await fs.promises.copyFile(
+            path.join(context.siteDir ,'static/img/favicon.ico'),
+            path.join(context.outDir, 'images/favicon.ico'));
+          await fs.promises.copyFile(
+            path.join(context.siteDir,'static/img/favicon.ico'),
+            path.join(context.outDir, 'images/favicon.ico')
+          );  
+        
+        }
+      };
+    },
   ],
 };
 
