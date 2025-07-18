@@ -1,6 +1,6 @@
 # Hello world example
 
-A sample resource that say you hello !
+A sample resource that say you hello!
 Can be useful to help you write your first actions.
 
 ## Install dependencies
@@ -11,9 +11,9 @@ Can be useful to help you write your first actions.
 ## Launch the app
 
 - `export ORBITS_DB__MONGO__URL=your-mongo-url`
-- `npx src/orbits/orbi.ts`
+- `npx tsx src/orbits/orbi.ts`
 
 ## Relaunch the app
 
-If your relaunch the app a second time the same day, you should see your resource still know if it's already greeting you or not.
+If your relaunch the app a second time the same day, you should see that your resource still knows if it's already greeted you or not.
 
