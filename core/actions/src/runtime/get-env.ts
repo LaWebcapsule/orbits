@@ -1,8 +1,6 @@
-import { readEnv } from "read-env";
-import { RuntimeDb } from "./db-connection.js";
-import { utils } from "@orbi-ts/services";
-import * as winston from 'winston';
-
+import { utils } from '@orbi-ts/services';
+import { readEnv } from 'read-env';
+import { RuntimeDb } from './db-connection.js';
 
 /**
  * Describes how the runtime can be configured.
@@ -17,14 +15,14 @@ export interface RuntimeConfig {
         quantity: number;
         filter?: Object;
     };
-    logging?:{
+    logging?: {
         level?: string;
     };
     entrypoint?: string;
 }
 
 const defaultConfig: RuntimeConfig = {
-    name: "orbits-runtime",
+    name: 'orbits-runtime',
     autostart: true,
     db: {
         mongo: {
@@ -35,13 +33,13 @@ const defaultConfig: RuntimeConfig = {
         quantity: 3,
     },
     logging: {
-        level: "debug",
+        level: 'debug',
     },
-}
+};
 
-export function getEnv(): RuntimeConfig{
+export function getEnv(): RuntimeConfig {
     const result = {};
-    utils.deepMerge(readEnv("ORBITS"), result);
+    utils.deepMerge(readEnv('ORBITS'), result);
     utils.deepMerge(defaultConfig, result);
     return result;
 }

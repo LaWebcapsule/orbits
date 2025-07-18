@@ -56,6 +56,13 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      prettier:
+        specifier: 'catalog:'
+        version: 3.5.3
+      prettier-plugin-organize-imports:
+        specifier: 'catalog:'
+        version: 4.1.0(prettier@3.5.3)(typescript@5.8.3)
     devDependencies:
       '@changesets/cli':
         specifier: ^2.29.2

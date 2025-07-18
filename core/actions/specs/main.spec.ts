@@ -1,13 +1,11 @@
 import jasmin from 'jasmine';
-import { ActionRuntime } from '../index.js';
-import './test-action.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ActionRuntime } from '../index.js';
+import './test-action.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-
 
 let j = new jasmin();
 
@@ -29,13 +27,12 @@ const specFiles = [
     //'generator.spec' + extension,
     //'other-action.spec' + extension,
     //'resource.spec' + extension,
-]
+];
 
 j.loadConfig({
     spec_dir: '.',
-    spec_files: specFiles.map(file=>path.join(relativePath, file)),
+    spec_files: specFiles.map((file) => path.join(relativePath, file)),
 });
-
 
 ActionRuntime.activeRuntime.ActionModel.remove({}).then(() => {
     console.log('launching the tests');

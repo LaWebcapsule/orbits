@@ -1,19 +1,23 @@
 import { KubernetesObject, loadAllYaml } from '@kubernetes/client-node';
 
-import { Action, ActionError, ActionState, Resource, Workflow } from '@orbi-ts/core';
+import {
+    Action,
+    ActionError,
+    ActionState,
+    Resource,
+    Workflow,
+} from '@orbi-ts/core';
 import { Cli } from '@orbi-ts/services';
 
 import * as cdk8s from 'cdk8s';
 import { mkdir, rm, writeFile } from 'fs/promises';
 import { KubeApi } from '../../kubernetes/kubernetes-api.js';
 
-
-
 export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     cli = new Cli();
     kubeApi: KubeApi;
 
-    cdkApp : cdk8s.App;
+    cdkApp: cdk8s.App;
     StackConstructor: typeof cdk8s.Chart;
     stack: cdk8s.Chart;
     apiObjects: Set<cdk8s.ApiObject> = new Set();
@@ -27,11 +31,16 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
             from: {
                 file?: string;
                 cluster?: boolean;
-            }
-        }
+            };
+        };
         stackName: string;
         clusterName?: string;
-    } & Partial<Record<'stackProps', Partial<ConstructorParameters<this['StackConstructor']>[2]>>>
+    } & Partial<
+            Record<
+                'stackProps',
+                Partial<ConstructorParameters<this['StackConstructor']>[2]>
+            >
+        >;
 
     IBag: Workflow['IBag'] & {
         stackName?: string;
@@ -42,7 +51,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
     identity() {
         const identity = {};
         identity['stackName'] = this.argument.stackName;
-        if( this.argument.clusterName) {
+        if (this.argument.clusterName) {
             identity['clusterName'] = this.argument.clusterName;
         }
         return identity;
@@ -70,8 +79,14 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
 
     resolve(context: cdk8s.ResolutionContext): void {
         this.apiObjects.add(context.obj);
-        if(context.obj.metadata && !(context.obj.metadata.getLabel('orbits/stackName'))) {
-            context.obj.metadata.addLabel('orbits/stackName', this.argument.stackName||this.bag.stackName);    
+        if (
+            context.obj.metadata &&
+            !context.obj.metadata.getLabel('orbits/stackName')
+        ) {
+            context.obj.metadata.addLabel(
+                'orbits/stackName',
+                this.argument.stackName || this.bag.stackName
+            );
         }
     }
 
@@ -80,7 +95,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
      * Useful in order to clear previous objects
      * @returns the app.
      */
-    generateApp(): cdk8s.App{
+    generateApp(): cdk8s.App {
         return new cdk8s.App({
             outdir: `/tmp/cdk8s/${this._id.toString()}`,
             resolvers: [this],
@@ -128,7 +143,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
      * but deployment will still be operational.
      */
     async defineUpdate() {
-        let hasRollback, rollbackErr : boolean, Error;
+        let hasRollback, rollbackErr: boolean, Error;
         try {
             await this.do('Deploy', {
                 dynamicAction: () => {
@@ -161,16 +176,16 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
                     return rollbackAction;
                 },
             });
+        } finally {
+            await this.do('Prune', {
+                dynamicAction: () => {
+                    const pruneAction = new Action();
+                    pruneAction.main = this.pruneMain.bind(this, hasRollback);
+                    pruneAction.setRepeat({ [ActionState.ERROR]: 2 });
+                    return pruneAction;
+                },
+            });
         }
-
-        await this.do('Prune', {
-            dynamicAction: () => {
-                const pruneAction = new Action();
-                pruneAction.main = this.pruneMain.bind(this, hasRollback);
-                pruneAction.setRepeat({ [ActionState.ERROR]: 2 });
-                return pruneAction;
-            },
-        });
 
         if (hasRollback) {
             // Reject with error if rollback was set
@@ -185,30 +200,33 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
         );
     }
 
-    async defineUninstall(){
+    async defineUninstall() {
         await this.do('DeleteStack', {
-            dynamicAction : ()=>{
+            dynamicAction: () => {
                 const pruneAction = new Action();
                 pruneAction.main = this.pruneMain.bind(this);
                 //refresh the production of the stack;
                 this.isProduced = false;
                 //define an empty stack and prune from this.
-                this.generateStack = ()=>{
+                this.generateStack = () => {
                     //empty stack
-                    return new cdk8s.Chart(this.cdkApp, this.argument.stackName || this.bag.stackName)
-                }
+                    return new cdk8s.Chart(
+                        this.cdkApp,
+                        this.argument.stackName || this.bag.stackName
+                    );
+                };
                 pruneAction.setRepeat({ [ActionState.ERROR]: 2 });
 
                 return pruneAction;
-            }
-        })
-        await this.do("DeleteSecret", ()=>{
+            },
+        });
+        await this.do('DeleteSecret', () => {
             return this.kubeApi.deleteSecret(this.genSecretName());
         });
-        await this.do('ResetOutput', ()=>{
+        await this.do('ResetOutput', () => {
             this.resourceDbDoc.output = {};
             return this.resourceDbDoc.save();
-        })
+        });
     }
 
     /**
@@ -274,9 +292,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
         const pruneExclusions = ['PersistentVolumeClaim', 'Namespace'];
         const [previousChart, newChart] = await Promise.all([
             this.retrievePreviousChart(),
-            Promise.resolve(this.produce()).then(() =>
-                this.cdkApp.synthYaml()
-            ),
+            Promise.resolve(this.produce()).then(() => this.cdkApp.synthYaml()),
         ]);
         const sourceChart = loadAllYaml(rollback ? newChart : previousChart);
         const targetChart = loadAllYaml(rollback ? previousChart : newChart);
