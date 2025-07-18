@@ -45,11 +45,11 @@ export class CdkHelper {
         });
         return this.cfnClient.send(command).then((res) => res);
     }
-    
-    deleteStack(stackName: string){
+
+    deleteStack(stackName: string) {
         const command = new DeleteStackCommand({
-            StackName: stackName
-        })
-        return this.cfnClient.send(command)
+            StackName: stackName,
+        });
+        return this.cfnClient.send(command);
     }
 }

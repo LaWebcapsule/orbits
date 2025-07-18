@@ -10,20 +10,18 @@ export class KubeApi {
     customObjectApi: k8s.CustomObjectsApi;
     batchApi: k8s.BatchV1Api;
 
-    constructor(opts? : {
-        from : {
+    constructor(opts?: {
+        from: {
             file?: string;
             cluster?: boolean;
-        }
+        };
     }) {
         this.config = new k8s.KubeConfig();
-        if(opts?.from?.file) {
+        if (opts?.from?.file) {
             this.config.loadFromFile(opts.from.file);
-        }
-        else if(opts?.from?.cluster) {
+        } else if (opts?.from?.cluster) {
             this.config.loadFromCluster();
-        }
-        else {
+        } else {
             this.config.loadFromDefault();
         }
         this.client = this.config.makeApiClient(k8s.AppsV1Api);
@@ -125,14 +123,16 @@ export class KubeApi {
         return this.createSecret(mainKey, value, opts);
     }
 
-    async deleteSecret(mainKey: string,
+    async deleteSecret(
+        mainKey: string,
         opts = {
             ns: 'default',
-    }){
+        }
+    ) {
         return this.coreApi.deleteNamespacedSecret({
             name: mainKey,
-            namespace: opts.ns
-        })
+            namespace: opts.ns,
+        });
     }
 
     generateSecretString() {

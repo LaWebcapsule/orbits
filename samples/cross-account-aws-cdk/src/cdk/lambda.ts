@@ -1,23 +1,25 @@
 import * as cdk from 'aws-cdk-lib';
 import { Stack, StackProps } from 'aws-cdk-lib';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-export interface LambdaStackProps extends StackProps{
-    accountARoleArn: string,
-    parameterArn : string
+export interface LambdaStackProps extends StackProps {
+    accountARoleArn: string;
+    parameterArn: string;
 }
 
 export class LambdaStack extends Stack {
-  constructor(scope: cdk.App, id: string, props: LambdaStackProps) {
-    super(scope, id, props);
+    constructor(scope: cdk.App, id: string, props: LambdaStackProps) {
+        super(scope, id, props);
 
-
-    // Lambda function
-    const helloLambdaFunction = new lambda.Function(this, 'CrossAccountLambda', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromInline(`
+        // Lambda function
+        const helloLambdaFunction = new lambda.Function(
+            this,
+            'CrossAccountLambda',
+            {
+                runtime: lambda.Runtime.NODEJS_20_X,
+                handler: 'index.handler',
+                code: lambda.Code.fromInline(`
         const { STSClient, AssumeRoleCommand } = require('@aws-sdk/client-sts');
         const { SSMClient, GetParameterCommand } = require('@aws-sdk/client-ssm');
 
@@ -47,19 +49,22 @@ export class LambdaStack extends Stack {
           console.log('Param:', param.Parameter.Value);
         };
       `),
-      timeout: cdk.Duration.seconds(10),
-    });
+                timeout: cdk.Duration.seconds(10),
+            }
+        );
 
-    if(props.accountARoleArn){
-      helloLambdaFunction.addToRolePolicy(new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['sts:AssumeRole'],
-        resources: [props?.accountARoleArn]
-      }));
+        if (props.accountARoleArn) {
+            helloLambdaFunction.addToRolePolicy(
+                new iam.PolicyStatement({
+                    effect: iam.Effect.ALLOW,
+                    actions: ['sts:AssumeRole'],
+                    resources: [props?.accountARoleArn],
+                })
+            );
+        }
+
+        new cdk.CfnOutput(this, 'roleArn', {
+            value: helloLambdaFunction.role?.roleArn!,
+        });
     }
-
-    new cdk.CfnOutput(this, 'roleArn', {
-        value: helloLambdaFunction.role?.roleArn!
-    })
-  }
 }

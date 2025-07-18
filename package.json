@@ -28,5 +28,9 @@
       "esbuild@<=0.24.2": ">=0.25.0",
       "cli@<1.0.0": ">=1.0.0"
     }
+  },
+  "dependencies": {
+    "prettier": "catalog:",
+    "prettier-plugin-organize-imports": "catalog:"
   }
 }

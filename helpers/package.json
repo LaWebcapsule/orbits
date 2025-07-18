@@ -11,7 +11,8 @@
         "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
         "publish-package": "pnpm run build && pnpm  publish --access public",
         "test": "echo \"Info: no test specified\"",
-        "lint": "prettier --write --ignore-unknown **/*.ts"
+        "format": "prettier --check --ignore-unknown '**/*.ts'",
+        "format:fix": "prettier --write --ignore-unknown '**/*.ts'"
     },
     "repository": {
         "type": "git",
