@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 
 export enum ResourceState {
-    /**
-     * @deprecated use UNKNOWN
-     */
-    UNKNOW = -1,
     UNKNOWN = -1,
     SLEEPING,
     EXECUTING_MAIN,

@@ -80,16 +80,8 @@ export class Action {
      * If not set, this property will be 'inherited' from the first parent class where it is.
      */
     static cronDefaultSettings: {
-        /**
-         * @deprecated use activityFrequency
-         */
-        activityFrequence?: number;
-        /**
-         * TODO: set this as required after activityFrequence removal
-         */
-        activityFrequency?: number;
+        activityFrequency: number;
     } = {
-        activityFrequence: 10 * 60 * 1000,
         activityFrequency: 10 * 60 * 1000,
     };
 
@@ -319,13 +311,6 @@ export class Action {
         }
     }
 
-    /**
-     * @deprecated use dynamicallyDefineFromWorkflowStep
-     */
-    dynamiclyDefineFromWorfklowStep(workflow: Workflow, marker: string) {
-        this.dynamicallyDefineFromWorkflowStep(workflow, marker);
-    }
-
     dynamicallyDefineFromWorkflowStep(workflow: Workflow, marker: string) {
         this.dbDoc.definitionFrom.workflow = {
             _id: workflow._id.toString(),
@@ -496,18 +481,7 @@ export class Action {
         return Promise.resolve(ActionState.UNKNOWN);
     }
 
-    /**
-     * @deprecated use isInitialized
-     */
-    isInitialised = false;
     isInitialized = false;
-
-    /**
-     * @deprecated use initialization
-     */
-    initialisation() {
-        return this.initialization();
-    }
 
     /**
      * Mainly used for workflows.
@@ -515,14 +489,9 @@ export class Action {
      * If it gets too complex, use hooks.
      */
     initialization() {
-        // TODO: remove isInitialised
-        if (this.isInitialised || this.isInitialized) {
-            return Promise.resolve();
-        }
+        if (this.isInitialized) return Promise.resolve();
         this.internalLog('init');
         return this.init().then(() => {
-            // TODO: remove isInitialised
-            this.isInitialised = true;
             this.isInitialized = true;
         });
     }

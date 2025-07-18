@@ -47,12 +47,6 @@ export class ActionRuntime {
         ActionRuntime.rejectBootstrap = reject;
     });
     static bootstrapPath: string;
-    /**
-     * @deprecated use bootstrapPath
-     */
-    static get boostrapPath() {
-        return ActionRuntime.bootstrapPath;
-    }
 
     private actionsRegistry = new Map<string, typeof Action>();
     private invertedActionsRegistry = new Map<typeof Action, string>();
