@@ -1,9 +1,9 @@
 import { FilterQuery } from 'mongoose';
 import { Action } from './action-manager.js';
-import { ActionRuntime } from './runtime/action-runtime.js';
 import { ActionError } from './error/error.js';
 import { errorCodes } from './error/errorcodes.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
+import { ActionRuntime } from './runtime/action-runtime.js';
 
 export class ActionCron {
     maxTimeToConsumeAnAction = 10 * 60 * 1000;
@@ -13,7 +13,7 @@ export class ActionCron {
 
     constructor(filter?: Object) {
         this.filter = filter;
-        if(!this.filter && process.env['orbits_worker_filter']){
+        if (!this.filter && process.env['orbits_worker_filter']) {
             this.filter = JSON.parse(process.env['orbits_worker_filter']);
         }
         this.cycle();
@@ -91,8 +91,9 @@ export class ActionCron {
 
         if (this.filter) query.filter = this.filter;
 
-        return this.runtime.ActionModel.findOne(query)
-            .sort('cronActivity.lastActivity')
+        return this.runtime.ActionModel.findOne(query).sort(
+            'cronActivity.lastActivity'
+        );
     }
 
     async consumeAction(actionDb: ActionSchemaInterface<any>) {
@@ -130,7 +131,10 @@ export class ActionCron {
                     'cronActivity.lastActivity': currentDate,
                 },
             }
-        ).then(()=>{ActionRuntime.activeRuntime.logger.debug("after update one")})
+        )
+            .then(() => {
+                ActionRuntime.activeRuntime.logger.debug('after update one');
+            })
             .then(() => action.resyncWithDb())
             .then(() => {
                 if (
@@ -185,13 +189,13 @@ export class ActionCron {
     }
 
     resyncWithDb(action) {
-        return this.runtime.ActionModel.findById(action.dbDoc._id.toString()).then(
-            (actionDb) => {
-                if (actionDb) {
-                    return Action.constructFromDb(actionDb as any);
-                }
-                return;
+        return this.runtime.ActionModel.findById(
+            action.dbDoc._id.toString()
+        ).then((actionDb) => {
+            if (actionDb) {
+                return Action.constructFromDb(actionDb as any);
             }
-        );
+            return;
+        });
     }
 }

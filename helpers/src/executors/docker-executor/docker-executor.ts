@@ -1,4 +1,4 @@
-import { Executor, Action, ActionRuntime, ActionState } from '@orbi-ts/core';
+import { Action, ActionRuntime, ActionState, Executor } from '@orbi-ts/core';
 import { utils } from '@orbi-ts/services';
 import { exec } from 'child_process';
 import Docker from 'dockerode';
@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 export class DockerExecutor extends Executor {
     registry: {
@@ -95,11 +94,14 @@ export class DockerExecutor extends Executor {
                     Binds: [
                         '/var/run/docker.sock:/var/run/docker.sock',
                         `${
-                            appPaths.primaryRootFolder || appPaths.rootFolder || ActionRuntime.activeRuntime.bootstrapPath
+                            appPaths.primaryRootFolder ||
+                            appPaths.rootFolder ||
+                            ActionRuntime.activeRuntime.bootstrapPath
                         }:/app:ro`,
                         `${
                             appPaths.primaryCurrentFolder ||
-                            appPaths.currentFolder || ActionRuntime.activeRuntime.bootstrapPath
+                            appPaths.currentFolder ||
+                            ActionRuntime.activeRuntime.bootstrapPath
                         }/${executionContext.entrypoint}:/${
                             executionContext.entrypoint
                         }:ro`,
@@ -128,7 +130,7 @@ export class DockerExecutor extends Executor {
                     appPaths.relativeImportPathFromEntrypoint,
                     action._id.toString(),
                 ];
-                console.log(dockerConfig)
+                console.log(dockerConfig);
                 console.log(cmd);
                 return docker.run(
                     `${this.registry.url}:${this.registry.tag}`,
@@ -184,7 +186,9 @@ export class DockerExecutor extends Executor {
         relativeImportPathFromEntrypoint: string; //how to pass to 'entrypoint' to bootstap path
     }> {
         const stackPaths = utils.getStackTracePaths();
-        const rootFolder = path.dirname(ActionRuntime.activeRuntime.bootstrapPath);
+        const rootFolder = path.dirname(
+            ActionRuntime.activeRuntime.bootstrapPath
+        );
         const bootstrapPath = ActionRuntime.activeRuntime.bootstrapPath;
         const relativeEntrypointPathFromRoot = __dirname.replace(
             rootFolder,

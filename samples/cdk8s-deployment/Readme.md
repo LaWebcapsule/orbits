@@ -12,7 +12,7 @@ A practical example demonstrating how to manage kube resources through CDK8S and
 cd samples/cdk8s-deployment
 ```
 - Install node.js dependencies : 
-`npm i``
+`npm i`
 
 ### Setup kube environment
 
@@ -26,9 +26,13 @@ This sample will use your current Kubernetes context, so ensure you're connected
 ## Deployment
 
 - Define your mongo_url : 
-```bash export ORBITS_DB__MONGO__URL=your-mongo-url```
+```bash
+export ORBITS_DB__MONGO__URL=your-mongo-url
+```
 - Deploy Cdk8s basic stack : 
-```bash npx tsx src/orbits/orbi.ts```
+```bash
+npx tsx src/orbits/orbi.ts
+```
 This command will:
 - Create a new Kubernetes namespace
 - Deploy a scheduled Job named hello-world that runs daily at 10:00 AM

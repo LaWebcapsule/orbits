@@ -10,7 +10,7 @@ Can be useful to help you write your first actions.
 
 ## Launch the app
 
-- `export MONGO_URL=your-mongo-url`
+- `export ORBITS_DB__MONGO__URL=your-mongo-url`
 - `npx src/orbits/orbi.ts`
 
 ## Relaunch the app

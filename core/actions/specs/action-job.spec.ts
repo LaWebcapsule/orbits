@@ -1,7 +1,7 @@
 import { ActionCron } from '../src/action-job.js';
 import { Action } from '../src/action-manager.js';
-import { ActionRuntime } from '../src/runtime/action-runtime.js';
 import { ActionState } from '../src/models/action.js';
+import { ActionRuntime } from '../src/runtime/action-runtime.js';
 import { TestActionWithWatcherEnding } from './test-action.js';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;

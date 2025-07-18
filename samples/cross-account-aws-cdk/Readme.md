@@ -21,7 +21,7 @@ Account A (Parameter Store)     Account B (Lambda Consumer)
 cd samples/cross-account-aws-cdk
 ```
 - Install node.js dependencies : 
-`npm i``
+`npm i`
 
 ### Setup AWS environment
 You'll need access to two AWS accounts with the following permissions:
@@ -32,17 +32,25 @@ Account B: CloudFormation deployment rights
 #### Configure environment values
 
 - Copy the environment template:
-```bash cp .base.env .env```
+```bash
+cp .base.env .env
+```
 - Edit .env file with your account details.
 
 ## Deployment
 
 - Load environment variables:
-```bash export $(cat .env | xargs)```
+```bash
+export $(cat .env | xargs)
+```
 - Define your mongo_url : 
-```bash export ORBITS_DB__MONGO__URL=your-mongo-url```
+```bash
+export ORBITS_DB__MONGO__URL=your-mongo-url
+```
 - Deploy Cross-Account Infrastructure
-```bash npx tsx src/orbits/orbi.ts```
+```bash
+npx tsx src/orbits/orbi.ts
+```
 This command will:
 
 - Deploy the SSM parameter in Account A
@@ -64,7 +72,7 @@ The Lambda function should successfully retrieve the parameter from Account A an
 
 ## Cleanup
 To remove all deployed resources from both accounts:
-```bash 
+```bash
 export HELLO_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts
 ```
@@ -79,7 +87,6 @@ npx tsx src/orbits/orbi.ts
 │   │   ├── lambda-resource.ts # lambda resource definition
 │   │   ├── param-resource.ts # Param resource definition
 │   │   ├── hello-resource.ts # Hello resource definition : the resource that make the junction between param and lambda
-
 │   ├── cdk/              # CDK stack definitions
 │   │   ├── lambda.ts # lambda CDK stack
 │   │   ├── param.ts # Param CDK stack

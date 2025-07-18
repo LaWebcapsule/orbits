@@ -1,61 +1,65 @@
-import { BaseCredentials, BootstrapEnvironments, NonInteractiveIoHost, StackSelectionStrategy, Toolkit } from '@aws-cdk/toolkit-lib';
+import {
+    BaseCredentials,
+    BootstrapEnvironments,
+    NonInteractiveIoHost,
+    StackSelectionStrategy,
+    Toolkit,
+} from '@aws-cdk/toolkit-lib';
 import { Action, ActionState } from '@orbi-ts/core';
 import * as cdk from 'aws-cdk-lib';
 import { CdkHelper } from './cdk-helper.js';
 
-
-class CdkAction extends Action{
-
+class CdkAction extends Action {
     IArgument: {
-        stackName : string
-        stackProps : cdk.StackProps & {env: cdk.Environment}
-        awsProfileName?: string 
-    } & Action['IArgument']
+        stackName: string;
+        stackProps: cdk.StackProps & { env: cdk.Environment };
+        awsProfileName?: string;
+    } & Action['IArgument'];
 
     IBag: {
-        env : cdk.Environment
-    } & Action['IBag']
+        env: cdk.Environment;
+    } & Action['IBag'];
 
-    stackName : string;
+    stackName: string;
 
-    getBaseCredentials(){
+    getBaseCredentials() {
         return BaseCredentials.awsCliCompatible({
-            profile: this.argument.awsProfileName || 'default'
-        })
+            profile: this.argument.awsProfileName || 'default',
+        });
     }
 
-    generateNewToolkit(){
+    generateNewToolkit() {
         const ioHost = new NonInteractiveIoHost({
             isCI: true,
-        })
+        });
         const mapLogLevel = {
-            'result': 'info',
-            'trace': 'debug'
+            result: 'info',
+            trace: 'debug',
         };
-        ioHost.notify = async (msg)=>{
+        ioHost.notify = async (msg) => {
             this.runtime.logger.log({
                 ...msg,
-                level : mapLogLevel[msg.level] || msg.level,
-                data : undefined,
-                message : msg.message
+                level: mapLogLevel[msg.level] || msg.level,
+                data: undefined,
+                message: msg.message,
             });
-            if(this.dbDoc.stateUpdatedAt.getTime() > Date.now()- 30*1000){
+            if (this.dbDoc.stateUpdatedAt.getTime() > Date.now() - 30 * 1000) {
                 await this.notifyHealth();
             }
-        }
+        };
 
         const toolkit = new Toolkit({
             color: false,
             emojis: false,
             ioHost,
             sdkConfig: {
-                baseCredentials: this.getBaseCredentials()
-            }   
+                baseCredentials: this.getBaseCredentials(),
+            },
         });
         return toolkit;
     }
 
-    getStackName(){
+    getStackName() {
         return this.argument.stackName;
     }
 
@@ -70,9 +74,7 @@ class CdkAction extends Action{
         opts['profile'] = this.argument.awsProfileName;
         const cdkHelper = new CdkHelper(opts);
         return cdkHelper
-            .describeStackFromName(
-                this.getStackName()
-            )
+            .describeStackFromName(this.getStackName())
             .then((stackDescription) => {
                 const lastDeployTime =
                     stackDescription.LastUpdatedTime ||
@@ -106,43 +108,46 @@ class CdkAction extends Action{
     }
 }
 
-export class CdkBootstrapAction extends CdkAction{
-
+export class CdkBootstrapAction extends CdkAction {
     getStackName(): string {
-        return 'CDKToolkit'
+        return 'CDKToolkit';
     }
 
-    main(){
+    main() {
         const toolkit = this.generateNewToolkit();
 
-        return toolkit.bootstrap(BootstrapEnvironments.fromList([`aws://${this.argument.stackProps.env.account}/${this.argument.stackProps.env.region}`])).then(()=>{
-            return ActionState.SUCCESS
-        }).finally(async ()=>{
-            await (this.notifyHealthPromise || Promise.resolve())
-        })
+        return toolkit
+            .bootstrap(
+                BootstrapEnvironments.fromList([
+                    `aws://${this.argument.stackProps.env.account}/${this.argument.stackProps.env.region}`,
+                ])
+            )
+            .then(() => {
+                return ActionState.SUCCESS;
+            })
+            .finally(async () => {
+                await (this.notifyHealthPromise || Promise.resolve());
+            });
     }
-    
 }
 
 export class CdkDeployAction extends CdkAction {
-
     IArgument: {
         cdkContext?: {
             [k: string]: any;
         };
-    } & CdkAction['IArgument']
+    } & CdkAction['IArgument'];
 
-    static permanentRef = "CdkDeploy"
+    static permanentRef = 'CdkDeploy';
 
     static defaultDelays = {
         [ActionState.EXECUTING_MAIN]: 10 * 60 * 1000,
         [ActionState.IN_PROGRESS]: 10 * 60 * 1000,
     };
 
-    cdkApp : cdk.App;
+    cdkApp: cdk.App;
     StackConstructor: typeof cdk.Stack;
     stack: cdk.Stack;
-
 
     async produce() {
         this.cdkApp = new cdk.App();
@@ -152,15 +157,11 @@ export class CdkDeployAction extends CdkAction {
         return this.cdkApp.synth();
     }
 
-    generateStack(app : cdk.App) {
-        this.stack = new this.StackConstructor(
-            app,
-            this.getStackName(),
-            {
-                env: this.bag.env,
-                ...this.argument.stackProps, 
-            }
-        );
+    generateStack(app: cdk.App) {
+        this.stack = new this.StackConstructor(app, this.getStackName(), {
+            env: this.bag.env,
+            ...this.argument.stackProps,
+        });
     }
 
     setContextFromArgument() {
@@ -174,35 +175,40 @@ export class CdkDeployAction extends CdkAction {
         return Promise.resolve();
     }
 
-    async main(){
+    async main() {
         const toolkit = this.generateNewToolkit();
-        const cx = await toolkit.fromAssemblyBuilder(async ()=>{
-            return await this.produce();
-        }, {clobberEnv: false});
+        const cx = await toolkit.fromAssemblyBuilder(
+            async () => {
+                return await this.produce();
+            },
+            { clobberEnv: false }
+        );
 
-        await toolkit.deploy(cx, {
-            stacks: {
-                strategy: StackSelectionStrategy.PATTERN_MUST_MATCH,
-                patterns: [this.getStackName()],
-            }
-        }).finally(async ()=>{
-            await (this.notifyHealthPromise || Promise.resolve())
-        })
+        await toolkit
+            .deploy(cx, {
+                stacks: {
+                    strategy: StackSelectionStrategy.PATTERN_MUST_MATCH,
+                    patterns: [this.getStackName()],
+                },
+            })
+            .finally(async () => {
+                await (this.notifyHealthPromise || Promise.resolve());
+            });
 
         return ActionState.SUCCESS;
     }
 }
 
-export class CdkDestroyAction extends CdkAction{
-    static permanentRef = "CdkDestroyAction"
+export class CdkDestroyAction extends CdkAction {
+    static permanentRef = 'CdkDestroyAction';
 
-    async main(){
+    async main() {
         const opts = {};
         opts['region'] =
             this.argument.stackProps?.env.region || this.bag.env?.region;
         const cdkHelper = new CdkHelper(opts);
         await cdkHelper.deleteStack(this.getStackName());
-        return ActionState.SUCCESS
+        return ActionState.SUCCESS;
     }
 
     async watcher(): Promise<ActionState> {
@@ -211,17 +217,19 @@ export class CdkDestroyAction extends CdkAction{
             this.argument.stackProps?.env.region || this.bag.env?.region;
         const cdkHelper = new CdkHelper(opts);
         return cdkHelper
-            .describeStackFromName(
-                this.getStackName()
-            ).then((stackDescription)=>{
-                if (stackDescription.StackStatus.includes('DELETE_IN_PROGRESS')) {
+            .describeStackFromName(this.getStackName())
+            .then((stackDescription) => {
+                if (
+                    stackDescription.StackStatus.includes('DELETE_IN_PROGRESS')
+                ) {
                     return ActionState.IN_PROGRESS;
                 }
                 if (stackDescription.StackStatus.includes('DELETE_COMPLETE')) {
                     return ActionState.SUCCESS;
                 }
                 return ActionState.ERROR;
-            }).catch((err: Error) => {
+            })
+            .catch((err: Error) => {
                 if (
                     err.message.includes('Stack with id') &&
                     err.message.includes('doest not exist')
@@ -231,5 +239,4 @@ export class CdkDestroyAction extends CdkAction{
                 throw err;
             });
     }
-
 }
