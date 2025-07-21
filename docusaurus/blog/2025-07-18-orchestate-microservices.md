@@ -97,7 +97,7 @@ This central workflow orchestrates each step by calling autonomous **Actions**, 
 - **Atomic actions**: Each business step is an independent and testable action
 - **Conditional branching**: The workflow flow can diverge based on data (buy or sell). It does not differ from standard TypeScript code.
 - **Extensibility**: We can easily add steps, compensation logic, monitoring
-- **Resilience**: Recovery after crash, state management, built-in observability
+- **Resilience**: Handles crash recovery, workflow state, and observability
 
 Each step is defined as an **Orbits Action**.
 
