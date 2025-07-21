@@ -72,7 +72,7 @@ export class TradingWorkflow extends Workflow{
                 price:stockPrice.stock_price
             })); 
 
-        const buyOrSellRecommendation : string = resultGenerateBuySellRecommendationAction.buyOrSellRecommendation
+        const buyOrSellRecommendation = resultGenerateBuySellRecommendationAction.buyOrSellRecommendation
 
         if (buyOrSellRecommendation === 'sell') {
              const resultSellStockData = await this.do("sell-stock", new SellStockeAction().setArgument({
