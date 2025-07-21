@@ -23,13 +23,21 @@ You'll need to deploy lambdas in aws
 cd samples/orchestrate-lambda/deploy-lambdas
 ```
 - Follow README.md instructions to get API's URL
-- Define in .env 
+
+#### Configure environment values
+
+- Copy the environment template:
+```bash cp .base.env .env```
+- Edit .env file with api url retrieved previously
+- Define
 ```bash
 API_ADDRESS=your-api-url
 ```
 
 ## Execution
 
+- Load environment variables:
+```bash export $(cat .env | xargs)```
 - Define your mongo_url : 
 ```bash export ORBITS_DB__MONGO__URL=your-mongo-url```
 - Run your workflow : 
@@ -41,19 +49,37 @@ This command will:
 ## Project Structure
 
 ```bash
+├── deploy-lambdas/ # Submodule for Lambda deployment
+│   ├── lambdas/
+│   │   ├── buy-stock.ts # Buy stock Lambda
+│   │   ├── check-stock-price.ts # Check stock price Lambda
+│   │   ├── generate-buy-sell-recommend.ts # Recommendation Lambda
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── sell-stock.ts # Sell stock Lambda
+│   │   ├── tsconfig.ts
+│   │   └── update-one.ts  # not used
+│   ├── cdk.json
+│   ├── index.js
+│   ├── index.ts # lambda CDK stack definition
+│   ├── package.json
+│   ├── README.md
+│   └── tsconfig.json
 ├── src/
 │   ├── orbits/
 │   │   ├── orbi.ts # Main orchestration script
 │   │   ├── actions/ 
-│   │   │   ├── buyStock.ts
-│   │   │   ├── check-stock-price.ts
-│   │   │   ├── generate-buy-sell-recommendation.ts
-│   │   │   └── sellStock.ts
+│   │   │   ├── buyStock.ts # Buy stock API call action 
+│   │   │   ├── check-stock-price.ts # Check stock price API call action 
+│   │   │   ├── generate-buy-sell-recommendation.ts # Generate a recommendation based on price API call action 
+│   │   │   └── sellStock.ts # Sell stock API call action 
 │   │   ├── types/
-│   │   │   └── stocks.ts
+│   │   │   └── stocks.ts # Transaction and Stock type
 │   │   └── workflows/
-│   │       └── trading.ts
-│   ├── init-env.ts
+│   │       └── trading.ts # Trading workflow
+│   └── const.ts # Utils const
+├── .base.env                # Environment template
+├── .env                     # Your environment variables (git-ignored)
 ├── package.json
 └── README.md
 ```

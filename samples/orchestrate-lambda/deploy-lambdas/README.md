@@ -22,5 +22,5 @@ After the deployment you will see the API's URL, which represents the url you ca
 
 Example output:
 ```
-OrchestrateLambdaFunctionsStack.stockApiEndpoint893DB24E = https://qugmumhvn8.execute-api.us-west-2.amazonaws.com/prod/
+OrchestrateLambdaFunctionsStack.stockApiEndpoint893DB24E = https://xxxx.execute-api.xxxxx.amazonaws.com/prod/
 ```

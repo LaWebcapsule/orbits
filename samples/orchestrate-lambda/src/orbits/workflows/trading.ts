@@ -11,8 +11,8 @@ export class TradingWorkflow extends Workflow{
 
     async define(){
         const resultCheckStockPrice = await this.do("check-stock-price", new CheckStockPriceAction());
-        const stockPrice: StockPriceResultObj = resultCheckStockPrice.stockPrice as StockPriceResultObj;
-        console.log(`Retrieved a stock price: ${JSON.stringify(stockPrice)}`)
+        const stockPrice = resultCheckStockPrice.stockPrice;
+        this.internalLog(`Retrieved a stock price: ${JSON.stringify(stockPrice)}`)
 
         const resultGenerateBuySellRecommendationAction = await this.do("check-stock-price", new GenerateBuySellRecommendationAction().setArgument(
             {
@@ -20,28 +20,19 @@ export class TradingWorkflow extends Workflow{
             })); 
 
         const buyOrSellRecommendation : string = resultGenerateBuySellRecommendationAction.buyOrSellRecommendation
-        console.log(`Got recommendation based on price: ${buyOrSellRecommendation}`)
+        this.internalLog(`Got recommendation based on price: ${buyOrSellRecommendation}`)
 
-        let result: StockTransaction = {
-            id: '',
-            price: '',
-            type: 'sell',
-            qty: '',
-            timestamp: ''
-        };
         if (buyOrSellRecommendation === 'sell') {
              const resultSellStockData = await this.do("sell-stock", new SellStockeAction().setArgument({
                 price:stockPrice.stock_price
             }));
-            result = resultSellStockData.stockData;
+            return resultSellStockData.stockData;
         } else {
              const resultBuyStockData = await this.do("buy-stock", new BuyStockAction().setArgument({
                 price:stockPrice.stock_price
             }));
-            const sellStockData: StockTransaction = resultBuyStockData.stockData;
-            result = sellStockData;
+            return resultBuyStockData.stockData;
         }
 
-        return result;
     };
 }

@@ -1,8 +1,6 @@
 import { Action, ActionState } from "@orbi-ts/core";
-import { API_ADDRESS } from '../../init-env';
+import { API_ADDRESS } from '../../const';
 import { StockTransaction } from "../types/stocks";
-import { JSONObject } from "../../../../../packages/services/src/utils";
-
 
 export class BuyStockAction extends Action {
 
@@ -11,18 +9,19 @@ export class BuyStockAction extends Action {
     };
 
     declare IResult: {
-        stockData : StockTransaction & JSONObject
+        stockData : StockTransaction
     }
 
     async main(){
-        console.log(`url ${JSON.stringify(API_ADDRESS)} is buyStock`);
+        this.internalLog(`url ${JSON.stringify(API_ADDRESS)} is buyStock`);
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ stock_price: this.argument.price })
         };
         const response = await fetch(API_ADDRESS + 'buyStock', requestOptions);
-        this.result.stockData = await response.json();
+        const stockData = await response.json();
+        this.setResult({stockData})
         return ActionState.SUCCESS
     };
 

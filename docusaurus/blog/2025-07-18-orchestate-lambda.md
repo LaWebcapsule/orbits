@@ -1,16 +1,12 @@
 ---
-slug: orchestration-resilience-microservices
-title: Orchestration, Resilience and Microservices with Orbits
+slug: workflows-orchestrate-microservices
+title: Write Node.js workflows to orchestrate microservices.
 authors: [loic, louis]
 tags: [orchestration, microservices, saga-pattern, orbits, workflow]
 ---
-# Orchestration, Resilience and Microservices
+# Write Node.js workflows to orchestrate microservices.
 
-In a world where applications are increasingly distributed, modeling robust and resilient business processes is essential. Between API calls, network errors, conditional logic, and automatic recovery needs, managing a simple workflow can quickly become a technical nightmare.
-
-What if we could simplify all of this, make it more enjoyable for developers, and fully integrate it with Node.js?
-
-In this article, we share our experience implementing business workflows in Node.js using the **Orbits** engine, a solution that allows you to express your business processes as declarative code.
+Databases follow the principle of transactions — a set of changes that must either all succeed or all fail. But when an application interacts with multiple databases or connects to various APIs (as is the case for most applications today), the guarantees of ACID are lost. Workflows, state machines, and the saga pattern help achieve a similar level of reliability, often at the cost of more complex code. Here, we introduce a **Node.js** framework that makes it easy to write such workflows in TypeScript.
 
 <!-- truncate -->
 
@@ -35,53 +31,71 @@ async function trade() {
 
 But in reality, problems accumulate:
 - What to do if a third-party service fails?
-- How to trace the operation state at each step?
-- Is it possible to resume execution after a crash?
-- How to ensure an operation was only partially completed?
-- And most importantly: **how to guarantee process consistency in a distributed system?**
+- What if a network error occurs?
+- If the Node.js process is interrupted, the trade stops halfway, with no memory of the ongoing buy/sell operation.
+
+These issues, far from being theoretical, can have financial consequences. For example, a buy or sell action that is forgotten or left halfway through can lead to losses for the company.
 
 ## The Orchestrated Saga Pattern
 
-The **Orchestrated Saga pattern** effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern allows breaking down the global transaction into a series of atomic actions, executed sequentially and in a controlled manner.
+The **Orchestrated Saga Pattern** effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.
 
 The orchestrator:
-- Explicitly manages state transitions between each step
-- Persists workflow state to ensure recovery after crashes
-- Implements compensation mechanisms (logical rollback) in case of failure
-- Provides fine-grained traceability through clear step naming
+- Explicitly manages state transitions between each step.
+- Persists workflow state to ensure recovery after crashes.
+- Can replay actions in case of transient failure.
+- Provides detailed traceability through clear naming of each step.
 
 Thus, the Orchestrated Saga pattern not only guarantees resilience and consistency of operations but also facilitates maintenance, monitoring, and evolution of complex workflows in a distributed environment.
 
-## Implementation
+## Use Case
+
+In this blog post, we revisit the example of orchestrating a banking transaction. This canonical example was provided by [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) and [Temporal](https://temporal.io/blog/temporal-replaces-state-machines-for-distributed-applications). Readers can refer to these articles to compare the syntax and ease of implementation offered by each tool.
+
+## The Implementation
 
 Orbits proposes writing workflows in a structured and declarative manner.
 
 Here's a concrete example:
 
 ```typescript
-export class TradingWorkflow extends Workflow {
-    async define() {
+export class TradingWorkflow extends Workflow{
+
+    declare IResult:StockTransaction
+
+    async define(){
         const resultCheckStockPrice = await this.do("check-stock-price", new CheckStockPriceAction());
         const stockPrice = resultCheckStockPrice.stockPrice;
-        
-        const recommendationResult = await this.do("generate-recommendation", 
-            new GenerateBuySellRecommendationAction().setArgument({ price: stockPrice.stock_price }));
-        const decision = recommendationResult.buyOrSellRecommendation;
-        
-        if (decision === 'sell') {
-            return await this.do("sell-stock", new SellStockAction().setArgument({ price: stockPrice.stock_price }));
+
+        const resultGenerateBuySellRecommendationAction = await this.do("check-stock-price", new GenerateBuySellRecommendationAction().setArgument(
+            {
+                price:stockPrice.stock_price
+            })); 
+
+        const buyOrSellRecommendation : string = resultGenerateBuySellRecommendationAction.buyOrSellRecommendation
+
+        if (buyOrSellRecommendation === 'sell') {
+             const resultSellStockData = await this.do("sell-stock", new SellStockeAction().setArgument({
+                price:stockPrice.stock_price
+            }));
+            return resultSellStockData.stockData;
         } else {
-            return await this.do("buy-stock", new BuyStockAction().setArgument({ price: stockPrice.stock_price }));
+             const resultBuyStockData = await this.do("buy-stock", new BuyStockAction().setArgument({
+                price:stockPrice.stock_price
+            }));
+            return resultBuyStockData.stockData;
         }
-    }
+
+    };
 }
+
 ```
 
 This central workflow orchestrates each step by calling autonomous **Actions**, while maintaining branching logic and intermediate states.
 
 - **Explicit orchestration**: The Orbits engine manages calls, errors, retries, and state persistence
 - **Atomic actions**: Each business step is an independent and testable action
-- **Conditional branching**: The workflow flow can diverge based on data (buy or sell)
+- **Conditional branching**: The workflow flow can diverge based on data (buy or sell). It does not differ from standard TypeScript code.
 - **Extensibility**: We can easily add steps, compensation logic, monitoring
 - **Resilience**: Recovery after crash, state management, built-in observability
 
@@ -130,6 +144,10 @@ flowchart TD
 
 Adopting Orbits offers:
 
+**Standard TypeScript**
+
+Orbits is a standard TypeScript framework. You write promises and asynchronous functions just like you would anywhere else.
+
 **Clear separation of responsibilities**
 - **Workflow** = orchestration
 - **Action** = unit business logic
@@ -147,9 +165,9 @@ Adopting Orbits offers:
 
 ## Conclusion
 
-Modeling robust business workflows in a distributed environment is a challenge — but not an inevitability. With the simplicity of **Orbits in Node.js**, we can build systems that are reliable, readable, and maintainable.
+With the simplicity of **Orbits in Node.js**, we can build systems that are reliable, readable, and maintainable, without changing your coding practices.
 
-If you're working on critical processes — e-commerce, finance, logistics, etc. — **adopting such an approach will provide you with a significant structural advantage**.
+For your critical processes — e-commerce, finance, logistics, etc. — **adopting such an approach will significantly reduce your bug rate and inconsistencies**.
 
 ---
 

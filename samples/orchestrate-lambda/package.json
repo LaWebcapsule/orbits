@@ -12,7 +12,6 @@
   "dependencies": {
     "@orbi-ts/core": "latest",
     "@orbi-ts/fuel": "latest",
-    "dotenv": "^17.0.1",
     "path": "^0.12.7"
   },
 "devDependencies": {
