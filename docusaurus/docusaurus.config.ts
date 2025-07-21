@@ -181,7 +181,9 @@ const config: Config = {
       return {
         name: 'webflow-integration-plugin',
         async postBuild() {
-          // ...
+          //copy the static home (webflow) directory
+          //to the root of the website
+          //and override some default webflow images
           await fs.promises.cp(
             path.join(context.siteDir, 'static/home'),
             path.join(context.outDir),
@@ -194,8 +196,8 @@ const config: Config = {
             path.join(context.siteDir ,'static/img/favicon.ico'),
             path.join(context.outDir, 'images/favicon.ico'));
           await fs.promises.copyFile(
-            path.join(context.siteDir,'static/img/favicon.ico'),
-            path.join(context.outDir, 'images/favicon.ico')
+            path.join(context.siteDir,'static/img/docusaurus.png'),
+            path.join(context.outDir, 'images/webclip.png')
           );  
         
         }
