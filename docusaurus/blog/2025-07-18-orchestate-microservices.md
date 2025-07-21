@@ -8,6 +8,9 @@ tags: [orchestration, microservices, saga-pattern, orbits, workflow]
 
 Databases follow the principle of transactions — a set of changes that must either all succeed or all fail. But when an application interacts with multiple databases or connects to various APIs (as is the case for most applications today), the guarantees of ACID are lost. Workflows, state machines, and the saga pattern help achieve a similar level of reliability, often at the cost of more complex code. Here, we introduce a **Node.js** framework that makes it easy to write such workflows in TypeScript.
 
+To follow along, you can find the full source code in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).
+
+
 <!-- truncate -->
 
 ## Why explicitly orchestrate workflows?
