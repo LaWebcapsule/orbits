@@ -9,6 +9,9 @@ This is a basic guide to get your first resource working.
 
 ## Install
 
+
+## Requirements
+
 Install `@orbi-ts/core` and `@orbi-ts/fuel`.
 ```bash
 npm install @orbi-ts/core @orbi-ts/fuel --save
@@ -18,6 +21,16 @@ Install it with yarn:
 ```bash
 yarn add @orbi-ts/core @orbi-ts/fuel
 ```
+
+:::info ES modules
+`@orbi-ts/core` and `@orbi-ts/fuel` are published as ES modules.
+If you're starting a new project from scratch, modify your `package.json` to ensure proper module resolution:
+```bash 
+npm pkg set type="module"
+```
+If you're integrating these packages into an existing ESM project, simply import them as usual.  
+If you're integrating these packages into an existing CommonJS project, refer to this guide on how to use [ES modules from a CommonJS environment](https://www.typescriptlang.org/docs/handbook/modules/appendices/esm-cjs-interop.html).
+:::
 
 ## Write your first action
 

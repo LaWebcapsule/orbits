@@ -1,6 +1,6 @@
 # Class: `abstract` CoalescingWorkflow
 
-Defined in: [core/actions/src/coalescing-manager.ts:23](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L23)
+Defined in: [core/actions/src/coalescing-manager.ts:23](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L23)
 
 Structure actions.
 
@@ -22,7 +22,7 @@ Extends this class to build new actions behaviors.
 
 > **new CoalescingWorkflow**(): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:80](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L80)
+Defined in: [core/actions/src/workflow-manager.ts:80](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L80)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Defined in: [core/actions/src/workflow-manager.ts:80](https://github.com/LaWebca
 
 > **dbDoc**: [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`JSONObject`, \{ `actions`: \{[`key`: `string`]: `object`; \}; `currentStepIndex?`: `number`; `currentStepName?`: `string`; `currentTrackIds`: `string`[]; `getNextStepAttemp`: `number`; `isRollBackPossible`: `boolean`; `nTimesCurrentStep`: `number`; `oldResult`: [`StepResult`](../type-aliases/StepResult.md)[]; `preserveOldResult`: [`StepResult`](../type-aliases/StepResult.md)[]; `registeredActions`: `object`[]; `stepsHistory`: `number`[]; \}, `void` \| `Error` \| `JSONObject`\>
 
-Defined in: [core/actions/src/action-manager.ts:114](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L114)
+Defined in: [core/actions/src/action-manager.ts:114](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L114)
 
 Action Database Document
 
@@ -52,7 +52,7 @@ Action Database Document
 
 > `optional` **dBSession**: `ClientSession`
 
-Defined in: [core/actions/src/workflow-manager.ts:47](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L47)
+Defined in: [core/actions/src/workflow-manager.ts:47](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L47)
 
 #### Inherited from
 
@@ -64,7 +64,7 @@ Defined in: [core/actions/src/workflow-manager.ts:47](https://github.com/LaWebca
 
 > **defineCallMode**: `"main"` \| `"actionFinding"`
 
-Defined in: [core/actions/src/workflow-manager.ts:233](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L233)
+Defined in: [core/actions/src/workflow-manager.ts:233](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L233)
 
 #### Inherited from
 
@@ -76,7 +76,7 @@ Defined in: [core/actions/src/workflow-manager.ts:233](https://github.com/LaWebc
 
 > **docsToSaveAtStepStart**: `Document`\<`any`, `any`, `any`\>[] = `[]`
 
-Defined in: [core/actions/src/workflow-manager.ts:49](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L49)
+Defined in: [core/actions/src/workflow-manager.ts:49](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L49)
 
 #### Inherited from
 
@@ -88,7 +88,7 @@ Defined in: [core/actions/src/workflow-manager.ts:49](https://github.com/LaWebca
 
 > **dynamicActionFound**: [`Action`](Action.md)
 
-Defined in: [core/actions/src/workflow-manager.ts:245](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L245)
+Defined in: [core/actions/src/workflow-manager.ts:245](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L245)
 
 #### Inherited from
 
@@ -100,7 +100,7 @@ Defined in: [core/actions/src/workflow-manager.ts:245](https://github.com/LaWebc
 
 > **dynamicActionToFound**: [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)
 
-Defined in: [core/actions/src/workflow-manager.ts:244](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L244)
+Defined in: [core/actions/src/workflow-manager.ts:244](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L244)
 
 #### Inherited from
 
@@ -112,7 +112,7 @@ Defined in: [core/actions/src/workflow-manager.ts:244](https://github.com/LaWebc
 
 > **executingDefine**: `boolean` = `false`
 
-Defined in: [core/actions/src/workflow-manager.ts:232](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L232)
+Defined in: [core/actions/src/workflow-manager.ts:232](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L232)
 
 #### Inherited from
 
@@ -124,7 +124,7 @@ Defined in: [core/actions/src/workflow-manager.ts:232](https://github.com/LaWebc
 
 > `optional` **executor**: [`Executor`](Executor.md)
 
-Defined in: [core/actions/src/action-manager.ts:40](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L40)
+Defined in: [core/actions/src/action-manager.ts:40](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L40)
 
 Specify an executor in which all actions of this class will run.
 
@@ -138,7 +138,7 @@ Specify an executor in which all actions of this class will run.
 
 > **IArgument**: `JSONObject`
 
-Defined in: [core/actions/src/action-manager.ts:99](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L99)
+Defined in: [core/actions/src/action-manager.ts:99](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L99)
 
 Action argument
 
@@ -152,7 +152,7 @@ Action argument
 
 > **IBag**: `object`
 
-Defined in: [core/actions/src/workflow-manager.ts:53](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L53)
+Defined in: [core/actions/src/workflow-manager.ts:53](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L53)
 
 Action bag
 
@@ -216,7 +216,7 @@ Action bag
 
 > **IResult**: `void` \| `Error` \| `JSONObject`
 
-Defined in: [core/actions/src/action-manager.ts:109](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L109)
+Defined in: [core/actions/src/action-manager.ts:109](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L109)
 
 Action result
 
@@ -230,7 +230,7 @@ Action result
 
 > **isExecutorSet**: `boolean` = `false`
 
-Defined in: [core/actions/src/action-manager.ts:530](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L530)
+Defined in: [core/actions/src/action-manager.ts:530](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L530)
 
 #### Inherited from
 
@@ -242,7 +242,7 @@ Defined in: [core/actions/src/action-manager.ts:530](https://github.com/LaWebcap
 
 > **isInitialised**: `boolean` = `false`
 
-Defined in: [core/actions/src/action-manager.ts:502](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L502)
+Defined in: [core/actions/src/action-manager.ts:502](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L502)
 
 #### Deprecated
 
@@ -258,7 +258,7 @@ use isInitialized
 
 > **isInitialized**: `boolean` = `false`
 
-Defined in: [core/actions/src/action-manager.ts:503](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L503)
+Defined in: [core/actions/src/action-manager.ts:503](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L503)
 
 #### Inherited from
 
@@ -270,7 +270,7 @@ Defined in: [core/actions/src/action-manager.ts:503](https://github.com/LaWebcap
 
 > **mapRefWithStrategy**: `Map`\<`string`, `"default"` \| `"cross-workflow"`\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:90](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L90)
+Defined in: [core/actions/src/coalescing-manager.ts:90](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L90)
 
 ***
 
@@ -278,7 +278,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:90](https://github.com/LaWeb
 
 > **notifyHealthPromise**: `Promise`\<`any`\> = `undefined`
 
-Defined in: [core/actions/src/action-manager.ts:962](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L962)
+Defined in: [core/actions/src/action-manager.ts:962](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L962)
 
 Send a signal to indicate that the action is still in progress..
 Useful for preventing timeouts when the action's duration is long but not precisely predictable.
@@ -293,7 +293,7 @@ Useful for preventing timeouts when the action's duration is long but not precis
 
 > **registeredActionIds**: `any`[] = `[]`
 
-Defined in: [core/actions/src/workflow-manager.ts:495](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L495)
+Defined in: [core/actions/src/workflow-manager.ts:495](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L495)
 
 #### Inherited from
 
@@ -305,7 +305,7 @@ Defined in: [core/actions/src/workflow-manager.ts:495](https://github.com/LaWebc
 
 > **resolveDefineIteration**: (`actionState?`) => `void`
 
-Defined in: [core/actions/src/workflow-manager.ts:279](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L279)
+Defined in: [core/actions/src/workflow-manager.ts:279](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L279)
 
 #### Parameters
 
@@ -327,7 +327,7 @@ Defined in: [core/actions/src/workflow-manager.ts:279](https://github.com/LaWebc
 
 > **runtime**: [`ActionRuntime`](ActionRuntime.md) = `ActionRuntime.activeRuntime`
 
-Defined in: [core/actions/src/action-manager.ts:42](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L42)
+Defined in: [core/actions/src/action-manager.ts:42](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L42)
 
 #### Inherited from
 
@@ -339,7 +339,7 @@ Defined in: [core/actions/src/action-manager.ts:42](https://github.com/LaWebcaps
 
 > **steps**: [`Step`](../interfaces/Step.md)[] = `[]`
 
-Defined in: [core/actions/src/workflow-manager.ts:51](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L51)
+Defined in: [core/actions/src/workflow-manager.ts:51](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L51)
 
 #### Inherited from
 
@@ -351,7 +351,7 @@ Defined in: [core/actions/src/workflow-manager.ts:51](https://github.com/LaWebca
 
 > `static` **cronDefaultSettings**: `object`
 
-Defined in: [core/actions/src/action-manager.ts:82](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L82)
+Defined in: [core/actions/src/action-manager.ts:82](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L82)
 
 Configure the frequency at which a cron will launch [Action.resume](Action.md#resume).
 It is also possible to dynamically modify the dbDoc.cronActivity property to modify the call to a cron.
@@ -381,7 +381,7 @@ TODO: set this as required after activityFrequence removal
 
 > `static` **defaultDelay**: `number` = `Infinity`
 
-Defined in: [core/actions/src/workflow-manager.ts:43](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L43)
+Defined in: [core/actions/src/workflow-manager.ts:43](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L43)
 
 Shortcut to [\[ActionState.IN\_PROGRESS\]](Action.md#defaultdelays).
 
@@ -397,7 +397,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 > `static` **defaultDelays**: `object`
 
-Defined in: [core/actions/src/action-manager.ts:70](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L70)
+Defined in: [core/actions/src/action-manager.ts:70](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L70)
 
 For the states `ActionState.EXECUTING_MAIN` and `ActionState.IN_PROGRESS`,
 this object configures the time after which, if no change happened, an action is considered in error.
@@ -436,7 +436,7 @@ If not set, this property will be 'inherited' from the first parent class where 
 
 > `static` **permanentRef**: `string` \| `string`[]
 
-Defined in: [core/actions/src/action-manager.ts:35](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L35)
+Defined in: [core/actions/src/action-manager.ts:35](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L35)
 
 Id of the action stored in database.
 It should be a permanent id that designates the action instance.
@@ -453,7 +453,7 @@ It should be a permanent id that designates the action instance.
 
 > **get** **\_id**(): `this`\[`"dbDoc"`\]\[`"_id"`\]
 
-Defined in: [core/actions/src/action-manager.ts:165](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L165)
+Defined in: [core/actions/src/action-manager.ts:165](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L165)
 
 ##### Returns
 
@@ -471,7 +471,7 @@ Defined in: [core/actions/src/action-manager.ts:165](https://github.com/LaWebcap
 
 > **get** **argument**(): `this`\[`"dbDoc"`\]\[`"argument"`\]
 
-Defined in: [core/actions/src/action-manager.ts:129](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L129)
+Defined in: [core/actions/src/action-manager.ts:129](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L129)
 
 ##### Returns
 
@@ -481,7 +481,7 @@ Defined in: [core/actions/src/action-manager.ts:129](https://github.com/LaWebcap
 
 > **set** **argument**(`argument`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:133](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L133)
+Defined in: [core/actions/src/action-manager.ts:133](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L133)
 
 ##### Parameters
 
@@ -505,7 +505,7 @@ Defined in: [core/actions/src/action-manager.ts:133](https://github.com/LaWebcap
 
 > **get** **bag**(): `this`\[`"dbDoc"`\]\[`"bag"`\]
 
-Defined in: [core/actions/src/action-manager.ts:120](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L120)
+Defined in: [core/actions/src/action-manager.ts:120](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L120)
 
 ##### Returns
 
@@ -515,7 +515,7 @@ Defined in: [core/actions/src/action-manager.ts:120](https://github.com/LaWebcap
 
 > **set** **bag**(`bag`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:124](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L124)
+Defined in: [core/actions/src/action-manager.ts:124](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L124)
 
 ##### Parameters
 
@@ -539,7 +539,7 @@ Defined in: [core/actions/src/action-manager.ts:124](https://github.com/LaWebcap
 
 > **get** **cronActivity**(): `this`\[`"dbDoc"`\]\[`"cronActivity"`\]
 
-Defined in: [core/actions/src/action-manager.ts:156](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L156)
+Defined in: [core/actions/src/action-manager.ts:156](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L156)
 
 ##### Returns
 
@@ -549,7 +549,7 @@ Defined in: [core/actions/src/action-manager.ts:156](https://github.com/LaWebcap
 
 > **set** **cronActivity**(`cronActivity`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:160](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L160)
+Defined in: [core/actions/src/action-manager.ts:160](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L160)
 
 ##### Parameters
 
@@ -573,7 +573,7 @@ Defined in: [core/actions/src/action-manager.ts:160](https://github.com/LaWebcap
 
 > **get** **repeat**(): `this`\[`"dbDoc"`\]\[`"repeat"`\]
 
-Defined in: [core/actions/src/action-manager.ts:147](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L147)
+Defined in: [core/actions/src/action-manager.ts:147](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L147)
 
 ##### Returns
 
@@ -583,7 +583,7 @@ Defined in: [core/actions/src/action-manager.ts:147](https://github.com/LaWebcap
 
 > **set** **repeat**(`repeat`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:151](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L151)
+Defined in: [core/actions/src/action-manager.ts:151](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L151)
 
 ##### Parameters
 
@@ -607,7 +607,7 @@ Defined in: [core/actions/src/action-manager.ts:151](https://github.com/LaWebcap
 
 > **get** **result**(): `this`\[`"dbDoc"`\]\[`"result"`\]
 
-Defined in: [core/actions/src/action-manager.ts:138](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L138)
+Defined in: [core/actions/src/action-manager.ts:138](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L138)
 
 ##### Returns
 
@@ -617,7 +617,7 @@ Defined in: [core/actions/src/action-manager.ts:138](https://github.com/LaWebcap
 
 > **set** **result**(`result`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:142](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L142)
+Defined in: [core/actions/src/action-manager.ts:142](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L142)
 
 ##### Parameters
 
@@ -639,7 +639,7 @@ Defined in: [core/actions/src/action-manager.ts:142](https://github.com/LaWebcap
 
 > **\_resume**(): `any`
 
-Defined in: [core/actions/src/action-manager.ts:664](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L664)
+Defined in: [core/actions/src/action-manager.ts:664](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L664)
 
 The function resumes the action by calling the appropriate function depending on the current
 state of the action. It doesn't take into account the executor.
@@ -660,7 +660,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 > **activityLogs**(`options`): `any`[] \| `Promise`\<`any`[]\>
 
-Defined in: [core/actions/src/action-manager.ts:808](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L808)
+Defined in: [core/actions/src/action-manager.ts:808](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L808)
 
 #### Parameters
 
@@ -682,7 +682,7 @@ Defined in: [core/actions/src/action-manager.ts:808](https://github.com/LaWebcap
 
 > **breakAndReject**(`result`): [`RejectAction`](RejectAction.md)
 
-Defined in: [core/actions/src/workflow-manager.ts:204](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L204)
+Defined in: [core/actions/src/workflow-manager.ts:204](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L204)
 
 #### Parameters
 
@@ -704,7 +704,7 @@ Defined in: [core/actions/src/workflow-manager.ts:204](https://github.com/LaWebc
 
 > **breakAndReturn**(`result`): [`ResolveAction`](ResolveAction.md)
 
-Defined in: [core/actions/src/workflow-manager.ts:197](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L197)
+Defined in: [core/actions/src/workflow-manager.ts:197](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L197)
 
 #### Parameters
 
@@ -726,7 +726,7 @@ Defined in: [core/actions/src/workflow-manager.ts:197](https://github.com/LaWebc
 
 > **clone**(): `any`
 
-Defined in: [core/actions/src/action-manager.ts:931](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L931)
+Defined in: [core/actions/src/action-manager.ts:931](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L931)
 
 Clone the action.
 
@@ -746,7 +746,7 @@ a new action with the same argument
 
 > **define**(): `Promise`\<`void` \| `Error` \| `JSONObject`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:240](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L240)
+Defined in: [core/actions/src/workflow-manager.ts:240](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L240)
 
 Defines the workflow logic.
 Called multiple times for a single workflow process.
@@ -768,7 +768,7 @@ Promise that resolves with an argument of type `this['IResult']`.
 
 > **defineDynamicAction**(`actionDb`): `Promise`\<[`Action`](Action.md)\>
 
-Defined in: [core/actions/src/workflow-manager.ts:247](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L247)
+Defined in: [core/actions/src/workflow-manager.ts:247](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L247)
 
 #### Parameters
 
@@ -792,7 +792,7 @@ Defined in: [core/actions/src/workflow-manager.ts:247](https://github.com/LaWebc
 
 > **do**\<`T`\>(`ref`, `action`): `DoPromise`\<`T`\[`"IResult"`\]\>
 
-Defined in: [core/actions/src/workflow-manager.ts:505](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L505)
+Defined in: [core/actions/src/workflow-manager.ts:505](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L505)
 
 Executes an action in the workflow.
 If the action already exists, it will be tracked and resumed.
@@ -830,7 +830,7 @@ a promise that resolves with the result of the action
 
 > **do**\<`T`\>(`ref`, `cb`): `DoPromise`\<`T`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:515](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L515)
+Defined in: [core/actions/src/workflow-manager.ts:515](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L515)
 
 Executes an action in the workflow.
 If the action already exists, it will be tracked and resumed.
@@ -870,7 +870,7 @@ a promise that resolves with the result of the promise
 
 > **do**(`ref`, `opts`): `DoPromise`\<`any`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:528](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L528)
+Defined in: [core/actions/src/workflow-manager.ts:528](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L528)
 
 Executes an action in the workflow.
 If the action already exists, it will be tracked and resumed.
@@ -920,7 +920,7 @@ a promise that resolves with the result of the action
 
 > **do**\<`T`\>(`ref`, `opts`): `any`
 
-Defined in: [core/actions/src/workflow-manager.ts:546](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L546)
+Defined in: [core/actions/src/workflow-manager.ts:546](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L546)
 
 Executes an action in the workflow.
 If the action already exists, it will be tracked and resumed.
@@ -964,7 +964,7 @@ a promise that resolves with the result of the action
 
 > **do**\<`T`\>(`ref`, `opts`, `params?`): `DoPromise`\<`T`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:552](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L552)
+Defined in: [core/actions/src/workflow-manager.ts:552](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L552)
 
 Executes an action in the workflow.
 If the action already exists, it will be tracked and resumed.
@@ -1026,7 +1026,7 @@ a promise that resolves with the result of the action
 
 > **dynamicallyDefineFromWorkflowStep**(`workflow`, `marker`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:329](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L329)
+Defined in: [core/actions/src/action-manager.ts:329](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L329)
 
 #### Parameters
 
@@ -1052,7 +1052,7 @@ Defined in: [core/actions/src/action-manager.ts:329](https://github.com/LaWebcap
 
 > **dynamiclyDefineFromWorfklowStep**(`workflow`, `marker`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:325](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L325)
+Defined in: [core/actions/src/action-manager.ts:325](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L325)
 
 #### Parameters
 
@@ -1082,7 +1082,7 @@ use dynamicallyDefineFromWorkflowStep
 
 > **findIfEquivalentActionAlreadyExists**(`ref`, `action`): `Promise`\<[`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\>\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:91](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L91)
+Defined in: [core/actions/src/coalescing-manager.ts:91](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L91)
 
 #### Parameters
 
@@ -1108,7 +1108,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:91](https://github.com/LaWeb
 
 > **getLogs**(`options`): `Promise`\<`any`[]\>
 
-Defined in: [core/actions/src/action-manager.ts:812](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L812)
+Defined in: [core/actions/src/action-manager.ts:812](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L812)
 
 #### Parameters
 
@@ -1132,7 +1132,7 @@ Defined in: [core/actions/src/action-manager.ts:812](https://github.com/LaWebcap
 
 > **goTo**(`name`, `onState`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:189](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L189)
+Defined in: [core/actions/src/workflow-manager.ts:189](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L189)
 
 #### Parameters
 
@@ -1158,7 +1158,7 @@ Defined in: [core/actions/src/workflow-manager.ts:189](https://github.com/LaWebc
 
 > **goToStep**(`name`): [`ResolveAction`](ResolveAction.md)
 
-Defined in: [core/actions/src/workflow-manager.ts:180](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L180)
+Defined in: [core/actions/src/workflow-manager.ts:180](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L180)
 
 #### Parameters
 
@@ -1180,7 +1180,7 @@ Defined in: [core/actions/src/workflow-manager.ts:180](https://github.com/LaWebc
 
 > **identity**(): `any`
 
-Defined in: [core/actions/src/coalescing-manager.ts:26](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L26)
+Defined in: [core/actions/src/coalescing-manager.ts:26](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L26)
 
 #### Returns
 
@@ -1192,7 +1192,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:26](https://github.com/LaWeb
 
 > **init**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-manager.ts:415](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L415)
+Defined in: [core/actions/src/action-manager.ts:415](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L415)
 
 Initialize the action from the action stored in the database.
 
@@ -1217,7 +1217,7 @@ If your action use complex object, they can be initialized here.
 
 > **initialisation**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-manager.ts:508](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L508)
+Defined in: [core/actions/src/action-manager.ts:508](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L508)
 
 #### Returns
 
@@ -1237,7 +1237,7 @@ use initialization
 
 > **initialization**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-manager.ts:517](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L517)
+Defined in: [core/actions/src/action-manager.ts:517](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L517)
 
 Mainly used for workflows.
 Can also complement init().
@@ -1257,7 +1257,7 @@ If it gets too complex, use hooks.
 
 > **internalLog**(`message`, `opts`): `void`
 
-Defined in: [core/actions/src/action-manager.ts:873](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L873)
+Defined in: [core/actions/src/action-manager.ts:873](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L873)
 
 Log a message in the internal logger.
 
@@ -1303,7 +1303,7 @@ the final log message will be:
 
 > **internalLogError**(`err`): `void`
 
-Defined in: [core/actions/src/workflow-manager.ts:833](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L833)
+Defined in: [core/actions/src/workflow-manager.ts:833](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L833)
 
 Log an error in the internal logger.
 
@@ -1339,7 +1339,7 @@ the final log message will be:
 
 > **isActionActive**(`action`): `boolean`
 
-Defined in: [core/actions/src/workflow-manager.ts:221](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L221)
+Defined in: [core/actions/src/workflow-manager.ts:221](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L221)
 
 #### Parameters
 
@@ -1361,7 +1361,7 @@ Defined in: [core/actions/src/workflow-manager.ts:221](https://github.com/LaWebc
 
 > **lastOutput**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:130](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L130)
+Defined in: [core/actions/src/coalescing-manager.ts:130](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L130)
 
 #### Returns
 
@@ -1373,7 +1373,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:130](https://github.com/LaWe
 
 > **main**(): `Promise`\<[`ActionState`](../enumerations/ActionState.md)\>
 
-Defined in: [core/actions/src/workflow-manager.ts:323](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L323)
+Defined in: [core/actions/src/workflow-manager.ts:323](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L323)
 
 This method should launched the main action process
 It is called only one time.
@@ -1393,7 +1393,7 @@ It returns a state value.
 
 > **name**(`name`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:173](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L173)
+Defined in: [core/actions/src/workflow-manager.ts:173](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L173)
 
 #### Parameters
 
@@ -1415,7 +1415,7 @@ Defined in: [core/actions/src/workflow-manager.ts:173](https://github.com/LaWebc
 
 > **next**(`cb`, `opts?`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:96](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L96)
+Defined in: [core/actions/src/workflow-manager.ts:96](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L96)
 
 #### Parameters
 
@@ -1443,7 +1443,7 @@ Defined in: [core/actions/src/workflow-manager.ts:96](https://github.com/LaWebca
 
 > **notifyHealth**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-manager.ts:963](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L963)
+Defined in: [core/actions/src/action-manager.ts:963](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L963)
 
 #### Returns
 
@@ -1459,7 +1459,7 @@ Defined in: [core/actions/src/action-manager.ts:963](https://github.com/LaWebcap
 
 > **once**(`ref`, `opts`): `Promise`\<`unknown`\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:112](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L112)
+Defined in: [core/actions/src/coalescing-manager.ts:112](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L112)
 
 #### Parameters
 
@@ -1497,7 +1497,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:112](https://github.com/LaWe
 
 > **onComplete**(`cb`, `opts?`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:113](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L113)
+Defined in: [core/actions/src/workflow-manager.ts:113](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L113)
 
 #### Parameters
 
@@ -1525,7 +1525,7 @@ Defined in: [core/actions/src/workflow-manager.ts:113](https://github.com/LaWebc
 
 > **onError**(`cb`, `opts?`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:104](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L104)
+Defined in: [core/actions/src/workflow-manager.ts:104](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L104)
 
 #### Parameters
 
@@ -1553,7 +1553,7 @@ Defined in: [core/actions/src/workflow-manager.ts:104](https://github.com/LaWebc
 
 > **onErrorGoTo**(`name`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:216](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L216)
+Defined in: [core/actions/src/workflow-manager.ts:216](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L216)
 
 #### Parameters
 
@@ -1575,7 +1575,7 @@ Defined in: [core/actions/src/workflow-manager.ts:216](https://github.com/LaWebc
 
 > **onMainTimeout**(): [`ActionState`](../enumerations/ActionState.md) \| `Promise`\<[`ActionState`](../enumerations/ActionState.md)\>
 
-Defined in: [core/actions/src/workflow-manager.ts:735](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L735)
+Defined in: [core/actions/src/workflow-manager.ts:735](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L735)
 
 Called in case of timeout in `ActionState.EXECUTING_MAIN` state.
 
@@ -1598,7 +1598,7 @@ a `ActionState` value.
 
 > **onSuccessGoTo**(`name`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:211](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L211)
+Defined in: [core/actions/src/workflow-manager.ts:211](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L211)
 
 #### Parameters
 
@@ -1622,7 +1622,7 @@ Defined in: [core/actions/src/workflow-manager.ts:211](https://github.com/LaWebc
 
 > **repeatDo**\<`T`\>(`ref`, `cb`, `repeat`): `DoPromise`\<`T`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:692](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L692)
+Defined in: [core/actions/src/workflow-manager.ts:692](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L692)
 
 Repeats a do a number of times.
 
@@ -1666,7 +1666,7 @@ a promise that resolves with the result of the last action
 
 > **repeatDo**\<`T`\>(`ref`, `opts`, `repeat`): `DoPromise`\<`T`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:697](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L697)
+Defined in: [core/actions/src/workflow-manager.ts:697](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L697)
 
 Repeats a do a number of times.
 
@@ -1710,7 +1710,7 @@ a promise that resolves with the result of the last action
 
 > **resolveDynamicActionFinding**(): `void`
 
-Defined in: [core/actions/src/workflow-manager.ts:246](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L246)
+Defined in: [core/actions/src/workflow-manager.ts:246](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L246)
 
 #### Returns
 
@@ -1726,7 +1726,7 @@ Defined in: [core/actions/src/workflow-manager.ts:246](https://github.com/LaWebc
 
 > **resume**(): `Promise`\<`any`\>
 
-Defined in: [core/actions/src/action-manager.ts:633](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L633)
+Defined in: [core/actions/src/action-manager.ts:633](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L633)
 
 The function resumes the action by calling the appropriate executor if needed and then by calling the appropriate function depending on the current
 state of the action
@@ -1747,7 +1747,7 @@ A promise. You can not rely on this to know when an action is finished.
 
 > **resyncWithDb**(): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/action-manager.ts:344](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L344)
+Defined in: [core/actions/src/action-manager.ts:344](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L344)
 
 Update the current model instance with latest data from database
 
@@ -1767,7 +1767,7 @@ a promise that resolves when the document has been loaded
 
 > **rollback**(`cb`, `opts?`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/workflow-manager.ts:164](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L164)
+Defined in: [core/actions/src/workflow-manager.ts:164](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L164)
 
 #### Parameters
 
@@ -1795,7 +1795,7 @@ Defined in: [core/actions/src/workflow-manager.ts:164](https://github.com/LaWebc
 
 > **save**(`params`): `any`
 
-Defined in: [core/actions/src/coalescing-manager.ts:49](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L49)
+Defined in: [core/actions/src/coalescing-manager.ts:49](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L49)
 
 Save an action in the database. Will then be managed by the worker.
 
@@ -1827,7 +1827,7 @@ a promise that resolves when the action has been saved
 
 > **setArgument**(`args`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/action-manager.ts:424](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L424)
+Defined in: [core/actions/src/action-manager.ts:424](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L424)
 
 Set the `argument` that will be stored in the database.
 Once set, the argument of an action should not be modified.
@@ -1854,7 +1854,7 @@ The argument to set.
 
 > **setExecutor**(): `void` \| [`Executor`](Executor.md) \| `Promise`\<`void` \| [`Executor`](Executor.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:549](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L549)
+Defined in: [core/actions/src/action-manager.ts:549](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L549)
 
 Set the executor for this action.
 It is called only once when the action is created.
@@ -1876,7 +1876,7 @@ a promise that resolves when you have set the executor is set
 
 > **setFilter**(`filter`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/action-manager.ts:455](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L455)
+Defined in: [core/actions/src/action-manager.ts:455](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L455)
 
 Make filtering actions easier with the `filter` property.
 These filters are stored in database with
@@ -1903,7 +1903,7 @@ an action or a group of actions
 
 > **setRepeat**(`opts`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/action-manager.ts:439](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L439)
+Defined in: [core/actions/src/action-manager.ts:439](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L439)
 
 Configure the number of times an action is repeated.
 
@@ -1933,7 +1933,7 @@ Configure the number of times an action is repeated.
 
 > **setResult**(...`results`): `CoalescingWorkflow`
 
-Defined in: [core/actions/src/action-manager.ts:465](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L465)
+Defined in: [core/actions/src/action-manager.ts:465](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L465)
 
 Set the action result.
 
@@ -1957,7 +1957,7 @@ Set the action result.
 
 > `protected` **startAction**(`ref`, `action`): `Promise`\<`void`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:435](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L435)
+Defined in: [core/actions/src/workflow-manager.ts:435](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L435)
 
 #### Parameters
 
@@ -1983,7 +1983,7 @@ Defined in: [core/actions/src/workflow-manager.ts:435](https://github.com/LaWebc
 
 > `protected` **startActionTransaction**(`ref`, `action`): `Promise`\<`any`[]\>
 
-Defined in: [core/actions/src/workflow-manager.ts:407](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L407)
+Defined in: [core/actions/src/workflow-manager.ts:407](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L407)
 
 #### Parameters
 
@@ -2009,7 +2009,7 @@ Defined in: [core/actions/src/workflow-manager.ts:407](https://github.com/LaWebc
 
 > **stringifyIdentity**(): `string`
 
-Defined in: [core/actions/src/coalescing-manager.ts:31](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L31)
+Defined in: [core/actions/src/coalescing-manager.ts:31](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L31)
 
 #### Returns
 
@@ -2021,7 +2021,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:31](https://github.com/LaWeb
 
 > **substitute**(`otherPendingActionsWithSameIdentity`): [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`JSONObject`, \{ `actions`: \{[`key`: `string`]: `object`; \}; `currentStepIndex?`: `number`; `currentStepName?`: `string`; `currentTrackIds`: `string`[]; `getNextStepAttemp`: `number`; `isRollBackPossible`: `boolean`; `nTimesCurrentStep`: `number`; `oldResult`: [`StepResult`](../type-aliases/StepResult.md)[]; `preserveOldResult`: [`StepResult`](../type-aliases/StepResult.md)[]; `registeredActions`: `object`[]; `stepsHistory`: `number`[]; \}, `void` \| `Error` \| `JSONObject`\>
 
-Defined in: [core/actions/src/coalescing-manager.ts:43](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/coalescing-manager.ts#L43)
+Defined in: [core/actions/src/coalescing-manager.ts:43](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/coalescing-manager.ts#L43)
 
 #### Parameters
 
@@ -2039,7 +2039,7 @@ Defined in: [core/actions/src/coalescing-manager.ts:43](https://github.com/LaWeb
 
 > `protected` **toPromise**(`ref`, `dbDoc`): `DoPromise`\<`unknown`\>
 
-Defined in: [core/actions/src/workflow-manager.ts:476](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L476)
+Defined in: [core/actions/src/workflow-manager.ts:476](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L476)
 
 #### Parameters
 
@@ -2065,7 +2065,7 @@ Defined in: [core/actions/src/workflow-manager.ts:476](https://github.com/LaWebc
 
 > **transform**(`ref`, `action`): [`Action`](Action.md)
 
-Defined in: [core/actions/src/workflow-manager.ts:92](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L92)
+Defined in: [core/actions/src/workflow-manager.ts:92](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L92)
 
 Proxy that will be called before the start of any action.
 Use this method to transform any action before it is started.
@@ -2100,7 +2100,7 @@ the transformed action
 
 > **watcher**(): `Promise`\<[`IN_PROGRESS`](../enumerations/ActionState.md#in_progress) \| [`PAUSED`](../enumerations/ActionState.md#paused)\>
 
-Defined in: [core/actions/src/workflow-manager.ts:740](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L740)
+Defined in: [core/actions/src/workflow-manager.ts:740](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L740)
 
 Watch the action state.
 
@@ -2124,7 +2124,7 @@ promise
 
 > `static` **\_constructFromDb**(`actionDb`): [`Action`](Action.md)
 
-Defined in: [core/actions/src/action-manager.ts:266](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L266)
+Defined in: [core/actions/src/action-manager.ts:266](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L266)
 
 Construct an action from a document stored in the database.
 
@@ -2152,7 +2152,7 @@ an action for which dbDoc property is equal to actionDb
 
 > `static` **\_constructFromWorkflow**(`dbDoc`): `Promise`\<[`Action`](Action.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:291](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L291)
+Defined in: [core/actions/src/action-manager.ts:291](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L291)
 
 Construct an action from a document stored in the database and whose definition depends on a workflow.
 
@@ -2178,7 +2178,7 @@ an action for which dbDoc property is equal to actionDb
 
 > `static` **constructFromDb**(`actionDb`): `Promise`\<[`Action`](Action.md)\>
 
-Defined in: [core/actions/src/action-manager.ts:314](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L314)
+Defined in: [core/actions/src/action-manager.ts:314](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L314)
 
 Construct an action from a document stored in the database.
 
@@ -2206,7 +2206,7 @@ an action for which dbDoc property is equal to actionDb
 
 > `static` **findPendingWorkflowUsingAction**(`actionDbDoc`): `Query`\<[`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\> & `object`[], [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\> & `object`, \{ \}, [`ActionSchemaInterface`](../interfaces/ActionSchemaInterface.md)\<`any`, `any`, `any`\>\>
 
-Defined in: [core/actions/src/workflow-manager.ts:800](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/workflow-manager.ts#L800)
+Defined in: [core/actions/src/workflow-manager.ts:800](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/workflow-manager.ts#L800)
 
 #### Parameters
 
@@ -2228,7 +2228,7 @@ Defined in: [core/actions/src/workflow-manager.ts:800](https://github.com/LaWebc
 
 > `static` **reject**(`result?`): [`RejectAction`](RejectAction.md)
 
-Defined in: [core/actions/src/action-manager.ts:372](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L372)
+Defined in: [core/actions/src/action-manager.ts:372](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L372)
 
 Return a new [RejectAction](RejectAction.md) object.
 
@@ -2256,7 +2256,7 @@ new `RejectAction`instance
 
 > `static` **resolve**(`result?`): [`ResolveAction`](ResolveAction.md)
 
-Defined in: [core/actions/src/action-manager.ts:361](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L361)
+Defined in: [core/actions/src/action-manager.ts:361](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L361)
 
 Return a new [ResolveAction](ResolveAction.md) object.
 
@@ -2284,7 +2284,7 @@ new `ResolveAction`instance
 
 > `static` **trackActionAsPromise**(`action`, `states`): `Promise`\<`unknown`\>
 
-Defined in: [core/actions/src/action-manager.ts:943](https://github.com/LaWebcapsule/orbits/blob/66ea15e0068e5833cb03c092623a7262269820a0/core/actions/src/action-manager.ts#L943)
+Defined in: [core/actions/src/action-manager.ts:943](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-manager.ts#L943)
 
 Track an action until it reaches one of the given states.
 
