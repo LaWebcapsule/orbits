@@ -126,7 +126,7 @@ export class MyWorkflow extends Workflow{
         name : string
     }
 
-    define(){
+    async define(){
         const resultOfMyAction = await this.do("hello", new MyAction());
         const name = await this.do("name", ()=>{
             console.log(`${resultOfMyAction}, ${this.argument.name}!`)
@@ -176,7 +176,7 @@ This is managed by the concept of [`Resource`](./core-concepts/resource.md).
             return `${this.argument.name}-${this.argument.date}`
         }
 
-        defineInstall(){
+        async defineInstall(){
             //say hello
             await this.do("hello", new MyWorkflow().setArgument({
                 name: this.argument.name
@@ -187,7 +187,7 @@ This is managed by the concept of [`Resource`](./core-concepts/resource.md).
             //do nothing, I already have seen you
         }
 
-        defineUninstall(){
+        async defineUninstall(){
             //say goodbye
             const goodbye = await this.do("goodbye", ()=>{
                 console.log("goodbye")
