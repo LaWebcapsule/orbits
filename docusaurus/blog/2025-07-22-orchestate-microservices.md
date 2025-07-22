@@ -4,7 +4,7 @@ title: Write Node.js workflows to orchestrate microservices.
 authors: [loic, louis]
 tags: [orchestration, microservices, saga-pattern, orbits, workflow]
 ---
-# Write Node.js workflows to orchestrate microservices.
+# Write Node.js workflows to orchestrate microservices
 
 Databases follow the principle of transactions — a set of changes that must either all succeed or all fail. But when an application interacts with multiple databases or connects to various APIs (as is the case for most applications today), the guarantees of ACID are lost. Workflows, state machines, and the saga pattern help achieve a similar level of reliability, often at the cost of more complex code. Here, we introduce a **Node.js** framework that makes it easy to write such workflows in TypeScript.
 
