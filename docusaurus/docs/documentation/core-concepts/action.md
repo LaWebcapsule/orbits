@@ -18,14 +18,13 @@ See the [conceptual documentation](./action-in-depth.md) for a better understand
 
 Actions allow you to track the state of external processes.
 
-The following example is fictitious — real-world examples can be found in the [examples folder](./../guides/intro.md).
+The following example is fictitious — real-world examples can be found in the [examples folder](./../guides/readme.md).
 
 Let’s imagine a library system: we’ll write an Action that launches a delivery order, succeeds if the delivery completes, and fails otherwise.
 
-
 - Step 1: extend the Action class
 
-```typescript
+```ts
 import { Action } from '@orbits/core';
 
 export class MyFirstAction extends Action {
@@ -40,7 +39,7 @@ If you don't specify any name, the name of the class will be used as default —
 
 - Step 2: choose the format of your argument, bag and result
 
-```typescript
+```ts
 import { Action } from '@orbits/core';
 
 export class MyFirstAction extends Action {
@@ -65,7 +64,7 @@ export class MyFirstAction extends Action {
 
 - Step 3: (optional) write the init method
 
-```typescript
+```ts
 import { Action } from '@orbits/core';
 import { LibraryApi, Book } from './my-library';
 
@@ -102,7 +101,7 @@ export class MyFirstAction extends Action {
 
 The main method will be called only once during the whole lifecycle of an Action
 
-```typescript
+```ts
 import { Action } from '@orbits/core';
 import { LibraryApi, Book } from './my-library';
 
@@ -152,7 +151,7 @@ The watcher method can be called multiple times while the action is in `IN_PROGR
 
 To set the frequency of the call:
 
-```typescript
+```ts
 import { Action } from '@orbits/core';
 import { LibraryApi, Book } from './my-library';
 
@@ -222,7 +221,7 @@ Sometimes api allow you to set an id on the resource you created. In this case, 
 So `onMainTimeout` can just call the already written watcher method.
 Example would be:
 
-```typescript
+```ts
 // set the id
 const libraryApi = new LibraryApi();
 libraryApi.createOrder(this.argument.bookName, this.argument.id || this.bag.id);
@@ -230,8 +229,8 @@ libraryApi.createOrder(this.argument.bookName, this.argument.id || this.bag.id);
 // retrieve the order
 export class MyFirstAction extends Action {
     //...
-    onMainTimeout(){
-        return this.watcher();//just call the watcher
+    onMainTimeout() {
+        return this.watcher(); //just call the watcher
     }
 }
 ```
@@ -240,31 +239,31 @@ In most cases, you have to write custom logic.
 
 For example:
 
-```typescript
+```ts
 export class MyFirstAction extends Action {
     //....
 
-    onMainTimeout(){
+    onMainTimeout() {
         return libraryApi
-                .listOrder({
-                    book: this.argument.bookName,
-                    after: this.dbDoc.createdAt,
-                    before: this.db.stateUpdatedAt,
-                })
-                .then((orders) => {
-                    if (orders.length === 0) {
-                        // no order was created
-                        return ActionState.ERROR;
-                    } else {
-                        // here it depends on the logic of your service,
-                        // because  you cannot be 100% sure the order is the one
-                        // you think it is without more market notions
-                        // In general an order also has a name and phoneNumber,
-                        // which would make sure the order is the right one
-                        this.bag.orderId = orders[0].orderId;
-                        return ActionState.IN_PROGRESS;//as it's IN_PROGRESS, watcher will be called.
-                    }
-                });
+            .listOrder({
+                book: this.argument.bookName,
+                after: this.dbDoc.createdAt,
+                before: this.db.stateUpdatedAt,
+            })
+            .then((orders) => {
+                if (orders.length === 0) {
+                    // no order was created
+                    return ActionState.ERROR;
+                } else {
+                    // here it depends on the logic of your service,
+                    // because  you cannot be 100% sure the order is the one
+                    // you think it is without more market notions
+                    // In general an order also has a name and phoneNumber,
+                    // which would make sure the order is the right one
+                    this.bag.orderId = orders[0].orderId;
+                    return ActionState.IN_PROGRESS; //as it's IN_PROGRESS, watcher will be called.
+                }
+            });
     }
 
     watcher() {
@@ -284,7 +283,7 @@ export class MyFirstAction extends Action {
 
 ## Persistent storage
 
-Each action has a db document assiociated with it.
+Each action has a db document associated with it.
 The db document is accessible via the `dbDoc` property. Most properties are internal settings for the framework.
 
 You can modify these properties (if you know what you are doing).
@@ -292,7 +291,6 @@ You can modify these properties (if you know what you are doing).
 You can also store in these three stores:
 
 ### Argument
-
 
 The `argument` property should be set via the `setArgument()` method and must not be changed after the action leaves the `ActionState.SLEEPING`state.
 The interface of the `argument` is set via the `IArgument` property of the class.
@@ -320,15 +318,16 @@ If your Action belongs to a Workflow, the result object will then be available i
 ## Setting an Action to Error
 
 You can explicitly return `ActionState.ERROR`, and optionally set an error object:
+
 ```ts
-export class MyAction extends Action{
+export class MyAction extends Action {
     watcher() {
         const libraryApi = new LibraryApi();
         return libraryApi.getOrderState(this.bag.orderId).then((orderState) => {
             if (orderState === 0) {
                 return ActionState.IN_PROGRESS;
             } else if (orderState === -1) {
-                this.setResult(orderState)
+                this.setResult(orderState);
                 return ActionState.ERROR;
             } else if (orderState === 1) {
                 return ActionState.SUCCESS;
@@ -344,13 +343,12 @@ However, there are cases where an error can be implicitly set:
 - if one of the delays expired (see [delays](#delays))
 
 ```ts
-export class MyAction extends Action{
-    main(){
-        throw new Error("this is a test error");//the action will be in ActionState.ERROR and the result of the action will be the thrown error.
+export class MyAction extends Action {
+    main() {
+        throw new Error('this is a test error'); //the action will be in ActionState.ERROR and the result of the action will be the thrown error.
     }
 }
 ```
-
 
 ## Other parameters to be aware of
 
@@ -372,9 +370,9 @@ Delays represents the amount of time an action can spend in a certain state.
 
 You can set default delays via the `defaultDelays` property. It expects an object of type:
 
-```typescript
+```ts
 {
-    [ActionState.IN_PROGRESS] : 10*60*1000,
+    [ActionState.IN_PROGRESS]: 10*60*1000,
     [ActionState.EXECUTING_MAIN]: 30*1000
 }
 ```

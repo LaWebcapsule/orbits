@@ -58,8 +58,8 @@ export class Action {
      * @defaultValue
      * ```
      * {
-     *    [ActionState.IN_PROGRESS] : this.defaultDelay,
-     *    [ActionState.EXECUTING_MAIN] : 2*60*1000,
+     *    [ActionState.IN_PROGRESS]: this.defaultDelay,
+     *    [ActionState.EXECUTING_MAIN]: 2*60*1000,
      * }
      * ```
      *
@@ -829,13 +829,13 @@ export class Action {
      * the final log message will be:
      * ```
      * {
-     *   actionRef: this.dbDoc.actionRef,
-     *  actionId: this.dbDoc._id.toString(),
-     *  filter: this.dbDoc.filter,
-     *  definedIn: this.dbDoc.definitionFrom.workflow ? this.dbDoc.definitionFrom.workflow.toObject() : undefined,
-     *  timestamp: new Date().toISOString(),
-     *  level: opts.level || 'info',
-     *  message: message,
+     *     actionRef: this.dbDoc.actionRef,
+     *     actionId: this.dbDoc._id.toString(),
+     *     filter: this.dbDoc.filter,
+     *     definedIn: this.dbDoc.definitionFrom.workflow?.toObject(),
+     *     timestamp: new Date().toISOString(),
+     *     level: opts.level || 'info',
+     *     message: message,
      * }
      * ```
      */
@@ -865,13 +865,14 @@ export class Action {
      * the final log message will be:
      * ```
      * {
-     *   actionRef: this.dbDoc.actionRef,
-     *   actionId: this.dbDoc._id.toString(),
-     *   filter: this.dbDoc.filter,
-     *   definedIn: this.dbDoc.definitionFrom.workflow ? this.dbDoc.definitionFrom.workflow.toObject() : undefined,
-     *   err: err,
-     *   timestamp: new Date().toISOString(),
+     *     actionRef: this.dbDoc.actionRef,
+     *     actionId: this.dbDoc._id.toString(),
+     *     filter: this.dbDoc.filter,
+     *     definedIn: this.dbDoc.definitionFrom.workflow?.toObject(),
+     *     err: err,
+     *     timestamp: new Date().toISOString(),
      * }
+     * ```
      */
     internalLogError(err: Error) {
         let defFromWorkflow: any;

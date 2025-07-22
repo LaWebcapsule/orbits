@@ -1,6 +1,6 @@
 # Enumeration: actionKind
 
-Defined in: [core/actions/src/runtime/action-kind.ts:1](https://github.com/LaWebcapsule/orbits/blob/9dfb205b4c535735246a802b81e1b3b887b61283/core/actions/src/runtime/action-kind.ts#L1)
+Defined in: [core/actions/src/runtime/action-kind.ts:1](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/runtime/action-kind.ts#L1)
 
 ## Enumeration Members
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/runtime/action-kind.ts:1](https://github.com/LaWeb
 
 > **ACTION**: `"orbits/action"`
 
-Defined in: [core/actions/src/runtime/action-kind.ts:3](https://github.com/LaWebcapsule/orbits/blob/9dfb205b4c535735246a802b81e1b3b887b61283/core/actions/src/runtime/action-kind.ts#L3)
+Defined in: [core/actions/src/runtime/action-kind.ts:3](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/runtime/action-kind.ts#L3)
 
 ***
 
@@ -16,7 +16,7 @@ Defined in: [core/actions/src/runtime/action-kind.ts:3](https://github.com/LaWeb
 
 > **COALESCING\_WORKFLOW**: `"orbits/coalescingWorkflow"`
 
-Defined in: [core/actions/src/runtime/action-kind.ts:7](https://github.com/LaWebcapsule/orbits/blob/9dfb205b4c535735246a802b81e1b3b887b61283/core/actions/src/runtime/action-kind.ts#L7)
+Defined in: [core/actions/src/runtime/action-kind.ts:7](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/runtime/action-kind.ts#L7)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/actions/src/runtime/action-kind.ts:7](https://github.com/LaWeb
 
 > **RESOURCE**: `"orbits/resource"`
 
-Defined in: [core/actions/src/runtime/action-kind.ts:11](https://github.com/LaWebcapsule/orbits/blob/9dfb205b4c535735246a802b81e1b3b887b61283/core/actions/src/runtime/action-kind.ts#L11)
+Defined in: [core/actions/src/runtime/action-kind.ts:11](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/runtime/action-kind.ts#L11)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/actions/src/runtime/action-kind.ts:11](https://github.com/LaWe
 
 > **RESOURCE\_CONTROLLER**: `"orbits/resource-controller"`
 
-Defined in: [core/actions/src/runtime/action-kind.ts:9](https://github.com/LaWebcapsule/orbits/blob/9dfb205b4c535735246a802b81e1b3b887b61283/core/actions/src/runtime/action-kind.ts#L9)
+Defined in: [core/actions/src/runtime/action-kind.ts:9](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/runtime/action-kind.ts#L9)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [core/actions/src/runtime/action-kind.ts:9](https://github.com/LaWeb
 
 > **WORKFLOW**: `"orbits/workflow"`
 
-Defined in: [core/actions/src/runtime/action-kind.ts:5](https://github.com/LaWebcapsule/orbits/blob/9dfb205b4c535735246a802b81e1b3b887b61283/core/actions/src/runtime/action-kind.ts#L5)
+Defined in: [core/actions/src/runtime/action-kind.ts:5](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/runtime/action-kind.ts#L5)

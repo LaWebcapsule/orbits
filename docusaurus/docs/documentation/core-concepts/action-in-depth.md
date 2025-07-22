@@ -6,7 +6,7 @@ sidebar_position: 1.1
 
 An action has a lifecycle that starts when the action is saved in the database. Then, Orbits takes care of the different states and calls the appropriate function when needed, with correct locks and timeouts.
 
-A standard flow would be the following.  
+A standard flow would be the following:  
 ![standard_flow](./assets/diagramme.png)
 
 > In some special cases, you can customize this flow to better fit your need. For example, the `watcher` can emit an `ActionState.SLEEPING` to return at the beginning of the flow. Make sure you understand what this implies before doing it.
