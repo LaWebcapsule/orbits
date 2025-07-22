@@ -9,9 +9,6 @@ This is a basic guide to get your first resource working.
 
 ## Install
 
-
-## Requirements
-
 Install `@orbi-ts/core` and `@orbi-ts/fuel`.
 ```bash
 npm install @orbi-ts/core @orbi-ts/fuel --save
