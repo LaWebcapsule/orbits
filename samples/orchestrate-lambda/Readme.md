@@ -14,25 +14,23 @@ cd samples/orchestrate-lambda
 - Install node.js dependencies : 
 `npm i``
 
-### Setup lamndas in aws
+### Setup lambdas in aws
 
 You'll need to deploy lambdas in aws
 - First of all you'll need an aws account with propers rights.
-- Go to this directorys :
+- Go to this directory :
 ```bash
-cd samples/orchestrate-lambda/deploy-lambdas
+cd ./deploy-lambdas
 ```
 - Follow README.md instructions to get API's URL
 
 #### Configure environment values
 
 - Copy the environment template:
-```bash cp .base.env .env```
-- Edit .env file with api url retrieved previously
-- Define
-```bash
-API_ADDRESS=your-api-url
+```bash 
+cp .base.env .env
 ```
+- Edit .env file with the api url retrieved previously
 
 ## Execution
 

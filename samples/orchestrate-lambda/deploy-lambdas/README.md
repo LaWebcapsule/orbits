@@ -4,7 +4,7 @@ This AWS Cloud Development Kit (CDK) code deploys the Lambdas in this example to
 
 ## Build
 
-To build this app, you need to be in this example's root folder. Then run the following:
+To build this app, you need to be in this folder. Then run the following:
 
 ```bash
 npm install -g aws-cdk

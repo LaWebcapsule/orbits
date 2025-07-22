@@ -41,7 +41,7 @@ These issues, far from being theoretical, can have financial consequences. For e
 
 ## The Orchestrated Saga Pattern
 
-The **Orchestrated Saga Pattern** effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.
+The [**Orchestrated Saga Pattern**](https://microservices.io/patterns/data/saga.html) effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.
 
 The orchestrator:
 - Explicitly manages state transitions between each step.
@@ -58,10 +58,10 @@ In this blog post, we revisit the example of orchestrating a banking transaction
 ## The Implementation
 
 Orbits proposes writing workflows in a structured and declarative manner.
+You can explore and experiment with the full source code of the example described in this blog post in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).  
+Here's the concrete example:
 
-Here's a concrete example:
-
-```typescript
+```typescript title="src/orbits/workflows/trading.ts"
 export class TradingWorkflow extends Workflow{
 
     declare IResult:StockTransaction
@@ -91,7 +91,6 @@ export class TradingWorkflow extends Workflow{
 
     };
 }
-
 ```
 
 This central workflow orchestrates each step by calling autonomous **Actions**, while maintaining branching logic and intermediate states.
@@ -165,6 +164,26 @@ Orbits is a standard TypeScript framework. You write promises and asynchronous f
 
 **Native observability**
 - Each action is traceable, named, monitorable
+
+## Going further 
+
+### Using lambdas async invocations
+
+For the sake of hypothesis, let’s assume our Lambda function runs for an extended period of time (which is not the case here). In such scenarios, there’s a high chance that the initial HTTP call triggering the Lambda might fail unexpectedly—due to a network issue or timeout, for example.
+
+To prevent such failures from disrupting the overall workflow, you can configure retry policies.
+
+Orbits also supports asynchronous APIs and allows you to track execution status over time. When dealing with long-running Lambda functions, an Orbits action can return with an `ActionState.IN_PROGRESS`, and then delegate the follow-up logic to the `watcher()` [method](/documentation/core-concepts/action), which periodically checks the progress of the async process.
+
+This approach requires a bit of additional setup, as you’ll need to interact with the AWS Lambda API to track the specific invocation’s result.
+
+We’ll cover how Orbits makes it easy to manage long-running processes in a dedicated blog post soon.
+
+### Using resources to manage concurrency
+
+In our example, if we trigger the same order twice, it will be processed twice—this isn’t always the desired behavior.
+Orbits provides an opinionated way to handle concurrency through a concept called resources. [Resources](/documentation/core-concepts/resource) allow you to control and limit the execution of actions to prevent unintended duplication.
+
 
 ## Conclusion
 
