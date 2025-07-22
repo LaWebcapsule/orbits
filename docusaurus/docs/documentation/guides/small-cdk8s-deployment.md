@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # CDK8S simple deployment
 
 A practical example demonstrating how to manage kube resources through CDK8S and orbits. 
