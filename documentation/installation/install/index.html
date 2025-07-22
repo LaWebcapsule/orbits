@@ -5,7 +5,7 @@
 <meta name="generator" content="Docusaurus v3.8.1">
 <title data-rh="true">Local installation | Orbits documentation</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://orbits.do/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://orbits.do/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://orbits.do/documentation/installation/install"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="keywords" content="Orchestration, DevOps, Cloud, Workflows, Typescript, Automation, Platform engineering"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Local installation | Orbits documentation"><meta data-rh="true" name="description" content="Requirements"><meta data-rh="true" property="og:description" content="Requirements"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://orbits.do/documentation/installation/install"><link data-rh="true" rel="alternate" href="https://orbits.do/documentation/installation/install" hreflang="en"><link data-rh="true" rel="alternate" href="https://orbits.do/documentation/installation/install" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Installation","item":"https://orbits.do/category/installation"},{"@type":"ListItem","position":2,"name":"Local installation","item":"https://orbits.do/documentation/installation/install"}]}</script><link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Orbits documentation RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Orbits documentation Atom Feed"><link rel="stylesheet" href="/assets/css/styles.6f093e9a.css">
-<script src="/assets/js/runtime~main.b38a0fad.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.a41406f0.js" defer="defer"></script>
 <script src="/assets/js/main.3d5eefff.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -17,12 +17,15 @@
 <div class="tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">Create a new project from stratch</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Integrate into an existing typescript project</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><ul>
 <li>Install <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js</a> (version 22 or higher recommended) on your machine.</li>
 <li>Create a new project with <code>npm init</code></li>
-<li>Install <a href="https://www.typescriptlang.org/download/" target="_blank" rel="noopener noreferrer">typescript</a> in your project</li>
-<li>Install <code>tsx</code> for debugging purpose :</li>
-<li><code>npm i --save-dev tsx</code></li>
+<li>Set your project to be an ES module : <code>npm pkg set type=&quot;module&quot;</code></li>
+<li>Install <a href="https://www.typescriptlang.org/download/" target="_blank" rel="noopener noreferrer">typescript</a> in your project
+<code>npm i --save-dev typescript</code></li>
+<li>Install <code>tsx</code> for debugging purpose :
+<code>npm i --save-dev tsx</code></li>
 <li>Install orbits and fuel :
 <code>npm i @orbi-ts/core @orbi-ts/fuel</code></li>
 </ul></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><ul>
+<li>Ensure your project is an ES module or <a href="https://www.typescriptlang.org/docs/handbook/modules/appendices/esm-cjs-interop.html" target="_blank" rel="noopener noreferrer">have the configuration to work with ES module</a>.</li>
 <li>Install orbits and fuel :
 <code>npm i @orbi-ts/core @orbi-ts/fuel</code></li>
 </ul></div></div></div>
