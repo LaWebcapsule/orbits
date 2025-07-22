@@ -19,6 +19,16 @@ Install it with yarn:
 yarn add @orbi-ts/core @orbi-ts/fuel
 ```
 
+:::info ES modules
+`@orbi-ts/core` and `@orbi-ts/fuel` are published as ES modules.
+If you're starting a new project from scratch, modify your `package.json` to ensure proper module resolution:
+```bash 
+npm pkg set type="module"
+```
+If you're integrating these packages into an existing ESM project, simply import them as usual.  
+If you're integrating these packages into an existing CommonJS project, refer to this guide on how to use [ES modules from a CommonJS environment](https://www.typescriptlang.org/docs/handbook/modules/appendices/esm-cjs-interop.html).
+:::
+
 ## Write your first action
 
 An [`Action`](./core-concepts/action.md) is an object that encapsulate a mutating process.
@@ -116,7 +126,7 @@ export class MyWorkflow extends Workflow{
         name : string
     }
 
-    define(){
+    async define(){
         const resultOfMyAction = await this.do("hello", new MyAction());
         const name = await this.do("name", ()=>{
             console.log(`${resultOfMyAction}, ${this.argument.name}!`)
@@ -166,7 +176,7 @@ This is managed by the concept of [`Resource`](./core-concepts/resource.md).
             return `${this.argument.name}-${this.argument.date}`
         }
 
-        defineInstall(){
+        async defineInstall(){
             //say hello
             await this.do("hello", new MyWorkflow().setArgument({
                 name: this.argument.name
@@ -177,7 +187,7 @@ This is managed by the concept of [`Resource`](./core-concepts/resource.md).
             //do nothing, I already have seen you
         }
 
-        defineUninstall(){
+        async defineUninstall(){
             //say goodbye
             const goodbye = await this.do("goodbye", ()=>{
                 console.log("goodbye")

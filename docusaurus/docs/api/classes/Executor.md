@@ -1,6 +1,6 @@
 # Class: Executor
 
-Defined in: [core/actions/src/action-executor.ts:5](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/action-executor.ts#L5)
+Defined in: [core/actions/src/action-executor.ts:4](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-executor.ts#L4)
 
 ## Constructors
 
@@ -18,7 +18,7 @@ Defined in: [core/actions/src/action-executor.ts:5](https://github.com/LaWebcaps
 
 > `optional` **scope**: [`ActionState`](../enumerations/ActionState.md)[]
 
-Defined in: [core/actions/src/action-executor.ts:9](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/action-executor.ts#L9)
+Defined in: [core/actions/src/action-executor.ts:8](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-executor.ts#L8)
 
 #### Default
 
@@ -32,7 +32,7 @@ undefined all ActionStates
 
 > **generateSupportResource**(): `void` \| [`Resource`](Resource.md)
 
-Defined in: [core/actions/src/action-executor.ts:11](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/action-executor.ts#L11)
+Defined in: [core/actions/src/action-executor.ts:10](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-executor.ts#L10)
 
 #### Returns
 
@@ -44,7 +44,7 @@ Defined in: [core/actions/src/action-executor.ts:11](https://github.com/LaWebcap
 
 > **resume**(`action`): `any`
 
-Defined in: [core/actions/src/action-executor.ts:14](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/action-executor.ts#L14)
+Defined in: [core/actions/src/action-executor.ts:12](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/action-executor.ts#L12)
 
 #### Parameters
 

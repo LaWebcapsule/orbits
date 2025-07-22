@@ -10,13 +10,16 @@ import TabItem from '@theme/TabItem';
   <TabItem value="new-project" label="Create a new project from stratch" default>
     - Install [Node.js](https://nodejs.org/) (version 22 or higher recommended) on your machine. 
     - Create a new project with `npm init`
-    - Install [typescript](https://www.typescriptlang.org/download/) in your project 
+    - Set your project to be an ES module : `npm pkg set type="module"` 
+    - Install [typescript](https://www.typescriptlang.org/download/) in your project
+    ```npm i --save-dev typescript``` 
     - Install `tsx` for debugging purpose : 
-    - ```npm i --save-dev tsx```
+    ```npm i --save-dev tsx```
     - Install orbits and fuel : 
      ```npm i @orbi-ts/core @orbi-ts/fuel```
   </TabItem>
   <TabItem value="existing-project" label="Integrate into an existing typescript project" default>
+     - Ensure your project is an ES module or [have the configuration to work with ES module](https://www.typescriptlang.org/docs/handbook/modules/appendices/esm-cjs-interop.html).
      - Install orbits and fuel : 
      ```npm i @orbi-ts/core @orbi-ts/fuel```
   </TabItem>

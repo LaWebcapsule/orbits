@@ -1,6 +1,6 @@
 # Interface: RuntimeConfig
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:22](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L22)
+Defined in: [core/actions/src/runtime/action-runtime.ts:21](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L21)
 
 Describes how the runtime can be configured.
 
@@ -10,7 +10,7 @@ Describes how the runtime can be configured.
 
 > `optional` **autostart**: `boolean`
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:32](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L32)
+Defined in: [core/actions/src/runtime/action-runtime.ts:31](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L31)
 
 ***
 
@@ -18,7 +18,7 @@ Defined in: [core/actions/src/runtime/action-runtime.ts:32](https://github.com/L
 
 > `optional` **db**: [`AppDb`](AppDb.md)
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:25](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L25)
+Defined in: [core/actions/src/runtime/action-runtime.ts:24](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L24)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [core/actions/src/runtime/action-runtime.ts:25](https://github.com/L
 
 > `optional` **entrypoint**: `string`
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:34](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L34)
+Defined in: [core/actions/src/runtime/action-runtime.ts:33](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L33)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [core/actions/src/runtime/action-runtime.ts:34](https://github.com/L
 
 > `optional` **logger**: `Logger`
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:27](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L27)
+Defined in: [core/actions/src/runtime/action-runtime.ts:26](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L26)
 
 log driver configuration
 
@@ -44,7 +44,7 @@ log driver configuration
 
 > `optional` **name**: `string`
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:24](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L24)
+Defined in: [core/actions/src/runtime/action-runtime.ts:23](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L23)
 
 db configuration
 
@@ -54,7 +54,7 @@ db configuration
 
 > `optional` **notActive**: `boolean`
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:33](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L33)
+Defined in: [core/actions/src/runtime/action-runtime.ts:32](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L32)
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: [core/actions/src/runtime/action-runtime.ts:33](https://github.com/L
 
 > `optional` **workers**: `object`
 
-Defined in: [core/actions/src/runtime/action-runtime.ts:28](https://github.com/LaWebcapsule/orbits/blob/c3df2928f71624e98d4040b83ec90f54b96915b0/core/actions/src/runtime/action-runtime.ts#L28)
+Defined in: [core/actions/src/runtime/action-runtime.ts:27](https://github.com/LaWebcapsule/orbits/blob/af76aea9967645ddd9a56c7c9b077bfc77e5cc61/core/actions/src/runtime/action-runtime.ts#L27)
 
 #### filter?
 
