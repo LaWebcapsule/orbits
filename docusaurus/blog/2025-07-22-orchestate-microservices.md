@@ -61,35 +61,36 @@ Orbits proposes writing workflows in a structured and declarative manner.
 You can explore and experiment with the full source code of the example described in this blog post in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).  
 Here's the concrete example:
 
-```typescript title="src/orbits/workflows/trading.ts"
+```typescript title="src/orbits/workflows/trading.ts" wordWrap=true
 export class TradingWorkflow extends Workflow{
 
-    declare IResult:StockTransaction
+ declare IResult:StockTransaction
 
-    async define(){
-        const resultCheckStockPrice = await this.do("check-stock-price", new CheckStockPriceAction());
-        const stockPrice = resultCheckStockPrice.stockPrice;
+ async define(){
+  const checkPrice = await this.do("check-price", new CheckStockPriceAction());
+  const stockPrice = checkPrice.stockPrice;
 
-        const resultGenerateBuySellRecommendationAction = await this.do("check-stock-price", new GenerateBuySellRecommendationAction().setArgument(
-            {
-                price:stockPrice.stock_price
-            })); 
+  const buyOrSell = await this.do("recommandation", 
+    new GenerateBuySellRecommendationAction()
+    .setArgument(
+        {
+            price:stockPrice.stock_price
+        })
+    ); 
 
-        const buyOrSellRecommendation = resultGenerateBuySellRecommendationAction.buyOrSellRecommendation
 
-        if (buyOrSellRecommendation === 'sell') {
-             const resultSellStockData = await this.do("sell-stock", new SellStockeAction().setArgument({
-                price:stockPrice.stock_price
-            }));
-            return resultSellStockData.stockData;
-        } else {
-             const resultBuyStockData = await this.do("buy-stock", new BuyStockAction().setArgument({
-                price:stockPrice.stock_price
-            }));
-            return resultBuyStockData.stockData;
-        }
-
-    };
+  if (buyOrSell.buyOrSellRecommendation === 'sell') {
+    const sell = await this.do("sell", new SellStockeAction().setArgument({
+            price:stockPrice.stock_price
+    }));
+    return sell.stockData;
+  } else {
+    const buy = await this.do("buy", new BuyStockAction().setArgument({
+            price:stockPrice.stock_price
+    }));
+    return buy.stockData;
+  }
+ };
 }
 ```
 
