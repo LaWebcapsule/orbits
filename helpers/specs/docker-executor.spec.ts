@@ -8,11 +8,10 @@ describe('Test action', () => {
     beforeAll(() => {
         return testAction.dbDoc
             .save()
-            .then(
-                () =>{
-                    const endState = [ActionState.SUCCESS, ActionState.ERROR];
-                    return Action.trackActionAsPromise(testAction, endState);
-                })
+            .then(() => {
+                const endState = [ActionState.SUCCESS, ActionState.ERROR];
+                return Action.trackActionAsPromise(testAction, endState);
+            })
             .then(() => testAction.resyncWithDb());
     });
 

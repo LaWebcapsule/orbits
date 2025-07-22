@@ -1,12 +1,8 @@
 import mongoose from 'mongoose';
-import { errorCodes } from '../error/errorcodes.js';
 import { ActionError } from '../error/error.js';
+import { errorCodes } from '../error/errorcodes.js';
 
 export enum ActionState {
-    /**
-     * @deprecated use UNKNOWN
-     */
-    UNKNOW = -1,
     UNKNOWN = -1,
     SLEEPING,
     EXECUTING_MAIN,
@@ -30,11 +26,11 @@ export interface ActionSchemaInterface<
     bag: TBag;
     result: TResult;
     actionRef: string;
-    identity : string;
+    identity: string;
     filter: Object;
     workflowId?: string;
     workflowStep?: number;
-    workflowRef? : string;
+    workflowRef?: string;
     workflowIdentity?: string;
     workflowStack: {
         ref: string;
@@ -42,7 +38,7 @@ export interface ActionSchemaInterface<
         stepName: string;
         _id: string;
     }[];
-    generatorCount : number,
+    generatorCount: number;
     nTimes: number;
     locked: Boolean;
     lockedAt: Date;
@@ -63,10 +59,6 @@ export interface ActionSchemaInterface<
         pending: Boolean;
         lastActivity: Date;
         nextActivity: Date;
-        /**
-         * @deprecated use frequency
-         */
-        frequence?: number;
         frequency: number;
     };
     updatedAt: Date;
@@ -89,7 +81,7 @@ export const actionSchema = new mongoose.Schema(
     {
         state: Number,
         stateUpdatedAt: Date,
-        identity : String,//used by generator
+        identity: String, //used by generator
         argument: { type: mongoose.Schema.Types.Mixed, default: {} },
         bag: { type: mongoose.Schema.Types.Mixed, default: {} },
         result: { type: mongoose.Schema.Types.Mixed, default: {} },
@@ -97,9 +89,9 @@ export const actionSchema = new mongoose.Schema(
         actionRef: String,
         workflowId: String,
         workflowStep: Number,
-        workflowRef : String,
+        workflowRef: String,
         workflowIdentity: String,
-        generatorCount : Number,
+        generatorCount: Number,
         workflowStack: [
             {
                 ref: String,
@@ -116,7 +108,6 @@ export const actionSchema = new mongoose.Schema(
         locked: Boolean,
         lockedAt: Date,
         cronActivity: {
-            frequence: Number,
             frequency: Number,
             pending: { type: Boolean, default: false },
             lastActivity: Date,
@@ -147,13 +138,13 @@ export const actionSchema = new mongoose.Schema(
 );
 
 actionSchema.index(
-    { identity: 1, actionRef: 1, generatorCount : 1 },
+    { identity: 1, actionRef: 1, generatorCount: 1 },
     {
-      unique: true,
-      partialFilterExpression: {
-        identity: { $exists: true },
-        generatorCount: { $exists: true }
-      }
+        unique: true,
+        partialFilterExpression: {
+            identity: { $exists: true },
+            generatorCount: { $exists: true },
+        },
     }
 );
 
@@ -181,10 +172,7 @@ actionSchema.method(
     'updateNextActivity',
     function (this: ActionSchemaInterface<any>) {
         const delay = this.delays[this.state] || Infinity;
-        const interval = Math.min(
-            this.cronActivity.frequence || this.cronActivity.frequency,
-            delay
-        );
+        const interval = Math.min(this.cronActivity.frequency, delay);
         this.cronActivity.nextActivity = new Date(Date.now() + interval);
         this.markModified('cronActivity');
     }

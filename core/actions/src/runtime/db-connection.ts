@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { actionSchema, ActionSchemaInterface } from '../models/action.js';
-import type { ActionRuntime } from './action-runtime.js';
 import { resourceSchema, ResourceSchemaInterface } from '../models/resource.js';
+import type { ActionRuntime } from './action-runtime.js';
 
 /**
  * Describes the structure of the `app.db` object.
@@ -25,17 +25,20 @@ export function setDbConnection(runtime: ActionRuntime) {
         return;
     }
     if (runtime.db.mongo.conn) {
-        runtime.ActionModel = runtime.db.mongo.conn.model<ActionSchemaInterface>(
-            'Action',
-            actionSchema
-        );
-        runtime.ResourceModel = runtime.db.mongo.conn.model<ResourceSchemaInterface<any, any>>(
-            'Resource',
-            resourceSchema
-        );
+        runtime.ActionModel =
+            runtime.db.mongo.conn.model<ActionSchemaInterface>(
+                'Action',
+                actionSchema
+            );
+        runtime.ResourceModel = runtime.db.mongo.conn.model<
+            ResourceSchemaInterface<any, any>
+        >('Resource', resourceSchema);
         return;
     }
-    const conn = mongoose.createConnection(runtime.db.mongo.url!, runtime.db.mongo.opts);
+    const conn = mongoose.createConnection(
+        runtime.db.mongo.url!,
+        runtime.db.mongo.opts
+    );
     runtime.db.mongo.conn = conn;
     runtime.ActionModel = conn.model<ActionSchemaInterface>(
         'Action',
@@ -45,5 +48,5 @@ export function setDbConnection(runtime: ActionRuntime) {
         'Resource',
         resourceSchema
     );
-    return conn
+    return conn;
 }

@@ -35,7 +35,7 @@ Read the [documentation](https://orbits.do/documentation)
 
 ## Install
 
-Read the [install tutorial](https://orbits.do/documentation/install)
+Read the [install tutorial](https://orbits.do/documentation/installation/install)
 
 ## Testing
 In each specific package, go to the `/specs/` folder. There is a `main.spec.ts`.

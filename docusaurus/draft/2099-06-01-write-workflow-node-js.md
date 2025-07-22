@@ -374,7 +374,7 @@ Param: hello-world
 
 ### Cleanup
 To remove all deployed resources from both accounts:
-```bash 
+```bash
 export HELLO_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts
 ```

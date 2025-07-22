@@ -1,7 +1,7 @@
 export const deepCopy = (src: any, dest: any) => {
     // this copy has to be free of prototype pollution
     // hence the recursive assign
-    if(getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
+    if (getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
         return src;
     }
     Object.assign(dest, src);
@@ -15,18 +15,17 @@ export const deepCopy = (src: any, dest: any) => {
 };
 
 export const deepMerge = (src: any, dest: any) => {
-    if(getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
+    if (getBasicType(src) !== 'object' && getBasicType(src) !== 'array') {
         return;
     }
-    for(const key in src) {
-        if (!dest[key]) {
+    for (const key in src) {
+        if (!dest?.hasOwnProperty?.(key)) {
             dest[key] = deepCopy(src[key], Array.isArray(src[key]) ? [] : {});
-        }
-        else{
+        } else {
             deepMerge(src[key], dest[key]);
         }
     }
-}
+};
 
 export const testPath = (obj: any, ...args: string[]) => {
     for (const key of args) {
@@ -52,11 +51,18 @@ export type BasicType =
     | 'date'
     | 'buffer';
 
-export type JSONLeafType = string | number | bigint | boolean 
+export type JSONLeafType = string | number | bigint | boolean;
 
-export type JSONObject = JSONLeafType | {
-    [key: string]: JSONLeafType | JSONLeafType[] | JSONObject | JSONObject[]
-} | JSONObject[]
+export type JSONObject =
+    | JSONLeafType
+    | {
+          [key: string]:
+              | JSONLeafType
+              | JSONLeafType[]
+              | JSONObject
+              | JSONObject[];
+      }
+    | JSONObject[];
 
 export const getBasicType = (object: any): BasicType => {
     let currentType: BasicType = typeof object;
@@ -105,5 +111,4 @@ export function capitalize(str: string): string {
 
 export function base64Decode(str: string) {
     return Buffer.from(str, 'base64').toString('utf-8');
-};
-  
+}
