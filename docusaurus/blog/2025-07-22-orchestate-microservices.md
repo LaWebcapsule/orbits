@@ -2,6 +2,7 @@
 slug: workflows-orchestrate-microservices
 title: Write Node.js workflows to orchestrate microservices.
 authors: [loic, louis]
+image: /static/img/docusaurus.png
 tags: [orchestration, microservices, saga-pattern, orbits, workflow]
 ---
 # Write Node.js workflows to orchestrate microservices
@@ -10,6 +11,7 @@ Databases follow the principle of transactions — a set of changes that must ei
 
 To follow along, you can find the full source code in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).
 
+![Alt text](/img/blog/lightweight-temporal.png)
 
 <!-- truncate -->
 
