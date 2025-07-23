@@ -1,6 +1,6 @@
 # Enumeration: errorCodes
 
-Defined in: [core/actions/src/error/errorcodes.ts:1](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L1)
+Defined in: [core/actions/src/error/errorcodes.ts:1](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L1)
 
 ## Enumeration Members
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:1](https://github.com/LaWebcap
 
 > **DATABASE\_ERROR**: `0`
 
-Defined in: [core/actions/src/error/errorcodes.ts:3](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L3)
+Defined in: [core/actions/src/error/errorcodes.ts:3](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L3)
 
 ***
 
@@ -16,7 +16,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:3](https://github.com/LaWebcap
 
 > **INVALID\_SESSION**: `4`
 
-Defined in: [core/actions/src/error/errorcodes.ts:7](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L7)
+Defined in: [core/actions/src/error/errorcodes.ts:7](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L7)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:7](https://github.com/LaWebcap
 
 > **NOT\_ACCEPTABLE**: `2`
 
-Defined in: [core/actions/src/error/errorcodes.ts:5](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L5)
+Defined in: [core/actions/src/error/errorcodes.ts:5](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L5)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:5](https://github.com/LaWebcap
 
 > **OTHER**: `-1`
 
-Defined in: [core/actions/src/error/errorcodes.ts:2](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L2)
+Defined in: [core/actions/src/error/errorcodes.ts:2](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L2)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:2](https://github.com/LaWebcap
 
 > **REQUEST\_ERROR**: `400`
 
-Defined in: [core/actions/src/error/errorcodes.ts:14](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L14)
+Defined in: [core/actions/src/error/errorcodes.ts:14](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L14)
 
 400 - 599 reserved for API return (proxy)
 
@@ -50,7 +50,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:14](https://github.com/LaWebca
 
 > **REQUEST\_ERROR1**: `401`
 
-Defined in: [core/actions/src/error/errorcodes.ts:15](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L15)
+Defined in: [core/actions/src/error/errorcodes.ts:15](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L15)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:15](https://github.com/LaWebca
 
 > **REQUEST\_ERROR2**: `402`
 
-Defined in: [core/actions/src/error/errorcodes.ts:16](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L16)
+Defined in: [core/actions/src/error/errorcodes.ts:16](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L16)
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:16](https://github.com/LaWebca
 
 > **REQUEST\_FORBIDDEN**: `403`
 
-Defined in: [core/actions/src/error/errorcodes.ts:17](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L17)
+Defined in: [core/actions/src/error/errorcodes.ts:17](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L17)
 
 ***
 
@@ -74,7 +74,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:17](https://github.com/LaWebca
 
 > **REQUEST\_NOT\_FOUND**: `404`
 
-Defined in: [core/actions/src/error/errorcodes.ts:18](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L18)
+Defined in: [core/actions/src/error/errorcodes.ts:18](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L18)
 
 ***
 
@@ -82,7 +82,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:18](https://github.com/LaWebca
 
 > **RESOURCE\_ALREADY\_EXISTS**: `6`
 
-Defined in: [core/actions/src/error/errorcodes.ts:9](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L9)
+Defined in: [core/actions/src/error/errorcodes.ts:9](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L9)
 
 ***
 
@@ -90,7 +90,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:9](https://github.com/LaWebcap
 
 > **RESOURCE\_LOCKED**: `5`
 
-Defined in: [core/actions/src/error/errorcodes.ts:8](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L8)
+Defined in: [core/actions/src/error/errorcodes.ts:8](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L8)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:8](https://github.com/LaWebcap
 
 > **RESOURCE\_NOT\_FOUND**: `1`
 
-Defined in: [core/actions/src/error/errorcodes.ts:4](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L4)
+Defined in: [core/actions/src/error/errorcodes.ts:4](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L4)
 
 ***
 
@@ -106,7 +106,7 @@ Defined in: [core/actions/src/error/errorcodes.ts:4](https://github.com/LaWebcap
 
 > **TIMEOUT**: `7`
 
-Defined in: [core/actions/src/error/errorcodes.ts:10](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L10)
+Defined in: [core/actions/src/error/errorcodes.ts:10](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L10)
 
 ***
 
@@ -114,4 +114,4 @@ Defined in: [core/actions/src/error/errorcodes.ts:10](https://github.com/LaWebca
 
 > **UNAUTHORIZED**: `3`
 
-Defined in: [core/actions/src/error/errorcodes.ts:6](https://github.com/LaWebcapsule/orbits/blob/4f60266ef7bf7a6380d409c8f20045a6cd0428bd/core/actions/src/error/errorcodes.ts#L6)
+Defined in: [core/actions/src/error/errorcodes.ts:6](https://github.com/LaWebcapsule/orbits/blob/77b89aa7080dc6291f73a8e29105fc1d762b6c3f/core/actions/src/error/errorcodes.ts#L6)
