@@ -32,8 +32,8 @@
 <li>If the Node.js process is interrupted, the trade stops halfway, with no memory of the ongoing buy/sell operation.</li>
 </ul>
 <p>These issues, far from being theoretical, can have financial consequences. For example, a buy or sell action that is forgotten or left halfway through can lead to losses for the company.</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="the-orchestrated-saga-pattern">The Orchestrated Saga Pattern<a href="https://orbits.do/blog/workflows-orchestrate-microservices#the-orchestrated-saga-pattern" class="hash-link" aria-label="Direct link to The Orchestrated Saga Pattern" title="Direct link to The Orchestrated Saga Pattern">​</a></h2>
-<p>The <a href="https://microservices.io/patterns/data/saga.html" target="_blank" rel="noopener noreferrer"><strong>Orchestrated Saga Pattern</strong></a> effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="the-saga-orchestration-pattern">The Saga Orchestration Pattern<a href="https://orbits.do/blog/workflows-orchestrate-microservices#the-saga-orchestration-pattern" class="hash-link" aria-label="Direct link to The Saga Orchestration Pattern" title="Direct link to The Saga Orchestration Pattern">​</a></h2>
+<p>The <a href="https://microservices.io/patterns/data/saga.html" target="_blank" rel="noopener noreferrer"><strong>Saga Orchestration Pattern</strong></a> effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.</p>
 <p>The orchestrator:</p>
 <ul>
 <li>Explicitly manages state transitions between each step.</li>
@@ -41,7 +41,7 @@
 <li>Can replay actions in case of transient failure.</li>
 <li>Provides detailed traceability through clear naming of each step.</li>
 </ul>
-<p>Thus, the Orchestrated Saga pattern not only guarantees resilience and consistency of operations but also facilitates maintenance, monitoring, and evolution of complex workflows in a distributed environment.</p>
+<p>Thus, the Saga Orchestration pattern not only guarantees resilience and consistency of operations but also facilitates maintenance, monitoring, and evolution of complex workflows in a distributed environment.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="use-case">Use Case<a href="https://orbits.do/blog/workflows-orchestrate-microservices#use-case" class="hash-link" aria-label="Direct link to Use Case" title="Direct link to Use Case">​</a></h2>
 <p>In this blog post, we revisit the example of orchestrating a banking transaction. This canonical example was provided by <a href="https://docs.aws.amazon.com/step-functions/latest/dg/sample-lambda-orchestration.html" target="_blank" rel="noopener noreferrer">AWS Step Functions</a> and <a href="https://temporal.io/blog/temporal-replaces-state-machines-for-distributed-applications" target="_blank" rel="noopener noreferrer">Temporal</a>. Readers can refer to these articles to compare the syntax and ease of implementation offered by each tool.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="the-implementation">The Implementation<a href="https://orbits.do/blog/workflows-orchestrate-microservices#the-implementation" class="hash-link" aria-label="Direct link to The Implementation" title="Direct link to The Implementation">​</a></h2>
