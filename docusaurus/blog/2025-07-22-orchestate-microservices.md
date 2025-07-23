@@ -39,9 +39,9 @@ But in reality, problems accumulate:
 
 These issues, far from being theoretical, can have financial consequences. For example, a buy or sell action that is forgotten or left halfway through can lead to losses for the company.
 
-## The Orchestrated Saga Pattern
+## The Saga Orchestration Pattern
 
-The [**Orchestrated Saga Pattern**](https://microservices.io/patterns/data/saga.html) effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.
+The [**Saga Orchestration Pattern**](https://microservices.io/patterns/data/saga.html) effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.
 
 The orchestrator:
 - Explicitly manages state transitions between each step.
@@ -49,7 +49,7 @@ The orchestrator:
 - Can replay actions in case of transient failure.
 - Provides detailed traceability through clear naming of each step.
 
-Thus, the Orchestrated Saga pattern not only guarantees resilience and consistency of operations but also facilitates maintenance, monitoring, and evolution of complex workflows in a distributed environment.
+Thus, the Saga Orchestration pattern not only guarantees resilience and consistency of operations but also facilitates maintenance, monitoring, and evolution of complex workflows in a distributed environment.
 
 ## Use Case
 
