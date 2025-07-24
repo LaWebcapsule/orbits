@@ -1,19 +1,20 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+aws-cdk:
+  label: "AWS CDK"
+  permalink: "/aws-cdk"
+  description: "Posts related to the AWS CDK"
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+cdk8s:
+  label: "CDK8S"
+  permalink: "/cdk8s"
+  description: "Posts related to CDK8S"
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+"model-driven orchestration":
+  permalink: model-driven-orchestration
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+orbits:
+  label: "OrbiTS"
+  permalink: "/orbits"
+  description: "Posts related to OrbiTS"
+
+manifesto:
+  permalink: "/manifesto"

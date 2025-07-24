@@ -56,11 +56,13 @@ export abstract class CoalescingWorkflow extends Workflow {
                         $lt: ActionState.SUCCESS,
                     },
                 }).sort('createdAt');
-            let substitionDoc: ActionSchemaInterface;
+            let substitutionDoc: ActionSchemaInterface;
             if (pendingActionsWithSameIdentity.length) {
-                substitionDoc = this.substitute(pendingActionsWithSameIdentity);
+                substitutionDoc = this.substitute(
+                    pendingActionsWithSameIdentity
+                );
             }
-            if (!substitionDoc) {
+            if (!substitutionDoc) {
                 this.dbDoc.identity = this.stringifyIdentity();
                 const actionsWithSameIdentity =
                     await ActionRuntime.activeRuntime.ActionModel.find({
@@ -70,7 +72,7 @@ export abstract class CoalescingWorkflow extends Workflow {
                 this.dbDoc.generatorCount =
                     (actionsWithSameIdentity?.[0]?.generatorCount || 0) + 1;
             } else {
-                this.dbDoc = substitionDoc;
+                this.dbDoc = substitutionDoc;
             }
         }
         return super.save().catch((err) => {
