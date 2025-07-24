@@ -23,7 +23,7 @@ export class GenerateBuySellRecommendationAction extends Action {
             API_ADDRESS + 'generateBuySellRecommendation',
             requestOptions
         );
-        const buyOrSellRecommendation = await response.toString();
+        const buyOrSellRecommendation = await response.text();
         this.setResult({ buyOrSellRecommendation });
         return ActionState.SUCCESS;
     }
