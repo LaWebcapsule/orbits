@@ -4,12 +4,12 @@ title: Write Node.js workflows to orchestrate microservices.
 authors: [loic, louis]
 tags: [orchestration, microservices, saga-pattern, orbits, workflow]
 ---
+
 # Write Node.js workflows to orchestrate microservices
 
 Databases follow the principle of transactions — a set of changes that must either all succeed or all fail. But when an application interacts with multiple databases or connects to various APIs (as is the case for most applications today), the guarantees of ACID are lost. Workflows, state machines, and the saga pattern help achieve a similar level of reliability, often at the cost of more complex code. Here, we introduce a **Node.js** framework that makes it easy to write such workflows in TypeScript.
 
 To follow along, you can find the full source code in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).
-
 
 <!-- truncate -->
 
@@ -18,21 +18,25 @@ To follow along, you can find the full source code in [Orbit’s GitHub reposito
 Let's take a common use case in a business application: **managing a stock trading transaction**.
 
 Here are the typical steps:
+
 1. Check the price of a stock
 2. Generate a buy or sell recommendation
 3. Execute the recommended action
 
 On the surface, these are simple asynchronous calls that could be chained in a function:
 
-```javascript
+```ts
 async function trade() {
-  const stockPrice = await checkPrice();
-  const recommendation = await generateRecommendation(stockPrice);
-  return recommendation === 'buy' ? await buyStock(stockPrice) : await sellStock(stockPrice);
+    const stockPrice = await checkPrice();
+    const recommendation = await generateRecommendation(stockPrice);
+    return recommendation === 'buy'
+        ? await buyStock(stockPrice)
+        : await sellStock(stockPrice);
 }
 ```
 
 But in reality, problems accumulate:
+
 - What to do if a third-party service fails?
 - What if a network error occurs?
 - If the Node.js process is interrupted, the trade stops halfway, with no memory of the ongoing buy/sell operation.
@@ -44,9 +48,10 @@ These issues, far from being theoretical, can have financial consequences. For e
 The [**Saga Orchestration Pattern**](https://microservices.io/patterns/data/saga.html) effectively addresses these challenges. By centralizing workflow management in an orchestrator, this pattern mimics the transaction principle of a database. It allows a series of atomic actions, executed sequentially and under control, to be linked together into a global transaction.
 
 The orchestrator:
-- Explicitly manages state transitions between each step.
-- Persists workflow state to ensure recovery after crashes.
-- Can replay actions in case of transient failure.
+
+- Explicitly manages state transitions between each step;
+- Persists workflow state to ensure recovery after crashes;
+- Can replay actions in case of transient failure;
 - Provides detailed traceability through clear naming of each step.
 
 Thus, the Saga Orchestration pattern not only guarantees resilience and consistency of operations but also facilitates maintenance, monitoring, and evolution of complex workflows in a distributed environment.
@@ -61,36 +66,42 @@ Orbits proposes writing workflows in a structured and declarative manner.
 You can explore and experiment with the full source code of the example described in this blog post in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).  
 Here's the concrete example:
 
-```typescript title="src/orbits/workflows/trading.ts" wordWrap=true
-export class TradingWorkflow extends Workflow{
+```ts title="src/orbits/workflows/trading.ts" wordWrap=true
+export class TradingWorkflow extends Workflow {
+    declare IResult: StockTransaction;
 
- declare IResult:StockTransaction
+    async define() {
+        const checkPrice = await this.do(
+            'check-price',
+            new CheckStockPriceAction()
+        );
+        const stockPrice = checkPrice.stockPrice;
 
- async define(){
-  const checkPrice = await this.do("check-price", new CheckStockPriceAction());
-  const stockPrice = checkPrice.stockPrice;
+        const buyOrSell = await this.do(
+            'recommendation',
+            new GenerateBuySellRecommendationAction().setArgument({
+                price: stockPrice.stock_price,
+            })
+        );
 
-  const buyOrSell = await this.do("recommandation", 
-    new GenerateBuySellRecommendationAction()
-    .setArgument(
-        {
-            price:stockPrice.stock_price
-        })
-    ); 
-
-
-  if (buyOrSell.buyOrSellRecommendation === 'sell') {
-    const sell = await this.do("sell", new SellStockeAction().setArgument({
-            price:stockPrice.stock_price
-    }));
-    return sell.stockData;
-  } else {
-    const buy = await this.do("buy", new BuyStockAction().setArgument({
-            price:stockPrice.stock_price
-    }));
-    return buy.stockData;
-  }
- };
+        if (buyOrSell.buyOrSellRecommendation === 'sell') {
+            const sell = await this.do(
+                'sell',
+                new SellStockAction().setArgument({
+                    price: stockPrice.stock_price,
+                })
+            );
+            return sell.stockData;
+        } else {
+            const buy = await this.do(
+                'buy',
+                new BuyStockAction().setArgument({
+                    price: stockPrice.stock_price,
+                })
+            );
+            return buy.stockData;
+        }
+    }
 }
 ```
 
@@ -106,13 +117,13 @@ Each step is defined as an **Orbits Action**.
 
 Here's the implementation of the buy action:
 
-```typescript
+```ts
 export class BuyStockAction extends Action {
     async main() {
         const response = await fetch(API_ADDRESS + 'buyStock', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ stock_price: this.argument.price })
+            body: JSON.stringify({ stock_price: this.argument.price }),
         });
         this.result.stockData = await response.json();
         return ActionState.SUCCESS;
@@ -121,6 +132,7 @@ export class BuyStockAction extends Action {
 ```
 
 This action:
+
 - Takes a **typed input** (price)
 - Calls a remote API in an encapsulated manner
 - **Returns a state - ActionState.SUCCESS**, ready to be recorded and resumed
@@ -152,21 +164,25 @@ Adopting Orbits offers:
 Orbits is a standard TypeScript framework. You write promises and asynchronous functions just like you would anywhere else.
 
 **Clear separation of responsibilities**
+
 - **Workflow** = orchestration
 - **Action** = unit business logic
 
 **Flexibility & Scalability**
+
 - We can modify the flow without touching business components
 - Actions are reusable in multiple workflows
 
 **Resilience and recovery**
+
 - Orbits manages state persistence
 - Automatic recovery from the last valid point
 
 **Native observability**
+
 - Each action is traceable, named, monitorable
 
-## Going further 
+## Going further
 
 ### Using lambdas async invocations
 
@@ -185,7 +201,6 @@ We’ll cover how Orbits makes it easy to manage long-running processes in a ded
 In our example, if we trigger the same order twice, it will be processed twice—this isn’t always the desired behavior.
 Orbits provides an opinionated way to handle concurrency through a concept called resources. [Resources](/documentation/core-concepts/resource) allow you to control and limit the execution of actions to prevent unintended duplication.
 
-
 ## Conclusion
 
 With the simplicity of **Orbits in Node.js**, we can build systems that are reliable, readable, and maintainable, without changing your coding practices.
@@ -194,4 +209,4 @@ For your critical processes — e-commerce, finance, logistics, etc. — **adopt
 
 ---
 
-*Learn more about Orbits and its capabilities in our [documentation](/documentation/quick-start).*
+_Learn more about Orbits and its capabilities in our [documentation](/documentation/quick-start)._

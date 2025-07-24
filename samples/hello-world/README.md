@@ -6,6 +6,7 @@ Can be useful to help you write your first actions.
 ## Install dependencies
 
 ### Install npm dependencies
+
 - `npm i`
 
 ## Launch the app
@@ -16,4 +17,3 @@ Can be useful to help you write your first actions.
 ## Relaunch the app
 
 If your relaunch the app a second time the same day, you should see that your resource still knows if it's already greeted you or not.
-
