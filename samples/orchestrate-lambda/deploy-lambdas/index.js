@@ -1,11 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.addCorsOptions = exports.ApiLambdaCrudDynamoDBStack = void 0;
-const aws_apigateway_1 = require("aws-cdk-lib/aws-apigateway");
-const aws_lambda_1 = require("aws-cdk-lib/aws-lambda");
-const aws_cdk_lib_1 = require("aws-cdk-lib");
-const aws_lambda_nodejs_1 = require("aws-cdk-lib/aws-lambda-nodejs");
-const path_1 = require("path");
+const aws_apigateway_1 = require('aws-cdk-lib/aws-apigateway');
+const aws_lambda_1 = require('aws-cdk-lib/aws-lambda');
+const aws_cdk_lib_1 = require('aws-cdk-lib');
+const aws_lambda_nodejs_1 = require('aws-cdk-lib/aws-lambda-nodejs');
+const path_1 = require('path');
 class ApiLambdaCrudDynamoDBStack extends aws_cdk_lib_1.Stack {
     constructor(app, id) {
         super(app, id);
@@ -15,28 +15,58 @@ class ApiLambdaCrudDynamoDBStack extends aws_cdk_lib_1.Stack {
                     'aws-sdk', // Use the 'aws-sdk' available in the Lambda runtime
                 ],
             },
-            depsLockFilePath: (0, path_1.join)(__dirname, 'lambdas', 'package-lock.json'),
+            depsLockFilePath: (0, path_1.join)(
+                __dirname,
+                'lambdas',
+                'package-lock.json'
+            ),
             runtime: aws_lambda_1.Runtime.NODEJS_LATEST,
         };
-        const checkStockPrice = new aws_lambda_nodejs_1.NodejsFunction(this, 'checkStockPriceFunction', {
-            entry: (0, path_1.join)(__dirname, 'lambdas', 'check-stock-price.ts'),
-            ...nodeJsFunctionProps,
-        });
-        const generateBuySellRecommend = new aws_lambda_nodejs_1.NodejsFunction(this, 'generateBuySellRecommendFunction', {
-            entry: (0, path_1.join)(__dirname, 'lambdas', 'generate-buy-sell-recommend.ts'),
-            ...nodeJsFunctionProps,
-        });
-        const buyStock = new aws_lambda_nodejs_1.NodejsFunction(this, 'buyStockFunction', {
-            entry: (0, path_1.join)(__dirname, 'lambdas', 'buy-stock.ts'),
-            ...nodeJsFunctionProps,
-        });
-        const sellStock = new aws_lambda_nodejs_1.NodejsFunction(this, 'sellStockFunction', {
-            entry: (0, path_1.join)(__dirname, 'lambdas', 'sell-stock.ts'),
-            ...nodeJsFunctionProps,
-        });
+        const checkStockPrice = new aws_lambda_nodejs_1.NodejsFunction(
+            this,
+            'checkStockPriceFunction',
+            {
+                entry: (0, path_1.join)(
+                    __dirname,
+                    'lambdas',
+                    'check-stock-price.ts'
+                ),
+                ...nodeJsFunctionProps,
+            }
+        );
+        const generateBuySellRecommend = new aws_lambda_nodejs_1.NodejsFunction(
+            this,
+            'generateBuySellRecommendFunction',
+            {
+                entry: (0, path_1.join)(
+                    __dirname,
+                    'lambdas',
+                    'generate-buy-sell-recommend.ts'
+                ),
+                ...nodeJsFunctionProps,
+            }
+        );
+        const buyStock = new aws_lambda_nodejs_1.NodejsFunction(
+            this,
+            'buyStockFunction',
+            {
+                entry: (0, path_1.join)(__dirname, 'lambdas', 'buy-stock.ts'),
+                ...nodeJsFunctionProps,
+            }
+        );
+        const sellStock = new aws_lambda_nodejs_1.NodejsFunction(
+            this,
+            'sellStockFunction',
+            {
+                entry: (0, path_1.join)(__dirname, 'lambdas', 'sell-stock.ts'),
+                ...nodeJsFunctionProps,
+            }
+        );
         // Integrate the Lambda functions with the API Gateway resource
-        const generateBuySellRecommendIntegration = new aws_apigateway_1.LambdaIntegration(generateBuySellRecommend);
-        const checkStockPriceIntegration = new aws_apigateway_1.LambdaIntegration(checkStockPrice);
+        const generateBuySellRecommendIntegration =
+            new aws_apigateway_1.LambdaIntegration(generateBuySellRecommend);
+        const checkStockPriceIntegration =
+            new aws_apigateway_1.LambdaIntegration(checkStockPrice);
         // Create an API Gateway resource for each of the CRUD operations
         const api = new aws_apigateway_1.RestApi(this, 'stockApi', {
             restApiName: 'Stock Trading State Machine',
@@ -46,14 +76,25 @@ class ApiLambdaCrudDynamoDBStack extends aws_cdk_lib_1.Stack {
         const checkStockPriceApi = api.root.addResource('checkStockPrice');
         checkStockPriceApi.addMethod('GET', checkStockPriceIntegration);
         addCorsOptions(checkStockPriceApi);
-        const generateBuySellRecommendApi = api.root.addResource('generateBuySellRecommendation');
-        generateBuySellRecommendApi.addMethod('POST', generateBuySellRecommendIntegration);
+        const generateBuySellRecommendApi = api.root.addResource(
+            'generateBuySellRecommendation'
+        );
+        generateBuySellRecommendApi.addMethod(
+            'POST',
+            generateBuySellRecommendIntegration
+        );
         addCorsOptions(generateBuySellRecommendApi);
         const buyStockApi = api.root.addResource('buyStock');
-        buyStockApi.addMethod('POST', new aws_apigateway_1.LambdaIntegration(buyStock));
+        buyStockApi.addMethod(
+            'POST',
+            new aws_apigateway_1.LambdaIntegration(buyStock)
+        );
         addCorsOptions(buyStockApi);
         const sellStockApi = api.root.addResource('sellStock');
-        sellStockApi.addMethod('POST', new aws_apigateway_1.LambdaIntegration(sellStock));
+        sellStockApi.addMethod(
+            'POST',
+            new aws_apigateway_1.LambdaIntegration(sellStock)
+        );
         addCorsOptions(sellStockApi);
         // const singleItem = items.addResource('{id}');
         // singleItem.addMethod('GET', getOneIntegration);
@@ -64,34 +105,46 @@ class ApiLambdaCrudDynamoDBStack extends aws_cdk_lib_1.Stack {
 }
 exports.ApiLambdaCrudDynamoDBStack = ApiLambdaCrudDynamoDBStack;
 function addCorsOptions(apiResource) {
-    apiResource.addMethod('OPTIONS', new aws_apigateway_1.MockIntegration({
-        // In case you want to use binary media types, uncomment the following line
-        // contentHandling: ContentHandling.CONVERT_TO_TEXT,
-        integrationResponses: [{
-                statusCode: '200',
-                responseParameters: {
-                    'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                    'method.response.header.Access-Control-Allow-Origin': "'*'",
-                    'method.response.header.Access-Control-Allow-Credentials': "'false'",
-                    'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE'",
+    apiResource.addMethod(
+        'OPTIONS',
+        new aws_apigateway_1.MockIntegration({
+            // In case you want to use binary media types, uncomment the following line
+            // contentHandling: ContentHandling.CONVERT_TO_TEXT,
+            integrationResponses: [
+                {
+                    statusCode: '200',
+                    responseParameters: {
+                        'method.response.header.Access-Control-Allow-Headers':
+                            "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                        'method.response.header.Access-Control-Allow-Origin':
+                            "'*'",
+                        'method.response.header.Access-Control-Allow-Credentials':
+                            "'false'",
+                        'method.response.header.Access-Control-Allow-Methods':
+                            "'OPTIONS,GET,PUT,POST,DELETE'",
+                    },
                 },
-            }],
-        // In case you want to use binary media types, comment out the following line
-        passthroughBehavior: aws_apigateway_1.PassthroughBehavior.NEVER,
-        requestTemplates: {
-            "application/json": "{\"statusCode\": 200}"
-        },
-    }), {
-        methodResponses: [{
-                statusCode: '200',
-                responseParameters: {
-                    'method.response.header.Access-Control-Allow-Headers': true,
-                    'method.response.header.Access-Control-Allow-Methods': true,
-                    'method.response.header.Access-Control-Allow-Credentials': true,
-                    'method.response.header.Access-Control-Allow-Origin': true,
+            ],
+            // In case you want to use binary media types, comment out the following line
+            passthroughBehavior: aws_apigateway_1.PassthroughBehavior.NEVER,
+            requestTemplates: {
+                'application/json': '{"statusCode": 200}',
+            },
+        }),
+        {
+            methodResponses: [
+                {
+                    statusCode: '200',
+                    responseParameters: {
+                        'method.response.header.Access-Control-Allow-Headers': true,
+                        'method.response.header.Access-Control-Allow-Methods': true,
+                        'method.response.header.Access-Control-Allow-Credentials': true,
+                        'method.response.header.Access-Control-Allow-Origin': true,
+                    },
                 },
-            }]
-    });
+            ],
+        }
+    );
 }
 exports.addCorsOptions = addCorsOptions;
 const app = new aws_cdk_lib_1.App();

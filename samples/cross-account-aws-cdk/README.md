@@ -19,10 +19,13 @@ A practical example demonstrating how to manage AWS resources across multiple ac
 
 - Clone [this repository](https://github.com/LaWebcapsule/orbits)
 - Go to this directory:
+
 ```bash
 cd samples/cross-account-aws-cdk
 ```
+
 - Install node.js dependencies:
+
 ```bash
 npm i
 ```
@@ -37,6 +40,7 @@ Account B: CloudFormation deployment rights
 #### Configure environment values
 
 - Copy the environment template:
+
 ```bash
 cp .base.env .env
 ```
@@ -46,16 +50,19 @@ cp .base.env .env
 ## Deployment
 
 - Load environment variables:
+
 ```bash
 export $(cat .env | xargs)
 ```
 
 - Define your mongo_url:
+
 ```bash
 export ORBITS_DB__MONGO__URL=your-mongo-url
 ```
 
 - Deploy Cross-Account Infrastructure
+
 ```bash
 npx tsx src/orbits/orbi.ts
 ```
@@ -76,10 +83,10 @@ This command will:
 
 - Expected Output
   The Lambda function should successfully retrieve the parameter from Account A and should display the value of parameter A in its logs.
-  ```typescript
-  console.log('Param:', param.Parameter.Value);
-  ```
-  The default value of parameter is "hello-world".
+    ```ts
+    console.log('Param:', param.Parameter.Value);
+    ```
+    The default value of parameter is "hello-world".
 
 ## Cleanup
 
