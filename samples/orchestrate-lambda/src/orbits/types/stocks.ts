@@ -1,4 +1,3 @@
-
 export interface StockPriceResultObj {
     stock_price: number;
 }
@@ -6,7 +5,7 @@ export interface StockPriceResultObj {
 export interface StockTransaction {
     id: string;
     price: string;
-    type: "sell" | "buy";
+    type: 'sell' | 'buy';
     qty: string;
     timestamp: string;
-  }
+}

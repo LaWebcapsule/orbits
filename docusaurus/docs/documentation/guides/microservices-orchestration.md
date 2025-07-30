@@ -1,7 +1,9 @@
 ---
 sidebar_position: 5
 ---
+
 # Microservices Orchestration Example
+
 A practical example to help you orchestrate micro-services using Orbits.
 
 ## Scope
@@ -15,29 +17,36 @@ This well-known example originates from both [AWS Step Functions](https://docs.a
 ### Clone this repository
 
 - Clone [this repository](https://github.com/LaWebcapsule/orbits)
-- Go to this directory : 
+- Go to this directory :
+
 ```bash
 cd samples/orchestrate-lambda
 ```
-- Install node.js dependencies : 
-`npm i``
+
+- Install node.js dependencies :
+  `npm i``
 
 ### Setup lambdas in aws
 
 You'll need to deploy lambdas in aws
+
 - First of all you'll need an aws account with propers rights.
 - Go to this directory :
+
 ```bash
 cd ./deploy-lambdas
 ```
+
 - Follow README.md instructions to get API's URL
 
 ### Configure environment values
 
 - Copy the environment template:
-```bash 
+
+```bash
 cp .base.env .env
 ```
+
 - Edit .env file with the api url retrieved previously
 
 ## Project Structure
@@ -62,53 +71,63 @@ cp .base.env .env
 ├── src/
 │   ├── orbits/
 │   │   ├── orbi.ts # Main orchestration script
-│   │   ├── actions/ 
-│   │   │   ├── buyStock.ts # Buy stock API call action 
-│   │   │   ├── check-stock-price.ts # Check stock price API call action 
-│   │   │   ├── generate-buy-sell-recommendation.ts # Generate a recommendation based on price API call action 
-│   │   │   └── sellStock.ts # Sell stock API call action 
+│   │   ├── actions/
+│   │   │   ├── buy-stock.ts # Buy stock API call action
+│   │   │   ├── check-stock-price.ts # Check stock price API call action
+│   │   │   ├── generate-buy-sell-recommendation.ts # Generate a recommendation based on price API call action
+│   │   │   └── sell-stock.ts # Sell stock API call action
 │   │   ├── types/
 │   │   │   └── stocks.ts # Transaction and Stock type
 │   │   └── workflows/
 │   │       └── trading.ts # Trading workflow
 │   └── const.ts # Utils const
-├── .base.env                # Environment template
-├── .env                     # Your environment variables (git-ignored)
+├── .base.env # Environment template
+├── .env # Your environment variables (git-ignored)
 ├── package.json
 └── README.md
 ```
 
 ## The Trading Workflow
 
-```typescript title="src/orbits/workflows/trading.ts"
-export class TradingWorkflow extends Workflow{
+```ts title="src/orbits/workflows/trading.ts"
+export class TradingWorkflow extends Workflow {
+    declare IResult: StockTransaction;
 
-    declare IResult:StockTransaction
-
-    async define(){
-        const resultCheckStockPrice = await this.do("check-stock-price", new CheckStockPriceAction());
+    async define() {
+        const resultCheckStockPrice = await this.do(
+            'check-stock-price',
+            new CheckStockPriceAction()
+        );
         const stockPrice = resultCheckStockPrice.stockPrice;
 
-        const resultGenerateBuySellRecommendationAction = await this.do("check-stock-price", new GenerateBuySellRecommendationAction().setArgument(
-            {
-                price:stockPrice.stock_price
-            })); 
+        const resultGenerateBuySellRecommendationAction = await this.do(
+            'check-stock-price',
+            new GenerateBuySellRecommendationAction().setArgument({
+                price: stockPrice.stock_price,
+            })
+        );
 
-        const buyOrSellRecommendation = resultGenerateBuySellRecommendationAction.buyOrSellRecommendation
+        const buyOrSellRecommendation =
+            resultGenerateBuySellRecommendationAction.buyOrSellRecommendation;
 
         if (buyOrSellRecommendation === 'sell') {
-             const resultSellStockData = await this.do("sell-stock", new SellStockeAction().setArgument({
-                price:stockPrice.stock_price
-            }));
+            const resultSellStockData = await this.do(
+                'sell-stock',
+                new SellStockAction().setArgument({
+                    price: stockPrice.stock_price,
+                })
+            );
             return resultSellStockData.stockData;
         } else {
-             const resultBuyStockData = await this.do("buy-stock", new BuyStockAction().setArgument({
-                price:stockPrice.stock_price
-            }));
+            const resultBuyStockData = await this.do(
+                'buy-stock',
+                new BuyStockAction().setArgument({
+                    price: stockPrice.stock_price,
+                })
+            );
             return resultBuyStockData.stockData;
         }
-
-    };
+    }
 }
 ```
 
@@ -116,13 +135,13 @@ This central workflow orchestrates each step by calling autonomous **Actions**, 
 
 ## BuyStockAction
 
-```typescript
+```ts
 export class BuyStockAction extends Action {
     async main() {
         const response = await fetch(API_ADDRESS + 'buyStock', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ stock_price: this.argument.price })
+            body: JSON.stringify({ stock_price: this.argument.price }),
         });
         this.result.stockData = await response.json();
         return ActionState.SUCCESS;
@@ -131,6 +150,7 @@ export class BuyStockAction extends Action {
 ```
 
 This action:
+
 - Takes a typed input (price)
 - Calls a remote API in an encapsulated manner
 - Returns a state - ActionState.SUCCESS, ready to be recorded and resumed
@@ -138,18 +158,30 @@ This action:
 
 This structuring makes the action not only easy to test in isolation but also reusable in different workflows, while simplifying its instrumentation for monitoring or debugging.
 
-
 ## Running the sample
 
 ### Run the Script
 
 - Load environment variables:
-```bash export $(cat .env | xargs)```
-- Define your mongo_url : 
-```bash export ORBITS_DB__MONGO__URL=your-mongo-url```
-- Run your workflow : 
-```bash npx tsx src/orbits/orbi.ts```
+
+```bash
+export $(cat .env | xargs)
+```
+
+- Define your mongo_url :
+
+```bash
+export ORBITS_DB__MONGO__URL=your-mongo-url
+```
+
+- Run your workflow :
+
+```bash
+npx tsx src/orbits/orbi.ts
+```
+
 This command will:
+
 - Execute the trading workflow
 
 ## Next Steps
@@ -158,6 +190,6 @@ This command will:
 Here are three recommended next steps to continue your journey:
 
 1. **🧩 [Cross-account cdk examples](./cross-account-cdk.md)** - Show how to use infrastructure templates in conjonction with orbits
-2. **⚙️ [Core-concepts](/docs/category/core-concepts)** - Master the fundamental architecture principles and design patterns that power Orbits  
-3. **🛤️ [Guides](/docs/category/guides)** - Explore hands-on tutorials ranging from beginner-friendly to advanced implementation techniques
+2. **⚙️ [Core concepts](../core-concepts/readme.md)** - Master the fundamental architecture principles and design patterns that power Orbits
+3. **🛤️ [Guides](../guides/readme.md)** - Explore hands-on tutorials ranging from beginner-friendly to advanced implementation techniques
 :::

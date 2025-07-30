@@ -8,10 +8,13 @@ A practical example demonstrating how to manage kube resources through CDK8S and
 
 - Clone [this repository](https://github.com/LaWebcapsule/orbits)
 - Go to this directory:
+
 ```bash
 cd samples/cdk8s-deployment
 ```
-- Install node.js dependencies: 
+
+- Install node.js dependencies:
+
 ```bash
   npm i
 ```
@@ -27,15 +30,19 @@ This sample will use your current Kubernetes context, so ensure you're connected
 ## Deployment
 
 - Define your mongo url:
+
 ```bash
 export ORBITS_DB__MONGO__URL=your-mongo-url
 ```
+
 - Deploy Cdk8s basic stack:
+
 ```bash
 npx tsx src/orbits/orbi.ts
 ```
 
 This command will:
+
 - Create a new Kubernetes namespace
 - Deploy a scheduled Job named hello-world that runs daily at 10:00 AM
 - Output the namespace and job names in the console
@@ -43,11 +50,13 @@ This command will:
 ### Verify the result
 
 Get the namespace:
+
 ```bash
 kubectl get namespaces -l orbits/stackName=cdk8s-basic
 ```
 
 Get the job:
+
 ```bash
 export NS=$(kubectl get ns -l orbits/stackName=cdk8s-basic -o jsonpath='{.items[0].metadata.name}')
 kubectl get all --namespace $NS -l orbits/stackName=cdk8s-basic
@@ -56,6 +65,7 @@ kubectl get all --namespace $NS -l orbits/stackName=cdk8s-basic
 ## Cleanup
 
 To remove all deployed resources from both accounts:
+
 ```bash
 export CDK8S_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts

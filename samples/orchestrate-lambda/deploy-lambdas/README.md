@@ -21,6 +21,7 @@ Run `cdk deploy`. This will deploy / redeploy your Stack to your AWS Account.
 After the deployment you will see the API's URL, which represents the url you can then use in your `.env` config file.
 
 Example output:
+
 ```
 OrchestrateLambdaFunctionsStack.stockApiEndpoint893DB24E = https://xxxx.execute-api.xxxxx.amazonaws.com/prod/
 ```
