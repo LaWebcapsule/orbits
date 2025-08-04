@@ -198,6 +198,9 @@ importers:
       '@orbi-ts/services':
         specifier: 'workspace:'
         version: link:../packages/services
+      '@types/dockerode':
+        specifier: ^3.3.35
+        version: 3.3.42
       '@types/express':
         specifier: ^4.17.15
         version: 4.17.21
@@ -2092,6 +2095,12 @@ packages:
   '@types/copy-paste@1.1.33':
     resolution: {integrity: sha512-vhDsD3A+WPfme1SW56fZCPvgEQ6ELYC0Jzgomldg+ExpMyQ1xDcIcuzao6O5l43cttbhepo16zz54Y16+GtpKw==}
 
+  '@types/docker-modem@3.0.6':
+    resolution: {integrity: sha512-yKpAGEuKRSS8wwx0joknWxsmLha78wNMe9R2S3UNsVOkZded8UqOrV8KoeDXoXsjndxwyF3eIhyClGbO1SEhEg==}
+
+  '@types/dockerode@3.3.42':
+    resolution: {integrity: sha512-U1jqHMShibMEWHdxYhj3rCMNCiLx5f35i4e3CEUuW+JSSszc/tVqc6WCAPdhwBymG5R/vgbcceagK0St7Cq6Eg==}
+
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
 
@@ -2154,6 +2163,9 @@ packages:
 
   '@types/serve-static@1.15.7':
     resolution: {integrity: sha512-W8Ym+h8nhuRwaKPaDw34QUkwsGi6Rc4yYqvKFo5rm2FUEhCFbzVWrxXUxuKK8TASjWsysJY0nsmNCGhCOIsrOw==}
+
+  '@types/ssh2@1.15.5':
+    resolution: {integrity: sha512-N1ASjp/nXH3ovBHddRJpli4ozpk6UdDYIX4RJWFa9L1YKnzdhTlVmiGHm4DZnj/jLbqZpes4aeR30EFGQtvhQQ==}
 
   '@types/stream-buffers@3.0.7':
     resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
@@ -8429,6 +8441,17 @@ snapshots:
 
   '@types/copy-paste@1.1.33': {}
 
+  '@types/docker-modem@3.0.6':
+    dependencies:
+      '@types/node': 22.14.1
+      '@types/ssh2': 1.15.5
+
+  '@types/dockerode@3.3.42':
+    dependencies:
+      '@types/docker-modem': 3.0.6
+      '@types/node': 22.14.1
+      '@types/ssh2': 1.15.5
+
   '@types/eslint@9.6.1':
     dependencies:
       '@types/estree': 1.0.7
@@ -8503,6 +8526,10 @@ snapshots:
       '@types/http-errors': 2.0.4
       '@types/node': 22.14.1
       '@types/send': 0.17.4
+
+  '@types/ssh2@1.15.5':
+    dependencies:
+      '@types/node': 18.19.67
 
   '@types/stream-buffers@3.0.7':
     dependencies:
