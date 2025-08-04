@@ -1,5 +1,13 @@
 # @wbce/orbits-core
 
+## 0.1.4
+
+### Patch Changes
+
+- f525444: fix deepMerge and change default mongo url settings
+- Updated dependencies [f525444]
+    - @orbi-ts/services@0.1.2
+
 ## 0.1.3
 
 ### Patch Changes
