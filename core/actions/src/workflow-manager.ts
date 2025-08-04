@@ -409,6 +409,8 @@ export class Workflow extends Action {
             // et then withTransaction retry
             // but isNew is false and then it errors out with DocumentNotFoundError
             // to be confirmed
+            // initialize workflowStack with current stack
+            action.dbDoc.workflowStack = this.dbDoc.workflowStack;
             action.dbDoc.workflowStack.push({
                 ref,
                 stepIndex: this.bag.currentStepIndex,
