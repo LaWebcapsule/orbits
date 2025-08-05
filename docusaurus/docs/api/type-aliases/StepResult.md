@@ -2,7 +2,7 @@
 
 > **StepResult** = `object`
 
-Defined in: [core/actions/src/workflow-manager.ts:9](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L9)
+Defined in: [core/actions/src/workflow-manager.ts:9](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L9)
 
 ## Properties
 
@@ -10,7 +10,7 @@ Defined in: [core/actions/src/workflow-manager.ts:9](https://github.com/LaWebcap
 
 > **actionId**: `string`
 
-Defined in: [core/actions/src/workflow-manager.ts:14](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L14)
+Defined in: [core/actions/src/workflow-manager.ts:14](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L14)
 
 ***
 
@@ -18,7 +18,7 @@ Defined in: [core/actions/src/workflow-manager.ts:14](https://github.com/LaWebca
 
 > **actionRef**: `string`
 
-Defined in: [core/actions/src/workflow-manager.ts:13](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L13)
+Defined in: [core/actions/src/workflow-manager.ts:13](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L13)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [core/actions/src/workflow-manager.ts:13](https://github.com/LaWebca
 
 > **isError**: `boolean`
 
-Defined in: [core/actions/src/workflow-manager.ts:12](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L12)
+Defined in: [core/actions/src/workflow-manager.ts:12](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L12)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [core/actions/src/workflow-manager.ts:12](https://github.com/LaWebca
 
 > **parentStepId**: `number`
 
-Defined in: [core/actions/src/workflow-manager.ts:15](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L15)
+Defined in: [core/actions/src/workflow-manager.ts:15](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L15)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [core/actions/src/workflow-manager.ts:15](https://github.com/LaWebca
 
 > **parentStepName**: `string`
 
-Defined in: [core/actions/src/workflow-manager.ts:16](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L16)
+Defined in: [core/actions/src/workflow-manager.ts:16](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L16)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [core/actions/src/workflow-manager.ts:16](https://github.com/LaWebca
 
 > **result**: `JSONObject`
 
-Defined in: [core/actions/src/workflow-manager.ts:11](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L11)
+Defined in: [core/actions/src/workflow-manager.ts:11](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L11)
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: [core/actions/src/workflow-manager.ts:11](https://github.com/LaWebca
 
 > **state**: [`SUCCESS`](../enumerations/ActionState.md#success) \| [`ERROR`](../enumerations/ActionState.md#error)
 
-Defined in: [core/actions/src/workflow-manager.ts:10](https://github.com/LaWebcapsule/orbits/blob/89b3e4a56f1c6f9ed3e6f4d5895c93547487b813/core/actions/src/workflow-manager.ts#L10)
+Defined in: [core/actions/src/workflow-manager.ts:10](https://github.com/LaWebcapsule/orbits/blob/504560817f25458d3fb6654ab2ed313dea8d3ae0/core/actions/src/workflow-manager.ts#L10)

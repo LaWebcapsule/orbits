@@ -1,5 +1,14 @@
 # @wbce/orbits-fuel
 
+## 0.1.2
+
+### Patch Changes
+
+- 7d13c03: fix dockerdode version
+- Updated dependencies [f525444]
+    - @orbi-ts/services@0.1.2
+    - @orbi-ts/core@0.1.4
+
 ## 0.0.57
 
 ### Patch Changes

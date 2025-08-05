@@ -535,7 +535,7 @@ export class Workflow extends Action {
      * If the action already exists, it will be tracked and resumed.
      * If not, it will be started.
      * @param ref the step reference of the action to execute
-     * @param opts an object containing an instanciation of a dynamic action
+     * @param opts an object containing an instantiation of a dynamic action
      * @param opts.dynamicAction an action or a function that returns an action
      * @returns a promise that resolves with the result of the action
      */

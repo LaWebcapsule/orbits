@@ -42,7 +42,7 @@ There are multiple concerns inside the registration process, and for that, we wi
 
 So, our main function in the index.ts file will look like this:
 
-```typescript title="src/index.ts"
+```ts title="src/index.ts"
 // The registration takes the email, password and image file of the user
 // This can be acheived by creating an API and using a library like multer
 const register= async (email:string, password: string, image: Blob) => {
@@ -59,7 +59,7 @@ const register= async (email:string, password: string, image: Blob) => {
 };
 ```
 
-```typescript
+```ts
 function timeout(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -113,7 +113,7 @@ AWS CDK and CloudFormation have a limitation: stacks cannot directly reference r
 
 Here's what this limitation looks like in practice:
 
-```typescript
+```ts
 const app = new cdk.App()
 
 const paramA = new ParamStack(app, 'stack-A', {
@@ -147,7 +147,7 @@ With standard CDK, you'd need to:
 
 With orbits, the same architecture becomes straightforward:
 
-```typescript
+```ts
 const paramOutput = await this.do("updateParam", new ParamResource());
 
 await this.do("updateLambda", new LambdaResource().setArgument({
@@ -228,7 +228,7 @@ Here's what a CDK resource definitions look like:
 
 
 **Lambda Resource (lambda-resource.ts):**
-```typescript title="src/orbits/lambda-resource.ts"
+```ts title="src/orbits/lambda-resource.ts"
 export class LambdaResource extends CdkStackResource{
     
     StackConstructor = LambdaStack;
@@ -242,7 +242,7 @@ export class LambdaResource extends CdkStackResource{
 Let's go line by line.
 - `StackConstructor = LambdaStack` : this tells the orchestrator that `LambdaResource` will use the `LambdaStack` class constructor to define and manage its infrastructure.
 - 
-```typescript 
+```ts 
 declare IOutput : {
         "roleArn": string
 } 
@@ -263,7 +263,7 @@ Here we choose to have a proxy resources that deploy both the `Param` and the `L
 
 During the first step, we launch a first deployment of the `Lambda` stack.
 At this step, the `ParamStore` stack does not exist, so no optional properties are passed.
-```typescript src="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-resource.ts"
 async defineInstall(){
         await this.do("firstDeployLambda", this.constructLambdaResource());
 }
@@ -285,7 +285,7 @@ constructLambdaResource(){
 ##### Update step
 
 When updating the resource, we deploy both the `Param` and `Lambda` stack.
-```typescript src="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-resource.ts"
 async defineUpdate(){
         const lambdaResource = this.constructLambdaResource();
 
@@ -302,7 +302,7 @@ async defineUpdate(){
 `ParamResource` consumes the output of `LambdaResource` and vice versa.
 As a consequence, we need to refine the constructs methods.
 
-```typescript src="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-resource.ts"
     constructLambdaResource(paramOutput? : ParamResource['IOutput']){
         return new LambdaResource().setArgument({
             stackName: "lambda",
@@ -338,7 +338,7 @@ As a consequence, we need to refine the constructs methods.
 
 To uninstall, we uninstall both the `Lambda` and `ParamStore` stacks.
 
-```typescript src="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-resource.ts"
 async defineUninstall(){
         await this.do("uninstallLambda", this.constructLambdaResource().setCommand("Uninstall"));
         await this.do("uninstallParam", this.constructParamResource().setCommand("Uninstall"))
