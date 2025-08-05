@@ -6,7 +6,7 @@ export enum actionKind {
     //the action is a coalescing workflow
     COALESCING_WORKFLOW = 'orbits/coalescingWorkflow',
     // The action is a resource controller
-    RESOURCE_CONTROLLER = 'orbits/resource-controller',
+    RESOURCE_CONTROLLER = 'orbits/resourceController',
     // The action is a resource
     RESOURCE = 'orbits/resource',
 }
