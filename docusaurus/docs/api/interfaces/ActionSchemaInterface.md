@@ -1,6 +1,6 @@
 # Interface: ActionSchemaInterface\<TArgument, TBag, TResult\>
 
-Defined in: [core/actions/src/models/action.ts:18](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L18)
+Defined in: [core/actions/src/models/action.ts:18](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L18)
 
 ## Extends
 
@@ -26,7 +26,7 @@ Defined in: [core/actions/src/models/action.ts:18](https://github.com/LaWebcapsu
 
 > `optional` **\_\_v**: `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:26
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:26
 
 This documents __v.
 
@@ -40,7 +40,7 @@ This documents __v.
 
 > `optional` **\_id**: `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:23
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:23
 
 This documents _id.
 
@@ -54,7 +54,7 @@ This documents _id.
 
 > **$locals**: `Record`\<`string`, `unknown`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:71
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:71
 
 Empty object that you can use for storing properties on the document. This
 is handy for passing data to middleware without conflicting with Mongoose
@@ -70,7 +70,7 @@ internals.
 
 > **$op**: `"remove"` \| `"save"` \| `"validate"`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:83
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:83
 
 A string containing the current operation that Mongoose is executing
 on this document. Can be `null`, `'save'`, `'validate'`, or `'remove'`.
@@ -85,7 +85,7 @@ on this document. Can be `null`, `'save'`, `'validate'`, or `'remove'`.
 
 > **$where**: `Record`\<`string`, `unknown`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:98
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:98
 
 Set this property to add additional query filters when Mongoose saves this document and `isNew` is false.
 
@@ -99,7 +99,7 @@ Set this property to add additional query filters when Mongoose saves this docum
 
 > **actionRef**: `string`
 
-Defined in: [core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L28)
+Defined in: [core/actions/src/models/action.ts:28](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L28)
 
 ***
 
@@ -107,7 +107,7 @@ Defined in: [core/actions/src/models/action.ts:28](https://github.com/LaWebcapsu
 
 > **argument**: `TArgument`
 
-Defined in: [core/actions/src/models/action.ts:25](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L25)
+Defined in: [core/actions/src/models/action.ts:25](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L25)
 
 ***
 
@@ -115,7 +115,7 @@ Defined in: [core/actions/src/models/action.ts:25](https://github.com/LaWebcapsu
 
 > **bag**: `TBag`
 
-Defined in: [core/actions/src/models/action.ts:26](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L26)
+Defined in: [core/actions/src/models/action.ts:26](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L26)
 
 ***
 
@@ -123,7 +123,7 @@ Defined in: [core/actions/src/models/action.ts:26](https://github.com/LaWebcapsu
 
 > `optional` **baseModelName**: `string`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:101
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:101
 
 If this is a discriminator model, `baseModelName` is the name of the base model.
 
@@ -137,7 +137,7 @@ If this is a discriminator model, `baseModelName` is the name of the base model.
 
 > **collection**: `Collection`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:104
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:104
 
 Collection the model uses.
 
@@ -151,7 +151,7 @@ Collection the model uses.
 
 > **createdAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:65](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L65)
+Defined in: [core/actions/src/models/action.ts:65](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L65)
 
 ***
 
@@ -159,7 +159,7 @@ Defined in: [core/actions/src/models/action.ts:65](https://github.com/LaWebcapsu
 
 > **cronActivity**: `object`
 
-Defined in: [core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L58)
+Defined in: [core/actions/src/models/action.ts:58](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L58)
 
 #### frequency
 
@@ -183,7 +183,7 @@ Defined in: [core/actions/src/models/action.ts:58](https://github.com/LaWebcapsu
 
 > **db**: `Connection`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:107
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:107
 
 Connection the model uses.
 
@@ -197,7 +197,7 @@ Connection the model uses.
 
 > `optional` **definitionFrom**: `object`
 
-Defined in: [core/actions/src/models/action.ts:66](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L66)
+Defined in: [core/actions/src/models/action.ts:66](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L66)
 
 #### workflow
 
@@ -229,7 +229,7 @@ Defined in: [core/actions/src/models/action.ts:66](https://github.com/LaWebcapsu
 
 > **delay**: `number`
 
-Defined in: [core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L53)
+Defined in: [core/actions/src/models/action.ts:53](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L53)
 
 ***
 
@@ -237,7 +237,7 @@ Defined in: [core/actions/src/models/action.ts:53](https://github.com/LaWebcapsu
 
 > **delays**: `object`
 
-Defined in: [core/actions/src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L54)
+Defined in: [core/actions/src/models/action.ts:54](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L54)
 
 #### 1
 
@@ -253,7 +253,7 @@ Defined in: [core/actions/src/models/action.ts:54](https://github.com/LaWebcapsu
 
 > `optional` **errors**: `ValidationError`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:142
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:142
 
 Returns the current validation errors.
 
@@ -267,7 +267,7 @@ Returns the current validation errors.
 
 > **filter**: `Object`
 
-Defined in: [core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L30)
+Defined in: [core/actions/src/models/action.ts:30](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L30)
 
 ***
 
@@ -275,7 +275,7 @@ Defined in: [core/actions/src/models/action.ts:30](https://github.com/LaWebcapsu
 
 > **generatorCount**: `number`
 
-Defined in: [core/actions/src/models/action.ts:41](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L41)
+Defined in: [core/actions/src/models/action.ts:41](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L41)
 
 ***
 
@@ -283,7 +283,7 @@ Defined in: [core/actions/src/models/action.ts:41](https://github.com/LaWebcapsu
 
 > `optional` **id**: `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:154
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:154
 
 The string version of this documents _id.
 
@@ -297,7 +297,7 @@ The string version of this documents _id.
 
 > **identity**: `string`
 
-Defined in: [core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L29)
+Defined in: [core/actions/src/models/action.ts:29](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L29)
 
 ***
 
@@ -305,7 +305,7 @@ Defined in: [core/actions/src/models/action.ts:29](https://github.com/LaWebcapsu
 
 > **isNew**: `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:185
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:185
 
 Boolean flag specifying if the document is new.
 
@@ -319,7 +319,7 @@ Boolean flag specifying if the document is new.
 
 > **lockAndSave**: () => `Promise`\<`void`\>
 
-Defined in: [core/actions/src/models/action.ts:77](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L77)
+Defined in: [core/actions/src/models/action.ts:77](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L77)
 
 #### Returns
 
@@ -331,7 +331,7 @@ Defined in: [core/actions/src/models/action.ts:77](https://github.com/LaWebcapsu
 
 > **locked**: `Boolean`
 
-Defined in: [core/actions/src/models/action.ts:43](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L43)
+Defined in: [core/actions/src/models/action.ts:43](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L43)
 
 ***
 
@@ -339,7 +339,7 @@ Defined in: [core/actions/src/models/action.ts:43](https://github.com/LaWebcapsu
 
 > **lockedAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:44](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L44)
+Defined in: [core/actions/src/models/action.ts:44](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L44)
 
 ***
 
@@ -347,7 +347,7 @@ Defined in: [core/actions/src/models/action.ts:44](https://github.com/LaWebcapsu
 
 > **nExecutions**: `object`
 
-Defined in: [core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L49)
+Defined in: [core/actions/src/models/action.ts:49](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L49)
 
 #### 4
 
@@ -363,7 +363,7 @@ Defined in: [core/actions/src/models/action.ts:49](https://github.com/LaWebcapsu
 
 > **nTimes**: `number`
 
-Defined in: [core/actions/src/models/action.ts:42](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L42)
+Defined in: [core/actions/src/models/action.ts:42](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L42)
 
 ***
 
@@ -371,7 +371,7 @@ Defined in: [core/actions/src/models/action.ts:42](https://github.com/LaWebcapsu
 
 > **optimisticLock**: () => `Promise`\<`void`\>
 
-Defined in: [core/actions/src/models/action.ts:76](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L76)
+Defined in: [core/actions/src/models/action.ts:76](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L76)
 
 #### Returns
 
@@ -383,7 +383,7 @@ Defined in: [core/actions/src/models/action.ts:76](https://github.com/LaWebcapsu
 
 > **repeat**: `object`
 
-Defined in: [core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L45)
+Defined in: [core/actions/src/models/action.ts:45](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L45)
 
 #### 4?
 
@@ -399,7 +399,7 @@ Defined in: [core/actions/src/models/action.ts:45](https://github.com/LaWebcapsu
 
 > **result**: `TResult`
 
-Defined in: [core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L27)
+Defined in: [core/actions/src/models/action.ts:27](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L27)
 
 ***
 
@@ -407,7 +407,7 @@ Defined in: [core/actions/src/models/action.ts:27](https://github.com/LaWebcapsu
 
 > **schema**: `Schema`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:232
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:232
 
 The document's schema.
 
@@ -421,7 +421,7 @@ The document's schema.
 
 > **state**: [`ActionState`](../enumerations/ActionState.md)
 
-Defined in: [core/actions/src/models/action.ts:23](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L23)
+Defined in: [core/actions/src/models/action.ts:23](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L23)
 
 ***
 
@@ -429,7 +429,7 @@ Defined in: [core/actions/src/models/action.ts:23](https://github.com/LaWebcapsu
 
 > **stateUpdatedAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:24](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L24)
+Defined in: [core/actions/src/models/action.ts:24](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L24)
 
 ***
 
@@ -437,7 +437,7 @@ Defined in: [core/actions/src/models/action.ts:24](https://github.com/LaWebcapsu
 
 > **updatedAt**: `Date`
 
-Defined in: [core/actions/src/models/action.ts:64](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L64)
+Defined in: [core/actions/src/models/action.ts:64](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L64)
 
 ***
 
@@ -445,7 +445,7 @@ Defined in: [core/actions/src/models/action.ts:64](https://github.com/LaWebcapsu
 
 > **updateNextActivity**: () => `void`
 
-Defined in: [core/actions/src/models/action.ts:75](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L75)
+Defined in: [core/actions/src/models/action.ts:75](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L75)
 
 #### Returns
 
@@ -457,7 +457,7 @@ Defined in: [core/actions/src/models/action.ts:75](https://github.com/LaWebcapsu
 
 > `optional` **workflowId**: `string`
 
-Defined in: [core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L31)
+Defined in: [core/actions/src/models/action.ts:31](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L31)
 
 ***
 
@@ -465,7 +465,7 @@ Defined in: [core/actions/src/models/action.ts:31](https://github.com/LaWebcapsu
 
 > `optional` **workflowIdentity**: `string`
 
-Defined in: [core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L34)
+Defined in: [core/actions/src/models/action.ts:34](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L34)
 
 ***
 
@@ -473,7 +473,7 @@ Defined in: [core/actions/src/models/action.ts:34](https://github.com/LaWebcapsu
 
 > `optional` **workflowRef**: `string`
 
-Defined in: [core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L33)
+Defined in: [core/actions/src/models/action.ts:33](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L33)
 
 ***
 
@@ -481,7 +481,7 @@ Defined in: [core/actions/src/models/action.ts:33](https://github.com/LaWebcapsu
 
 > **workflowStack**: `object`[]
 
-Defined in: [core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L35)
+Defined in: [core/actions/src/models/action.ts:35](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L35)
 
 #### \_id
 
@@ -505,7 +505,7 @@ Defined in: [core/actions/src/models/action.ts:35](https://github.com/LaWebcapsu
 
 > `optional` **workflowStep**: `number`
 
-Defined in: [core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/f9d673b489e01e9869385bcc79e3794e7928e966/core/actions/src/models/action.ts#L32)
+Defined in: [core/actions/src/models/action.ts:32](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/models/action.ts#L32)
 
 ## Methods
 
@@ -513,7 +513,7 @@ Defined in: [core/actions/src/models/action.ts:32](https://github.com/LaWebcapsu
 
 > **$assertPopulated**\<`Paths`\>(`path`, `values?`): `Omit`\<`ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>, keyof `Paths`\> & `Paths`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:29
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:29
 
 Assert that a given path or paths is populated. Throws an error if not populated.
 
@@ -547,7 +547,7 @@ Assert that a given path or paths is populated. Throws an error if not populated
 
 > **$clone**(): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:32
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:32
 
 Returns a deep clone of this document
 
@@ -565,7 +565,7 @@ Returns a deep clone of this document
 
 > **$getAllSubdocs**(): `Document`\<`any`, `any`, `any`\>[]
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:35
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:35
 
 #### Returns
 
@@ -581,7 +581,7 @@ Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/doc
 
 > **$getPopulatedDocs**(): `Document`\<`any`, `any`, `any`\>[]
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:47
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:47
 
 Returns an array of all populated documents associated with the query
 
@@ -599,7 +599,7 @@ Returns an array of all populated documents associated with the query
 
 > **$ignore**(`path`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:38
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:38
 
 Don't run validation on this path or persist changes to this path.
 
@@ -623,7 +623,7 @@ Don't run validation on this path or persist changes to this path.
 
 > **$inc**(`path`, `val?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:54
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:54
 
 Increments the numeric value at `path` by the given `val`.
 When you call `save()` on this document, Mongoose will send a
@@ -653,7 +653,7 @@ When you call `save()` on this document, Mongoose will send a
 
 > **$isDefault**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:41
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:41
 
 Checks if a path is set to its default.
 
@@ -677,7 +677,7 @@ Checks if a path is set to its default.
 
 > **$isDeleted**(`val?`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:44
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:44
 
 Getter/setter, determines whether the document was removed or not.
 
@@ -701,7 +701,7 @@ Getter/setter, determines whether the document was removed or not.
 
 > **$isEmpty**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:61
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:61
 
 Returns true if the given path is nullish or only contains empty objects.
 Useful for determining whether this subdoc will get stripped out by the
@@ -727,7 +727,7 @@ Useful for determining whether this subdoc will get stripped out by the
 
 > **$isValid**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:64
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:64
 
 Checks if a path is invalid
 
@@ -751,7 +751,7 @@ Checks if a path is invalid
 
 > **$markValid**(`path`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:74
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:74
 
 Marks a path as valid, removing existing validation errors.
 
@@ -775,7 +775,7 @@ Marks a path as valid, removing existing validation errors.
 
 > **$model**\<`ModelType`\>(`name`): `ModelType`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:77
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:77
 
 Returns the model with the given name on this document's associated connection.
 
@@ -805,7 +805,7 @@ Returns the model with the given name on this document's associated connection.
 
 > **$parent**(): `Document`\<`any`, `any`, `any`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:207
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:207
 
 If this document is a subdocument or populated document, returns the
 document's parent. Returns undefined otherwise.
@@ -824,7 +824,7 @@ document's parent. Returns undefined otherwise.
 
 > **$session**(`session?`): `ClientSession`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:90
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:90
 
 Getter/setter around the session associated with this document. Used to
 automatically set `session` if you `save()` a doc that you got from a
@@ -852,7 +852,7 @@ query with an associated session.
 
 > **$set**(`path`, `val`, `type`, `options?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:93
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:93
 
 Alias for `set()`, used internally to avoid conflicts
 
@@ -886,7 +886,7 @@ Alias for `set()`, used internally to avoid conflicts
 
 > **$set**(`path`, `val`, `options?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:94
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:94
 
 Alias for `set()`, used internally to avoid conflicts
 
@@ -916,7 +916,7 @@ Alias for `set()`, used internally to avoid conflicts
 
 > **$set**(`value`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:95
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:95
 
 Alias for `set()`, used internally to avoid conflicts
 
@@ -942,7 +942,7 @@ Alias for `set()`, used internally to avoid conflicts
 
 > **delete**(`options`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:110
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:110
 
 Removes this document from the db.
 
@@ -968,7 +968,7 @@ Removes this document from the db.
 
 > **delete**(`callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:111
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:111
 
 Removes this document from the db.
 
@@ -990,7 +990,7 @@ Removes this document from the db.
 
 > **delete**(`options?`): `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:112
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:112
 
 Removes this document from the db.
 
@@ -1016,7 +1016,7 @@ Removes this document from the db.
 
 > **deleteOne**(`options`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:115
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:115
 
 Removes this document from the db.
 
@@ -1042,7 +1042,7 @@ Removes this document from the db.
 
 > **deleteOne**(`callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:116
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:116
 
 Removes this document from the db.
 
@@ -1064,7 +1064,7 @@ Removes this document from the db.
 
 > **deleteOne**(`options?`): `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:117
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:117
 
 Removes this document from the db.
 
@@ -1088,7 +1088,7 @@ Removes this document from the db.
 
 > **depopulate**(`path?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:123
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:123
 
 Takes a populated field and returns it to its unpopulated state. If called with
 no arguments, then all populated fields are returned to their unpopulated state.
@@ -1113,7 +1113,7 @@ no arguments, then all populated fields are returned to their unpopulated state.
 
 > **directModifiedPaths**(): `string`[]
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:130
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:130
 
 Returns the list of paths that have been directly modified. A direct
 modified path is a path that you explicitly set, whether via `doc.foo = 'bar'`,
@@ -1133,7 +1133,7 @@ modified path is a path that you explicitly set, whether via `doc.foo = 'bar'`,
 
 > **equals**(`doc`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:139
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:139
 
 Returns true if this document is equal to another document.
 
@@ -1161,7 +1161,7 @@ document has an `_id`, in which case this function falls back to using
 
 > **get**(`path`, `type?`, `options?`): `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:145
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:145
 
 Returns the value of a path.
 
@@ -1193,7 +1193,7 @@ Returns the value of a path.
 
 > **getChanges**(): `UpdateQuery`\<`ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:151
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:151
 
 Returns the changes that happened to the document
 in the format that will be sent to MongoDB.
@@ -1212,7 +1212,7 @@ in the format that will be sent to MongoDB.
 
 > **increment**(): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:157
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:157
 
 Signal that we desire an increment of this documents version.
 
@@ -1230,7 +1230,7 @@ Signal that we desire an increment of this documents version.
 
 > **init**(`obj`, `opts?`, `callback?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:164
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:164
 
 Initializes the document without setters or marking anything modified.
 Called internally after a document is returned from mongodb. Normally,
@@ -1264,7 +1264,7 @@ you do **not** need to call this function on your own.
 
 > **invalidate**(`path`, `errorMsg`, `value?`, `kind?`): `NativeError`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:167
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:167
 
 Marks a path as invalid, causing validation to fail.
 
@@ -1300,7 +1300,7 @@ Marks a path as invalid, causing validation to fail.
 
 > **isDirectModified**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:170
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:170
 
 Returns true if `path` was directly set and modified, else false.
 
@@ -1324,7 +1324,7 @@ Returns true if `path` was directly set and modified, else false.
 
 > **isDirectSelected**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:173
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:173
 
 Checks if `path` was explicitly selected. If no projection, always returns true.
 
@@ -1348,7 +1348,7 @@ Checks if `path` was explicitly selected. If no projection, always returns true.
 
 > **isInit**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:176
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:176
 
 Checks if `path` is in the `init` state, that is, it was set by `Document#init()` and not modified since.
 
@@ -1372,7 +1372,7 @@ Checks if `path` is in the `init` state, that is, it was set by `Document#init()
 
 > **isModified**(`path?`, `options?`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:182
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:182
 
 Returns true if any of the given paths are modified, else false. If no arguments, returns `true` if any path
 in this document is modified.
@@ -1403,7 +1403,7 @@ in this document is modified.
 
 > **isSelected**(`path`): `boolean`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:188
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:188
 
 Checks if `path` was selected in the source query which initialized this document.
 
@@ -1427,7 +1427,7 @@ Checks if `path` was selected in the source query which initialized this documen
 
 > **markModified**(`path`, `scope?`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:191
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:191
 
 Marks the path as having pending changes to write to the db.
 
@@ -1455,7 +1455,7 @@ Marks the path as having pending changes to write to the db.
 
 > **modifiedPaths**(`options?`): `string`[]
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:194
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:194
 
 Returns the list of paths that have been modified.
 
@@ -1481,7 +1481,7 @@ Returns the list of paths that have been modified.
 
 > **overwrite**(`obj`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:201
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:201
 
 Overwrite all values in this document with the values of `obj`, except
 for immutable properties. Behaves similarly to `set()`, except for it
@@ -1509,7 +1509,7 @@ unsets all properties that aren't in `obj`.
 
 > **populate**\<`Paths`\>(`path`): `Promise`\<`MergeType`\<`ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>, `Paths`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:210
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:210
 
 Populates document references.
 
@@ -1537,7 +1537,7 @@ Populates document references.
 
 > **populate**\<`Paths`\>(`path`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:211
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:211
 
 Populates document references.
 
@@ -1569,7 +1569,7 @@ Populates document references.
 
 > **populate**\<`Paths`\>(`path`, `select?`, `model?`, `match?`, `options?`): `Promise`\<`MergeType`\<`ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>, `Paths`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:212
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:212
 
 Populates document references.
 
@@ -1613,7 +1613,7 @@ Populates document references.
 
 > **populate**\<`Paths`\>(`path`, `select?`, `model?`, `match?`, `options?`, `callback?`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:213
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:213
 
 Populates document references.
 
@@ -1663,7 +1663,7 @@ Populates document references.
 
 > **populated**(`path`): `any`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:216
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:216
 
 Gets _id(s) used during population of the given `path`. If the path was not populated, returns `undefined`.
 
@@ -1689,7 +1689,7 @@ Gets _id(s) used during population of the given `path`. If the path was not popu
 
 > **remove**(`options`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:219
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:219
 
 Removes this document from the db.
 
@@ -1715,7 +1715,7 @@ Removes this document from the db.
 
 > **remove**(`callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:220
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:220
 
 Removes this document from the db.
 
@@ -1737,7 +1737,7 @@ Removes this document from the db.
 
 > **remove**(`options?`): `Promise`\<`ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:221
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:221
 
 Removes this document from the db.
 
@@ -1761,7 +1761,7 @@ Removes this document from the db.
 
 > **replaceOne**(`replacement?`, `options?`, `callback?`): `Query`\<`any`, `ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:224
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:224
 
 Sends a replaceOne command with this document `_id` as the query selector.
 
@@ -1795,7 +1795,7 @@ Sends a replaceOne command with this document `_id` as the query selector.
 
 > **save**(`options`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:227
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:227
 
 Saves this document by inserting a new document into the database if [document.isNew](/docs/api/document.html#document_Document-isNew) is `true`, or sends an [updateOne](/docs/api/document.html#document_Document-updateOne) operation with just the modified paths if `isNew` is `false`.
 
@@ -1821,7 +1821,7 @@ Saves this document by inserting a new document into the database if [document.i
 
 > **save**(`callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:228
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:228
 
 Saves this document by inserting a new document into the database if [document.isNew](/docs/api/document.html#document_Document-isNew) is `true`, or sends an [updateOne](/docs/api/document.html#document_Document-updateOne) operation with just the modified paths if `isNew` is `false`.
 
@@ -1843,7 +1843,7 @@ Saves this document by inserting a new document into the database if [document.i
 
 > **save**(`options?`): `Promise`\<`ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:229
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:229
 
 Saves this document by inserting a new document into the database if [document.isNew](/docs/api/document.html#document_Document-isNew) is `true`, or sends an [updateOne](/docs/api/document.html#document_Document-updateOne) operation with just the modified paths if `isNew` is `false`.
 
@@ -1869,7 +1869,7 @@ Saves this document by inserting a new document into the database if [document.i
 
 > **set**(`path`, `val`, `type`, `options?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:235
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:235
 
 Sets the value of a path, or many paths.
 
@@ -1903,7 +1903,7 @@ Sets the value of a path, or many paths.
 
 > **set**(`path`, `val`, `options?`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:236
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:236
 
 Sets the value of a path, or many paths.
 
@@ -1933,7 +1933,7 @@ Sets the value of a path, or many paths.
 
 > **set**(`value`): `this`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:237
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:237
 
 Sets the value of a path, or many paths.
 
@@ -1959,7 +1959,7 @@ Sets the value of a path, or many paths.
 
 > **toJSON**\<`T`\>(`options?`): `FlattenMaps`\<`T`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:240
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:240
 
 The return value of this method is used in calls to JSON.stringify(doc).
 
@@ -1987,7 +1987,7 @@ The return value of this method is used in calls to JSON.stringify(doc).
 
 > **toJSON**\<`T`\>(`options`): `T`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:241
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:241
 
 The return value of this method is used in calls to JSON.stringify(doc).
 
@@ -2017,7 +2017,7 @@ The return value of this method is used in calls to JSON.stringify(doc).
 
 > **toObject**\<`T`\>(`options?`): `Require_id`\<`T`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:244
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:244
 
 Converts this document into a plain-old JavaScript object ([POJO](https://masteringjs.io/tutorials/fundamentals/pojo)).
 
@@ -2047,7 +2047,7 @@ Converts this document into a plain-old JavaScript object ([POJO](https://master
 
 > **unmarkModified**(`path`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:247
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:247
 
 Clears the modified state on the specified path.
 
@@ -2071,7 +2071,7 @@ Clears the modified state on the specified path.
 
 > **update**(`update?`, `options?`, `callback?`): `Query`\<`any`, `ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:250
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:250
 
 Sends an update command with this document `_id` as the query selector.
 
@@ -2103,7 +2103,7 @@ Sends an update command with this document `_id` as the query selector.
 
 > **updateOne**(`update?`, `options?`, `callback?`): `Query`\<`any`, `ActionSchemaInterface`\<`TArgument`, `TBag`, `TResult`\>\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:253
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:253
 
 Sends an updateOne command with this document `_id` as the query selector.
 
@@ -2137,7 +2137,7 @@ Sends an updateOne command with this document `_id` as the query selector.
 
 > **validate**(`pathsToValidate`, `options`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:256
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:256
 
 Executes registered validation rules for this document.
 
@@ -2167,7 +2167,7 @@ Executes registered validation rules for this document.
 
 > **validate**(`pathsToValidate`, `callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:257
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:257
 
 Executes registered validation rules for this document.
 
@@ -2193,7 +2193,7 @@ Executes registered validation rules for this document.
 
 > **validate**(`callback`): `void`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:258
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:258
 
 Executes registered validation rules for this document.
 
@@ -2215,7 +2215,7 @@ Executes registered validation rules for this document.
 
 > **validate**(`pathsToValidate?`, `options?`): `Promise`\<`void`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:259
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:259
 
 Executes registered validation rules for this document.
 
@@ -2241,7 +2241,7 @@ Executes registered validation rules for this document.
 
 > **validate**(`options`): `Promise`\<`void`\>
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:260
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:260
 
 Executes registered validation rules for this document.
 
@@ -2269,7 +2269,7 @@ Executes registered validation rules for this document.
 
 > **validateSync**(`options`): `ValidationError`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:263
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:263
 
 Executes registered validation rules (skipping asynchronous validators) for this document.
 
@@ -2293,7 +2293,7 @@ Executes registered validation rules (skipping asynchronous validators) for this
 
 > **validateSync**(`pathsToValidate?`, `options?`): `ValidationError`
 
-Defined in: node\_modules/.pnpm/mongoose@6.13.8/node\_modules/mongoose/types/document.d.ts:264
+Defined in: node\_modules/.pnpm/mongoose@6.13.8\_@aws-sdk+client-sso-oidc@3.758.0/node\_modules/mongoose/types/document.d.ts:264
 
 Executes registered validation rules (skipping asynchronous validators) for this document.
 
