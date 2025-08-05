@@ -1,405 +1,208 @@
 ---
-slug: node.js workflow
-title: Handling workflows in Node.js using the SAGA pattern
+slug: orchestrate-stack
+title: Orchestrating a stack of services across multiple environments
 authors: [loic]
 tags: [orchestration, node.js, workflow, orbits]
 ---
-# The workflow problem
 
-A workflow is basically a list of tasks that run in order, and optionally, each task has the ability to provide its output as an input to the next task. You can find different use cases for these workflows, of which we will mention few examples:
-- Registering a user which involves uploading a profile image to storage, then creating the user in the database with the image’s link, and then sending the user a verification email as the last step.
-- When a user sends a message via a website’s contact form, we first add them to the CRM as a new lead, push their message to the sales channel on Slack , and then determine whether they are a new contact and send out marketing emails accordingly.
-
-In this step-by-step guide, we will walk through the process of making our own workflow handler using the builder design pattern, and to make things interesting, we will use the registration example.
-
+In our previous blog post, we introduced the basics of orchestration and showed how to write a deployment workflow for a backend service. 
+Now, let’s take it further. 
+Imagine our web agencies manage web services across multiple tenants—one cloud instance per client. The stack includes several services—such as frontend, authentication, and backend—and must support multi-tenant deployment. This brings new challenges:
+- coordinating deployments across environments
+- sharing common resources (like a cloud account, a VPC, a database...) between services in the stack
+- handling failures and rollbacks
+- keeping each tenant isolated yet manageable
+To address this, we need to go beyond simple workflows and start managing state, transitions, shared resources, and deployment strategies. 
+Let’s see how simple this becomes with Orbits.
 <!-- truncate -->
 
+## From workflows to resources
 
-# Prerequisites: 
+In Orbits, a `Workflow` is a one-time execution: it runs, performs its actions, and then it's done. While this is useful, it's not enough when you want to manage stateful, reusable services across multiple environments or tenants.
 
-Before diving into the implementation, make sure you have the following:
-- Node.js and npm
-- A mongo cluster
-- Basic knowledge on TypeScript
+Instead, Orbits introduces the concept of a `Resource`.
 
-# Project setup
+A `Resource` encapsulates both the identity of what you’re deploying and the logic for how to install, update, or manage it. Resources can be reused, composed, and tracked.
 
-Before jumping to the real thing, let’s try to see how we can achieve the workflow with the usual basic approach:
+### Defining a BaseResource 
 
-- Create a typescript app 
-```bash
-mkdir test
-cd ./test
-npm init
-npm install typescript --save-dev
-```
+#### Giving an identity to our services
 
-# Standard writing
-
-Since the goal of this guide is handling the workflow rather than going in details on how each step of the workflow works, we will use a method called — Separation of Concern
-
-There are multiple concerns inside the registration process, and for that, we will separate the main function into multiple sub-functions and only care about the input and output of each one.
-
-So, our main function in the index.ts file will look like this:
-
-```ts title="src/index.ts"
-// The registration takes the email, password and image file of the user
-// This can be acheived by creating an API and using a library like multer
-const register= async (email:string, password: string, image: Blob) => {
-  try {
-    // 1. this function uploads the image file and returns the link of that image
-    let imageLink = await uploadImage(image);
-    // 2. this function saves the user to the database
-    let savedUser = await saveUser({ email, password, imageLink });
-    // 3. this function sends a verification email to the user
-    let result = await sendVerificationEmail(email);
-  } catch (error) {
-    console.log("Process failed");
-  }
-};
-```
+To manage multiple services per tenant—such as frontend and backend—we start by defining a BaseResource. This base class provides a common identity mechanism using the tenantId and a service-specific name. The identity() method uniquely identifies each resource instance, which allows Orbits to track, reconcile, and avoid duplicating shared resources.
 
 ```ts
-function timeout(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-// 1. this function uploads the image file and returns the link of that image
-const uploadImage = async (image: Blob) => {
-  await timeout(1000);
-  return { imageLink: "image link" };
-};
-
-// 2. this function saves the user to the database
-const saveUser = async ({
-  email,
-  password,
-  imageLink,
-}: {
-  email: string;
-  password: string;
-  imageLink: string;
-}) => {
-  await timeout(1000);
-  return {
-    id: "1",
-    email,
-    password,
-    image: imageLink,
+export class BaseResource extends Resource{
+  IArgument: {
+    tenantId: string;
   };
-};
 
-// 3. this function sends a verification email to the user
-const sendVerificationEmail = async ({ email }: { email: string }) => {
-  await timeout(1000);
-  console.log("Email sent successfully to " + email);
-};
-```
+  serviceName = 'base'
 
-
-
-
-
-
-## The Cross-Account Problem
-
-AWS CDK and CloudFormation have a limitation: stacks cannot directly reference resources from other AWS accounts. This creates friction for common architectural patterns like:
-
-- Sharing Docker images between development and production accounts
-- Accessing centralized secrets from distributed applications
-- Setting up VPC peering connections
-- Managing cross-account S3 bucket permissions
-- Distributing Lambda layers across organizational boundaries
-
-Here's what this limitation looks like in practice:
-
-```ts
-const app = new cdk.App()
-
-const paramA = new ParamStack(app, 'stack-A', {
-    env: { account: "account-A" }
-})
-
-const lambdaB = new LambdaStack(app, 'stack-B', {
-    parameterArn: paramA.parameter.arn, // ❌ This fails at synthesis time
-    env: { account: "account-B" }
-})
-```
-
-The traditional workaround involves manual steps: extracting ARNs, hardcoding values, coordinating resource policies, and deploying in specific sequences. This breaks the declarative nature of infrastructure-as-code and makes architectures brittle.
-
-## A Real-World Example
-
-Here's an "hello-world" scenario to illustrate the problem: deploying an AWS Systems Manager parameter in Account A and reading it from a Lambda function in Account B. While the "cross-account sharing" feature for AWS SSM parameter could be used, this simple use case illustrates the broader challenge perfectly.
-
-### The Traditional CDK Approach (Doesn't scale)
-
-With standard CDK, you'd need to:
-
-1. Deploy the parameter stack in Account A
-2. Manually extract the parameter ARN
-3. Hardcode the ARN into your Lambda stack for Account B
-4. Manually configure cross-account IAM policies
-5. Deploy the Lambda stack in Account B
-6. Hope nothing changes, because updates require repeating this process
-
-### The Orchestration Solution with orbits
-
-With orbits, the same architecture becomes straightforward:
-
-```ts
-const paramOutput = await this.do("updateParam", new ParamResource());
-
-await this.do("updateLambda", new LambdaResource().setArgument({
-    stackProps: {
-        parameterArn: paramOutput.parameterArn, // ✅ Direct cross-account reference
-        env: { account: this.argument.accountB.id }
-    }
-}))
-```
-
-The key difference? Orbits handles the cross-account coordination automatically, allowing you to reference resources naturally regardless of which account they live in.
-
-## Hands-On: Building the Example
-
-The following section walks through building this cross-account parameter example step by step.
-
-### Prerequisites
-
-You'll need:
-- Access to two AWS accounts with CloudFormation deployment permissions
-- Node.js and npm installed
-- MongoDB instance for orbits state management
-
-### Project Setup
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd cross-account-example
-
-# Install dependencies
-npm install
-
-# Configure environment
-cp .base.env .env
-# Edit .env with your account details
-vi .env
-```
-
-### Project structure
-
-```bash
-├── src/
-│   ├── orbits/
-│   │   └── orbi.ts # Main orchestration script
-│   │   ├── lambda-resource.ts # lambda resource definition
-│   │   ├── param-resource.ts # Param resource definition
-│   │   ├── hello-resource.ts # Hello resource definition : the resource that make the junction between param and lambda
-
-│   ├── cdk/              # CDK stack definitions
-│   │   ├── lambda.ts # lambda CDK stack
-│   │   ├── param.ts # Param CDK stack
-├── .base.env                # Environment template
-├── .env                     # Your environment variables (git-ignored)
-├── package.json
-└── README.md
-```
-
-### The Resource Definitions
-
-#### Lambda and Param CDK Stack
-
-We focus on two stack `LambdaStack` and `ParameterStoreStack`
-[link to the stack]
-
-##### Lambda stack
-
-A lambda that will display the value of the parameter passed in parameter if it can access it.
-
-#### Parameter stack
-
-A parameter store that stores an "hello-world" value.
-
-
-#### Encapsulate the stacks in a resource definition.
-
-Here's what a CDK resource definitions look like:
-
-
-**Lambda Resource (lambda-resource.ts):**
-```ts title="src/orbits/lambda-resource.ts"
-export class LambdaResource extends CdkStackResource{
-    
-    StackConstructor = LambdaStack;
-
-    declare IOutput : {
-        "roleArn": string
-    } 
+  identity() {
+    return `${this.serviceName}-${this.argument.tenantId}`;
+  }
 }
 ```
 
-Let's go line by line.
-- `StackConstructor = LambdaStack` : this tells the orchestrator that `LambdaResource` will use the `LambdaStack` class constructor to define and manage its infrastructure.
-- 
-```ts 
-declare IOutput : {
-        "roleArn": string
-} 
-```
-The CloudFormation stack for the Lambda function exports a single output: "roleArn", which is the ARN of the Lambda's execution role.
-The IOutput declaration is used for type safety—it informs the developer that this resource will expose an output matching that structure.
+#### Sharing a common installation step
 
-:::info
-If not already done, the CDK environment will be automatically bootstrapped by the CDKResource—no other step is required, the fulllifecycle of your resource is managed.
+Orbits ressources distinguishe between the installation phase and the update phase. This allows precise control over what happens during first-time deployment versus subsequent updates.
+
+We can implement shared setup—such as Git repository creation and cloud account provisioning—in the defineInstall() method of BaseResource:
+
+```ts
+export class BaseResource extends Resource{
+
+  defineInstall(){
+    const createGit = new GitResource().setArgument({
+      name : this.serviceName
+    });
+    const createAWS = new AWSResource().setArgument({
+      id: this.tenantId
+    });
+
+    await Promise.all([
+      this.do("git-install", createGit),
+      this.do("aws-install", createAWS),
+    ]);
+  }
+}
+```
+
+In this setup:
+- GitResource uses `serviceName`, so each service (frontend, backend) gets its own Git repository.
+- AWSResource uses `tenantId`, ensuring every services share the same cloud account for a given tenant—no duplicate account will be created.
+
+### Differentiating frontend and backend
+
+Once the shared installation is abstracted, each service can implement its own logic tailored to its infrastructure and operational needs.
+Here we modify the `update` step.
+
+#### Backend resource
+
+```ts
+export class BackendResource extends BaseResource{
+
+  declare serviceName = 'backend'
+
+  defineUpdate(){
+
+    // Step 1: Deploy Infrastructure-as-Code
+    const deploymentOutput = await this.do("iac-deploy", new BackCDKStack());
+
+    // Step 2: Run SQL migrations inside the provisioned environment
+    const migration = new RunSQLMigrations();
+    migration.executor = new CloudExecutor(deploymentOutput.env);
+    await this.do("sql-migrate", migration);
+  }
+}
+
+```
+
+#### Frontend resource
+
+```ts
+export class FrontendResource extends BaseResource{
+
+  declare serviceName = 'frontend'
+
+  defineUpdate(){
+    // Step 1: Deploy Infrastructure-as-Code
+    const deploymentOutput = await this.do("iac-deploy", new FrontCDKStack());
+
+    // Step 2: clear caches inside the provisioned environment
+    await this.do("clear-cdn-cache", new CdnClearCacheAction().setArgument({
+      cdnArn : deploymentOutput.cdnArn
+    }));
+  }
+}
+```
+
+This pattern offers:
+- clear separation of concerns between services
+- reusability of common setup logic
+- flexibility for specialized behavior per service
+
+
+
+### Scaling to multiple tenants
+
+#### Managing a stack
+
+Now let’s define an application stack that orchestrates both frontend and backend services. This approach gives us control over the deployment order, error handling, and rollback strategy.
+Below is a schematic version of what this orchestration might look like:
+
+```ts
+export class MyStack extends Resource{
+  defineUpdate(){
+    //choose a deployment strategy
+    //here we first deploy the frontend and then the backend.
+    //could have done this in parellel
+    const backendResource = new BackendResource().setArgument(this.argument);
+    const frontendResource = new FrontendResource().setArgument(this.argument);
+    try{
+      await this.do("update-backend", backendResource);
+      await this.do("update-frontend", frontendResource);
+    }
+    catch(err){
+      //rollback to previous commit
+      await this.do("rollback-backend", backendResource);
+      await this.do("rollback-frontend", frontendResource)
+    }
+  }
+}
+```
+
+:::tip
+You could easily parallelize both deployments using Promise.all if the order doesn’t matter.
 :::
 
-#### Write a proxy resource to orchestrate both lambda and param deployment
+#### Managing multiple tenants
 
-We could choose different orchestrations stategies.
-Here we choose to have a proxy resources that deploy both the `Param` and the `Lambda` stack and that synchronize the use of both in coordination.
+To scale across tenants, we define a Tenants resource that loops over each tenant and applies the stack. Failures are isolated and can be reported via Slack, email, or any other channel.
 
-##### Install step
+```ts
 
-During the first step, we launch a first deployment of the `Lambda` stack.
-At this step, the `ParamStore` stack does not exist, so no optional properties are passed.
-```ts title="src/orbits/hello-resource.ts"
-async defineInstall(){
-        await this.do("firstDeployLambda", this.constructLambdaResource());
-}
+export class Tenants extends Resource{
 
-constructLambdaResource(){
-        return new LambdaResource().setArgument({
-            stackName: "lambda",
-            awsProfileName: this.argument.accountB.profile,
-            stackProps: {
-                env: {
-                    region: this.argument.region,
-                    account: this.argument.accountB.id
-                }
-            }
-        })
-}
-```
+  // you would likely fetch this from a database
+  tenants = ["clientA", "clientB", "clientC"]
 
-##### Update step
+  async defineUpdate() {
+    const failed = [];
 
-When updating the resource, we deploy both the `Param` and `Lambda` stack.
-```ts title="src/orbits/hello-resource.ts"
-async defineUpdate(){
-        const lambdaResource = this.constructLambdaResource();
-
-        const lambdaOutput = await this.do("getLambdaOutput", ()=>{
-            return lambdaResource.getResourceOutput();
-        })
-
-        const paramOutput = await this.do("updateParam", this.constructParamResource(lambdaOutput));
-
-        await this.do("updateLambda", this.constructLambdaResource(paramOutput))
-}
-```
-
-`ParamResource` consumes the output of `LambdaResource` and vice versa.
-As a consequence, we need to refine the constructs methods.
-
-```ts title="src/orbits/hello-resource.ts"
-    constructLambdaResource(paramOutput? : ParamResource['IOutput']){
-        return new LambdaResource().setArgument({
-            stackName: "lambda",
-            awsProfileName: this.argument.accountB.profile,
-            stackProps: {
-                accountARoleArn: paramOutput?.roleArn,
-                parameterArn: paramOutput?.paramArn,
-                env: {
-                    region: this.argument.region,
-                    account: this.argument.accountB.id
-                }
-            }
-        })
+    for (const tenantId of this.argument.tenants) {
+      try {
+        await this.do("update-tenant", new MyStack().setArgument({ tenantId }));
+      } catch (err) {
+        failed.push({ tenantId, error: err });
+        // Optionally notify immediately, or collect all and notify later
+      }
     }
 
-    constructParamResource(lambdaOutput? : LambdaResource['IOutput']){
-        return new ParamResource().setArgument({
-            stackName: "param",
-            awsProfileName: this.argument.accountA.profile,
-            stackProps: {
-                accountBId: this.argument.accountB.id,
-                accountBRoleArn: lambdaOutput.roleArn,
-                env: {
-                    region: this.argument.region,
-                    account: this.argument.accountA.id
-                }
-            }
-        })
+    if (failed.length > 0) {
+      await this.do("notify-failures", new SlackNotification().setArgument({ failures: failed }));
     }
-```
-
-#### Uninstall step
-
-To uninstall, we uninstall both the `Lambda` and `ParamStore` stacks.
-
-```ts title="src/orbits/hello-resource.ts"
-async defineUninstall(){
-        await this.do("uninstallLambda", this.constructLambdaResource().setCommand("Uninstall"));
-        await this.do("uninstallParam", this.constructParamResource().setCommand("Uninstall"))
+  }
+    
 }
 ```
 
-
-### Deployment
-
-The entire cross-account deployment happens with a single command:
-
-```bash
-export $(cat .env | xargs)
-export ORBITS_DB__MONGO__URL=your-mongo-url
-npx tsx src/orbits/orbi.ts
-```
-
-This orchestrates:
-1. Parameter deployment in Account A
-2. Cross-account IAM policy setup
-3. Lambda function deployment in Account B
-4. All necessary permissions and configurations
-
-#### Verification
-
-After deployment, you can test the Lambda function in Account B. It will successfully retrieve the parameter from Account A, demonstrating seamless cross-account access.
-
-The Lambda logs will show:
-```
-Param: hello-world
-```
+## What Orbits takes care of under the hood
 
 
-### Cleanup
-To remove all deployed resources from both accounts:
-```bash
-export HELLO_COMMAND=uninstall
-npx tsx src/orbits/orbi.ts
-```
-⚠️ Warning: This will permanently delete all resources created by this example. Make sure you want to remove everything before running this command.
+This simples syntax addresses common pain points in managing cloud services under the hood:
+- avoiding duplication: when multiple executions of a resource run in parallel, Orbits ensures the same final state without recreating resources unnecessarily. The orchestrator intelligently determines what needs updating, skipping, or preserving.
+- running scripts in different contexts : The concept of an executor provides a clean way to run specific actions within the right environment or context. Since infrastructure and scripts are managed together, it’s easy to target the exact environment where a command should execute.
+- safe error handling: Encapsulating orchestration logic in `Resource` enables rollback strategies when something fails mid-deployment.
+- multi-Tenant scalability: The `Tenants` resource allows applying the same stack logic across many clients, while isolating failures and surfacing them clearly.
 
-## Why This Matters
+## Possible enhancements 
 
-This example might seem simple, but it represents a fundamental gain in how we think about multi-account architectures. Instead of treating cross-account access as an exception requiring special handling, orbits makes it a first-class citizen of your infrastructure-as-code workflow. It allows to completly automate cross-account resources definition.
+This example provides a basic overview of how we manage multi-tenant deployments. Looking ahead, there are several potential improvements that can be explored:
+- we could implement more complex rollback strategies 
+- we could implement drift detection via the `cycle` hook
+- we could share some resources accross tenants with the same concept of `Resource`
 
-### Key Benefits
 
-**Declarative Cross-Account Resources:** Reference any resource from any account without manual coordination.
 
-**Automatic Permission Management:** IAM policies and resource policies are handled automatically.
-
-**Consistent Deployment Experience:** Multi-account deployments feel the same as single-account ones.
-
-**Simplified Maintenance:** Updates and changes don't require manual ARN extraction and policy coordination.
-
-## Looking Forward
-
-Cross-account resource management shouldn't be a second-class citizen in your infrastructure-as-code workflow. Tools like orbits point toward a future where account boundaries enhance security without sacrificing developer experience.
-
-If you're building multi-account architectures, I encourage you to try this example and see how much simpler cross-account resource management can be. The days of manual ARN extraction and policy coordination don't have to be permanent fixtures of AWS multi-account architectures.
-
----
-
-*Ready to try it yourself? The complete example code and setup instructions are available in the repository. Give it a spin and share your experience with cross-account resource management.*
