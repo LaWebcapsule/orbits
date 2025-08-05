@@ -5,10 +5,10 @@ authors: [louis]
 tags: [orchestration, self-adaptive platform, drift-detection, automation, orbits, workflow]
 ---
 
-## The Need For Orchestration
+## The need for orchestration
 
-In modern platform engineering, building a developer self-service portal isn’t just about provisioning — it’s about ensuring the entire golden path reliably completes, from infrastructure to runtime configuration.
-Whether you're spinning up environments for feature previews or onboarding a new client, orchestration is the logic that holds everything together—especially when things go wrong.
+In modern platform engineering, building a developer self-service portal isn’t just about provisioning — it’s about ensuring the entire [golden path](https://www.redhat.com/en/topics/platform-engineering/golden-paths) reliably completes, from infrastructure to runtime configuration.
+Whether you're spinning up environments for feature previews or onboarding a new client, orchestration is [the logic that holds everything together](https://platformengineering.org/blog/why-your-internal-developer-platform-needs-a-backend) — especially when things go wrong.
 Your orchestrator should let you observe state transitions and trigger specific commands accordingly—whether it's provisioning, reconciling drift, or handling failures.
 
 <!-- truncate -->
@@ -25,7 +25,7 @@ Let’s walk through a typical use case for an agency or SaaS company: deploying
 
 Here’s how you would orchestrate that using Orbits:
 
-### A Simple Declarative Workflow in TypeScript
+### A Simple declarative workflow in typeScript
  
 
 ```ts
@@ -90,8 +90,7 @@ export class FrontendWorkflow extends BaseWorkflow{
 By properly modeling shared resources, you can also ensure that different services (like frontend and backend) reuse the same AWS account rather than creating duplicates.
 
 
-#### TypeScript Ecosystem
-
+#### TypeScript ecosystem
 
 Since Orbits is written in TypeScript, you can directly use SDKs from your providers (like the AWS SDK).
 For example, in order to create an AWS account, you can just call : 

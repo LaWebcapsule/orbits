@@ -23,7 +23,7 @@ However, these controllers are only used within limited scopes. Indeed, autonomi
 
 Actions aimed at ensuring infrastructure commissioning, structuring incident response, or verifying application compliance with security policies are rarely subject today to feedback loops. The definition of transitions between configurations is then “very tedious and costly, which may consequently lead to error-prone dynamic behaviors” \[[7](https://hal.science/hal-01450517)\].
 
-## The Role of Operator Knowledge in DevSecOps Environments
+## The Role of operator knowledge in DevSecOps environments
 
 This separation, however, comes from the DevSecOps approach itself. Embedded in a control paradigm, it is important for organizations to have an abstract understanding of all their components. Thus, implementation models used in highly regulated environments begin with the establishment of architectural diagrams and models \[[8](https://kilthub.cmu.edu/articles/report/Using_Model-Based_Systems_Engineering_MBSE_to_Assure_a_DevSecOps_Pipeline_is_Sufficiently_Secure/22592884?file=40862315)\]. In these models, the response to an event and the actions applied to the system are pipelines \[[5](https://www.sei.cmu.edu/library/guide-to-implementing-devsecops-for-a-system-of-systems-in-highly-regulated-environments/)\]. Deploying a new software version, building an artifact, or responding to a security incident are all encompassed under the concept of a pipeline or workflow.
 
@@ -32,13 +32,13 @@ As a consequence of this perspective, in the industry, all tools responsible for
 Such a design implicitly assumes that a human, an Ops engineer, supervises and can have full knowledge of the entire system. This thesis has proven difficult to maintain given the system’s complexity but, within a socio-economic system, it helps maintain the chain of accountability. In this regard, a number of anti-patterns that appear in Continuous Integration (CI) construction stem from the implementers’ lack of system knowledge. For example, CI anti-patterns often arise from the “inadequate choice of hardware and software components \[which\] can make artifact builds slow and non-reproducible” \[[9](https://www.zora.uzh.ch/id/eprint/197036/)\]. As mentioned earlier, resource management systems that rely on exact step specifications prove error-prone and suboptimal; they hinder the replicability of architectures.
 
 
-## The Antinomy Between Dynamic Adaptation and Acyclic Workflows
+## The antinomy between dynamic adaptation and acyclic workflows
 
 - Autonomic cloud computing advocates the use of algorithms based on feedback loops to dynamically adapt to changes.
 - Workflows responsible for orchestrating distributed environments, however, are designed as acyclic graphs, thereby preventing the incorporation of feedback loops and the specification of deliveries through desired state definitions.
 Yet today, “there is no cloud resource orchestration programming language to uniformly describe and combine resource descriptions.” \[[10](https://ieeexplore.ieee.org/document/7230217)\]
 
-## Unlocking Efficiency and Security with Autonomic Cloud Practices
+## Unlocking efficiency and security with autonomic cloud practices
 
 As a consequence, a strategic application of autonomic computing (AC) across the entire application lifecycle—including critical DevSecOps processes—offers several key benefits:
 

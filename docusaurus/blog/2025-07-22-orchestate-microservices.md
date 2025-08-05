@@ -1,6 +1,6 @@
 ---
 slug: workflows-orchestrate-microservices
-title: Write Node.js workflows to orchestrate microservices.
+title: Write Node.js workflows to orchestrate microservices
 authors: [loic, louis]
 tags: [orchestration, microservices, saga-pattern, orbits, workflow]
 ---

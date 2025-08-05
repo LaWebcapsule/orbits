@@ -1,6 +1,6 @@
 # Class: BreakingActionState
 
-Defined in: [core/actions/src/error/error.ts:51](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/error/error.ts#L51)
+Defined in: [core/actions/src/error/error.ts:51](https://github.com/LaWebcapsule/orbits/blob/50bf2b88b7c0688cf2b33b38c49d03ffb4bc802b/core/actions/src/error/error.ts#L51)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Defined in: [core/actions/src/error/error.ts:51](https://github.com/LaWebcapsule
 
 > **new BreakingActionState**(`actionState`, `result?`): `BreakingActionState`
 
-Defined in: [core/actions/src/error/error.ts:52](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/error/error.ts#L52)
+Defined in: [core/actions/src/error/error.ts:52](https://github.com/LaWebcapsule/orbits/blob/50bf2b88b7c0688cf2b33b38c49d03ffb4bc802b/core/actions/src/error/error.ts#L52)
 
 #### Parameters
 
@@ -30,7 +30,7 @@ Defined in: [core/actions/src/error/error.ts:52](https://github.com/LaWebcapsule
 
 > **actionState**: [`ActionState`](../enumerations/ActionState.md)
 
-Defined in: [core/actions/src/error/error.ts:53](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/error/error.ts#L53)
+Defined in: [core/actions/src/error/error.ts:53](https://github.com/LaWebcapsule/orbits/blob/50bf2b88b7c0688cf2b33b38c49d03ffb4bc802b/core/actions/src/error/error.ts#L53)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [core/actions/src/error/error.ts:53](https://github.com/LaWebcapsule
 
 > `optional` **result**: `any`
 
-Defined in: [core/actions/src/error/error.ts:54](https://github.com/LaWebcapsule/orbits/blob/a4cd5e74a338f613c904edc41e7c67e8e8b01e3e/core/actions/src/error/error.ts#L54)
+Defined in: [core/actions/src/error/error.ts:54](https://github.com/LaWebcapsule/orbits/blob/50bf2b88b7c0688cf2b33b38c49d03ffb4bc802b/core/actions/src/error/error.ts#L54)
