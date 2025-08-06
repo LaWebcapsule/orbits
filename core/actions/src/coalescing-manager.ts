@@ -195,8 +195,8 @@ export class ResourceController<T extends Resource> extends CoalescingWorkflow {
 
     static [RESOURCE_CONTROLLER_TAG] = true;
 
-    constructor(resource?: T) {
-        super();
+    constructor(resource?: T, runtime?: ActionRuntime) {
+        super(runtime);
         if (resource) {
             this.setArgument({
                 ...resource.argument,

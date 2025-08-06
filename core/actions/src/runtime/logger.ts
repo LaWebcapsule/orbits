@@ -1,7 +1,14 @@
 import { orbitsAsyncStorage } from '@orbi-ts/services';
 import * as winston from 'winston';
-import type { ActionRuntime } from './action-runtime.js';
+import Transport from 'winston-transport';
+
+import { ActionRuntime } from './action-runtime.js';
 import { getEnv } from './get-env.js';
+
+export enum loggerAnchors {
+    MAIN_LINE_SIGNAL = 'main',
+    WATCHER_LINE_SIGNAL = 'watcher',
+}
 
 const expendError = (obj: any, opts = { depth: 0 }) => {
     if (obj instanceof Error) {
@@ -37,6 +44,40 @@ const addLogZoneInfo = winston.format((info: any) => {
     };
 });
 
+const filterPertinentInfo = winston.format((info: any) => {
+    if (info?.level === 'info') {
+        if (info?.message === 'state changed : SLEEPING --> EXECUTING_MAIN') {
+            return {
+                ...info,
+                anchor: loggerAnchors.MAIN_LINE_SIGNAL,
+            };
+        }
+        if (info?.message === 'watcher') {
+            return {
+                ...info,
+                anchor: loggerAnchors.WATCHER_LINE_SIGNAL,
+            };
+        }
+        if (info?.message?.includes?.('cron ')) {
+            return false;
+        }
+        if (info?.message?.includes?.('setExecutor')) {
+            return false;
+        }
+    }
+    return info;
+});
+
+class MongoTransporter extends Transport {
+    public log(info: any, next: () => void) {
+        const log = new ActionRuntime.activeRuntime.LogModel({
+            ...info,
+            filter: ActionRuntime.activeRuntime.actionFilter,
+        });
+        return log.save().finally(next);
+    }
+}
+
 const env = getEnv();
 
 export const defaultLogger = winston.createLogger({
@@ -48,6 +89,26 @@ export const defaultLogger = winston.createLogger({
                 winston.format.json()
             ),
             level: env.logging?.level,
+        }),
+    ],
+});
+
+export const databaseLogger = winston.createLogger({
+    transports: [
+        new winston.transports.Console({
+            format: winston.format.combine(
+                addLogZoneInfo(),
+                filterError(),
+                winston.format.json()
+            ),
+        }),
+        new MongoTransporter({
+            format: winston.format.combine(
+                addLogZoneInfo(),
+                filterError(),
+                filterPertinentInfo(),
+                winston.format.json()
+            ),
         }),
     ],
 });

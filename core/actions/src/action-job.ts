@@ -91,6 +91,14 @@ export class ActionCron {
 
         if (this.filter) query.filter = this.filter;
 
+        ActionRuntime.activeRuntime.logger.info(
+            `getting action: ${new Date().getTime()} ${JSON.stringify(query)}`
+        );
+
+        this.runtime.ActionModel.findOne(query).sort(
+            'cronActivity.lastActivity'
+        );
+
         return this.runtime.ActionModel.findOne(query).sort(
             'cronActivity.lastActivity'
         );

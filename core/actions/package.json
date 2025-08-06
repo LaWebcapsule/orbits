@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly",
-        "publish-package": "pnpm run build && pnpm publish --access public",
+        "publish-package": "pnpm run build && pnpm publish --access public --no-git-checks",
         "test": "node dist/specs/main.spec.js",
         "format": "prettier --check --ignore-unknown '**/*.ts'",
         "format:fix": "prettier --write --ignore-unknown '**/*.ts'"
@@ -41,7 +41,8 @@
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "read-env": "^2.0.0",
-        "winston": "catalog:"
+        "winston": "catalog:",
+        "winston-transport": "^4.9.0"
     },
     "type": "module"
 }

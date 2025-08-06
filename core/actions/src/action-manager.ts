@@ -198,7 +198,11 @@ export class Action {
         });
     }
 
-    constructor() {
+    constructor(runtime?: ActionRuntime) {
+        if (runtime) {
+            ActionRuntime.activeRuntime = runtime;
+            this.runtime = runtime;
+        }
         // Copy the static properties to create the dynamic ones
         // Check whether defaultDelay has priority over defaultDelays[ActionState.SUCCESS]
         // (if and only if it was set before in the inheritance chain)
@@ -246,8 +250,6 @@ export class Action {
             cronDefaultSettings.activityFrequence ||
             cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
-
-        this.runtime = ActionRuntime.activeRuntime;
     }
 
     /**
@@ -458,14 +460,14 @@ export class Action {
     }
 
     private setErrorAsResult(err: Error | ActionError | InWorkflowActionError) {
-        const formatError = (err as any)?.formatedError || format('%s', err);
+        const formatError = (err as any)?.formattedError || format('%s', err);
         this.setResult({
             code: (err as ActionError)?.code,
             message: err?.message,
             stack: err?.stack,
-            worflowTrace: (err as InWorkflowActionError)?.workflowTrace,
+            workflowTrace: (err as InWorkflowActionError)?.workflowTrace,
             rootAction: (err as InWorkflowActionError)?.rootAction,
-            formatedError: formatError,
+            formattedError: formatError,
         });
     }
 
@@ -599,7 +601,19 @@ export class Action {
      * state of the action
      * @returns A promise. You can not rely on this to know when an action is finished.
      */
-    public resume() {
+    public async resume() {
+        // if cron activity was paused, do nothing until next activity was reach
+        if (this.cronActivity.paused) {
+            this.internalLog(
+                `paused, waiting until ${this.cronActivity.nextActivity} before resuming.`
+            );
+            if (this.cronActivity.nextActivity >= new Date(Date.now())) {
+                return Promise.resolve();
+            }
+            this.cronActivity.paused = false;
+            await this.dbDoc.save();
+        }
+
         this.dbDoc.updateNextActivity(); //set next cron Activity
         return orbitsAsyncStorage.addNestedStorage(
             {
