@@ -1,8 +1,16 @@
 ---
 slug: orchestration-typescript
-title: A deployment workflow with typescript
+title: A deployment workflow with TypeScript
 authors: [louis]
-tags: [orchestration, self-adaptive platform, drift-detection, automation, orbits, workflow]
+tags:
+    [
+        orchestration,
+        self-adaptive platform,
+        drift-detection,
+        automation,
+        orbits,
+        workflow,
+    ]
 ---
 
 ## The need for orchestration
@@ -13,7 +21,7 @@ Your orchestrator should let you observe state transitions and trigger specific 
 
 <!-- truncate -->
 
-## Example: deploying a backend from stratch
+## Example: deploying a backend from scratch
 
 Let’s walk through a typical use case for an agency or SaaS company: deploying a new backend environment for a client or project. This often involves:
 
@@ -25,37 +33,40 @@ Let’s walk through a typical use case for an agency or SaaS company: deploying
 
 Here’s how you would orchestrate that using Orbits:
 
-### A Simple declarative workflow in typeScript
- 
+### A Simple declarative workflow in TypeScript
 
 ```ts
 export class DeployBackend extends Workflow {
-  async define() {
-    try {
-      // Step 1: Create Git and Cloud resources in parallel
-      const createGit = new CreateGitRepo();
-      const createAWS = new CreateAWSAccount();
+    async define() {
+        try {
+            // Step 1: Create Git and Cloud resources in parallel
+            const createGit = new CreateGitRepo();
+            const createAWS = new CreateAWSAccount();
 
-      await Promise.all([
-        this.do("git-create", createGit),
-        this.do("aws-create", createAWS),
-      ]);
+            await Promise.all([
+                this.do('git-create', createGit),
+                this.do('aws-create', createAWS),
+            ]);
 
-      // Step 2: Deploy Infrastructure-as-Code
-      const deploymentOutput = await this.do("iac-deploy", new DeployCDKStack());
+            // Step 2: Deploy Infrastructure-as-Code
+            const deploymentOutput = await this.do(
+                'iac-deploy',
+                new DeployCDKStack()
+            );
 
-      // Step 3: Run SQL migrations inside the newly provisioned environment
-      const migration = new RunSQLMigrations();
-      migration.executor = new CloudExecutor(deploymentOutput.env);
-      await this.do("sql-migrate", migration);
-
-    } catch (err) {
-      // Step 4: Handle errors with a notification
-      await this.do("notify-slack", new SendSlackAlert().setArgument(err));
+            // Step 3: Run SQL migrations inside the newly provisioned environment
+            const migration = new RunSQLMigrations();
+            migration.executor = new CloudExecutor(deploymentOutput.env);
+            await this.do('sql-migrate', migration);
+        } catch (err) {
+            // Step 4: Handle errors with a notification
+            await this.do(
+                'notify-slack',
+                new SendSlackAlert().setArgument(err)
+            );
+        }
     }
-  }
 }
-
 ```
 
 ### Advantages
@@ -66,34 +77,35 @@ When managing multiple services (e.g., backend, frontend, authentication), it's 
 
 Orbits makes this easy by allowing you to extract shared logic into a base class:
 
-```ts 
-export class BaseWorkflow extends Workflow{
-
-    defineCreation(){
+```ts
+export class BaseWorkflow extends Workflow {
+    defineCreation() {
         const createGit = new CreateGitRepo();
         const createAWS = new CreateAWSAccount();
 
         await Promise.all([
-            this.do("git-create", createGit),
-            this.do("aws-create", createAWS),
+            this.do('git-create', createGit),
+            this.do('aws-create', createAWS),
         ]);
     }
 }
 ```
+
 You can then extend this base in specific workflows:
 
 ```ts
-export class FrontendWorkflow extends BaseWorkflow{
-  // Additional frontend-specific steps
+export class FrontendWorkflow extends BaseWorkflow {
+    // Additional frontend-specific steps
 }
 ```
-By properly modeling shared resources, you can also ensure that different services (like frontend and backend) reuse the same AWS account rather than creating duplicates.
 
+By properly modeling shared resources, you can also ensure that different services (like frontend and backend) reuse the same AWS account rather than creating duplicates.
 
 #### TypeScript ecosystem
 
 Since Orbits is written in TypeScript, you can directly use SDKs from your providers (like the AWS SDK).
-For example, in order to create an AWS account, you can just call : 
+For example, in order to create an AWS account, you can just call:
+
 ```ts
 const client = new OrganizationsClient();
 client.send(
@@ -104,12 +116,10 @@ client.send(
 );
 ```
 
-
 #### Test on local
 
 All the orchestrator run inside your node.js process.
 As a consequence, you can run and test your workflows locally, just like any other TypeScript code — enabling fast iteration and simplified debugging during development.
-
 
 ### Going further
 
