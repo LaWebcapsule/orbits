@@ -11,7 +11,7 @@ Databases follow the principle of transactions — a set of changes that must ei
 
 To follow along, you can find the full source code in [Orbit’s GitHub repository](https://github.com/LaWebcapsule/orbits/tree/main/samples/orchestrate-lambda).
 
-![Alt text](/img/blog/lightweight-temporal.png)
+![lightweight temporal alternative](/img/blog/lightweight-temporal.png)
 
 <!-- truncate -->
 

@@ -5,18 +5,18 @@ authors: [louis]
 tags: [orchestration, self-adaptive platform, drift-detection, automation, orbits, workflow]
 ---
 
-## The need for orchestration
-
 In modern platform engineering, building a developer self-service portal isn’t just about provisioning — it’s about ensuring the entire [golden path](https://www.redhat.com/en/topics/platform-engineering/golden-paths) reliably completes, from infrastructure to runtime configuration.
 Whether you're spinning up environments for feature previews or onboarding a new client, orchestration is [the logic that holds everything together](https://platformengineering.org/blog/why-your-internal-developer-platform-needs-a-backend) — especially when things go wrong.
 Your orchestrator should let you observe state transitions and trigger specific commands accordingly—whether it's provisioning, reconciling drift, or handling failures.
+
+![workflow](/img/blog/workflow.png)
+
 
 <!-- truncate -->
 
 ## Example: deploying a backend from stratch
 
 Let’s walk through a typical use case for an agency or SaaS company: deploying a new backend environment for a client or project. This often involves:
-
 - Creating a dedicated cloud account
 - Creating a Git repository
 - Deploying infrastructure-as-code (e.g., CDK or Terraform)
@@ -24,6 +24,7 @@ Let’s walk through a typical use case for an agency or SaaS company: deploying
 - Notifying the team of success or failure
 
 Here’s how you would orchestrate that using Orbits:
+
 
 ### A Simple declarative workflow in typeScript
  
