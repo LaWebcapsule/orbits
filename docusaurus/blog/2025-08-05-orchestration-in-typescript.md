@@ -13,11 +13,11 @@ tags:
     ]
 ---
 
-## The need for orchestration
-
 In modern platform engineering, building a developer self-service portal isn’t just about provisioning — it’s about ensuring the entire [golden path](https://www.redhat.com/en/topics/platform-engineering/golden-paths) reliably completes, from infrastructure to runtime configuration.
 Whether you're spinning up environments for feature previews or onboarding a new client, orchestration is [the logic that holds everything together](https://platformengineering.org/blog/why-your-internal-developer-platform-needs-a-backend) — especially when things go wrong.
 Your orchestrator should let you observe state transitions and trigger specific commands accordingly—whether it's provisioning, reconciling drift, or handling failures.
+
+![workflow](/img/blog/workflow.png)
 
 <!-- truncate -->
 

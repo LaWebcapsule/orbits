@@ -19,6 +19,8 @@ While cloud services offer great flexibility in their usage and consumption, the
 
 From this perspective, Ops teams and developers must be supported by complex engineering platforms called Internal Developer Platforms. These platforms must ensure requirements for quality of service, security, and cloud cost, while also allowing administrators access for audit, customization, and modification purposes.
 
+![orchestration](/img/blog/orchestration.png)
+
 <!-- truncate -->
 
 ## Autonomic cloud computing
