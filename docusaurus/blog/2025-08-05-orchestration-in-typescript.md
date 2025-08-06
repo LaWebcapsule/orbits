@@ -1,7 +1,7 @@
 ---
 slug: orchestration-typescript
 title: A deployment workflow with TypeScript
-authors: [louis]
+authors: [loic]
 tags:
     [
         orchestration,
