@@ -242,8 +242,6 @@ export class Action {
             bag: {},
         }) as any;
         this.dbDoc.cronActivity.frequency =
-            // TODO: only use activityFrequency once activityFrequence is removed
-            cronDefaultSettings.activityFrequence ||
             cronDefaultSettings.activityFrequency;
         this.dbDoc.delays = defaultDelays as any;
 
