@@ -41,7 +41,8 @@
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "read-env": "^2.0.0",
-        "winston": "catalog:"
+        "winston": "catalog:",
+        "winston-transport": "^4.9.0"
     },
     "type": "module"
 }

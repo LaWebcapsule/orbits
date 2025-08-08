@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { actionSchema, ActionSchemaInterface } from '../models/action.js';
+import { logSchema, LogSchemaInterface } from '../models/log.js';
 import { resourceSchema, ResourceSchemaInterface } from '../models/resource.js';
 import type { ActionRuntime } from './action-runtime.js';
 
@@ -48,5 +49,6 @@ export function setDbConnection(runtime: ActionRuntime) {
         'Resource',
         resourceSchema
     );
+    runtime.LogModel = conn.model<LogSchemaInterface>('Log', logSchema);
     return conn;
 }
