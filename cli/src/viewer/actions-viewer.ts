@@ -1,13 +1,14 @@
-import { ActionSchemaInterface } from '@orbi-ts/core';
+import { ActionSchemaInterface, LogSchemaInterface } from '@orbi-ts/core';
 
+import { exitCodes } from '../commands/utils.js';
 import { ActionsBlessedRenderer } from './blessed-renderer.js';
-import { ActionsViewerAction } from './constants.js';
 import { ActionsTextRenderer } from './text-renderer.js';
+import { ActionsRenderer, ActionsViewerAction } from './utils.js';
 
 export class ActionsViewer {
     private top: string;
 
-    private renderer: ActionsBlessedRenderer | ActionsTextRenderer;
+    private renderer: ActionsRenderer;
 
     /**
      * Store for each workflow ID,
@@ -25,9 +26,11 @@ export class ActionsViewer {
      */
     constructor(
         id: string,
-        refresh: boolean,
+        shouldRefresh: boolean,
         renderText: boolean,
-        exit: Function = () => process.exit()
+        exit: Function = () => {
+            process.exit(exitCodes.SUCCESS);
+        }
     ) {
         this.top = id;
         // if output is not a terminal, always use Text rendered
@@ -35,7 +38,19 @@ export class ActionsViewer {
             renderText || !process.stdout.isTTY
                 ? ActionsTextRenderer
                 : ActionsBlessedRenderer
-        )(this.top, refresh, exit);
+        )(this.top, shouldRefresh, exit);
+    }
+
+    setTopAction(actionId: string) {
+        this.renderer.setTopAction(actionId);
+    }
+
+    highlightAction(actionId: string) {
+        this.renderer.highlightAction(actionId);
+    }
+
+    refresh() {
+        this.renderer.refresh();
     }
 
     /**
@@ -47,33 +62,21 @@ export class ActionsViewer {
         this.renderer.setActions(this.actionsMap);
     }
 
-    private appendLogsLock: Promise<void> = Promise.resolve();
-
-    /**
-     * Process given logs and update the view.
-     * Only applies to the blessed renderer
-     * @param logs
-     */
-    appendLogs(logs: string[]) {
-        this.appendLogsLock = this.appendLogsLock.then(() =>
-            this.appendLockInternal(logs)
-        );
-    }
-
-    private async appendLockInternal(logs: string[]) {
+    setLogs(logs: LogSchemaInterface[]) {
         if (this.renderer instanceof ActionsBlessedRenderer) {
-            this.renderer.appendLogs(this.formatLogs(logs));
+            this.renderer.setLogs(this.formatLogs(logs));
         }
     }
 
     private formatActions(actions: ActionSchemaInterface[]) {
         actions.forEach((action) => {
             this.actionsMap.set(action.id, {
-                ref: action.definitionFrom?.workflow.marker ?? action.actionRef,
+                ref: action.workflowRef ?? action.actionRef,
                 id: action.id,
                 state: action.state,
-                step: action.workflowStep,
+                bag: action.bag,
                 result: action.result,
+                createdAt: action.createdAt,
                 arguments: action.argument,
             });
 
@@ -100,20 +103,24 @@ export class ActionsViewer {
             (this.actionsMap.get(id) as ActionsViewerAction).children =
                 actions.sort(
                     (a, b) =>
-                        (this.actionsMap.get(a)?.step ?? 0) -
-                        (this.actionsMap.get(b)?.step ?? 0)
+                        (
+                            this.actionsMap.get(a)?.createdAt ?? new Date()
+                        ).getTime() -
+                        (
+                            this.actionsMap.get(b)?.createdAt ?? new Date()
+                        ).getTime()
                 );
         }
     }
 
-    private formatLogs(logs: string[]) {
-        return logs.map((log) => {
-            try {
-                return JSON.parse(log);
-            } catch (error) {
-                return { message: log };
-            }
-        });
+    private formatLogs(logs: LogSchemaInterface[]) {
+        return logs.map((log) => ({
+            timestamp: log.timestamp?.toLocaleString(),
+            level: log.level,
+            actionId: log.actionId,
+            actionRef: log.actionRef,
+            message: log.message,
+        }));
     }
 
     destroy() {
