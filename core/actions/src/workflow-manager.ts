@@ -417,6 +417,10 @@ export class Workflow extends Action {
                 _id: this._id.toString(),
                 stepName: ref,
             });
+            action.dbDoc.filter = {
+                ...this.dbDoc.filter,
+                ...action.dbDoc.filter,
+            };
             action.dbDoc.workflowId = this._id.toString();
             action.dbDoc.workflowRef = ref;
             if (this.constructor[COALESCING_WORKFLOW_TAG]) {
