@@ -2,13 +2,12 @@ import blessed, { Widgets } from 'blessed';
 import colors from 'colors';
 import { copy } from 'copy-paste';
 
-import { ActionState } from '@orbi-ts/core';
-
 import {
     ACTION_STATE_FORMAT,
+    generatePrettyActionState,
     type ActionsRenderer,
     type ActionsViewerAction,
-} from './constants.js';
+} from './utils.js';
 
 const SCROLLBAR_STYLE = { style: { bg: 'yellow' }, track: 'grey' };
 
@@ -145,9 +144,11 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     private refBox!: Widgets.TextElement;
     private idBox!: Widgets.TextElement;
     private argumentsBox!: Widgets.TextElement;
+    private bagBox!: Widgets.TextElement;
     private resultBox!: Widgets.TextElement;
     private idLabelBox!: Widgets.TextElement;
     private argumentsLabelBox!: Widgets.TextElement;
+    private bagLabelBox!: Widgets.TextElement;
     private resultLabelBox!: Widgets.TextElement;
 
     private alertBox!: Widgets.TextElement;
@@ -177,42 +178,60 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     topAction: string;
 
     /**
+     * ID of the highlighted action.
+     */
+    highlightedAction?: string;
+
+    /**
      * Whether display is to be refreshed.
      * If not, do not display loaders.
      */
-    refresh: boolean;
+    shouldRefresh: boolean;
 
     exit: Function;
+
+    /**
+     * whether the renderer can be refreshed.
+     */
+    active: boolean = true;
 
     /**
      * @param actionId Top action to view.
      */
     constructor(
         actionId: string,
-        refresh: boolean = true,
+        shouldRefresh: boolean = true,
         exit: Function = () => process.exit()
     ) {
         this.topAction = actionId;
-        this.refresh = refresh;
+        this.shouldRefresh = shouldRefresh;
         this.exit = exit;
         this.setUp();
     }
 
-    setActions(actions: Map<string, ActionsViewerAction>) {
-        this.actions = actions;
-        this.refreshDisplay();
+    setTopAction(actionId: string) {
+        this.topAction = actionId;
     }
 
-    insertLogs(
+    highlightAction(actionId: string) {
+        this.highlightedAction = actionId;
+    }
+
+    setActions(actions: Map<string, ActionsViewerAction>) {
+        this.actions = actions;
+    }
+
+    setLogs(
         logs: {
+            timestamp: string;
             level: string;
-            actionRef?: string;
-            definedIn?: { ref?: string };
+            actionId: string;
+            actionRef: string;
             message: string;
         }[]
     ) {
-        this.logsBoxContainer.insertBottom(
-            logs.map((log) => {
+        this.logsBoxContainer.content = logs
+            .map((log) => {
                 let color;
                 switch (log.level) {
                     case 'error':
@@ -227,19 +246,12 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
                     default:
                         color = colors.grey.italic;
                 }
-                if (log.definedIn?.ref || log.actionRef)
-                    return color(
-                        colors.italic.bold(
-                            `${log.definedIn?.ref || log.actionRef} `
-                        ) + log.message
-                    );
-                return colors.grey(log.message);
+                return color(
+                    `${log.timestamp} - ${colors.bold(log.actionRef)} (${colors.italic(log.actionId)}): ${log.message}`
+                );
             })
-        );
-    }
+            .join('\n');
 
-    appendLogs(logs: { level: string; message: string }[]) {
-        this.insertLogs(logs);
         if (this.logsBox.visible) {
             // auto scroll if scroll was at the bottom
             if (this.logsBoxContainer.getScrollPerc() === 100)
@@ -254,7 +266,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.debug(`${++this.renders} — render from q${from}`);
         this.borders.forEach((border) => border.setFront());
 
-        if (this.refresh) {
+        if (this.shouldRefresh) {
             this.loader.render(() => {
                 this.screen.render();
             });
@@ -473,16 +485,30 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             content: ` ${colors.bold.underline('Arguments')} `,
         });
 
-        this.resultBox = blessed.text({
+        this.bagBox = blessed.text({
             parent: infoBoxContainer,
             top: 10,
+            ...options,
+        });
+
+        // specific box for arguments label
+        this.bagLabelBox = blessed.text({
+            parent: infoBoxContainer,
+            top: 10,
+            left: 1,
+            content: ` ${colors.bold.underline('Bag')} `,
+        });
+
+        this.resultBox = blessed.text({
+            parent: infoBoxContainer,
+            top: 14,
             ...options,
         });
 
         // specific box for result label
         this.resultLabelBox = blessed.text({
             parent: infoBoxContainer,
-            top: 10,
+            top: 14,
             left: 1,
             content: ` ${colors.bold.underline('Result')} `,
         });
@@ -558,7 +584,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
 
         // Quit on Escape, q, or Control-C.
         this.screen.key(['escape', 'q', 'C-c'], () => {
-            this.screen.destroy();
+            this.destroy();
             return this.exit();
         });
 
@@ -578,23 +604,6 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             }
             if (this.logsBox.visible) this.toggleLogs();
         });
-    }
-
-    private generatePrettyActionState(state: ActionState): string {
-        const { short, color } = ACTION_STATE_FORMAT[state];
-
-        const colorFunc = colors[color as keyof typeof colors] as Function;
-
-        if (!this.refresh) return colorFunc(short);
-
-        switch (state) {
-            case ActionState.EXECUTING_MAIN:
-            case ActionState.IN_PROGRESS:
-            case ActionState.REVERTING:
-                return colorFunc(this.loader.placeholder);
-            default:
-                return colorFunc(short);
-        }
     }
 
     private alert(msg: string, pos: any) {
@@ -618,18 +627,18 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     private setInfoBoxContent(action: ActionsViewerAction) {
         this.infoBox.name = action.id;
 
-        const { color, full } = ACTION_STATE_FORMAT[action.state];
+        const { color, full } = ACTION_STATE_FORMAT.get(action.state)!;
         this.stateBox.setContent(full);
         this.stateBox.style.fg = color;
         this.stateBox.style.border.fg = color;
 
         this.refBox.setContent(action.ref);
-
         this.idBox.setContent(action.id);
         (
             [
                 ['arguments', this.idBox],
-                ['result', this.argumentsBox],
+                ['bag', this.argumentsBox],
+                ['result', this.bagBox],
             ] as [string, blessed.Widgets.TextElement][]
         ).forEach(([type, prevElt]) => {
             (this[`${type}LabelBox` as keyof this] as Widgets.BoxElement).top =
@@ -688,8 +697,22 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             });
         }
 
+        // position may change after first render as top action can change
+        actionBox.left = x;
+        actionBox.top = y;
+
+        if (action.id === this.highlightedAction)
+            actionBox.style.border.fg = 'white';
+        else actionBox.style.border.fg = 'grey';
+
+        // let actionRefColor = colors.bold;
+        // if (!action.children?.length && action.state === ActionState.ERROR) {
+        //     actionBox.style.border.fg = 'red';
+        //     actionRefColor = actionRefColor.red;
+        // }
+
         actionBox.setContent(
-            ` ${colors.bold(action.ref)} ${this.generatePrettyActionState(action.state)}`
+            ` ${colors.bold(action.ref)} ${generatePrettyActionState(action.state, this.shouldRefresh, this.loader)}`
         );
 
         // if infoBox is open, update it
@@ -771,6 +794,10 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
                 lineBox.setContent('');
             }
 
+            // position may change after first render as top action can change
+            lineBox.left = x + (box.width as number);
+            lineBox.top = y + 1;
+
             let prevY = y;
             action.children.forEach((actionId, index) => {
                 lineBox.pushLine(
@@ -792,7 +819,8 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         return y;
     }
 
-    private refreshDisplay() {
+    refresh() {
+        if (!this.active) return;
         this.generateBoxes();
         this.loader.setBoxes(this.boxes);
         this.render('refresh');
@@ -816,6 +844,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         );
     }
     destroy() {
+        this.active = false;
         this.screen.destroy();
     }
 }

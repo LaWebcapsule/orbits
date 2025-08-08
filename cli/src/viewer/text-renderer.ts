@@ -1,12 +1,10 @@
 import colors from 'colors';
 
-import { ActionState } from '@orbi-ts/core';
-
 import {
+    generatePrettyActionState,
     type ActionsRenderer,
     type ActionsViewerAction,
-    ACTION_STATE_FORMAT,
-} from './constants.js';
+} from './utils.js';
 
 class TextWithLoader {
     private FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
@@ -95,35 +93,52 @@ export class ActionsTextRenderer implements ActionsRenderer {
     topAction: string;
 
     /**
+     * ID of the highlighted action.
+     */
+    highlightedAction?: string;
+
+    /**
      * Whether display is to be refreshed.
      * If not, do not display loaders.
      */
-    refresh: boolean;
+    shouldRefresh: boolean;
 
     exit: Function;
+
+    /**
+     * whether the renderer can be refreshed.
+     */
+    active: boolean = true;
 
     /**
      * @param actionId Top action to view.
      */
     constructor(
         actionId: string,
-        refresh: boolean = true,
+        shouldRefresh: boolean = true,
         exit: Function = () => process.exit()
     ) {
         this.topAction = actionId;
-        this.refresh = refresh;
+        this.shouldRefresh = shouldRefresh;
         this.exit = exit;
         this.setUp();
     }
 
+    setTopAction(actionId: string) {
+        this.topAction = actionId;
+    }
+
+    highlightAction(actionId: string) {
+        this.highlightedAction = actionId;
+    }
+
     setActions(actions: Map<string, ActionsViewerAction>) {
         this.actions = actions;
-        this.refreshDisplay();
     }
 
     private setUp() {
         // nothing to setup if not in a terminal
-        if (!process.stdout.isTTY || !this.refresh) return;
+        if (!process.stdout.isTTY || !this.shouldRefresh) return;
 
         process.stdout.on('resize', () => {
             this.render();
@@ -163,108 +178,82 @@ export class ActionsTextRenderer implements ActionsRenderer {
     renders = 0;
 
     private renderLines(lines: string[]) {
-        // if not tty, display without color
-        if (!process.stdout.isTTY)
-            process.stdout.write(colors.strip(lines.join('\n')) + '\n');
-        else {
-            if (this.refresh) {
-                process.stdout.cursorTo && process.stdout.cursorTo(0, 0);
-                process.stdout.clearScreenDown &&
-                    process.stdout.clearScreenDown();
-            }
-
-            process.stdout.write(
-                (process.stdout.rows < lines.length
-                    ? lines.slice(
-                          this.offsetY,
-                          process.stdout.rows + this.offsetY
-                      )
-                    : lines
-                )
-                    .map((l) => {
-                        if (
-                            this.offsetX == 0 &&
-                            process.stdout.columns >= l.length
-                        )
-                            return l;
-
-                        // compute actual offset accounting for colors
-                        let currentTag = '';
-                        let tags = [];
-                        let startTags: string[] = [];
-                        let endTags: string[] = [];
-                        let startOffset = 0;
-                        let endOffset = l.length;
-                        let offset = 0;
-                        for (let i = 0; i < l.length; i++) {
-                            let char = l.charAt(i);
-                            if (currentTag) {
-                                currentTag += char;
-                                if (char == 'm') {
-                                    tags.push(currentTag);
-                                    currentTag = '';
-                                }
-                            } else {
-                                if (l.charCodeAt(i) == 27) currentTag += char;
-                                else {
-                                    // actual character
-                                    if (offset == this.offsetX) {
-                                        startOffset = i;
-                                        startTags = tags.slice();
-                                        tags = [];
-                                    }
-                                    if (
-                                        offset ==
-                                        process.stdout.columns + this.offsetX
-                                    ) {
-                                        endOffset = i;
-                                    }
-                                    offset++;
-                                }
-                            }
-                            endTags = tags;
-                        }
-                        return (
-                            startTags.join('') +
-                            l.substring(startOffset, endOffset) +
-                            endTags.join('')
-                        );
-                    })
-                    .join('\n')
-            );
+        if (this.shouldRefresh) {
+            process.stdout.cursorTo && process.stdout.cursorTo(0, 0);
+            process.stdout.clearScreenDown && process.stdout.clearScreenDown();
         }
+
+        process.stdout.write(
+            (process.stdout.rows < lines.length
+                ? lines.slice(this.offsetY, process.stdout.rows + this.offsetY)
+                : lines
+            )
+                .map((l) => {
+                    if (this.offsetX == 0 && process.stdout.columns >= l.length)
+                        return l;
+
+                    // compute actual offset accounting for colors
+                    let currentTag = '';
+                    let tags = [];
+                    let startTags: string[] = [];
+                    let endTags: string[] = [];
+                    let startOffset = 0;
+                    let endOffset = l.length;
+                    let offset = 0;
+                    for (let i = 0; i < l.length; i++) {
+                        let char = l.charAt(i);
+                        if (currentTag) {
+                            currentTag += char;
+                            if (char == 'm') {
+                                tags.push(currentTag);
+                                currentTag = '';
+                            }
+                        } else {
+                            if (l.charCodeAt(i) == 27) currentTag += char;
+                            else {
+                                // actual character
+                                if (offset == this.offsetX) {
+                                    startOffset = i;
+                                    startTags = tags.slice();
+                                    tags = [];
+                                }
+                                if (
+                                    offset ==
+                                    process.stdout.columns + this.offsetX
+                                ) {
+                                    endOffset = i;
+                                }
+                                offset++;
+                            }
+                        }
+                        endTags = tags;
+                    }
+                    return (
+                        startTags.join('') +
+                        l.substring(startOffset, endOffset) +
+                        endTags.join('')
+                    );
+                })
+                .join('\n')
+        );
+        process.stdout.write('\n');
     }
 
     private render() {
-        if (this.refresh && process.stdout.isTTY) {
+        if (this.shouldRefresh && process.stdout.isTTY) {
             this.loader.render((lines: string[]) => this.renderLines(lines));
         } else {
             this.renderLines(this.lines);
         }
     }
 
-    private generatePrettyActionState(state: ActionState): string {
-        const { short, color, full } = ACTION_STATE_FORMAT[state];
-        if (!process.stdout.isTTY) return full;
-
-        const colorFunc = colors[color as keyof typeof colors] as Function;
-
-        if (!this.refresh) return colorFunc(short);
-
-        switch (state) {
-            case ActionState.EXECUTING_MAIN:
-            case ActionState.IN_PROGRESS:
-            case ActionState.REVERTING:
-                return colorFunc(this.loader.placeholder);
-            default:
-                return colorFunc(short);
-        }
-    }
-
     private generateActionLine(action: ActionsViewerAction) {
         return (
+            (action.id === this.highlightedAction
+                ? colors.white.bold(' * ')
+                : '') +
             `${colors.bold.cyan(action.ref)} ` +
-            `${colors.italic.grey(action.id)} ${this.generatePrettyActionState(action.state)}`
+            `${colors.italic.grey(action.id)} ${generatePrettyActionState(action.state, this.shouldRefresh, this.loader)}`
         );
     }
 
@@ -298,11 +287,14 @@ export class ActionsTextRenderer implements ActionsRenderer {
         return lines;
     }
 
-    private refreshDisplay() {
+    refresh() {
+        if (!this.active) return;
         this.lines = this.generateLines();
         this.loader.setLines(this.lines);
         this.render();
     }
 
-    destroy() {}
+    destroy() {
+        this.active = false;
+    }
 }
