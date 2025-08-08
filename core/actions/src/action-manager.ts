@@ -458,14 +458,14 @@ export class Action {
     }
 
     private setErrorAsResult(err: Error | ActionError | InWorkflowActionError) {
-        const formatError = (err as any)?.formatedError || format('%s', err);
+        const formatError = (err as any)?.formattedError || format('%s', err);
         this.setResult({
             code: (err as ActionError)?.code,
             message: err?.message,
             stack: err?.stack,
-            worflowTrace: (err as InWorkflowActionError)?.workflowTrace,
+            workflowTrace: (err as InWorkflowActionError)?.workflowTrace,
             rootAction: (err as InWorkflowActionError)?.rootAction,
-            formatedError: formatError,
+            formattedError: formatError,
         });
     }
 

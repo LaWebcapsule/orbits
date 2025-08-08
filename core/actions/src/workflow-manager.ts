@@ -677,7 +677,7 @@ export class Workflow extends Action {
                 `body of do method didn't succeed ; ref: ${ref}, got error : ${err}`
             );
             this.internalLogError(err);
-            this.resolveDefineIteration(ActionState.UNKNOWN); //Unknow ensure here we don't change the state and so we don't have an infinite loop
+            this.resolveDefineIteration(ActionState.UNKNOWN); //Unknown ensure here we don't change the state and so we don't have an infinite loop
             this.resolveDynamicActionFinding();
             return new DoPromise((resolve, reject) => {});
         }
