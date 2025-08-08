@@ -377,7 +377,9 @@ export class Resource extends CoalescingWorkflow {
             return this.createResourceDoc();
         });
         await this.once('installController', () => {
-            const controller = new ResourceController(this);
+            const controller = new ResourceController(this).setFilter(
+                this.dbDoc.filter
+            );
             return controller.save();
         });
         const commandName = this.argument.commandName
