@@ -56,6 +56,7 @@ export interface ActionSchemaInterface<
         [ActionState.IN_PROGRESS]: number;
     };
     cronActivity: {
+        paused: Boolean;
         pending: Boolean;
         lastActivity: Date;
         nextActivity: Date;
@@ -108,6 +109,7 @@ export const actionSchema = new mongoose.Schema(
         locked: Boolean,
         lockedAt: Date,
         cronActivity: {
+            paused: { type: Boolean, default: false },
             frequency: Number,
             pending: { type: Boolean, default: false },
             lastActivity: Date,

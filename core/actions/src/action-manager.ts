@@ -597,7 +597,19 @@ export class Action {
      * state of the action
      * @returns A promise. You can not rely on this to know when an action is finished.
      */
-    public resume() {
+    public async resume() {
+        // if cron activity was paused, do nothing until next activity was reach
+        if (this.cronActivity.paused) {
+            this.internalLog(
+                `paused, waiting until ${this.cronActivity.nextActivity} before resuming.`
+            );
+            if (this.cronActivity.nextActivity >= new Date(Date.now())) {
+                return Promise.resolve();
+            }
+            this.cronActivity.paused = false;
+            await this.dbDoc.save();
+        }
+
         this.dbDoc.updateNextActivity(); //set next cron Activity
         return orbitsAsyncStorage.addNestedStorage(
             {
