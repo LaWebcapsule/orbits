@@ -1,5 +1,5 @@
 import colors from 'colors';
-import { Argument, Option, program } from 'commander';
+import { Argument, Command, Option, program } from 'commander';
 
 import packageJson from '../package.json' with { type: 'json' };
 
@@ -11,6 +11,10 @@ import {
     logError,
     pauseCmd,
     replayCmd,
+    resourcesGetCmd,
+    resourcesGetRegistryCmd,
+    resourcesInstallCmd,
+    resourcesRunCmd,
     resumeCmd,
     runCmd,
     setBagCmd,
@@ -33,14 +37,12 @@ const ACTIONS_COMMANDS: Cmd[] = [
     endCmd,
 ];
 
-program
-    .name('orbits-cli')
-    .description('CLI to interact with orbits actions')
-    .version(VERSION);
-
-program.configureOutput({
-    writeErr: (str) => logError(str),
-});
+const RESOURCES_COMMANDS: Cmd[] = [
+    resourcesGetRegistryCmd,
+    resourcesGetCmd,
+    resourcesInstallCmd,
+    resourcesRunCmd,
+];
 
 const setUpCommands = (commanderCmd: Command, cmds: Cmd[]) => {
     cmds.forEach((cmdCfg) => {
@@ -93,6 +95,11 @@ program.configureOutput({
 setUpCommands(
     program.command('actions').description('Actions related commands'),
     ACTIONS_COMMANDS
+);
+
+setUpCommands(
+    program.command('resources').description('Resources related commands'),
+    RESOURCES_COMMANDS
 );
 
 program.parse();

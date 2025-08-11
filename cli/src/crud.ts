@@ -6,6 +6,8 @@ import {
     ActionSchemaInterface,
     ActionState,
     LogSchemaInterface,
+    Resource,
+    ResourceSchemaInterface,
     Workflow,
 } from '@orbi-ts/core';
 import { utils } from '@orbi-ts/services';
@@ -429,6 +431,140 @@ export class CRUD {
         return actionDb.save();
     }
 
-    // TODO: move this into core
-    // TODO: add CRUD for resources
+    // RESOURCES
+
+    /**
+     * Run cmd on given resource.
+     *
+     * @param resourceRefOrId
+     */
+    static async runResourceCmd(
+        resourceRefOrIdentity: string,
+        cmd: string,
+        filter?: utils.JSONObject
+    ) {
+        let resourceRef = '';
+
+        const availableResources = this.listResourcesFromRegistry();
+
+        for (const resource of availableResources) {
+            if (
+                resource.ref === resourceRefOrIdentity ||
+                (new resource.ctr() as Resource).identity() ===
+                    resourceRefOrIdentity
+            )
+                resourceRef = resource.ref;
+        }
+
+        if (!resourceRef)
+            throw Error(`resource ${resourceRefOrIdentity} not found`);
+
+        return this.run(
+            resourceRef,
+            {
+                commandName: cmd,
+            },
+            filter
+        );
+    }
+
+    // static getAllProperties(obj) {
+    //     const props = new Set();
+
+    //     while (obj && obj !== Object.prototype) {
+    //         for (const key of Reflect.ownKeys(obj)) {
+    //             props.add(key);
+    //         }
+    //         obj = Object.getPrototypeOf(obj);
+    //     }
+
+    //     return [...props];
+    // }
+
+    // /**
+    //  * Run cmd on given resource.
+    //  *
+    //  * @param resourceRefOrId
+    //  */
+    // static async listResourceCommands(resourceRefOrId: string) {
+    //     const resourceRef = ''; // TODO: find ref if id was provided
+
+    //     // if id or identity is provided, first find corresponding ref
+    //     // TODO: find ref
+
+    //     const availableResources = await this.listResourcesFromRegistry(true);
+
+    //     let resource: Resource;
+    //     for (const resourceCls of availableResources) {
+    //         console.log(resourceCls, resourceCls.permanentRef);
+    //         if (
+    //             resourceCls.permanentRef === resourceRefOrId ||
+    //             new resourceCls().identity() == resourceRefOrId
+    //         ) {
+    //             resource = new resourceCls();
+    //         }
+    //     }
+
+    //     return this.getAllProperties(resource)
+    //         .filter(
+    //             (member: string) =>
+    //                 ![
+    //                     'define',
+    //                     'defineDynamicAction',
+    //                     'defineCallMode',
+    //                 ].includes(member) && member.startsWith('define')
+    //         )
+    //         .map((cmd: string) => cmd.substring('define'.length));
+    // }
+
+    static async installResource(resourceRefOrId: string) {
+        return this.runResourceCmd(resourceRefOrId, 'install');
+    }
+
+    // static async uninstallResource(resourceRefOrId: string) {
+    //     return this.runResourceCmd(resourceRefOrId, 'uninstall');
+    // }
+
+    // static async getResource(resourceId: string) {
+    //     await ActionRuntime.waitForActiveRuntime;
+
+    //     if (mongoose.Types.ObjectId.isValid(resourceId)) {
+    //         const doc =
+    //             await ActionRuntime.activeRuntime.ResourceModel.findById(
+    //                 resourceId
+    //             );
+    //         if (doc) return doc;
+    //     }
+
+    //     // try identity
+    //     return ActionRuntime.activeRuntime.ResourceModel.findOne({
+    //         identity: resourceId,
+    //     });
+    // }
+
+    /**
+     * list resources in registry
+     *
+     * @param includeBase whether to include base actions
+     */
+    static listResourcesFromRegistry(includeBase?: boolean) {
+        return this.listFromRegistry(actionKind.RESOURCE, includeBase);
+    }
+
+    /**
+     * List all resources in database.
+     *
+     * @param filter
+     * @param sort
+     */
+    static async listResources(
+        filter: any = {},
+        sort?: { [key: string]: -1 | 1 }
+    ): Promise<ResourceSchemaInterface<any, any>[]> {
+        return await ActionRuntime.activeRuntime.ResourceModel.find(
+            filter,
+            {},
+            { sort: sort }
+        );
+    }
 }
