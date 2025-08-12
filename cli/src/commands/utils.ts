@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import winston from 'winston';
 
-import { ActionRuntime } from '@orbi-ts/core';
+import { ActionRuntime, DEFAULT_MONGO_URL } from '@orbi-ts/core';
 import { utils } from '@orbi-ts/services';
 
 import { CRUD, InvalidParameterError, NotFoundError } from '../crud.js';
@@ -40,7 +40,7 @@ export const ACTION_STATE_COLORS = new Map(
 
 export const DEFAULT_LOG_FILE = 'orbits.log';
 export const DEFAULT_ACTIONS_FILE = 'orbi.ts';
-export const DEFAULT_DATABASE = 'mongodb://localhost:27017/orbits';
+export const DEFAULT_DATABASE = DEFAULT_MONGO_URL;
 
 export const logError = (str: string) => {
     console.error(colors.red(`ERROR: ${str}`));

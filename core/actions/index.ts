@@ -8,6 +8,7 @@ export * from './src/models/log.js';
 export * from './src/runtime/action-kind.js';
 export * from './src/runtime/action-runtime.js';
 export type { RuntimeDb as AppDb } from './src/runtime/db-connection.js';
+export { DEFAULT_MONGO_URL } from './src/runtime/get-env.js';
 export { databaseLogger, defaultLogger } from './src/runtime/logger.js';
 // order is important between workflow and coalescing manager
 // prettier-ignore
