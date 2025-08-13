@@ -76,10 +76,10 @@ npx tsx src/orbits/orbi.ts
 ```bash
 ├── src/
 │   ├── orbits/
-│   │   └── orbi.ts # Main orchestration script
-│   │   ├── basic-resource.ts # Basic resource definition
-│   ├── cdk/              # CDK8S chart definitions
-│   │   ├── basic-cdk8s.ts # basic chart definition
+│   │   ├── orbi.ts # Main orchestration script
+│   │   └── basic-resource.ts # Basic resource definition
+│   └── cdk/ # CDK8S chart definitions
+│       └── basic-cdk8s.ts # basic chart definition
 ├── package.json
 └── README.md
 ```

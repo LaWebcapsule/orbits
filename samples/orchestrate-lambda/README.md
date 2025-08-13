@@ -62,7 +62,7 @@ cp .base.env .env
 │   │   ├── package.json
 │   │   ├── sell-stock.ts # Sell stock Lambda
 │   │   ├── tsconfig.ts
-│   │   └── update-one.ts  # not used
+│   │   └── update-one.ts # not used
 │   ├── cdk.json
 │   ├── index.js
 │   ├── index.ts # lambda CDK stack definition
@@ -82,8 +82,8 @@ cp .base.env .env
 │   │   └── workflows/
 │   │       └── trading.ts # Trading workflow
 │   └── const.ts # Utils const
-├── .base.env                # Environment template
-├── .env                     # Your environment variables (git-ignored)
+├── .base.env # Environment template
+├── .env # Your environment variables (git-ignored)
 ├── package.json
 └── README.md
 ```

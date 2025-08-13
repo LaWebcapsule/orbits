@@ -104,15 +104,15 @@ npx tsx src/orbits/orbi.ts
 ```bash
 ├── src/
 │   ├── orbits/
-│   │   └── orbi.ts # Main orchestration script
+│   │   ├── orbi.ts # Main orchestration script
 │   │   ├── lambda-resource.ts # lambda resource definition
 │   │   ├── param-resource.ts # Param resource definition
 │   │   ├── hello-resource.ts # Hello resource definition: the resource that make the junction between param and lambda
-│   ├── cdk/              # CDK stack definitions
-│   │   ├── lambda.ts # lambda CDK stack
-│   │   ├── param.ts # Param CDK stack
-├── .base.env                # Environment template
-├── .env                     # Your environment variables (git-ignored)
+│   └── cdk/ # CDK stack definitions
+│       ├── lambda.ts # lambda CDK stack
+│       └── param.ts # Param CDK stack
+├── .base.env # Environment template
+├── .env # Your environment variables (git-ignored)
 ├── package.json
 └── README.md
 ```
