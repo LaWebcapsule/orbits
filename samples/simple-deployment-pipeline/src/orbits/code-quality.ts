@@ -9,12 +9,11 @@ import stripAnsi from 'strip-ansi';
 import tseslint from 'typescript-eslint';
 
 export class FormatCodeAction extends Action {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
+
+    codePath = path.join(__dirname, './../handler/hello.ts');
 
     async main() {
-        const code = fs.readFileSync(this.argument.codePath, 'utf-8');
+        const code = fs.readFileSync(this.codePath, 'utf-8');
         try {
             const prettierConfig: prettier.Options = {
                 trailingComma: 'es5',
@@ -22,14 +21,14 @@ export class FormatCodeAction extends Action {
                 useTabs: false,
                 semi: true,
                 singleQuote: true,
-                filepath: this.argument.codePath,
+                filepath: this.codePath,
             };
             const formatted = await prettier.format(code, prettierConfig);
             if (code === formatted) {
                 this.internalLog('No need to format');
                 return ActionState.SUCCESS;
             }
-            fs.writeFileSync(this.argument.codePath, formatted, 'utf-8');
+            fs.writeFileSync(this.codePath, formatted, 'utf-8');
             this.internalLog('Formatted!');
         } catch (error) {
             const msg = (error as Error).message;
@@ -41,9 +40,7 @@ export class FormatCodeAction extends Action {
 }
 
 export class LintCodeAction extends Action {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
+    codePath = path.join(__dirname, './../handler/hello.ts');
 
     async main() {
         const eslintOptions = {
@@ -59,7 +56,7 @@ export class LintCodeAction extends Action {
         };
 
         const eslint = new ESLint(eslintOptions as ESLint.Options);
-        const results = await eslint.lintFiles([this.argument.codePath]);
+        const results = await eslint.lintFiles([this.codePath]);
         const hasErrors = results.some((r) => r.errorCount > 0);
 
         if (hasErrors) {
@@ -74,18 +71,17 @@ export class LintCodeAction extends Action {
 }
 
 export class TestCodeAction extends Action {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
+    codePath = path.join(__dirname, './../handler/hello.ts');
+
 
     async main() {
         const writeStdout = process.stdout.write;
         const writeStderr = process.stderr.write;
 
         try {
-            const dirname = path.dirname(this.argument.codePath);
+            const dirname = path.dirname(this.codePath);
             const filename = path
-                .basename(this.argument.codePath)
+                .basename(this.codePath)
                 .split('.')[0];
 
             const jestConfig = {
@@ -124,9 +120,7 @@ export class TestCodeAction extends Action {
 }
 
 export class CodeQualityWorkflow extends Workflow {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
+    codePath = path.join(__dirname, './../handler/hello.ts');
 
     async define() {
         const steps = [
@@ -139,7 +133,7 @@ export class CodeQualityWorkflow extends Workflow {
             await this.do(
                 step.name,
                 new step.action().setArgument({
-                    codePath: this.argument.codePath,
+                    codePath: this.codePath,
                 })
             );
         }

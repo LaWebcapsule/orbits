@@ -11,7 +11,7 @@ export enum distributionStates {
 }
 
 export class InvalidateCacheAction extends Action {
-    declare IArgument: Action['IArgument'] & {
+    declare IArgument: {
         distributionId: string;
         env: { region: string };
     };

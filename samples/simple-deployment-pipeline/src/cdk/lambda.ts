@@ -5,9 +5,9 @@ import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as nodePath from 'path';
 
 export interface LambdaStackProps extends StackProps {
-    lambdaEntryPath: string;
 }
 
 export class LambdaStack extends Stack {
@@ -16,7 +16,7 @@ export class LambdaStack extends Stack {
 
         const fn = new NodejsFunction(this, 'Lambda', {
             runtime: lambda.Runtime.NODEJS_20_X,
-            entry: props.lambdaEntryPath,
+            entry: nodePath.join(__dirname, './../handler/hello.ts'),
         });
 
         const apiGw = new apigw.LambdaRestApi(this, 'Hello API', {

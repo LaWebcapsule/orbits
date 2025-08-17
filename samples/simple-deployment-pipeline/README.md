@@ -18,7 +18,7 @@ A practical example demonstrating how to deploy an AWS lambda using CDK and orbi
 - Go to this directory:
 
 ```bash
-cd samples/hello-world-on-aws
+cd samples/simple-deployment-pipeline
 ```
 
 - Install node.js dependencies:
