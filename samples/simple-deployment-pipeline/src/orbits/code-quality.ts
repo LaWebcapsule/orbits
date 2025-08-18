@@ -1,5 +1,4 @@
 import js from '@eslint/js';
-import { Action, ActionState, Workflow } from '@orbi-ts/core';
 import { ESLint } from 'eslint';
 import fs from 'fs';
 import jest from 'jest';
@@ -8,13 +7,13 @@ import prettier from 'prettier';
 import stripAnsi from 'strip-ansi';
 import tseslint from 'typescript-eslint';
 
-export class FormatCodeAction extends Action {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
+import { Action, ActionState, Workflow } from '@orbi-ts/core';
 
+import { CODE_PATH } from '../constants';
+
+export class FormatCodeAction extends Action {
     async main() {
-        const code = fs.readFileSync(this.argument.codePath, 'utf-8');
+        const code = fs.readFileSync(CODE_PATH, 'utf-8');
         try {
             const prettierConfig: prettier.Options = {
                 trailingComma: 'es5',
@@ -22,14 +21,14 @@ export class FormatCodeAction extends Action {
                 useTabs: false,
                 semi: true,
                 singleQuote: true,
-                filepath: this.argument.codePath,
+                filepath: CODE_PATH,
             };
             const formatted = await prettier.format(code, prettierConfig);
             if (code === formatted) {
                 this.internalLog('No need to format');
                 return ActionState.SUCCESS;
             }
-            fs.writeFileSync(this.argument.codePath, formatted, 'utf-8');
+            fs.writeFileSync(CODE_PATH, formatted, 'utf-8');
             this.internalLog('Formatted!');
         } catch (error) {
             const msg = (error as Error).message;
@@ -41,10 +40,6 @@ export class FormatCodeAction extends Action {
 }
 
 export class LintCodeAction extends Action {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
-
     async main() {
         const eslintOptions = {
             overrideConfigFile: true,
@@ -59,7 +54,7 @@ export class LintCodeAction extends Action {
         };
 
         const eslint = new ESLint(eslintOptions as ESLint.Options);
-        const results = await eslint.lintFiles([this.argument.codePath]);
+        const results = await eslint.lintFiles([CODE_PATH]);
         const hasErrors = results.some((r) => r.errorCount > 0);
 
         if (hasErrors) {
@@ -74,19 +69,13 @@ export class LintCodeAction extends Action {
 }
 
 export class TestCodeAction extends Action {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
-
     async main() {
         const writeStdout = process.stdout.write;
         const writeStderr = process.stderr.write;
 
         try {
-            const dirname = path.dirname(this.argument.codePath);
-            const filename = path
-                .basename(this.argument.codePath)
-                .split('.')[0];
+            const dirname = path.dirname(CODE_PATH);
+            const filename = path.basename(CODE_PATH).split('.')[0];
 
             const jestConfig = {
                 runInBand: true,
@@ -124,10 +113,6 @@ export class TestCodeAction extends Action {
 }
 
 export class CodeQualityWorkflow extends Workflow {
-    declare IArgument: Action['IArgument'] & {
-        codePath: string;
-    };
-
     async define() {
         const steps = [
             { name: 'format', action: FormatCodeAction },
@@ -136,12 +121,7 @@ export class CodeQualityWorkflow extends Workflow {
         ];
 
         for (const step of steps) {
-            await this.do(
-                step.name,
-                new step.action().setArgument({
-                    codePath: this.argument.codePath,
-                })
-            );
+            await this.do(step.name, new step.action());
         }
     }
 }

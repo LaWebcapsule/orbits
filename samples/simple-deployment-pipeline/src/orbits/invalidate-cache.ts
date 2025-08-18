@@ -11,7 +11,7 @@ export enum distributionStates {
 }
 
 export class InvalidateCacheAction extends Action {
-    declare IArgument: Action['IArgument'] & {
+    declare IArgument: {
         distributionId: string;
         env: { region: string };
     };
@@ -63,7 +63,7 @@ export class InvalidateCacheAction extends Action {
             this.argument.distributionId
         );
         this.bag.invalidationId = invalidationId;
-        return ActionState.IN_PROGRESS
+        return ActionState.IN_PROGRESS;
     }
 
     async watcher() {

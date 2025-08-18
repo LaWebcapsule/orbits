@@ -6,29 +6,17 @@ import { VerifyLambdaDeploymentAction } from './verify';
 
 export class DeployHelloWorkflow extends Workflow {
     declare IArgument: Workflow['IArgument'] & {
-        lambdaEntryPath: string;
         region: string;
         account: string;
     };
 
     async define() {
-        await this.do(
-            'quality',
-            new CodeQualityWorkflow().setArgument({
-                codePath: this.argument.lambdaEntryPath,
-            })
-        );
+        await this.do('quality', new CodeQualityWorkflow());
         const result = await this.do(
             'deploy',
-            new LambdaResource().setArgument({
-                stackName: 'hello-lambda',
-                stackProps: {
-                    lambdaEntryPath: this.argument.lambdaEntryPath,
-                    env: {
-                        region: this.argument.region,
-                        account: this.argument.account,
-                    },
-                },
+            new LambdaResource({
+                region: this.argument.region,
+                account: this.argument.account,
             })
         );
 

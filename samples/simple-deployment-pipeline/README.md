@@ -18,7 +18,7 @@ A practical example demonstrating how to deploy an AWS lambda using CDK and orbi
 - Go to this directory:
 
 ```bash
-cd samples/hello-world-on-aws
+cd samples/simple-deployment-pipeline
 ```
 
 - Install node.js dependencies:
@@ -57,14 +57,12 @@ Run the workflow `DeployHelloWorkflow` this way:
 ```bash
 orbits-cli actions run -f src/orbits/orbi.ts --local-worker \
   DeployHelloWorkflow \
-  lambdaEntryPath=$PWD/src/handler/hello.ts \
   region=$AWS_REGION \
   account=$AWS_ACCOUNT
 ```
 
-`DeployHelloWorkflow` takes three arguments:
+`DeployHelloWorkflow` takes two arguments:
 
-- `lambdaEntryPath`: absolute path to the lambda handler file, it will assume there is a corresponding `.spec.ts` file;
 - `region`: AWS region;
 - `account`: AWS account;
 

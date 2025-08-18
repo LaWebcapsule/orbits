@@ -1,11 +1,10 @@
 {
-    "name": "hello-world",
+    "name": "simple-deployment-pipeline",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "npx tsc --removeComments && tsc --declaration --emitDeclarationOnly"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
