@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.2.0
+
+### Minor Changes
+
+- 976b9d1: Update cli for new orbits version
+
 ## 0.1.4
 
 ### Patch Changes
