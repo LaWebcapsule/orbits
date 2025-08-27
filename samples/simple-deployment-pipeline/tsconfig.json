@@ -5,7 +5,7 @@
         "preserveConstEnums": true,
         "noEmit": true,
         "sourceMap": false,
-        "module": "commonjs",
+        "module": "es2020",
         "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
