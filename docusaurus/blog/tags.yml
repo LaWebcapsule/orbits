@@ -16,5 +16,10 @@ orbits:
   permalink: "/orbits"
   description: "Posts related to OrbiTS"
 
+cli:
+  label: "CLI"
+  permalink: "/cli"
+  description: "Posts related to OrbiTS CLI"
+
 manifesto:
   permalink: "/manifesto"

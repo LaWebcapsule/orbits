@@ -202,6 +202,7 @@ export class ResourceController<T extends Resource> extends CoalescingWorkflow {
                 ...resource.argument,
                 actionRef: resource.dbDoc.actionRef,
             });
+            this.setFilter(resource.dbDoc.filter);
         }
     }
 

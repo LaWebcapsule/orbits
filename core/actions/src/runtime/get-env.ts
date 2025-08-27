@@ -2,6 +2,10 @@ import { utils } from '@orbi-ts/services';
 import { readEnv } from 'read-env';
 import { RuntimeDb } from './db-connection.js';
 
+export const DEFAULT_MONGO_URL = 'mongodb://localhost:27017/orbits';
+export const DEFAULT_LOGGING_LEVEL = 'debug';
+export const DEFAULT_WORKERS_QUANTITY = 3;
+
 /**
  * Describes how the runtime can be configured.
  */
@@ -26,14 +30,14 @@ const defaultConfig: RuntimeConfig = {
     autostart: true,
     db: {
         mongo: {
-            url: 'mongodb://localhost:27017/orbits',
+            url: DEFAULT_MONGO_URL,
         },
     },
     workers: {
-        quantity: 3,
+        quantity: DEFAULT_WORKERS_QUANTITY,
     },
     logging: {
-        level: 'debug',
+        level: DEFAULT_LOGGING_LEVEL,
     },
 };
 

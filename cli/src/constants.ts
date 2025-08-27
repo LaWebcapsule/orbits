@@ -1,8 +1,0 @@
-export enum exitCodes {
-    SUCCESS,
-    INVALID_PATH,
-    INVALID_PARAMETER,
-    NOT_FOUND,
-    DATABASE_ERROR,
-    ORBITS_JOB_ERROR,
-}

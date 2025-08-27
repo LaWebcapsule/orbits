@@ -409,12 +409,18 @@ export class Workflow extends Action {
             // et then withTransaction retry
             // but isNew is false and then it errors out with DocumentNotFoundError
             // to be confirmed
+            // initialize workflowStack with current stack
+            action.dbDoc.workflowStack = this.dbDoc.workflowStack;
             action.dbDoc.workflowStack.push({
                 ref,
                 stepIndex: this.bag.currentStepIndex,
                 _id: this._id.toString(),
                 stepName: ref,
             });
+            action.dbDoc.filter = {
+                ...this.dbDoc.filter,
+                ...action.dbDoc.filter,
+            };
             action.dbDoc.workflowId = this._id.toString();
             action.dbDoc.workflowRef = ref;
             if (this.constructor[COALESCING_WORKFLOW_TAG]) {
@@ -671,7 +677,7 @@ export class Workflow extends Action {
                 `body of do method didn't succeed ; ref: ${ref}, got error : ${err}`
             );
             this.internalLogError(err);
-            this.resolveDefineIteration(ActionState.UNKNOWN); //Unknow ensure here we don't change the state and so we don't have an infinite loop
+            this.resolveDefineIteration(ActionState.UNKNOWN); //Unknown ensure here we don't change the state and so we don't have an infinite loop
             this.resolveDynamicActionFinding();
             return new DoPromise((resolve, reject) => {});
         }
