@@ -52,7 +52,7 @@
         "@orbi-ts/core": "workspace:",
         "@orbi-ts/services": "workspace:",
         "aws-cdk": "^2.1003.0",
-        "aws-cdk-lib": "^2.182.0",
+        "aws-cdk-lib": "^2.189.1",
         "cdk8s": "^2.69.68",
         "dockerode": "^4.0.7",
         "express": "^4.21.2",
