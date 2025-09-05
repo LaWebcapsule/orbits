@@ -1,7 +1,7 @@
-import fs from "fs";
-import { noAsyncRule } from "./rules/restrict-await-in-define.js";
-import { noDoRule } from "./rules/no-dopromise-outside-define.js";
-const pkg = JSON.parse(fs.readFileSync(new URL("./../package.json", import.meta.url), "utf8"));
+import fs from 'fs';
+import { noDoRule } from './rules/no-dopromise-outside-define.js';
+import { noAsyncRule } from './rules/restrict-await-in-define.js';
+const pkg = JSON.parse(fs.readFileSync(new URL('./../package.json', import.meta.url), 'utf8'));
 export const plugin = {
     // preferred location of name and version
     meta: {
@@ -11,7 +11,7 @@ export const plugin = {
     configs: {},
     rules: {
         noAsyncRule,
-        noDoRule
+        noDoRule,
     },
     processors: {},
 };
