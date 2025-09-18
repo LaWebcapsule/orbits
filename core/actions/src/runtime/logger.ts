@@ -70,6 +70,9 @@ const filterPertinentInfo = winston.format((info: any) => {
 
 class MongoTransporter extends Transport {
     public log(info: any, next: () => void) {
+        // as the logger can try to log before the runtime connection is active and LogModel defined,
+        // simply ignore
+        if (!ActionRuntime.activeRuntime.LogModel) return;
         const log = new ActionRuntime.activeRuntime.LogModel({
             ...info,
             filter: ActionRuntime.activeRuntime.actionFilter,

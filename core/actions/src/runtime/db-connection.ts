@@ -34,6 +34,10 @@ export function setDbConnection(runtime: ActionRuntime) {
         runtime.ResourceModel = runtime.db.mongo.conn.model<
             ResourceSchemaInterface<any, any>
         >('Resource', resourceSchema);
+        runtime.LogModel = runtime.db.mongo.conn.model<LogSchemaInterface>(
+            'Log',
+            logSchema
+        );
         return;
     }
     const conn = mongoose.createConnection(
