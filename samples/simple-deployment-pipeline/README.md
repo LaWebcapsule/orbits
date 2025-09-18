@@ -95,6 +95,27 @@ orbits-cli actions run LambdaResource $argument -f src/orbits/orbi.ts --local-wo
 
 ⚠️ Warning: This will permanently delete all resources created by this example. Make sure you want to remove everything before running this command.
 
+## Use the github actions
+
+Create a repository from this sample repository.
+
+Declare the following repository secrets:
+
+```
+MONGO_URL
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+```
+
+and the following repository variables:
+
+```
+AWS_REGION
+AWS_ACCOUNT
+```
+
+A Pull Request should trigger the quality action, a push to main should trigger a deployment.
+
 ## Project Structure
 
 ```bash
@@ -105,7 +126,7 @@ orbits-cli actions run LambdaResource $argument -f src/orbits/orbi.ts --local-wo
 │   │   ├── lambda-resource.ts # lambda resource definition
 │   │   ├── invalidate-cache.ts # Invalidate cache action definition
 │   │   ├── verify.ts # Verify action definition
-│   └── cdk/ # CDK stack definitions
+│   ├── cdk/ # CDK stack definitions
 │   │   └── lambda.ts # lambda CDK stack
 │   └── handler/ # lambda handler
 │       ├── hello.ts # handler definition

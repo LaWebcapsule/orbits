@@ -1,0 +1,25 @@
+name: Quality
+
+on: pull_request
+
+env:
+    ORBITS_DB__MONGO__URL: ${{ secrets.MONGO_URL }}
+
+jobs:
+    quality:
+        name: Code Quality
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code repository
+              uses: actions/checkout@v4
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - name: Install dependencies
+              run: npm install && npm install -g @orbi-ts/cli
+
+            - name: Run Code Quality Workflow
+              run: orbits-cli actions run CodeQualityWorkflow -f src/orbits/orbi.ts --local-worker -w

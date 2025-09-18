@@ -1,0 +1,43 @@
+name: Deploy
+
+on:
+    push:
+        branches: [main]
+
+env:
+    ORBITS_DB__MONGO__URL: ${{ secrets.MONGO_URL }}
+
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code repository
+              uses: actions/checkout@v4
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - name: Install dependencies
+              run: npm install && npm install -g @orbi-ts/cli
+
+            - name: Get AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ vars.AWS_REGION }}
+
+            - name: Configure AWS credentials
+              run: |
+                  aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                  aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                  aws configure set region $AWS_REGION
+
+            - name: Run Deploy Workflow
+              run: |
+                  AWS_PROFILE=default orbits-cli actions run -f src/orbits/orbi.ts DeployHelloWorkflow --local-worker -w \
+                    region=${{ vars.AWS_REGION }} \
+                    account=${{ vars.AWS_ACCOUNT }}
