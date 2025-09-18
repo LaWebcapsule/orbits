@@ -241,8 +241,10 @@ const run = async (
                     process.stdout.write(
                         `${action.dbDoc.actionRef} completed with state ${colors.bold(ActionState[state as ActionState])}\n`
                     );
-                    process.stdout.write(
-                        colors.yellow(`You can now close this process\n`)
+                    process.exit(
+                        state === ActionState.SUCCESS
+                            ? exitCodes.SUCCESS
+                            : exitCodes.GENERIC_ERROR
                     );
                 } else {
                     watchAction(
