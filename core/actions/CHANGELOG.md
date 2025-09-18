@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.2.1
+
+### Patch Changes
+
+- 6b56175: Fix cli run
+
 ## 0.2.0
 
 ### Minor Changes

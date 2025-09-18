@@ -1,5 +1,13 @@
 # @wbce/orbits-cli
 
+## 0.1.1
+
+### Patch Changes
+
+- 6b56175: Fix cli run
+- Updated dependencies [6b56175]
+    - @orbi-ts/core@0.2.1
+
 ## 0.1.0
 
 ### Minor Changes
