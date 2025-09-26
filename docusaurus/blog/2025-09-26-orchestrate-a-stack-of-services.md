@@ -5,15 +5,17 @@ authors: [loic]
 tags: [orchestration, node.js, workflow, orbits]
 ---
 
-In our previous blog post, we introduced the basics of orchestration and showed how to write a deployment workflow for a backend service. 
+In our [previous blog post](./2025-08-05-orchestration-in-typescript.md), we introduced the basics of orchestration and showed how to write a deployment workflow for a backend service. 
 Now, let’s take it further. 
-Imagine our web agencies manage web services across multiple tenants—one cloud instance per client. The stack includes several services—such as frontend, authentication, and backend—and must support multi-tenant deployment. This brings new challenges:
+Imagine our web agencies manage web services across multiple tenants : one cloud instance per client. The stack includes several services, such as frontend, authentication, and backend. And it must support multi-tenant deployment. This brings new challenges:
 - coordinating deployments across environments
 - sharing common resources (like a cloud account, a VPC, a database...) between services in the stack
 - handling failures and rollbacks
 - keeping each tenant isolated yet manageable
 To address this, we need to go beyond simple workflows and start managing state, transitions, shared resources, and deployment strategies. 
 Let’s see how simple this becomes with Orbits.
+
+![orchestration](/img/blog/orchestration-2.png)
 <!-- truncate -->
 
 ## From workflows to resources
@@ -28,7 +30,7 @@ A `Resource` encapsulates both the identity of what you’re deploying and the l
 
 #### Giving an identity to our services
 
-To manage multiple services per tenant—such as frontend and backend—we start by defining a BaseResource. This base class provides a common identity mechanism using the tenantId and a service-specific name. The identity() method uniquely identifies each resource instance, which allows Orbits to track, reconcile, and avoid duplicating shared resources.
+To manage multiple services per tenant—such as frontend and backend—we start by defining a BaseResource. This base class provides a common identity mechanism using the tenantId and a service-specific name. The `identity()` method uniquely identifies each resource instance, which allows Orbits to track, reconcile, and avoid duplicating shared resources.
 
 ```ts
 export class BaseResource extends Resource{
@@ -48,7 +50,7 @@ export class BaseResource extends Resource{
 
 Orbits ressources distinguishe between the installation phase and the update phase. This allows precise control over what happens during first-time deployment versus subsequent updates.
 
-We can implement shared setup—such as Git repository creation and cloud account provisioning—in the defineInstall() method of BaseResource:
+We can implement shared setup—such as Git repository creation and cloud account provisioning—in the `defineInstall()` method of BaseResource:
 
 ```ts
 export class BaseResource extends Resource{
