@@ -20,6 +20,7 @@ Using code and native Node.js modules to write CI/CD could solve all these probl
 - it integrates seamlessly with the rich Node.js ecosystem.
 
 ![ci-cd](/img/blog/singe-ci-cd.png)
+
 <!-- truncate -->
 
 ## Example: handle your CI/CD in Node.js with Orbits
