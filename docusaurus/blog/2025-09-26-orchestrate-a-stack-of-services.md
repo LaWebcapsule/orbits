@@ -7,7 +7,8 @@ tags: [orchestration, node.js, workflow, orbits]
 
 In our [previous blog post](./2025-08-05-orchestration-in-typescript.md), we introduced the basics of orchestration and showed how to write a deployment workflow for a backend service. 
 Now, let’s take it further. 
-Imagine our web agencies manage web services across multiple tenants : one cloud instance per client. The stack includes several services, such as frontend, authentication, and backend. And it must support multi-tenant deployment. This brings new challenges:
+Imagine our web agencies manage web services across multiple tenants : one cloud instance per client. The stack includes several services, such as frontend, authentication, and backend. And it must support multi-tenant deployment. 
+This brings new challenges:
 - coordinating deployments across environments
 - sharing common resources (like a cloud account, a VPC, a database...) between services in the stack
 - handling failures and rollbacks
@@ -30,7 +31,7 @@ A `Resource` encapsulates both the identity of what you’re deploying and the l
 
 #### Giving an identity to our services
 
-To manage multiple services per tenant—such as frontend and backend—we start by defining a BaseResource. This base class provides a common identity mechanism using the tenantId and a service-specific name. The `identity()` method uniquely identifies each resource instance, which allows Orbits to track, reconcile, and avoid duplicating shared resources.
+To manage multiple services per tenant, such as frontend and backend, we start by defining a `BaseResource`. This base class provides a common identity mechanism using the tenantId and a service-specific name. The `identity()` method uniquely identifies each resource instance, which allows Orbits to track, reconcile, and avoid duplicating shared resources.
 
 ```ts
 export class BaseResource extends Resource{
@@ -48,14 +49,14 @@ export class BaseResource extends Resource{
 
 #### Sharing a common installation step
 
-Orbits ressources distinguishe between the installation phase and the update phase. This allows precise control over what happens during first-time deployment versus subsequent updates.
+Orbits ressources distinguish between the installation phase and the update phase. This allows precise control over what happens during first-time deployment versus subsequent updates.
 
-We can implement shared setup—such as Git repository creation and cloud account provisioning—in the `defineInstall()` method of BaseResource:
+We can implement shared setup, such as Git repository creation and cloud account provisioning, in the `defineInstall()` method of `BaseResource`:
 
 ```ts
 export class BaseResource extends Resource{
 
-  defineInstall(){
+  async defineInstall(){
     const createGit = new GitResource().setArgument({
       name : this.serviceName
     });
@@ -73,7 +74,7 @@ export class BaseResource extends Resource{
 
 In this setup:
 - GitResource uses `serviceName`, so each service (frontend, backend) gets its own Git repository.
-- AWSResource uses `tenantId`, ensuring every services share the same cloud account for a given tenant—no duplicate account will be created.
+- AWSResource uses `tenantId`, ensuring every services share the same cloud account for a given tenant : no duplicate account will be created.
 
 ### Differentiating frontend and backend
 
@@ -87,7 +88,7 @@ export class BackendResource extends BaseResource{
 
   declare serviceName = 'backend'
 
-  defineUpdate(){
+  async defineUpdate(){
 
     // Step 1: Deploy Infrastructure-as-Code
     const deploymentOutput = await this.do("iac-deploy", new BackCDKStack());
@@ -108,7 +109,7 @@ export class FrontendResource extends BaseResource{
 
   declare serviceName = 'frontend'
 
-  defineUpdate(){
+  async defineUpdate(){
     // Step 1: Deploy Infrastructure-as-Code
     const deploymentOutput = await this.do("iac-deploy", new FrontCDKStack());
 
@@ -136,7 +137,7 @@ Below is a schematic version of what this orchestration might look like:
 
 ```ts
 export class MyStack extends Resource{
-  defineUpdate(){
+  async defineUpdate(){
     //choose a deployment strategy
     //here we first deploy the frontend and then the backend.
     //could have done this in parellel
@@ -147,9 +148,9 @@ export class MyStack extends Resource{
       await this.do("update-frontend", frontendResource);
     }
     catch(err){
-      //rollback to previous commit
-      await this.do("rollback-backend", backendResource);
-      await this.do("rollback-frontend", frontendResource)
+      //rollback to previous working commit
+      await this.do("rollback-frontend", frontendResource.setCommand("rollback"))
+      await this.do("rollback-backend", backendResource.setCommand("rollback"));
     }
   }
 }
@@ -192,8 +193,7 @@ export class Tenants extends Resource{
 
 ## What Orbits takes care of under the hood
 
-
-This simples syntax addresses common pain points in managing cloud services under the hood:
+This simple syntax addresses common pain points in managing cloud services under the hood:
 - avoiding duplication: when multiple executions of a resource run in parallel, Orbits ensures the same final state without recreating resources unnecessarily. The orchestrator intelligently determines what needs updating, skipping, or preserving.
 - running scripts in different contexts : The concept of an executor provides a clean way to run specific actions within the right environment or context. Since infrastructure and scripts are managed together, it’s easy to target the exact environment where a command should execute.
 - safe error handling: Encapsulating orchestration logic in `Resource` enables rollback strategies when something fails mid-deployment.
@@ -206,5 +206,7 @@ This example provides a basic overview of how we manage multi-tenant deployments
 - we could implement drift detection via the `cycle` hook
 - we could share some resources accross tenants with the same concept of `Resource`
 
+---
 
+_Wanna try Orbits? The complete documentation with samples and examples is available [here](https://orbits.do/documentation). The source code is available in the [github repository](https://github.com/LaWebcapsule/orbits).  Give it a spin!_
 
