@@ -123,4 +123,4 @@ As a consequence, you can run and test your workflows locally, just like any oth
 
 ### Going further
 
-Want to go further and orchestrate multiple tenants or environments? Check out our next post on managing a fleet of stacks with Orbits.
+Want to go further and orchestrate multiple tenants or environments? Check out our [next post](./2025-09-26-orchestrate-a-stack-of-services.md) on managing a fleet of stacks with Orbits.
