@@ -6,6 +6,7 @@ import {
 } from '../index.js';
 import {
     BasicWorkflow,
+    RepeatWorkflowWithError,
     ThrowErrorBasicWorkflow,
     ThrowErrorComplexWorkflow,
     WithActionErrorBasicWorkflow,
@@ -136,5 +137,15 @@ describe('workflow with repeat', () => {
         expectedActionState: ActionState.SUCCESS,
         expectedResult: 6,
         numberOfChildActions: 10,
+    });
+});
+
+describe('repeat workflow when error', () => {
+    const repeatWorkflow = new RepeatWorkflowWithError();
+    testAWorkflow(repeatWorkflow, {
+        expectedActionState: ActionState.SUCCESS,
+        expectedResult: 0,
+        numberOfChildActions: 1,
+        timeBeforeRunningTest: 10,
     });
 });

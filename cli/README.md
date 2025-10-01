@@ -13,13 +13,13 @@ The CLI to run Orbits workflows.
 #### Global install
 
 ```sh
-$ npm install -g @orbi-ts/orbits-cli
+$ npm install -g @orbi-ts/cli
 ```
 
 #### Project install
 
 ```sh
-$ npm install @orbi-ts/orbits-cli --save-dev
+$ npm install @orbi-ts/cli --save-dev
 ```
 
 ## Running it
