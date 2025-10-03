@@ -341,13 +341,11 @@ export class Workflow extends Action {
         }
     }
 
-
     private getCurrentInteration() {
         const nbErr = this.dbDoc.nExecutions?.[ActionState.ERROR] || 0;
         const nbSucc = this.dbDoc.nExecutions?.[ActionState.SUCCESS] || 0;
         return nbErr + nbSucc;
     }
-
 
     protected async findIfEquivalentActionAlreadyExists(
         ref: string,
@@ -359,7 +357,7 @@ export class Workflow extends Action {
         const actions = await ActionRuntime.activeRuntime.ActionModel.find({
             workflowId: this._id.toString(),
             workflowRef: ref,
-            workflowIteration: this.getCurrentInteration()
+            workflowIteration: this.getCurrentInteration(),
         }).sort('createdAt');
         if (actions.length) {
             for (const action of actions) {
@@ -425,7 +423,7 @@ export class Workflow extends Action {
                 stepIndex: this.bag.currentStepIndex,
                 _id: this._id.toString(),
                 stepName: ref,
-                iteration: this.getCurrentInteration()
+                iteration: this.getCurrentInteration(),
             });
             action.dbDoc.filter = {
                 ...this.dbDoc.filter,

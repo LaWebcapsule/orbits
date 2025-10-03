@@ -66,13 +66,16 @@ export class TestActionWithError extends Action {
 }
 
 export class TestActionDynamic extends Action {
+    static cronDefaultSettings = {
+        activityFrequency: 3 * 1000,
+    };
 
     declare IArgument: {
         iteration: number;
     };
 
     main() {
-        if(this.argument.iteration === 0) return ActionState.ERROR;
+        if (this.argument.iteration === 0) return ActionState.ERROR;
         return ActionState.SUCCESS;
     }
 }
@@ -167,22 +170,13 @@ export class ThrowErrorComplexWorkflow extends Workflow {
 }
 
 export class WithActionDynamicWorkflow extends Workflow {
-
     async define() {
-        const actionDynamique = new TestActionDynamic().setArgument(
-            {
-                iteration:this.dbDoc.nExecutions?.[ActionState.ERROR] + this.dbDoc.nExecutions?.[ActionState.SUCCESS]
-            })
-        await this.do('test-dynamic',actionDynamique);
-    }
-}
-
-export class RepeatWorkflowWithError extends Workflow {
-
-    async define() {
-        const workflow = new WithActionDynamicWorkflow();
-        workflow.setRepeat({[ActionState.ERROR]: 2, [ActionState.SUCCESS]: 0})
-        await this.do('basicErrorToRepeat', workflow);
+        const actionDynamic = new TestActionDynamic().setArgument({
+            iteration:
+                this.dbDoc.nExecutions?.[ActionState.ERROR] +
+                this.dbDoc.nExecutions?.[ActionState.SUCCESS],
+        });
+        await this.do('test-dynamic', actionDynamic);
         return 0;
     }
 }

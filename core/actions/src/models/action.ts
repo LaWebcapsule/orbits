@@ -38,7 +38,7 @@ export interface ActionSchemaInterface<
         stepIndex: number;
         stepName: string;
         _id: string;
-        iteration:number;
+        iteration: number;
     }[];
     generatorCount: number;
     nTimes: number;
