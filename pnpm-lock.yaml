@@ -72,6 +72,9 @@ importers:
       '@orbi-ts/core':
         specifier: workspace:^
         version: link:../core/actions
+      '@orbi-ts/fuel':
+        specifier: workspace:^
+        version: link:../helpers
       '@orbi-ts/services':
         specifier: workspace:^
         version: link:../packages/services
