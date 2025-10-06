@@ -1,4 +1,5 @@
 import { Workflow } from '@orbi-ts/core';
+import { WaitForInput } from '@orbi-ts/fuel'
 import { BuyStockAction } from '../actions/buy-stock';
 import { CheckStockPriceAction } from '../actions/check-stock-price';
 import { GenerateBuySellRecommendationAction } from '../actions/generate-buy-sell-recommendation';
@@ -6,7 +7,7 @@ import { SellStockAction } from '../actions/sell-stock';
 import { StockTransaction } from '../types/stocks';
 
 export class TradingWorkflow extends Workflow {
-    declare IResult: StockTransaction;
+    declare IResult: Workflow['IResult'] & StockTransaction;
 
     async define() {
         const resultCheckStockPrice = await this.do(
@@ -31,22 +32,26 @@ export class TradingWorkflow extends Workflow {
             `Got recommendation based on price: ${buyOrSellRecommendation}`
         );
 
-        if (buyOrSellRecommendation === 'sell') {
-            const resultSellStockData = await this.do(
-                'sell-stock',
-                new SellStockAction().setArgument({
-                    price: stockPrice.stock_price,
-                })
-            );
-            return resultSellStockData.stockData;
-        } else {
-            const resultBuyStockData = await this.do(
-                'buy-stock',
-                new BuyStockAction().setArgument({
-                    price: stockPrice.stock_price,
-                })
-            );
-            return resultBuyStockData.stockData;
+        const waitForConfirmation = await this.do(
+            `confirm-${buyOrSellRecommendation}?`,
+            new WaitForInput().setArgument({
+                inputs: { approve: { type: 'bag', options: [true, false] } },
+            })
+        );
+
+        if (waitForConfirmation.inputs.approve) {
+            return (
+                await this.do(
+                    `${buyOrSellRecommendation}-stock`,
+                    new (buyOrSellRecommendation === 'sell'
+                        ? SellStockAction
+                        : BuyStockAction)().setArgument({
+                        price: stockPrice.stock_price,
+                    })
+                )
+            ).stockData;
         }
+
+        this.internalLog('No action to be done');
     }
 }

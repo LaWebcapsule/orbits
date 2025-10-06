@@ -273,8 +273,7 @@ export class CRUD {
     static async resume(actionId: string) {
         let actionDb = await this.findActionById(actionId);
 
-        actionDb!.cronActivity.nextActivity =
-            actionDb!.cronActivity.lastActivity ?? new Date();
+        this.resumeActionDb(actionDb);
 
         // resume children that are workflows
         // get registered actions and for each check if it has registered actions meaning it is a workflow
@@ -430,7 +429,58 @@ export class CRUD {
         const actionDb = await this.findActionById(actionId);
         utils.deepMerge(actionDb.bag, bag);
         actionDb.bag = bag;
+        this.resumeActionDb(actionDb);
         return actionDb.save();
+    }
+
+    static async addInputs(
+        actionId: string,
+        inputs: { [key: string]: any }
+    ): Promise<ActionSchemaInterface> {
+        const actionDb = await this.findActionById(actionId);
+        if (!('inputs' in actionDb.argument))
+            throw new InvalidParameterError(
+                `provided action doesn't accept inputs`
+            );
+
+        for (const [key, value] of Object.entries(inputs)) {
+            const input = actionDb.argument.inputs[key];
+            if (!input)
+                throw new InvalidParameterError(
+                    `no matching input for key '${key}'`
+                );
+            if (input.type !== 'bag')
+                throw new InvalidParameterError(
+                    `invalid type ${typeof value} for input ${key}=${value}}, expected ${input.type}`
+                );
+
+            if (input.options && !input.options.includes(value)) {
+                throw new InvalidParameterError(
+                    `Invalid input for ${key}: ${this.wrapInQuotes(value)}, ` +
+                        `(options: [${input.options.map(this.wrapInQuotes).join(', ')}])`
+                );
+            }
+
+            actionDb.bag.inputs[key] = value;
+        }
+        actionDb.markModified('bag.inputs');
+        this.resumeActionDb(actionDb);
+        return actionDb.save();
+    }
+
+    private static resumeActionDb(actionDb: ActionSchemaInterface) {
+        actionDb!.cronActivity.nextActivity =
+            actionDb!.cronActivity.lastActivity ?? new Date();
+    }
+
+    /**
+     * Return value as a string, wrapped in quotes if it is a string
+     * @param value
+     * @returns string
+     */
+    private static wrapInQuotes(value: boolean | number | string): string {
+        if (typeof value === 'string') return `'${value}'`;
+        return `${value}`;
     }
 
     // TODO: move this into core
