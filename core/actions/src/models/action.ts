@@ -31,12 +31,14 @@ export interface ActionSchemaInterface<
     workflowId?: string;
     workflowStep?: number;
     workflowRef?: string;
+    workflowIteration?: number;
     workflowIdentity?: string;
     workflowStack: {
         ref: string;
         stepIndex: number;
         stepName: string;
         _id: string;
+        iteration: number;
     }[];
     generatorCount: number;
     nTimes: number;
@@ -90,6 +92,7 @@ export const actionSchema = new mongoose.Schema(
         workflowId: String,
         workflowStep: Number,
         workflowRef: String,
+        workflowIteration: Number,
         workflowIdentity: String,
         generatorCount: Number,
         workflowStack: [
@@ -98,6 +101,7 @@ export const actionSchema = new mongoose.Schema(
                 stepIndex: Number,
                 stepName: String,
                 _id: String,
+                iteration: Number,
             },
         ],
         nTimes: { type: Number, default: 0 },
