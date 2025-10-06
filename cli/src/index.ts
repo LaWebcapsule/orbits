@@ -5,6 +5,7 @@ import packageJson from '../package.json' with { type: 'json' };
 
 import {
     Cmd,
+    addInputsCmd,
     endCmd,
     getCmd,
     getRegistryCmd,
@@ -30,6 +31,7 @@ const ACTIONS_COMMANDS: Cmd[] = [
     resumeCmd,
     replayCmd,
     setBagCmd,
+    addInputsCmd,
     endCmd,
 ];
 

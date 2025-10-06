@@ -1,3 +1,4 @@
+export { addInputsCmd } from './add-inputs.js';
 export { type Cmd } from './command-utils.js';
 export { endCmd } from './end.js';
 export { getRegistryCmd } from './get-registry.js';
