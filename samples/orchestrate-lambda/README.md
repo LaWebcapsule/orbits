@@ -42,13 +42,24 @@ cp .base.env .env
 ## Execution
 
 - Load environment variables:
-  `bash export $(cat .env | xargs)`
+
+```bash
+export $(cat .env | xargs)
+```
+
 - Define your mongo_url :
-  `bash export ORBITS_DB__MONGO__URL=your-mongo-url`
+
+```bash
+export ORBITS_DB__MONGO__URL=your-mongo-url
+```
+
 - Run your workflow :
-  `bash npx tsx src/orbits/orbi.ts`
-  This command will:
-- Execute the trading workflow
+
+```bash
+npx tsx src/orbits/orbi.ts
+```
+
+This command will execute the trading workflow
 
 ## Project Structure
 
