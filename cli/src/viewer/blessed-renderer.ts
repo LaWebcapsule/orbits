@@ -520,7 +520,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         });
 
         // Copy content on click
-        ['ref', 'state', 'id', 'arguments', 'result'].forEach((type) => {
+        ['ref', 'state', 'id', 'arguments', 'bag', 'result'].forEach((type) => {
             (this[`${type}Box` as keyof this] as Widgets.BoxElement).on(
                 'click',
                 (event) => {
