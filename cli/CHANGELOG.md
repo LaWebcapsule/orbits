@@ -1,5 +1,13 @@
 # @wbce/orbits-cli
 
+## 0.1.2
+
+### Patch Changes
+
+- 261f3ac: Fix repeat function on workflow
+- Updated dependencies [261f3ac]
+    - @orbi-ts/core@0.2.2
+
 ## 0.1.1
 
 ### Patch Changes
