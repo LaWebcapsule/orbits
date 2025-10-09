@@ -70,7 +70,7 @@ export const watchAction = (
             viewer.destroy();
             process.exit(exitCodes.SUCCESS);
         }
-        setInterval(tryView, timeInterval * 1000);
+        refresh && setInterval(tryView, timeInterval * 1000);
     })();
 
     return viewer;
