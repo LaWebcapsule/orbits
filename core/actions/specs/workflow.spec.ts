@@ -11,6 +11,7 @@ import {
     WithActionDynamicWorkflow,
     WithActionErrorBasicWorkflow,
     WorkflowWithDynamicDefinition,
+    WorkflowWithParallelActions,
     WorkflowWithRepeat,
 } from './test-action.js';
 
@@ -153,3 +154,12 @@ describe('repeat workflow when error', () => {
         timeBeforeRunningTest: 10,
     });
 });
+
+describe('parallel actions workflow', () => {
+    const workflowWithParallelActions = new WorkflowWithParallelActions();
+    testAWorkflow(workflowWithParallelActions, {
+        expectedActionState: ActionState.SUCCESS,
+        expectedResult: 0,
+        numberOfChildActions: 2,
+    });
+})

@@ -181,6 +181,27 @@ export class WithActionDynamicWorkflow extends Workflow {
     }
 }
 
+export class WorkflowWithParallelActions extends Workflow{
+
+    async define() {
+
+        try {
+
+             await Promise.all([
+                this.do('step1', async () => ActionState.SUCCESS),
+                this.do('step2', async () => ActionState.SUCCESS)
+            ])
+            
+        } catch (error) {
+             throw new Error('abc');
+        }
+     
+
+        return 0;
+    }
+
+}
+
 export class WorkflowWithDynamicDefinition extends Workflow {
     declare IBag: Workflow['IBag'] & {
         x: number;
