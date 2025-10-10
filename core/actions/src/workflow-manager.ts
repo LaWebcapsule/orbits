@@ -507,6 +507,13 @@ export class Workflow extends Action {
     registeredActionIds = [];
 
     /**
+     * Chain used to serialize action starts within a single workflow iteration.
+     * This avoids concurrent transactions on the same workflow document
+     * when `do()` is invoked in parallel (e.g., inside Promise.all).
+     */
+    private actionStartChain: Promise<any> = Promise.resolve();
+
+    /**
      * Executes an action in the workflow.
      * If the action already exists, it will be tracked and resumed.
      * If not, it will be started.
@@ -659,7 +666,10 @@ export class Workflow extends Action {
             } else {
                 this.internalLog(`using a new action for step ${ref}`);
                 if (this.defineCallMode === 'main') {
-                    await this.startAction(ref, action);
+                    this.actionStartChain = this.actionStartChain.then(() =>
+                        this.startAction(ref, action)
+                    );
+                    await this.actionStartChain;
                 }
             }
             if (this.defineCallMode === 'main') {
