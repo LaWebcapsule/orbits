@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.2.2
+
+### Patch Changes
+
+- 261f3ac: Fix repeat function on workflow
+
 ## 0.2.1
 
 ### Patch Changes
