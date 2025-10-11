@@ -116,7 +116,11 @@ export class ActionsTextRenderer implements ActionsRenderer {
     constructor(
         actionId: string,
         shouldRefresh: boolean = true,
-        exit: Function = () => process.exit()
+        exit: Function = () => process.exit(),
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
     ) {
         this.topAction = actionId;
         this.shouldRefresh = shouldRefresh;
