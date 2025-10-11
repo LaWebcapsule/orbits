@@ -8,6 +8,7 @@ import {
     LogSchemaInterface,
     Workflow,
 } from '@orbi-ts/core';
+import { INPUTS_KEY } from '@orbi-ts/fuel';
 import { utils } from '@orbi-ts/services';
 import { isValidObjectId } from 'mongoose';
 
@@ -438,13 +439,13 @@ export class CRUD {
         inputs: { [key: string]: any }
     ): Promise<ActionSchemaInterface> {
         const actionDb = await this.findActionById(actionId);
-        if (!('inputs' in actionDb.argument))
+        if (!(INPUTS_KEY in actionDb.argument))
             throw new InvalidParameterError(
                 `provided action doesn't accept inputs`
             );
 
         for (const [key, value] of Object.entries(inputs)) {
-            const input = actionDb.argument.inputs[key];
+            const input = actionDb.argument[INPUTS_KEY][key];
             if (!input)
                 throw new InvalidParameterError(
                     `no matching input for key '${key}'`
@@ -461,9 +462,9 @@ export class CRUD {
                 );
             }
 
-            actionDb.bag.inputs[key] = value;
+            actionDb.bag[INPUTS_KEY][key] = value;
         }
-        actionDb.markModified('bag.inputs');
+        actionDb.markModified(`bag.${INPUTS_KEY}`);
         this.resumeActionDb(actionDb);
         return actionDb.save();
     }

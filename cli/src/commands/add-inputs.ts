@@ -1,6 +1,7 @@
 import { ActionSchemaInterface } from '@orbi-ts/core';
 import colors from 'colors';
 import { exitCodes, logErrorAndExit, runCrudCmd } from './utils.js';
+import { INPUTS_KEY } from '@orbi-ts/fuel';
 
 const processInputCmd = async (actionId: string, inputsAsStr: string) => {
     let inputs = {};
@@ -16,7 +17,7 @@ const processInputCmd = async (actionId: string, inputsAsStr: string) => {
             processResult: (updatedAction: ActionSchemaInterface) => {
                 process.stdout.write(
                     `Inputs updated for Action ${colors.bold(updatedAction.id)}:\n` +
-                        `${JSON.stringify(updatedAction.bag.inputs)}\n`
+                        `${JSON.stringify(updatedAction.bag[INPUTS_KEY])}\n`
                 );
             },
         },

@@ -1,5 +1,6 @@
 import { Workflow } from '@orbi-ts/core';
-import { WaitForInput } from '@orbi-ts/fuel'
+//import { ResolveInputsAction } from '@orbi-ts/fuel';
+import { ResolveInputsAction } from '../../../../../helpers/dist/index';
 import { BuyStockAction } from '../actions/buy-stock';
 import { CheckStockPriceAction } from '../actions/check-stock-price';
 import { GenerateBuySellRecommendationAction } from '../actions/generate-buy-sell-recommendation';
@@ -32,24 +33,22 @@ export class TradingWorkflow extends Workflow {
             `Got recommendation based on price: ${buyOrSellRecommendation}`
         );
 
-        const waitForConfirmation = await this.do(
-            `confirm-${buyOrSellRecommendation}?`,
-            new WaitForInput().setArgument({
-                inputs: { approve: { type: 'bag', options: [true, false] } },
+        const resolveApproveAction = await this.do(
+            `confirm?`,
+            new ResolveInputsAction().addInput('approve', {
+                type: 'bag',
+                options: [true, false],
             })
         );
 
-        if (waitForConfirmation.inputs.approve) {
-            return (
-                await this.do(
-                    `${buyOrSellRecommendation}-stock`,
-                    new (buyOrSellRecommendation === 'sell'
-                        ? SellStockAction
-                        : BuyStockAction)().setArgument({
-                        price: stockPrice.stock_price,
-                    })
-                )
-            ).stockData;
+        if (resolveApproveAction.approve) {
+            const action =
+                buyOrSellRecommendation === 'sell'
+                    ? new SellStockAction()
+                    : new BuyStockAction();
+            action.setArgument({ price: stockPrice.stock_price });
+            return (await this.do(`${buyOrSellRecommendation}-stock`, action))
+                .stockData;
         }
 
         this.internalLog('No action to be done');
