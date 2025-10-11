@@ -2,6 +2,10 @@ import blessed, { Widgets } from 'blessed';
 import colors from 'colors';
 import { copy } from 'copy-paste';
 
+import { ActionState } from '@orbi-ts/core';
+import { utils } from '@orbi-ts/services';
+
+import { INPUTS_KEY, InputsDescriptionType } from '@orbi-ts/fuel';
 import {
     ACTION_STATE_FORMAT,
     generatePrettyActionState,
@@ -232,12 +236,18 @@ class InfoBox extends (blessed.box as unknown as {
         args: BoxWithLabel;
         bag: BoxWithLabel;
         result: BoxWithLabel;
+        inputsBox: InputsBox;
+        inputsButton: Widgets.ButtonElement;
     };
 
     constructor(
         options: Widgets.BoxOptions,
         render: (args?: any) => void,
-        alert: (msg: string, pos: { x: number; y: number }) => void
+        alert: (msg: string, pos: { x: number; y: number }) => void,
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
     ) {
         const { label, parent, top, ...otherOptions } = options;
         super({
@@ -261,6 +271,47 @@ class InfoBox extends (blessed.box as unknown as {
             border: 'line',
             style: { bold: true },
             shrink: true,
+        });
+        const inputsBox = new InputsBox(
+            {
+                parent: this,
+                top: 0,
+                left: 0,
+                width: '100%-2',
+                height: '100%-2',
+                hidden: true,
+                border: { type: 'line' },
+                style: { border: { fg: 'magenta' } },
+                shrink: true,
+            },
+            render,
+            () => {
+                inputsBox.toggle();
+                render();
+            },
+            async (event) => {
+                await setInputs(this.name, event.inputs);
+                alert('Inputs set!', { x: event.x + 3, y: event.y + 1 });
+            }
+        );
+        const inputsButton = blessed.button({
+            parent: container,
+            top: 0,
+            right:
+                (state.right as number) +
+                ACTION_STATE_FORMAT.get(ActionState.IN_PROGRESS)!.full.length +
+                2,
+            content: 'Add inputs',
+            hidden: true,
+            border: 'line',
+            style: { bold: true },
+            shrink: true,
+        });
+        inputsButton.on('click', () => {
+            if (!inputsBox.visible) {
+                inputsBox.toggle();
+                render();
+            }
         });
         const ref = blessed.box({
             top: 1,
@@ -303,11 +354,18 @@ class InfoBox extends (blessed.box as unknown as {
             args,
             bag,
             result,
+            inputsBox,
+            inputsButton,
         };
 
         // Copy content on click
         Object.entries(this.ui).forEach(([key, box]) => {
-            if (key === 'container') return;
+            if (
+                key === 'container' ||
+                key === 'inputsButton' ||
+                key === 'inputsBox'
+            )
+                return;
             box.on('click', (event) => {
                 copy(box.getContent());
                 alert('Copied!', { x: event.x + 3, y: event.y + 1 });
@@ -335,6 +393,9 @@ class InfoBox extends (blessed.box as unknown as {
 
     setActionId(actionId: string) {
         this.actionId = actionId;
+        // make sure inputs button and box are hidden
+        this.ui.inputsButton.hide();
+        this.ui.inputsBox.hide();
         this.refresh();
     }
 
@@ -343,12 +404,22 @@ class InfoBox extends (blessed.box as unknown as {
 
         const action = this.actions.get(this.actionId)!;
 
-        this.name = action.id;
+        this.name = this.actionId;
 
         const { color, full } = ACTION_STATE_FORMAT.get(action.state)!;
         this.ui.state.setContent(full);
         this.ui.state.style.fg = color;
         this.ui.state.style.border.fg = color;
+
+        if (
+            action.arguments?.[INPUTS_KEY] &&
+            action.state === ActionState.IN_PROGRESS
+        ) {
+            this.ui.inputsBox.setInputs(action);
+            this.ui.inputsButton.show();
+        } else {
+            this.ui.inputsButton.hide();
+        }
 
         this.ui.ref.setContent(action.ref);
         this.ui.id.setContent(action.id);
@@ -442,6 +513,296 @@ class LogsBox extends (blessed.box as unknown as {
     }
 }
 
+/**
+ * ```
+ * ┌─────────────────────────┐
+ * │                 |CLOSE| │
+ * │                         │
+ * │ ┌─ [key1] ────────────┐ │
+ * │ │  ....               │ │
+ * │ └─────────────────────┘ │
+ * │ ┌─ [key2] ────────────┐ │
+ * │ │  ....               │ │
+ * │ └─────────────────────┘ │
+ * │ ....                    │
+ * │                         │
+ * │ |SET| |CANCEL|          │
+ * └─────────────────────────┘
+ * ```
+ */
+class InputsBox extends (blessed.box as unknown as {
+    new (opts: Widgets.BoxOptions): Widgets.BoxElement;
+}) {
+    private ui: {
+        inputsContainer: Widgets.BoxElement;
+        inputs: Widgets.BoxElement[];
+        dropdown: Widgets.ListElement;
+        closeButton: Widgets.ButtonElement;
+        submitButton: Widgets.ButtonElement;
+    };
+
+    private focusedInput: Widgets.TextboxElement | null = null;
+
+    private action: ActionsViewerAction | null = null;
+
+    private defaultInputs: {
+        [key: string]: any;
+    } = {};
+
+    private inputs: {
+        [key: string]: any;
+    } = {};
+
+    private inputsMap: {
+        [key: string]: Widgets.TextboxElement;
+    } = {};
+
+    private renderFn: (args?: any) => void;
+
+    private INPUT_FOCUSED_COLOR = 'cyan';
+    private INPUT_DEFAULT_COLOR = 'grey';
+
+    alignDropdown() {
+        if (!this.focusedInput) return;
+        const totalContainerHeight = this.ui.inputsContainer.getScrollHeight();
+        const visibleContainerHeight = this.ui.inputsContainer.height as number;
+        const scrollOffset =
+            (1 / 100) *
+            (totalContainerHeight - visibleContainerHeight) *
+            this.ui.inputsContainer.getScrollPerc();
+        this.ui.dropdown.top =
+            (this.focusedInput.top as number) - scrollOffset + 2;
+    }
+
+    constructor(
+        options: Widgets.BoxOptions,
+        render: (args?: any) => void,
+        onClose: () => void,
+        onSubmit: (event: any) => void
+    ) {
+        const { label, parent, top, ...otherOptions } = options;
+        super({
+            parent,
+            top,
+            ...otherOptions,
+        });
+
+        this.renderFn = render;
+
+        const inputsContainer = blessed.box({
+            parent: this,
+            top: 1,
+            left: 0,
+            bottom: 4,
+            right: 0,
+            scrollable: true,
+            alwaysScroll: true,
+            mouse: true,
+            focusable: true,
+            keys: true,
+            scrollbar: SCROLLBAR_STYLE,
+        });
+
+        const dropdown = blessed.list({
+            name: 'dropdown',
+            parent: this,
+            hidden: true,
+            keys: true,
+            mouse: true,
+            style: { selected: { bg: 'magenta' }, bg: 'grey' },
+        });
+
+        dropdown.on('select', (item, idx) => {
+            if (!this.focusedInput) return;
+
+            const key = this.focusedInput.get('key', '');
+            const value = this.focusedInput.get('values', [])[idx];
+
+            this.inputs[key] = value;
+            this.focusedInput.setValue(`${value}`);
+
+            // remove border that was added on focus
+            // cannot use blur as the input loses focus when the dropdown has it
+            this.focusedInput.style.border.fg = this.INPUT_DEFAULT_COLOR;
+
+            this.focus(); // blur everything
+            dropdown.hide();
+            render();
+        });
+
+        inputsContainer.on('scroll', () => {
+            if (dropdown.visible) {
+                this.alignDropdown();
+                render();
+            }
+        });
+
+        const closeButton = blessed.button({
+            parent: this,
+            top: 0,
+            right: 1,
+            content: 'Close',
+            underline: 'grey',
+            shrink: true,
+            mouse: true,
+        });
+
+        closeButton.on('click', onClose);
+
+        const submitButton = blessed.button({
+            parent: this,
+            left: 1,
+            bottom: 0,
+            border: 'line',
+            keys: true,
+            mouse: true,
+            focusable: true,
+            content: 'Add inputs',
+            shrink: true,
+        });
+
+        submitButton.setIndex(0);
+
+        submitButton.on('click', (event: any) => {
+            onSubmit({ ...event, inputs: this.inputs });
+        });
+
+        this.ui = {
+            inputsContainer,
+            dropdown,
+            inputs: [],
+            closeButton,
+            submitButton,
+        };
+    }
+
+    setInputs(action: ActionsViewerAction) {
+        const inputsDesc = Object.entries(
+            action.arguments[INPUTS_KEY] as InputsDescriptionType
+        ).filter(([, desc]) => desc.type === 'bag');
+
+        const defaultChanged = inputsDesc.some(
+            ([key, _]) =>
+                action.bag[INPUTS_KEY][key] !== this.defaultInputs[key]
+        );
+
+        // if already set, skip
+        if (this.action?.id === action.id && !defaultChanged) return;
+
+        let refresh = false;
+        // clear if it a new action
+        if (this.action?.id !== action.id) {
+            // clear children and reset scroll
+            for (const child of [...this.ui.inputsContainer.children])
+                child.destroy();
+            this.ui.inputsContainer.setScroll(0);
+            this.inputs = {};
+            this.inputsMap = {};
+            this.action = action;
+        } else {
+            refresh = true;
+        }
+
+        if (inputsDesc.length === 0) {
+            blessed.box({
+                parent: this.ui.inputsContainer,
+                top: 1,
+                left: 1,
+                right: 1,
+                content: 'No inputs',
+            });
+            return;
+        }
+
+        inputsDesc.forEach(([key, { options }], index) => {
+            // refresh only
+            if (refresh) {
+                const input = this.inputsMap[key];
+                const value = action.bag[INPUTS_KEY]?.[key];
+                if (value != null) {
+                    this.inputs[key] = value;
+                    this.defaultInputs[key] = value;
+                    input.setValue(`${value}`);
+                }
+                return;
+            }
+
+            const hasOptions = Array.isArray(options);
+
+            const input: blessed.Widgets.TextboxElement = blessed.textbox({
+                parent: this.ui.inputsContainer,
+                top: 1 + index * 4,
+                left: 1,
+                right: 1,
+                height: 3,
+                border: 'line',
+                keys: true,
+                mouse: true,
+                scrollable: false,
+                shrink: true,
+                style: { border: { fg: this.INPUT_DEFAULT_COLOR } },
+            });
+
+            this.inputsMap[key] = input;
+
+            blessed.text({
+                parent: this.ui.inputsContainer,
+                top: 1 + index * 4,
+                left: 2,
+                height: 1,
+                content: ` ${key} `,
+            });
+
+            const value = action.bag[INPUTS_KEY]?.[key];
+            if (value != null) {
+                this.inputs[key] = value;
+                this.defaultInputs[key] = value;
+                input.setValue(`${value}`);
+            } else if (this.inputs[key]) {
+                input.setValue(`${this.inputs[key]}`);
+            }
+
+            input.set('key', key);
+            input.set('values', options ?? []);
+
+            listenToChildScroll(input, this.ui.inputsContainer, () => {
+                this.renderFn();
+            });
+
+            if (hasOptions) {
+                input.on('focus', () => {
+                    input.style.border.fg = this.INPUT_FOCUSED_COLOR;
+                    this.focusedInput = input;
+                    this.ui.dropdown.setItems(options.map(utils.wrapInQuotes));
+                    this.ui.dropdown.left = (input.left as number) + 1;
+                    this.ui.dropdown.width = (input.width as number) - 2; // 2 for borders
+                    this.ui.dropdown.height = Math.min(options.length, 5);
+                    // reset scroll and select
+                    this.alignDropdown();
+                    this.ui.dropdown.resetScroll();
+                    this.ui.dropdown.select(
+                        options.findIndex((opt) => opt === this.inputs[key])
+                    );
+                    this.ui.dropdown.focus();
+                    this.ui.dropdown.show();
+                    this.renderFn();
+                });
+            } else {
+                input.on('focus', () => {
+                    input.style.border.fg = this.INPUT_FOCUSED_COLOR;
+                    input.readInput();
+                });
+                input.on('blur', () => {
+                    input.style.border.fg = this.INPUT_DEFAULT_COLOR;
+                    const value = input.getValue();
+                    if (value !== '') this.inputs[key] = value;
+                    this.screen.program.hideCursor();
+                });
+            }
+        });
+    }
+}
+
 export class ActionsBlessedRenderer implements ActionsRenderer {
     private screen!: Widgets.Screen;
 
@@ -511,12 +872,16 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     constructor(
         actionId: string,
         shouldRefresh: boolean = true,
-        exit: Function = () => process.exit()
+        exit: Function = () => process.exit(),
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
     ) {
         this.topAction = actionId;
         this.shouldRefresh = shouldRefresh;
         this.exit = exit;
-        this.setUp();
+        this.setUp(setInputs);
     }
 
     setTopAction(actionId: string) {
@@ -580,7 +945,12 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     /**
      * Setup Screen and boxes.
      */
-    private setUp() {
+    private setUp(
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
+    ) {
         this.screen = blessed.screen({
             fastCSR: true,
             debug: true, // use F12 to print debug messages
@@ -658,7 +1028,8 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
                 shrink: true,
             },
             this.render.bind(this),
-            this.alert.bind(this)
+            this.alert.bind(this),
+            setInputs
         );
 
         // Alert box
