@@ -1,4 +1,6 @@
 import { Workflow } from '@orbi-ts/core';
+//import { ResolveInputsAction } from '@orbi-ts/fuel';
+import { ResolveInputsAction } from '../../../../../helpers/dist/index';
 import { BuyStockAction } from '../actions/buy-stock';
 import { CheckStockPriceAction } from '../actions/check-stock-price';
 import { GenerateBuySellRecommendationAction } from '../actions/generate-buy-sell-recommendation';
@@ -6,7 +8,7 @@ import { SellStockAction } from '../actions/sell-stock';
 import { StockTransaction } from '../types/stocks';
 
 export class TradingWorkflow extends Workflow {
-    declare IResult: StockTransaction;
+    declare IResult: Workflow['IResult'] & StockTransaction;
 
     async define() {
         const resultCheckStockPrice = await this.do(
@@ -31,22 +33,24 @@ export class TradingWorkflow extends Workflow {
             `Got recommendation based on price: ${buyOrSellRecommendation}`
         );
 
-        if (buyOrSellRecommendation === 'sell') {
-            const resultSellStockData = await this.do(
-                'sell-stock',
-                new SellStockAction().setArgument({
-                    price: stockPrice.stock_price,
-                })
-            );
-            return resultSellStockData.stockData;
-        } else {
-            const resultBuyStockData = await this.do(
-                'buy-stock',
-                new BuyStockAction().setArgument({
-                    price: stockPrice.stock_price,
-                })
-            );
-            return resultBuyStockData.stockData;
+        const resolveApproveAction = await this.do(
+            `confirm?`,
+            new ResolveInputsAction().addInput('approve', {
+                type: 'bag',
+                options: [true, false],
+            })
+        );
+
+        if (resolveApproveAction.approve) {
+            const action =
+                buyOrSellRecommendation === 'sell'
+                    ? new SellStockAction()
+                    : new BuyStockAction();
+            action.setArgument({ price: stockPrice.stock_price });
+            return (await this.do(`${buyOrSellRecommendation}-stock`, action))
+                .stockData;
         }
+
+        this.internalLog('No action to be done');
     }
 }

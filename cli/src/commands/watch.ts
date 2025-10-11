@@ -49,7 +49,15 @@ export const watchAction = (
     exit?: Function,
     cliInstanceUUID?: string
 ): ActionsViewer => {
-    const viewer = new ActionsViewer(actionId, refresh, simpleViewer, exit);
+    const viewer = new ActionsViewer(
+        actionId,
+        refresh,
+        simpleViewer,
+        exit,
+        async (actionId: string, inputs: { [key: string]: any }) => {
+            CRUD.addInputs(actionId, inputs);
+        }
+    );
 
     const tryView = async () => {
         try {
@@ -70,7 +78,7 @@ export const watchAction = (
             viewer.destroy();
             process.exit(exitCodes.SUCCESS);
         }
-        setInterval(tryView, timeInterval * 1000);
+        refresh && setInterval(tryView, timeInterval * 1000);
     })();
 
     return viewer;
