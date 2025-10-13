@@ -6,23 +6,29 @@ import {
 } from '../index.js';
 import {
     BasicWorkflow,
+    ParallelSleepWorkflow,
+    SequentialSleepWorkflow,
     ThrowErrorBasicWorkflow,
     ThrowErrorComplexWorkflow,
     WithActionDynamicWorkflow,
     WithActionErrorBasicWorkflow,
     WorkflowWithDynamicDefinition,
     WorkflowWithRepeat,
-    ParallelSleepWorkflow,
-    SequentialSleepWorkflow,
 } from './test-action.js';
 
 // Wait until action finishes, efficient for performance tests - trackActionAsPromise has an interval of 10 * 1000
-async function waitUntilFinished(action: Action, states: ActionState[] = [ActionState.SUCCESS, ActionState.ERROR], timeoutMs = 30000, intervalMs = 100) {
+async function waitUntilFinished(
+    action: Action,
+    states: ActionState[] = [ActionState.SUCCESS, ActionState.ERROR],
+    timeoutMs = 30000,
+    intervalMs = 100
+) {
     const start = Date.now();
     for (;;) {
         await action.resyncWithDb();
         if (states.includes(action.dbDoc.state)) return action.dbDoc.state;
-        if (Date.now() - start > timeoutMs) throw new Error('waitUntilFinished timeout');
+        if (Date.now() - start > timeoutMs)
+            throw new Error('waitUntilFinished timeout');
         await new Promise((resolve) => setTimeout(resolve, intervalMs));
     }
 }
@@ -167,7 +173,6 @@ describe('repeat workflow when error', () => {
     });
 });
 
-
 describe('parallel sleep', () => {
     const parallel = new ParallelSleepWorkflow();
     testAWorkflow(parallel, {
@@ -175,7 +180,7 @@ describe('parallel sleep', () => {
         expectedResult: 0,
         numberOfChildActions: 5,
     });
-})
+});
 
 describe('sequential sleep', () => {
     const parallel = new ParallelSleepWorkflow();
@@ -184,7 +189,7 @@ describe('sequential sleep', () => {
         expectedResult: 0,
         numberOfChildActions: 5,
     });
-})
+});
 
 describe('performance: parallel vs sequential sleep', () => {
     it('parallel (Promise.all) should be faster than sequential', async () => {
@@ -193,13 +198,23 @@ describe('performance: parallel vs sequential sleep', () => {
 
         const t0 = Date.now();
         await parallel.save();
-        await waitUntilFinished(parallel, [ActionState.SUCCESS, ActionState.ERROR], 20000, 50);
+        await waitUntilFinished(
+            parallel,
+            [ActionState.SUCCESS, ActionState.ERROR],
+            20000,
+            50
+        );
         const t1 = Date.now();
         const parallelMs = t1 - t0;
 
         const t2 = Date.now();
         await sequential.save();
-        await waitUntilFinished(sequential, [ActionState.SUCCESS, ActionState.ERROR], 20000, 50);
+        await waitUntilFinished(
+            sequential,
+            [ActionState.SUCCESS, ActionState.ERROR],
+            20000,
+            50
+        );
         const t3 = Date.now();
         const sequentialMs = t3 - t2;
 
