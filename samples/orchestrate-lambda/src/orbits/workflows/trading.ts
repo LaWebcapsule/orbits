@@ -1,6 +1,5 @@
 import { Workflow } from '@orbi-ts/core';
-//import { ResolveInputsAction } from '@orbi-ts/fuel';
-import { ResolveInputsAction } from '../../../../../helpers/dist/index';
+import { ResolveInputsAction } from '@orbi-ts/fuel';
 import { BuyStockAction } from '../actions/buy-stock';
 import { CheckStockPriceAction } from '../actions/check-stock-price';
 import { GenerateBuySellRecommendationAction } from '../actions/generate-buy-sell-recommendation';
