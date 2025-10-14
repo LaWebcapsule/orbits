@@ -6,12 +6,12 @@ import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 
-type ReferencedAction = {
+type ActionStep = {
     ref: string;
     action: Action;
 };
 
-type ReferencedActions = ReferencedAction[];
+type ActionSteps = ActionStep[];
 
 export type StepResult = {
     state: ActionState.SUCCESS | ActionState.ERROR;
@@ -414,15 +414,13 @@ export class Workflow extends Action {
         return actionDbDoc;
     }
 
-    protected async startActionsTransaction(
-        referencedActionsToProcess: ReferencedActions
-    ) {
-        referencedActionsToProcess.forEach(({ action, ref }) => {
+    protected async startActionsTransaction(actionStepsToProcess: ActionSteps) {
+        actionStepsToProcess.forEach(({ action, ref }) => {
             this.trackAction(ref, action.dbDoc);
         });
         return this.dbDoc.save().then(() => {
             const promises: any[] = [];
-            referencedActionsToProcess.forEach(({ action, ref }) => {
+            actionStepsToProcess.forEach(({ action, ref }) => {
                 action.dbDoc.isNew = true; // necessary ?
                 // looks like it solves a bug that causes transientError
                 // et then withTransaction retry
@@ -457,59 +455,64 @@ export class Workflow extends Action {
         });
     }
 
-    protected async startActions(
-        referencedActionsToProcess: ReferencedActions
-    ) {
-        referencedActionsToProcess = referencedActionsToProcess.map(
-            ({ action, ref }) => {
-                return {
-                    ref,
-                    action: this.transform(ref, action) || action,
-                };
-            }
-        );
+    protected async startActions() {
+        if (this.startActionsPromise) return this.startActionsPromise;
 
-        return this.runtime.db.mongo.conn
-            .startSession()
-            .then((mongooseSession) => {
-                this.dBSession = mongooseSession;
-                return this.dBSession!.withTransaction(async () => {
-                    // beware: this function is often retried because of frequent TransientError
-                    // do not put anything in this block that would accumulate
-                    // (like this.x++)
-                    this.dbDoc.$session(this.dBSession);
-                    this.dbDoc.markModified('bag');
-                    this.dbDoc.markModified('state');
-                    this.dbDoc.increment();
-                    // necessary in case of retry
-                    // because we proceed in two passes
-                    // https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
-                    // first request from workflow must arrive before the others else there would be troubles
-                    return this.startActionsTransaction(
-                        referencedActionsToProcess
-                    ).then(() => Promise.resolve()); // for typing
-                }).then(() => {
-                    return Promise.all([
-                        this.resyncWithDb(),
-                        ...referencedActionsToProcess.map(({ action }) =>
-                            action.resyncWithDb()
-                        ),
-                    ]);
-                });
-            })
-            .finally(() => {
-                this.docsToSaveAtStepStart = [];
-                if (this.dBSession) {
-                    return this.dBSession.endSession();
+        this.startActionsPromise = new Promise(async (resolve) => {
+            try {
+                while (this.pendingActionsStep.length) {
+                    const actionStepsToProcess = this.pendingActionsStep;
+                    this.pendingActionsStep = [];
+
+                    const mongooseSession =
+                        await this.runtime.db.mongo.conn.startSession();
+                    this.dBSession = mongooseSession;
+
+                    try {
+                        await this.dBSession!.withTransaction(async () => {
+                            // beware: this function is often retried because of frequent TransientError
+                            // do not put anything in this block that would accumulate
+                            // (like this.x++)
+                            this.dbDoc.$session(this.dBSession);
+                            this.dbDoc.markModified('bag');
+                            this.dbDoc.markModified('state');
+                            this.dbDoc.increment();
+                            // necessary in case of retry
+                            // because we proceed in two passes
+                            // https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
+                            // first request from workflow must arrive before the others else there would be troubles
+                            await this.startActionsTransaction(
+                                actionStepsToProcess
+                            );
+                        });
+
+                        await Promise.all([
+                            this.resyncWithDb(),
+                            ...actionStepsToProcess.map(({ action }) =>
+                                action.resyncWithDb()
+                            ),
+                        ]);
+                    } finally {
+                        this.docsToSaveAtStepStart = [];
+                        if (this.dBSession) {
+                            await this.dBSession.endSession();
+                        }
+
+                        actionStepsToProcess.forEach(({ action }) => {
+                            this.internalLog(
+                                `action started : ${action._id.toString()}, ${action.dbDoc.actionRef}`
+                            );
+                        });
+                    }
                 }
-            })
-            .then(() => {
-                referencedActionsToProcess.forEach(({ action }) => {
-                    this.internalLog(
-                        `action started : ${action._id.toString()}, ${action.dbDoc.actionRef}`
-                    );
-                });
-            });
+
+                resolve();
+            } finally {
+                this.startActionsPromise = undefined;
+            }
+        });
+
+        return this.startActionsPromise;
     }
 
     protected toPromise(ref: string, dbDoc: ActionSchemaInterface) {
@@ -533,28 +536,17 @@ export class Workflow extends Action {
 
     registeredActionIds = [];
 
-    private pendingActions: ReferencedActions = [];
+    private pendingActionsStep: ActionSteps = [];
 
-    private startPendingActionsPromise: Promise<void> | null = null;
+    private startActionsPromise: Promise<void>;
 
-    private waitForNextTickToStartAction(ref: string, action: Action) {
-        this.pendingActions.push({ ref, action });
-
-        if (this.startPendingActionsPromise)
-            return this.startPendingActionsPromise;
-
-        this.startPendingActionsPromise = new Promise((resolve) => {
-            process.nextTick(async () => {
-                while (this.pendingActions.length) {
-                    const referencedActionsToProcess = this.pendingActions;
-                    this.pendingActions = [];
-                    await this.startActions(referencedActionsToProcess);
-                }
-                this.startPendingActionsPromise = null;
-                resolve();
-            });
+    private startAction(ref: string, action: Action) {
+        this.pendingActionsStep.push({
+            ref,
+            action: this.transform(ref, action) || action,
         });
-        return this.startPendingActionsPromise;
+
+        return this.startActions();
     }
 
     /**
@@ -710,7 +702,7 @@ export class Workflow extends Action {
             } else {
                 this.internalLog(`using a new action for step ${ref}`);
                 if (this.defineCallMode === 'main') {
-                    await this.waitForNextTickToStartAction(ref, action);
+                    await this.startAction(ref, action);
                 }
             }
             if (this.defineCallMode === 'main') {
