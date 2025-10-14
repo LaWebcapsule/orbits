@@ -186,21 +186,7 @@ export class ParallelSleepWorkflow extends Workflow {
         await Promise.all([
             this.do('sleep1', new Sleep().setArgument({ time: 500 })),
             this.do('sleep2', new Sleep().setArgument({ time: 500 })),
-            this.do('sleep3', new Sleep().setArgument({ time: 500 })),
-            this.do('sleep4', new Sleep().setArgument({ time: 500 })),
-            this.do('sleep5', new Sleep().setArgument({ time: 500 })),
         ]);
-        return 0;
-    }
-}
-
-export class SequentialSleepWorkflow extends Workflow {
-    async define() {
-        await this.do('sleep1', new Sleep().setArgument({ time: 500 }));
-        await this.do('sleep2', new Sleep().setArgument({ time: 500 }));
-        await this.do('sleep3', new Sleep().setArgument({ time: 500 }));
-        await this.do('sleep4', new Sleep().setArgument({ time: 500 }));
-        await this.do('sleep5', new Sleep().setArgument({ time: 500 }));
         return 0;
     }
 }
