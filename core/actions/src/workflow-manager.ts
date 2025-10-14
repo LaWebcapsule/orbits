@@ -458,8 +458,8 @@ export class Workflow extends Action {
     protected async startActions() {
         if (this.startActionsPromise) return this.startActionsPromise;
 
-        this.startActionsPromise = new Promise(async (resolve) => {
-            try {
+        this.startActionsPromise = new Promise((resolve) => {
+            process.nextTick(async () => {
                 while (this.pendingActionsStep.length) {
                     const actionStepsToProcess = this.pendingActionsStep;
                     this.pendingActionsStep = [];
@@ -506,10 +506,9 @@ export class Workflow extends Action {
                     }
                 }
 
-                resolve();
-            } finally {
                 this.startActionsPromise = undefined;
-            }
+                resolve();
+            });
         });
 
         return this.startActionsPromise;
