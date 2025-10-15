@@ -6,13 +6,6 @@ import { ActionError, InWorkflowActionError } from './error/error.js';
 import { ActionSchemaInterface, ActionState } from './models/action.js';
 import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 
-type ReferencedAction = { 
-        ref: string, 
-        action: Action
-};
-
-type ReferencedActions = ReferencedAction[];
-
 export type StepResult = {
     state: ActionState.SUCCESS | ActionState.ERROR;
     result: JSONObject;
@@ -414,55 +407,45 @@ export class Workflow extends Action {
         return actionDbDoc;
     }
 
-    protected async startActionsTransaction(referencedActionsToProcess:ReferencedActions) {
-        referencedActionsToProcess.forEach(({action,ref}) => {
-            this.trackAction(ref, action.dbDoc);
-        });
+    protected async startActionTransaction(ref: string, action: Action) {
+        this.trackAction(ref, action.dbDoc);
         return this.dbDoc.save().then(() => {
             const promises: any[] = [];
-            referencedActionsToProcess.forEach(({action,ref}) => {
-                action.dbDoc.isNew = true; // necessary ?
-                // looks like it solves a bug that causes transientError
-                // et then withTransaction retry
-                // but isNew is false and then it errors out with DocumentNotFoundError
-                // to be confirmed
-                // initialize workflowStack with current stack
-                action.dbDoc.workflowStack = this.dbDoc.workflowStack;
-                action.dbDoc.workflowStack.push({
-                    ref,
-                    stepIndex: this.bag.currentStepIndex,
-                    _id: this._id.toString(),
-                    stepName: ref,
-                    iteration: this.getCurrentInteration(),
-                });
-                action.dbDoc.filter = {
-                    ...this.dbDoc.filter,
-                    ...action.dbDoc.filter,
-                };
-                action.dbDoc.workflowId = this._id.toString();
-                action.dbDoc.workflowRef = ref;
-                action.dbDoc.workflowIteration = this.getCurrentInteration();
-
-                if (this.constructor[COALESCING_WORKFLOW_TAG]) {
-                    action.dbDoc.workflowIdentity = (
-                        this as Workflow as CoalescingWorkflow
-                    ).stringifyIdentity();
-                }
-                action.dbDoc.$session(this.dBSession);
-                promises.push(action.save());
+            action.dbDoc.isNew = true; // necessary ?
+            // looks like it solves a bug that causes transientError
+            // et then withTransaction retry
+            // but isNew is false and then it errors out with DocumentNotFoundError
+            // to be confirmed
+            // initialize workflowStack with current stack
+            action.dbDoc.workflowStack = this.dbDoc.workflowStack;
+            action.dbDoc.workflowStack.push({
+                ref,
+                stepIndex: this.bag.currentStepIndex,
+                _id: this._id.toString(),
+                stepName: ref,
+                iteration: this.getCurrentInteration(),
             });
+            action.dbDoc.filter = {
+                ...this.dbDoc.filter,
+                ...action.dbDoc.filter,
+            };
+            action.dbDoc.workflowId = this._id.toString();
+            action.dbDoc.workflowRef = ref;
+            action.dbDoc.workflowIteration = this.getCurrentInteration();
+
+            if (this.constructor[COALESCING_WORKFLOW_TAG]) {
+                action.dbDoc.workflowIdentity = (
+                    this as Workflow as CoalescingWorkflow
+                ).stringifyIdentity();
+            }
+            action.dbDoc.$session(this.dBSession);
+            promises.push(action.save());
             return Promise.all(promises);
         });
     }
 
-    protected async startActions(referencedActionsToProcess: ReferencedActions) {
-        referencedActionsToProcess = referencedActionsToProcess.map(({action,ref}) => {
-            return  {
-                ref,
-                action: (this.transform(ref, action) || action)
-            }
-        })
-
+    protected async startAction(ref: string, action: Action) {
+        action = this.transform(ref, action) || action;
         return this.runtime.db.mongo.conn
             .startSession()
             .then((mongooseSession) => {
@@ -479,13 +462,13 @@ export class Workflow extends Action {
                     // because we proceed in two passes
                     // https://stackoverflow.com/questions/64084992/mongoworkflowexception-query-failed-with-error-code-251
                     // first request from workflow must arrive before the others else there would be troubles
-                    return this.startActionsTransaction(referencedActionsToProcess).then(() =>
+                    return this.startActionTransaction(ref, action).then(() =>
                         Promise.resolve()
                     ); // for typing
                 }).then(() => {
                     return Promise.all([
                         this.resyncWithDb(),
-                        ...referencedActionsToProcess.map(({action}) => action.resyncWithDb()),
+                        action.resyncWithDb(),
                     ]);
                 });
             })
@@ -496,11 +479,9 @@ export class Workflow extends Action {
                 }
             })
             .then(() => {
-                referencedActionsToProcess.forEach(({action}) => {
-                    this.internalLog(
-                        `action started : ${action._id.toString()}, ${action.dbDoc.actionRef}`
-                    );
-                });
+                this.internalLog(
+                    `action started : ${action._id.toString()}, ${action.dbDoc.actionRef}`
+                );
             });
     }
 
@@ -525,28 +506,12 @@ export class Workflow extends Action {
 
     registeredActionIds = [];
 
-    private pendingActions : ReferencedActions = [];
-
-    private startPendingActionsPromise: Promise<void> | null = null;
-
-    private waitForNextTickToStartAction(ref:string, action:Action){
-        this.pendingActions.push({ref, action});
-        
-        if(this.startPendingActionsPromise) return this.startPendingActionsPromise;
-
-        this.startPendingActionsPromise = new Promise((resolve) => {
-                process.nextTick(async () => {
-                    while (this.pendingActions.length) {
-                        const referencedActionsToProcess = this.pendingActions;
-                        this.pendingActions = [];
-                        await this.startActions(referencedActionsToProcess);
-                    }
-                    this.startPendingActionsPromise = null;
-                    resolve();
-                })
-            });
-        return this.startPendingActionsPromise;
-    }
+    /**
+     * Chain used to serialize action starts within a single workflow iteration.
+     * This avoids concurrent transactions on the same workflow document
+     * when `do()` is invoked in parallel (e.g., inside Promise.all).
+     */
+    private actionStartChain: Promise<any> = Promise.resolve();
 
     /**
      * Executes an action in the workflow.
@@ -701,8 +666,10 @@ export class Workflow extends Action {
             } else {
                 this.internalLog(`using a new action for step ${ref}`);
                 if (this.defineCallMode === 'main') {
-                 
-                    await this.waitForNextTickToStartAction(ref, action);
+                    this.actionStartChain = this.actionStartChain.then(() =>
+                        this.startAction(ref, action)
+                    );
+                    await this.actionStartChain;
                 }
             }
             if (this.defineCallMode === 'main') {
