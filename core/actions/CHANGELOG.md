@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.2.3
+
+### Patch Changes
+
+- 85e656c: Update dependencies to fix vulnerabilities
+
 ## 0.2.2
 
 ### Patch Changes

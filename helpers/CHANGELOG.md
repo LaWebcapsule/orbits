@@ -1,5 +1,13 @@
 # @wbce/orbits-fuel
 
+## 0.1.3
+
+### Patch Changes
+
+- 85e656c: Update dependencies to fix vulnerabilities
+- Updated dependencies [85e656c]
+    - @orbi-ts/core@0.2.3
+
 ## 0.1.2
 
 ### Patch Changes
