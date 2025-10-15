@@ -36,8 +36,8 @@
         "typescript": "catalog:"
     },
     "dependencies": {
-        "@orbi-ts/services": "workspace:",
-        "import-meta-resolve": "^4.1.0",
+        "@orbi-ts/services": "workspace:^",
+        "import-meta-resolve": "^4.2.0",
         "mongoose": "catalog:",
         "precinct": "^12.2.0",
         "read-env": "^2.0.0",
