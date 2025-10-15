@@ -151,11 +151,11 @@ export class CRUD {
      * @returns list of logs
      */
     static async listLogs(
-        filter: any = {},
+        query: any = {},
         sort?: { [key: string]: -1 | 1 }
     ): Promise<LogSchemaInterface[]> {
         return await ActionRuntime.activeRuntime.LogModel.find(
-            { filter },
+            query,
             {},
             { sort: sort }
         );
