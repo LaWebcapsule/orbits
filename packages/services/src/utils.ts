@@ -112,3 +112,13 @@ export function capitalize(str: string): string {
 export function base64Decode(str: string) {
     return Buffer.from(str, 'base64').toString('utf-8');
 }
+
+/**
+ * Return value as string, wrapped in quotes if it is a string
+ * @param value
+ * @returns string
+ */
+export function wrapInQuotes(value: boolean | number | string): string {
+    if (typeof value === 'string') return `'${value}'`;
+    return `${value}`;
+}

@@ -19,6 +19,7 @@
     "dependencies": {
         "@orbi-ts/core": "workspace:^",
         "@orbi-ts/services": "workspace:^",
+        "@orbi-ts/fuel": "workspace:^",
         "blessed": "^0.1.81",
         "colors": "^1.4.0",
         "commander": "^14.0.0",

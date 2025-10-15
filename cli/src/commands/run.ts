@@ -173,7 +173,7 @@ const runInBackground = async (
         watchAction(
             actionId,
             0,
-            true,
+            opts.refresh,
             parseFloat(opts.interval),
             opts.simpleViewer,
             true,
@@ -250,7 +250,7 @@ const run = async (
                     watchAction(
                         actionId.toString(),
                         opts.depth,
-                        true,
+                        opts.refresh,
                         parseFloat(opts.interval ?? 1),
                         opts.simpleViewer,
                         true,
