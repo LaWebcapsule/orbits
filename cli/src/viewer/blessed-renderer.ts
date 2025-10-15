@@ -443,6 +443,16 @@ class InfoBox extends (blessed.box as unknown as {
 class LogsBox extends (blessed.box as unknown as {
     new (opts: Widgets.BoxOptions): Widgets.BoxElement;
 }) {
+    private actionId?: string;
+
+    private logs: {
+        level: string;
+        message: string;
+        actionId?: string;
+        actionRef?: string;
+        timestamp?: string;
+    }[] = [];
+
     private ui: {
         container: Widgets.BoxElement;
     };
@@ -468,6 +478,11 @@ class LogsBox extends (blessed.box as unknown as {
         };
     }
 
+    setActionId(actionId?: string) {
+        this.actionId = actionId;
+        this.refresh();
+    }
+
     setLogs(
         logs: {
             level: string;
@@ -477,7 +492,16 @@ class LogsBox extends (blessed.box as unknown as {
             timestamp?: string;
         }[]
     ) {
-        this.ui.container.content = logs
+        this.logs.push(...logs);
+        this.refresh();
+    }
+
+    refresh() {
+        const filteredLogs = this.logs.filter(
+            ({ actionId }) => !this.actionId || actionId === this.actionId
+        );
+
+        this.ui.container.content = filteredLogs
             .map((log) => {
                 let color;
                 switch (log.level) {
@@ -526,7 +550,7 @@ class LogsBox extends (blessed.box as unknown as {
  * │ └─────────────────────┘ │
  * │ ....                    │
  * │                         │
- * │ |SET| |CANCEL|          │
+ * │ |SET|                   │
  * └─────────────────────────┘
  * ```
  */
@@ -1085,6 +1109,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.mainBox.on('click', () => {
             if (this.infoBox.visible) this.toggleInfo();
             if (this.logsBox.visible) this.toggleLogs();
+            this.logsBox.setActionId(); // display all logs
         });
     }
 
@@ -1149,6 +1174,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
                 if (!this.infoBox.visible || this.infoBox.name == action.id)
                     this.toggleInfo(false);
                 this.infoBox.setActionId(action.id);
+                this.logsBox.setActionId(action.id);
                 this.render('actionBox ' + action.id);
             });
         }
