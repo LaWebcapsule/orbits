@@ -162,4 +162,4 @@ describe('parallel actions workflow', () => {
         expectedResult: 0,
         numberOfChildActions: 2,
     });
-})
+});

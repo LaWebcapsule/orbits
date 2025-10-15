@@ -181,25 +181,15 @@ export class WithActionDynamicWorkflow extends Workflow {
     }
 }
 
-export class WorkflowWithParallelActions extends Workflow{
-
+export class WorkflowWithParallelActions extends Workflow {
     async define() {
-
-        try {
-
-             await Promise.all([
-                this.do('step1', async () => ActionState.SUCCESS),
-                this.do('step2', async () => ActionState.SUCCESS)
-            ])
-            
-        } catch (error) {
-             throw new Error('abc');
-        }
-     
+        await Promise.all([
+            this.do('step1', new Sleep().setArgument({ time: 500 })),
+            this.do('step2', new Sleep().setArgument({ time: 500 })),
+        ]);
 
         return 0;
     }
-
 }
 
 export class WorkflowWithDynamicDefinition extends Workflow {
