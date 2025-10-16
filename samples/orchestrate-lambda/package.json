@@ -10,8 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@orbi-ts/core": "latest",
-    "@orbi-ts/fuel": "latest",
+    "@orbi-ts/cli": "workspace:^",
+    "@orbi-ts/core": "workspace:^",
+    "@orbi-ts/fuel": "workspace:^",
     "path": "^0.12.7"
   },
 "devDependencies": {

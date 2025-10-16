@@ -2,7 +2,7 @@ import { Action, ActionError, ActionState } from '@orbi-ts/core';
 import { utils } from '@orbi-ts/services';
 
 export type InputDescriptionType = {
-    type: string; // 'bag' | 'file' | 'url' | ...
+    type?: string; // 'bag' | 'file' | 'url' | ...
     options?: (string | boolean | number)[];
     [key: string]: any;
 };
@@ -152,6 +152,7 @@ export class ResolveInputsAction extends Action {
     ) {
         inputs = Array.isArray(inputs) ? inputs : [inputs];
         inputs.forEach(({ key, desc }) => {
+            if(!(desc.type)) desc.type = 'bag';
             if (!(desc.type in this.inputsHandlersRegistry))
                 throw new ActionError(`No handler for input '${key}'`);
             if (this.argument[INPUTS_KEY][key])
