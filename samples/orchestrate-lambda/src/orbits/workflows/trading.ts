@@ -20,7 +20,7 @@ export class TradingWorkflow extends Workflow {
         );
 
         const resultGenerateBuySellRecommendationAction = await this.do(
-            'check-stock-price',
+            'generate-recommandation',
             new GenerateBuySellRecommendationAction().setArgument({
                 price: stockPrice.stock_price,
             })
@@ -48,6 +48,9 @@ export class TradingWorkflow extends Workflow {
             action.setArgument({ price: stockPrice.stock_price });
             return (await this.do(`${buyOrSellRecommendation}-stock`, action))
                 .stockData;
+        }
+        else{
+            throw new Error("User invalidate the recommandation.")
         }
 
         this.internalLog('No action to be done');

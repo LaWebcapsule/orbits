@@ -490,6 +490,7 @@ class LogsBox extends (blessed.box as unknown as {
             actionId?: string;
             actionRef?: string;
             timestamp?: string;
+            err?: Error;
         }[]
     ) {
         this.logs.push(...logs);
@@ -517,15 +518,17 @@ class LogsBox extends (blessed.box as unknown as {
                     default:
                         color = colors.grey.italic;
                 }
+                let message = `${log.message}`
+                if(log.err) message += ` ${log.err.stack}`
                 if (log.timestamp && log.actionRef && log.actionId)
                     return color(
-                        `${log.timestamp} - ${colors.bold(log.actionRef)} (${colors.italic(log.actionId)}): ${log.message}`
+                        `${log.timestamp} - ${colors.bold(log.actionRef)} (${colors.italic(log.actionId)}): ${message}`
                     );
 
                 if (log.timestamp)
-                    return color(`${log.timestamp} - ${log.message}`);
+                    return color(`${log.timestamp} - ${message}`);
 
-                return color(log.message);
+                return color(message);
             })
             .join('\n');
 
@@ -928,6 +931,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             actionId?: string;
             actionRef?: string;
             timestamp?: string;
+            err?: Error;
         }[]
     ) {
         this.logsBox.setLogs(logs);
