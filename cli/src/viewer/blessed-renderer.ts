@@ -6,9 +6,14 @@ import { ActionState } from '@orbi-ts/core';
 import { utils } from '@orbi-ts/services';
 
 import { INPUTS_KEY, InputsDescriptionType } from '@orbi-ts/fuel';
+import stringWidth from 'string-width';
+import stripAnsi from 'strip-ansi';
 import {
     ACTION_STATE_FORMAT,
     generatePrettyActionState,
+    highlight,
+    HIGHLIGHT_CLOSE,
+    HIGHLIGHT_OPEN,
     type ActionsRenderer,
     type ActionsViewerAction,
 } from './utils.js';
@@ -457,13 +462,31 @@ class LogsBox extends (blessed.box as unknown as {
         container: Widgets.BoxElement;
     };
 
-    constructor(options: Widgets.BoxOptions, render: (args?: any) => void) {
+    private selection: {
+        content: string[];
+        origin?: { x: number; y: number };
+        start?: { x: number; y: number };
+        end?: { x: number; y: number };
+        direction?: number;
+    } = {
+        content: [],
+    };
+
+    private renderFn: (args?: any) => void;
+
+    constructor(
+        options: Widgets.BoxOptions,
+        render: (args?: any) => void,
+        alert: (msg: string, pos: { x: number; y: number }) => void
+    ) {
         const { label, parent, top, ...otherOptions } = options;
         super({
             parent,
             top,
             ...otherOptions,
         });
+
+        this.renderFn = render;
 
         this.ui = {
             container: blessed.box({
@@ -476,6 +499,48 @@ class LogsBox extends (blessed.box as unknown as {
                 padding: { left: 1 },
             }),
         };
+
+        // start selection
+        this.ui.container.on('mousedown', (data) => {
+            const x = Math.floor(data.x - (this.ui.container.aleft as number));
+            const y = Math.floor(data.y - (this.ui.container.atop as number));
+
+            if (!this.selection.origin) {
+                this.selection.origin = { x, y };
+                return;
+            }
+
+            const prevDirection = this.selection.direction;
+
+            const xDir = Math.sign(x - this.selection.origin.x);
+            const yDir = Math.sign(y - this.selection.origin.y);
+
+            this.selection.direction = yDir === 0 ? xDir : yDir;
+            if (this.selection.direction != prevDirection) {
+                if (this.selection.direction < 0)
+                    this.selection.end = this.selection.origin;
+                else this.selection.start = this.selection.origin;
+            }
+
+            if (this.selection.direction < 0) this.selection.start = { x, y };
+            else this.selection.end = { x, y };
+
+            this.refreshSelection();
+        });
+
+        // end selection and copy
+        this.ui.container.on('mouseup', async (event) => {
+            if (this.selection.start && this.selection.end) {
+                copy(this.selection.content.join('\n'));
+                alert('Copied!', {
+                    x: event.x + this.selection.direction! * 3,
+                    y: event.y + this.selection.direction! * 1,
+                });
+                // reset selection
+                this.selection = { content: [] };
+                this.refreshSelection(true);
+            }
+        });
     }
 
     setActionId(actionId?: string) {
@@ -515,11 +580,11 @@ class LogsBox extends (blessed.box as unknown as {
                         color = colors.white;
                         break;
                     default:
-                        color = colors.grey.italic;
+                        color = colors.grey;
                 }
                 if (log.timestamp && log.actionRef && log.actionId)
                     return color(
-                        `${log.timestamp} - ${colors.bold(log.actionRef)} (${colors.italic(log.actionId)}): ${log.message}`
+                        `${log.timestamp} - ${colors.bold(log.actionRef)} (${log.actionId}): ${log.message}`
                     );
 
                 if (log.timestamp)
@@ -534,6 +599,44 @@ class LogsBox extends (blessed.box as unknown as {
             if (this.ui.container.getScrollPerc() === 100)
                 this.ui.container.setScrollPerc(100);
         }
+
+        this.refreshSelection();
+    }
+
+    private refreshSelection(reset: boolean = false) {
+        const visibleLines = this.ui.container.getScreenLines();
+        if (!visibleLines.length || (!this.selection.origin && !reset)) return;
+
+        const totalPanelHeight = this.ui.container.getScrollHeight();
+        const visiblePanelHeight = this.ui.container.height as number;
+        const scrollOffset = Math.round(
+            (1 / 100) *
+                (totalPanelHeight - visiblePanelHeight) *
+                this.ui.container.getScrollPerc()
+        );
+
+        this.selection.content = [];
+        const highlightedContent = visibleLines.map((line, i) => {
+            const idx = i - scrollOffset;
+            // strip existing tags
+            line = line
+                .replace(HIGHLIGHT_OPEN, '')
+                .replace(HIGHLIGHT_CLOSE, ''); // at most only one occurence per line
+            if (!this.selection.start || !this.selection.end) return line;
+            if (idx < this.selection.start.y || idx > this.selection.end.y)
+                return line;
+            let startCol = 0;
+            let endCol = stringWidth(line);
+            if (idx === this.selection.start.y)
+                startCol = this.selection.start.x;
+            if (idx === this.selection.end.y) endCol = this.selection.end.x;
+            this.selection.content.push(
+                stripAnsi(line).slice(startCol, endCol)
+            );
+            return highlight(line, startCol, endCol);
+        });
+        this.ui.container.setContent(highlightedContent.join('\n'));
+        this.renderFn();
     }
 }
 
@@ -1082,13 +1185,14 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
                 style: { border: { fg: 'magenta' } },
                 shrink: true,
             },
-            this.render.bind(this)
+            this.render.bind(this),
+            this.alert.bind(this)
         );
         this.logsButton = blessed.text({
             parent: this.screen,
             right: 1,
             bottom: 1,
-            content: ` ${colors.italic.underline('Show logs')} `,
+            content: ` ${colors.underline('Show logs')} `,
         });
         this.logsButton.on('click', () => this.toggleLogs());
 
@@ -1303,7 +1407,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     }
 
     private toggleLogs(render: boolean = true) {
-        this.logsButton.content = ` ${colors.italic.underline(`${this.logsBox.visible ? 'Show' : 'Hide'} logs`)} `;
+        this.logsButton.content = ` ${colors.underline(`${this.logsBox.visible ? 'Show' : 'Hide'} logs`)} `;
         this.logsBox.toggle();
         render && this.render('toggleLogs');
     }
