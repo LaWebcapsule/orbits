@@ -451,6 +451,7 @@ class LogsBox extends (blessed.box as unknown as {
         actionId?: string;
         actionRef?: string;
         timestamp?: string;
+        err?: Error;
     }[] = [];
 
     private ui: {
