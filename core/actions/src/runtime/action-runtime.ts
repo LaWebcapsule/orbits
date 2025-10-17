@@ -78,6 +78,7 @@ export class ActionRuntime {
 
     bootstrapPath: string;
 
+    autostart : boolean;
     constructor(private opts?: RuntimeConfig) {
         if (opts?.logger) {
             this.logger = opts.logger;
@@ -92,6 +93,7 @@ export class ActionRuntime {
         if (!ActionRuntime.activeRuntime) {
             ActionRuntime.activeRuntime = this;
         }
+        this.autostart = opts.autostart;
         ActionRuntime.runtimes.push(this);
         global.orbitsRuntimes = [...(global.orbitsRuntimes || []), this];
         if (!global.orbitsRuntimeEvent) {
