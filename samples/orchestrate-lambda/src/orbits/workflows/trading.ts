@@ -1,4 +1,4 @@
-import { ResolveAction, Sleep, Workflow } from '@orbi-ts/core';
+import { Workflow } from '@orbi-ts/core';
 import { ResolveInputsAction } from '@orbi-ts/fuel';
 import { BuyStockAction } from '../actions/buy-stock';
 import { CheckStockPriceAction } from '../actions/check-stock-price';
@@ -34,10 +34,12 @@ export class TradingWorkflow extends Workflow {
 
         const resolveApproveAction = await this.do(
             `confirm?`,
-            new Sleep().setArgument({time: 1000})
+            new ResolveInputsAction().addInput('approve', {
+                options: [true, false],
+            })
         );
 
-        if (true || resolveApproveAction.approve) {
+        if (resolveApproveAction.approve) {
             const action =
                 buyOrSellRecommendation === 'sell'
                     ? new SellStockAction()
