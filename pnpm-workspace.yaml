@@ -3,7 +3,6 @@ packages:
   - helpers
   - cli
   - packages/*
-  - samples/orchestrate-lambda
 
 catalog:
   typescript: ^5.8.3
