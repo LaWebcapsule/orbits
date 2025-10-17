@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.2.4
+
+### Patch Changes
+
+- b9ea1a4: Fix Promise.all support in Workflow
+
 ## 0.2.3
 
 ### Patch Changes
