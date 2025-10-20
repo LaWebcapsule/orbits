@@ -38,7 +38,7 @@ export const ACTION_STATE_COLORS = new Map(
     )
 );
 
-export const DEFAULT_LOG_FILE = 'orbits.log';
+export const DEFAULT_LOG_FILE = '/tmp/orbits.log';
 export const DEFAULT_ACTIONS_FILE = 'orbi.ts';
 export const DEFAULT_DATABASE = DEFAULT_MONGO_URL;
 
