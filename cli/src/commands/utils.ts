@@ -92,7 +92,7 @@ export const setUpRuntime = async (opts?: {
                 : DEFAULT_ACTIONS_FILE
         );
 
-    const actionsFiles = opts?.actionsFiles?.length
+    const actionsFiles = Array.isArray(opts?.actionsFiles)
         ? opts?.actionsFiles
         : [defaultActionsFile];
 

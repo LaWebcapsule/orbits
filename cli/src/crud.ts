@@ -275,6 +275,12 @@ export class CRUD {
         let actionDb = await this.findActionById(actionId);
 
         this.resumeActionDb(actionDb);
+        
+        ActionRuntime.activeRuntime.workers.map((w)=>{
+            if((actionDb.filter as any)?.cli){
+                w.filter = actionDb.filter;
+            }
+        });
 
         // resume children that are workflows
         // get registered actions and for each check if it has registered actions meaning it is a workflow
@@ -289,6 +295,7 @@ export class CRUD {
         );
 
         await actionDb!.save();
+        return actionDb;
     }
 
     /**

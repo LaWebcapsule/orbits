@@ -29,6 +29,7 @@ const processGetCmd = async (actionId: string, opts: any) => {
         null,
         'list',
         {
+            runtimeOpts: { actionsFiles: [] },
             processResult: (actions: ActionSchemaInterface[]) => {
                 if (opts.json) {
                     process.stdout.write(JSON.stringify(actions) + '\n');

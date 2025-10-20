@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 2s
+      timeout: 3s
+      retries: 5
+
+    volumes:
+      - /tmp/orbits/mongo-data:/data/db
+
+  mongo-init:
+    image: mongo
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    entrypoint: ["mongosh", "--host", "mongodb", "--eval", "rs.initiate({_id: 'rs0', members:[{_id:0, host:'localhost:27017'}]})"]
+
+  nodejs:
+    image: node:22-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      - ORBITS_MONGO__URL=mongodb://localhost:27017/orbits?replicaSet=rs0
+    command: ["npx", "tsx", "src/orbits/orbi.ts"]
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:

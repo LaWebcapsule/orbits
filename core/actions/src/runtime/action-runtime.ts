@@ -59,6 +59,7 @@ export class ActionRuntime {
     declare: (typeof Action)[] = [];
 
     numberOfWorker = 3;
+    workers : ActionCron[] = [];
 
     /**
      * Used by ActionCron to
@@ -249,7 +250,7 @@ export class ActionRuntime {
             return this.recursiveImport(this.bootstrapPath)
                 .then(() => {
                     for (let i = 0; i < this.numberOfWorker; i++) {
-                        new ActionCron(this.actionFilter);
+                        this.workers.push(new ActionCron(this.actionFilter));
                     }
                 })
                 .then(() => {

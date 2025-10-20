@@ -1,10 +1,24 @@
+import { ActionSchemaInterface, databaseLogger } from '@orbi-ts/core';
 import { Cmd } from './command-utils.js';
+import { runCmd } from './run.js';
 import { exitCodes, runCrudCmd } from './utils.js';
 import { watchAction, watchCmd } from './watch.js';
 
 const processResumeCmd = async (actionId: string, opts: any) => {
     runCrudCmd(actionId, 'resume', {
-        processResult: () => {
+        runtimeOpts: {
+            actionsFiles: [opts.actionsFile],
+            filter: { cli: true },
+            ...(opts.localWorker
+                ? {
+                        workersCount: 1,
+                        logger: databaseLogger,
+                    }
+                : {}),
+        },
+        processResult: (actionDb: ActionSchemaInterface) => {
+            console.log("here!!!")
+            console.log((actionDb.filter as any)?.cliInstanceUUID)
             if (!opts.watch) process.exit(exitCodes.SUCCESS);
             watchAction(
                 actionId,
@@ -12,7 +26,9 @@ const processResumeCmd = async (actionId: string, opts: any) => {
                 opts.refresh,
                 parseFloat(opts.interval ?? 1),
                 opts.simpleViewer,
-                true
+                true,
+                ()=>{},
+                (actionDb.filter as any)?.cliInstanceUUID
             );
         },
         noExit: true,
@@ -31,12 +47,6 @@ export const resumeCmd: Cmd = {
         },
     ],
     options: [
-        {
-            short: 'w',
-            full: 'watch',
-            descr: 'Watch progress',
-            dflt: { val: false, descr: 'Do not watch progress' },
-        },
-        ...watchCmd.options.map((opt) => ({ ...opt, group: 'Watch options:' })),
+        ...runCmd.options.map((opt) => ({ ...opt, group: 'Run options:' })),
     ],
 };
