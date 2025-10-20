@@ -124,6 +124,7 @@ export class ActionsViewer {
             actionId: log.actionId,
             actionRef: log.actionRef,
             message: log.message,
+            err: log.err,
         }));
     }
 

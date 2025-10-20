@@ -853,7 +853,7 @@ export class Workflow extends Action {
     }
 
     override internalLogError(err: Error) {
-        this.runtime.logger.error('!!-.-!!', {
+        this.runtime.logger.error(err.message, {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter: this.dbDoc.filter,
