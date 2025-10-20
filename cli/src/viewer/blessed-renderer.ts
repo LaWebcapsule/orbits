@@ -18,6 +18,15 @@ import {
     type ActionsViewerAction,
 } from './utils.js';
 
+type LogType = {
+    level: string;
+    message: string;
+    actionId?: string;
+    actionRef?: string;
+    timestamp?: string;
+    err?: Error;
+};
+
 const SCROLLBAR_STYLE = { style: { bg: 'yellow' }, track: 'grey' };
 
 const listenToChildScroll = (
@@ -450,13 +459,7 @@ class LogsBox extends (blessed.box as unknown as {
 }) {
     private actionId?: string;
 
-    private logs: {
-        level: string;
-        message: string;
-        actionId?: string;
-        actionRef?: string;
-        timestamp?: string;
-    }[] = [];
+    private logs: LogType[] = [];
 
     private ui: {
         container: Widgets.BoxElement;
@@ -548,15 +551,7 @@ class LogsBox extends (blessed.box as unknown as {
         this.refresh();
     }
 
-    setLogs(
-        logs: {
-            level: string;
-            message: string;
-            actionId?: string;
-            actionRef?: string;
-            timestamp?: string;
-        }[]
-    ) {
+    setLogs(logs: LogType[]) {
         this.logs.push(...logs);
         this.refresh();
     }
@@ -569,7 +564,9 @@ class LogsBox extends (blessed.box as unknown as {
         this.ui.container.content = filteredLogs
             .map((log) => {
                 let color;
-                switch (log.level) {
+                let { timestamp, message, level, actionRef, actionId, err } =
+                    log;
+                switch (level) {
                     case 'error':
                         color = colors.red;
                         break;
@@ -582,15 +579,12 @@ class LogsBox extends (blessed.box as unknown as {
                     default:
                         color = colors.grey;
                 }
-                if (log.timestamp && log.actionRef && log.actionId)
-                    return color(
-                        `${log.timestamp} - ${colors.bold(log.actionRef)} (${log.actionId}): ${log.message}`
-                    );
-
-                if (log.timestamp)
-                    return color(`${log.timestamp} - ${log.message}`);
-
-                return color(log.message);
+                if (err) message = `${err.stack}`;
+                let prefix = timestamp ?? '';
+                if (actionRef && actionId)
+                    prefix += `${prefix ? ' - ' : ''}${colors.bold(actionRef)} (${actionId})`;
+                if (prefix) prefix += ': ';
+                return color(prefix + message);
             })
             .join('\n');
 
@@ -1024,15 +1018,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.infoBox.setActions(actions);
     }
 
-    setLogs(
-        logs: {
-            level: string;
-            message: string;
-            actionId?: string;
-            actionRef?: string;
-            timestamp?: string;
-        }[]
-    ) {
+    setLogs(logs: LogType[]) {
         this.logsBox.setLogs(logs);
     }
 
