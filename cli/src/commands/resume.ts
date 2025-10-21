@@ -17,7 +17,7 @@ const processResumeCmd = async (actionId: string, opts: any) => {
         'resume',
         {
             runtimeOpts: {
-                actionsFiles: [opts.actionsFile],
+                actionsFiles: opts.actionsFile ? [opts.actionsFile] : [],
                 filter: { cli: true },
                 ...(opts.localWorker
                     ? {
