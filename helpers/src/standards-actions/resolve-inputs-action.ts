@@ -59,6 +59,8 @@ export class ResolveInputsAction extends Action {
         [INPUT_TYPE_BAG]: new BagInputHandler(),
     };
 
+    delay = Infinity;
+
     constructor() {
         super();
         this.argument[INPUTS_KEY] = {};
