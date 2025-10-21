@@ -270,9 +270,24 @@ export class CRUD {
      * resume the action
      *
      * @param actionId
+     * @param runLocal whether the action is to be resumed locally;
+     * If `true`, the action registration will be checked, and the ActionRuntime filter configured to match the action to resume.
+     * @returns the resumed action dbDoc
      */
-    static async resume(actionId: string) {
+    static async resume(actionId: string, runLocal: boolean = false) {
         let actionDb = await this.findActionById(actionId);
+
+        if (runLocal) {
+            // check wether the action is registered
+            // this will throw an error if not
+            await Action.constructFromDb(actionDb);
+
+            // no need to set workers filter again on subActions
+            ActionRuntime.activeRuntime.workers.forEach((worker) => {
+                if ((actionDb.filter as any)?.cli)
+                    worker.filter = actionDb.filter;
+            });
+        }
 
         this.resumeActionDb(actionDb);
 
@@ -282,13 +297,13 @@ export class CRUD {
         (actionDb.bag as Workflow['IBag'])?.registeredActions?.forEach(
             async (subAction) => {
                 const subActionDb = await this.findActionById(subAction._id);
-                if (subActionDb?.bag.registeredActions) {
-                    this.resume(subActionDb.id);
-                }
+                if (subActionDb?.bag.registeredActions)
+                    this.resume(subActionDb.id); // no runLocal: no need to recheck registration and filter
             }
         );
 
         await actionDb!.save();
+        return actionDb;
     }
 
     /**

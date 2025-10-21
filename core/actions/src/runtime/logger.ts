@@ -75,7 +75,9 @@ class MongoTransporter extends Transport {
         if (!ActionRuntime.activeRuntime.LogModel) return;
         const log = new ActionRuntime.activeRuntime.LogModel({
             ...info,
-            filter: ActionRuntime.activeRuntime.actionFilter,
+            filter:
+                ActionRuntime.activeRuntime.workers[0]?.filter ??
+                ActionRuntime.activeRuntime.actionFilter,
         });
         return log.save().finally(next);
     }
