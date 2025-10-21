@@ -1,5 +1,17 @@
 # @wbce/orbits-core
 
+## 0.3.0
+
+### Minor Changes
+
+- 789b86e: Add ResoleInputsAction; Improve cli run/watch experience
+
+### Patch Changes
+
+- b9ea1a4: Fix Promise.all support in Workflow
+- Updated dependencies [789b86e]
+    - @orbi-ts/services@0.2.0
+
 ## 0.2.3
 
 ### Patch Changes

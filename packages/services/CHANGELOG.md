@@ -1,5 +1,11 @@
 # @orbi-ts/services
 
+## 0.2.0
+
+### Minor Changes
+
+- 789b86e: Add ResoleInputsAction; Improve cli run/watch experience
+
 ## 0.1.2
 
 ### Patch Changes
