@@ -248,17 +248,15 @@ export class CRUD {
 
         // pause children that are workflows
         // get registered actions and for each check if it has registered actions meaning it is a workflow
-        (actionDb.bag as Workflow['IBag'])?.registeredActions?.forEach(
-            async (subAction) => {
-                const subActionDb =
-                    await ActionRuntime.activeRuntime.ActionModel.findById(
-                        subAction._id
-                    );
-                if (subActionDb?.bag.registeredActions) {
-                    this.pause(subActionDb.id, duration);
-                }
-            }
-        );
+        for (const subAction of (actionDb.bag as Workflow['IBag'])
+            ?.registeredActions ?? []) {
+            const subActionDb =
+                await ActionRuntime.activeRuntime.ActionModel.findById(
+                    subAction._id
+                );
+            if (subActionDb?.bag.registeredActions)
+                this.pause(subActionDb.id, duration);
+        }
 
         actionDb.cronActivity.nextActivity = nextActivity;
         // TODO: rework core to pause a workflow
@@ -294,13 +292,11 @@ export class CRUD {
         // resume children that are workflows
         // get registered actions and for each check if it has registered actions meaning it is a workflow
         // await to 'resume' in order
-        (actionDb.bag as Workflow['IBag'])?.registeredActions?.forEach(
-            async (subAction) => {
-                const subActionDb = await this.findActionById(subAction._id);
-                if (subActionDb?.bag.registeredActions)
-                    this.resume(subActionDb.id); // no runLocal: no need to recheck registration and filter
-            }
-        );
+        for (const subAction of (actionDb.bag as Workflow['IBag'])
+            ?.registeredActions ?? []) {
+            const subActionDb = await this.findActionById(subAction._id);
+            if (subActionDb?.bag.registeredActions) this.resume(subActionDb.id); // no runLocal: no need to recheck registration and filter
+        }
 
         await actionDb!.save();
         return actionDb;
