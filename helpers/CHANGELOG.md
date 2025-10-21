@@ -1,5 +1,18 @@
 # @wbce/orbits-fuel
 
+## 0.2.0
+
+### Minor Changes
+
+- 789b86e: Add ResoleInputsAction; Improve cli run/watch experience
+
+### Patch Changes
+
+- Updated dependencies [789b86e]
+- Updated dependencies [b9ea1a4]
+    - @orbi-ts/services@0.2.0
+    - @orbi-ts/core@0.3.0
+
 ## 0.1.3
 
 ### Patch Changes
