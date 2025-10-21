@@ -58,10 +58,10 @@ const setUpCommands = (commanderCmd: Command, cmds: Cmd[]) => {
                 isArray,
             }) => {
                 const option = new Option(
-                    `-${short}, --${full}${typeof dflt.val != 'boolean' ? ` <${full}${isArray ? '...' : ''}>` : ''}`,
+                    `-${short}, --${full}${!dflt || typeof dflt.val != 'boolean' ? ` <${full}${isArray ? '...' : ''}>` : ''}`,
                     descr
                 );
-                option.default(dflt.val, dflt.descr);
+                if (dflt) option.default(dflt.val, dflt.descr);
                 if (parser) option.argParser(parser);
                 if (conflict) option.conflicts(conflict);
                 if (group) cmd.optionsGroup(group);

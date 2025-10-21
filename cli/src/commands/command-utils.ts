@@ -5,7 +5,7 @@ export type CmdOpt = {
     short: string;
     full: string;
     descr: string;
-    dflt: { val: any; descr?: string };
+    dflt?: { val: any; descr?: string };
     group?: string;
     implies?: Record<string, any>;
     choices?: string[];
