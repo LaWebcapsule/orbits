@@ -292,7 +292,7 @@ This shows evidence that:
 ### Run the Script
 
 ```bash
-export ORBITS_MONGO__URL="your-mongo-cluster"
+export ORBITS_DB__MONGO__URL="your-mongo-cluster"
 npx tsx src/orbits/orbi.ts
 ```
 
@@ -318,7 +318,7 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
 Then run:
 
 ```bash
-export ORBITS_MONGO__URL="your-mongo-cluster"
+export ORBITS_DB__MONGO__URL="your-mongo-cluster"
 npx tsx src/orbits/orbi.ts
 ```
 
