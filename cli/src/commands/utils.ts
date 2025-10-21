@@ -93,9 +93,10 @@ export const setUpRuntime = async (opts?: {
                 : DEFAULT_ACTIONS_FILE
         );
 
-    const actionsFiles = opts?.actionsFiles?.length
-        ? opts?.actionsFiles
-        : [defaultActionsFile];
+    const actionsFiles =
+        Array.isArray(opts?.actionsFiles) && opts.actionsFiles.length > 0
+            ? opts.actionsFiles
+            : [defaultActionsFile];
 
     const importActionsFilesPromises = actionsFiles.map(async (file) => {
         const actionPath = !path.isAbsolute(file)
