@@ -88,7 +88,7 @@ export const setUpRuntime = async (opts?: {
         path.join(
             __dirname,
             '../../',
-            path.extname(__filename) === 'js'
+            path.extname(__filename) === '.js'
                 ? DEFAULT_ACTIONS_FILE.replace('.ts', '.js')
                 : DEFAULT_ACTIONS_FILE
         );
