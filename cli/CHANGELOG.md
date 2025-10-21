@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- 789b86e: Add ResoleInputsAction; Improve cli run/watch experience
+- 789b86e: Add ResoleInputsAction; improve cli run/watch experience
 
 ### Patch Changes
 
