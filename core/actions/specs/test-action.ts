@@ -249,12 +249,24 @@ export class WorkflowWithDynamicDefinition extends Workflow {
 }
 
 export class WorkflowWithRepeat extends Workflow {
+
+    declare IBag: Workflow['IBag'] & {
+        x: number;
+    };
+
+    declare IResult: number;
+
+    async init(){
+        if(!Number.isInteger(this.bag.x)){
+            this.bag.x = 0
+        }
+    }
+
     async define() {
-        let i = 0;
         await this.repeatDo(
             'repeatSucces',
             () => {
-                i++;
+                this.bag.x ++
                 return Promise.resolve();
             },
             {
@@ -267,7 +279,7 @@ export class WorkflowWithRepeat extends Workflow {
             await this.repeatDo(
                 'repeatOnFailure',
                 () => {
-                    i++;
+                    this.bag.x ++
                     return Promise.reject();
                 },
                 {
@@ -276,7 +288,7 @@ export class WorkflowWithRepeat extends Workflow {
                 }
             );
         } catch (err) {}
-        return i;
+        return this.bag.x;
     }
 }
 

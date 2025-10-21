@@ -886,7 +886,7 @@ export class Action {
         if (!Object.keys(filter).length) {
             filter = undefined;
         }
-        this.runtime.logger.error(err.message, {
+        this.runtime.logger.error(err?.message || String(err) || '!!--.--!!', {
             actionRef: this.dbDoc.actionRef,
             actionId: this.dbDoc._id.toString(),
             filter: this.dbDoc.filter,
