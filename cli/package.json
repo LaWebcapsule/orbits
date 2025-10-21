@@ -18,13 +18,17 @@
     },
     "dependencies": {
         "@orbi-ts/core": "workspace:^",
+        "@orbi-ts/fuel": "workspace:^",
         "@orbi-ts/services": "workspace:^",
+        "ansi-styles": "^6.2.3",
         "blessed": "^0.1.81",
         "colors": "^1.4.0",
         "commander": "^14.0.0",
         "copy-paste": "^2.2.0",
         "find-up-simple": "^1.0.1",
         "mongoose": "^8.17.0",
+        "string-width": "^8.1.0",
+        "strip-ansi": "^7.1.2",
         "winston": "catalog:"
     },
     "devDependencies": {

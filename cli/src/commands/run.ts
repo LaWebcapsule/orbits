@@ -4,10 +4,12 @@ import { ChildProcess, fork } from 'child_process';
 import path from 'path';
 import { Cmd, parseArgs } from './command-utils.js';
 import {
+    DEFAULT_ACTIONS_FILE,
     DEFAULT_LOG_FILE,
     exitCodes,
     logError,
     logErrorAndExit,
+    logWarning,
     runCrudCmd,
     setUpRuntime,
 } from './utils.js';
@@ -20,7 +22,7 @@ import {
     databaseLogger,
 } from '@orbi-ts/core';
 import { randomUUID } from 'crypto';
-import { unlinkSync, writeFileSync } from 'fs';
+import { createWriteStream, unlinkSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import winston from 'winston';
 
@@ -118,7 +120,7 @@ const runInBackground = async (
                 opts,
             }),
         ],
-        { stdio: ['ignore', 'ignore', 'pipe', 'ipc'], detached: true }
+        { stdio: ['ignore', 'pipe', 'pipe', 'ipc'], detached: true }
     );
 
     if (!child.pid)
@@ -137,6 +139,10 @@ const runInBackground = async (
     const waitForChildClosed = new Promise<void>((resolve) => {
         resolveCloseChild = resolve;
     });
+
+    // pipe stdout to logfile
+    const logFile = createWriteStream(opts.logFile, { flags: 'a' });
+    child.stdout?.pipe(logFile);
 
     // on child exit, exit with same code as child
     child.on('close', async (code) => {
@@ -173,7 +179,7 @@ const runInBackground = async (
         watchAction(
             actionId,
             0,
-            true,
+            opts.refresh,
             parseFloat(opts.interval),
             opts.simpleViewer,
             true,
@@ -200,7 +206,7 @@ const run = async (
         'run',
         {
             runtimeOpts: {
-                actionsFiles: [opts.actionsFile],
+                actionsFiles: opts.actionsFile ? [opts.actionsFile] : [],
                 filter: { cli: true, cliInstanceUUID },
                 ...(opts.localWorker
                     ? {
@@ -250,7 +256,7 @@ const run = async (
                     watchAction(
                         actionId.toString(),
                         opts.depth,
-                        true,
+                        opts.refresh,
                         parseFloat(opts.interval ?? 1),
                         opts.simpleViewer,
                         true,
@@ -269,10 +275,8 @@ const run = async (
 const processRunCmd = async (actionRef: string, actionArgs: any, opts: any) => {
     // validate opts
     if (!opts.localWorker && opts.clean)
-        console.warn(
-            colors.yellow(
-                `'-c, --clean' only applies when used with '--local-worker' option`
-            )
+        logWarning(
+            `'-c, --clean' only applies when used with '--local-worker' option`
         );
     const cliInstanceUUID = randomUUID();
     const fn = opts.background ? runInBackground : run;
@@ -306,8 +310,7 @@ export const runCmd: Cmd = {
             full: 'actions-file',
             descr:
                 'File describing the actions. ' +
-                `Use ${colors.bold.italic('orbi.ts')} if not provided`,
-            dflt: { val: 'orbi.ts' },
+                `Will look for "${colors.bold.italic(DEFAULT_ACTIONS_FILE)}" if not provided.`,
         },
         {
             short: 'w',

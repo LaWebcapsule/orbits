@@ -30,7 +30,11 @@ export class ActionsViewer {
         renderText: boolean,
         exit: Function = () => {
             process.exit(exitCodes.SUCCESS);
-        }
+        },
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
     ) {
         this.top = id;
         // if output is not a terminal, always use Text rendered
@@ -38,7 +42,7 @@ export class ActionsViewer {
             renderText || !process.stdout.isTTY
                 ? ActionsTextRenderer
                 : ActionsBlessedRenderer
-        )(this.top, shouldRefresh, exit);
+        )(this.top, shouldRefresh, exit, setInputs);
     }
 
     setTopAction(actionId: string) {
@@ -120,6 +124,7 @@ export class ActionsViewer {
             actionId: log.actionId,
             actionRef: log.actionRef,
             message: log.message,
+            err: log.err,
         }));
     }
 

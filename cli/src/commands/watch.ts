@@ -33,10 +33,21 @@ const viewAction = async (
     viewer.refresh();
 };
 
+let lastLogId: string;
 const viewLogs = async (cliInstanceUUID: string, viewer: ActionsViewer) => {
-    const logs = await CRUD.listLogs({ cli: true, cliInstanceUUID });
-    viewer.setLogs(logs);
-    viewer.refresh();
+    const filters = {
+        filter: {
+            cli: true,
+            cliInstanceUUID,
+        },
+        ...(lastLogId ? { _id: { $gt: lastLogId } } : {}),
+    };
+    const logs = await CRUD.listLogs(filters, { expiresAt: 1 });
+    if (logs.length) {
+        lastLogId = logs[logs.length - 1]?._id;
+        viewer.setLogs(logs);
+        viewer.refresh();
+    }
 };
 
 export const watchAction = (
@@ -49,7 +60,15 @@ export const watchAction = (
     exit?: Function,
     cliInstanceUUID?: string
 ): ActionsViewer => {
-    const viewer = new ActionsViewer(actionId, refresh, simpleViewer, exit);
+    const viewer = new ActionsViewer(
+        actionId,
+        refresh,
+        simpleViewer,
+        exit,
+        async (actionId: string, inputs: { [key: string]: any }) => {
+            CRUD.addInputs(actionId, inputs);
+        }
+    );
 
     const tryView = async () => {
         try {
@@ -70,7 +89,7 @@ export const watchAction = (
             viewer.destroy();
             process.exit(exitCodes.SUCCESS);
         }
-        setInterval(tryView, timeInterval * 1000);
+        refresh && setInterval(tryView, timeInterval * 1000);
     })();
 
     return viewer;

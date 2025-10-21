@@ -2,14 +2,99 @@ import blessed, { Widgets } from 'blessed';
 import colors from 'colors';
 import { copy } from 'copy-paste';
 
+import { ActionState } from '@orbi-ts/core';
+import { utils } from '@orbi-ts/services';
+
+import { INPUTS_KEY, InputsDescriptionType } from '@orbi-ts/fuel';
+import stringWidth from 'string-width';
+import stripAnsi from 'strip-ansi';
 import {
     ACTION_STATE_FORMAT,
     generatePrettyActionState,
+    highlight,
+    HIGHLIGHT_CLOSE,
+    HIGHLIGHT_OPEN,
     type ActionsRenderer,
     type ActionsViewerAction,
 } from './utils.js';
 
+type LogType = {
+    level: string;
+    message: string;
+    actionId?: string;
+    actionRef?: string;
+    timestamp?: string;
+    err?: Error;
+};
+
 const SCROLLBAR_STYLE = { style: { bg: 'yellow' }, track: 'grey' };
+
+const listenToChildScroll = (
+    child: Widgets.Node,
+    target: Widgets.BoxElement,
+    callback: () => void
+) => {
+    const handleScroll = (direction: -1 | 1) => {
+        const childBase = target.childBase;
+        target.scroll(direction);
+        // only call callback if there has been some change after scrolling
+        if (childBase != target.childBase) callback();
+    };
+    child.on('wheeldown', () => handleScroll(1));
+    child.on('wheelup', () => handleScroll(-1));
+};
+
+const listenToChildKey = (
+    child: Widgets.Node,
+    target: Widgets.BoxElement,
+    callback: (target: Widgets.BoxElement, key: string) => void
+) => {
+    ['up', 'down', 'left', 'right'].forEach((key) => {
+        child.on(`key ${key}`, () => {
+            callback(target, key);
+        });
+    });
+};
+
+const keyScroll = (
+    elt: blessed.Widgets.BoxElement,
+    direction: string,
+    xMax: number
+): boolean => {
+    const childBase = elt.childBase;
+    switch (direction) {
+        case 'up':
+            elt.scroll(-1);
+            break;
+        case 'down':
+            elt.scroll(1);
+            break;
+        case 'left':
+            if ((elt.left as number) < 0) {
+                (elt.left as number)++;
+                return true;
+            }
+            break;
+        case 'right':
+            if ((elt.width as number) < xMax) {
+                (elt.left as number)--;
+                return true;
+            }
+    }
+    return childBase !== elt.childBase;
+};
+
+const clampWidth = (
+    parentWidth: number,
+    minWidth: number,
+    percentage: number,
+    padding: number = 0
+) => {
+    return Math.min(
+        parentWidth - padding * 2,
+        Math.max(Math.ceil(percentage * parentWidth), minWidth)
+    );
+};
 
 class BoxesWithLoader {
     private FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
@@ -98,6 +183,747 @@ class BoxesWithLoader {
     }
 }
 
+/**
+ * Box with a label.
+ * By default labels are messed up on scroll.
+ *
+ * Layout:
+ * ```
+ * ┌─ <label> ───────────┐
+ * │  ....               │
+ * └─────────────────────┘
+ * ```
+ */
+class BoxWithLabel extends (blessed.box as unknown as {
+    new (opts: Widgets.BoxOptions): Widgets.BoxElement;
+}) {
+    private label: Widgets.TextElement;
+
+    constructor(options: Widgets.BoxOptions) {
+        const { label, parent, top, ...otherOptions } = options;
+        super({
+            parent,
+            top,
+            ...otherOptions,
+        });
+        this.label = blessed.box({
+            parent,
+            top,
+            left: 1,
+            shrink: true,
+            content: ` ${colors.bold.underline(label ?? '')} `,
+        });
+    }
+
+    setTop(top: Widgets.Types.TTopLeft) {
+        this.top = top;
+        this.label.top = top;
+    }
+}
+
+/**
+ * Box that contains actions info.
+ *
+ * Layout:
+ * ```
+ * ┌─────────────────────────┐
+ * │ <ref>           |state| │
+ * │                         │
+ * │ |id ------------------| │
+ * │ |arguments -----------| │
+ * │ |bag -----------------| │
+ * │ |result --------------| │
+ * └─────────────────────────┘
+ * ```
+ */
+class InfoBox extends (blessed.box as unknown as {
+    new (opts: Widgets.BoxOptions): Widgets.BoxElement;
+}) {
+    private actionId?: string;
+    private actions: Map<string, ActionsViewerAction> = new Map();
+
+    private ui: {
+        container: Widgets.BoxElement;
+        state: Widgets.BoxElement;
+        ref: Widgets.BoxElement;
+        id: BoxWithLabel;
+        args: BoxWithLabel;
+        bag: BoxWithLabel;
+        result: BoxWithLabel;
+        inputsBox: InputsBox;
+        inputsButton: Widgets.ButtonElement;
+    };
+
+    constructor(
+        options: Widgets.BoxOptions,
+        render: (args?: any) => void,
+        alert: (msg: string, pos: { x: number; y: number }) => void,
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
+    ) {
+        const { label, parent, top, ...otherOptions } = options;
+        super({
+            parent,
+            top,
+            ...otherOptions,
+        });
+        const container = blessed.box({
+            parent: this,
+            mouse: true,
+            keys: true,
+            alwaysScroll: true,
+            scrollable: true,
+            scrollbar: SCROLLBAR_STYLE,
+            padding: { left: 1 },
+        });
+        const state = blessed.box({
+            parent: container,
+            top: 0,
+            right: 2,
+            border: 'line',
+            style: { bold: true },
+            shrink: true,
+        });
+        const inputsBox = new InputsBox(
+            {
+                parent: this,
+                top: 0,
+                left: 0,
+                width: '100%-2',
+                height: '100%-2',
+                hidden: true,
+                border: { type: 'line' },
+                style: { border: { fg: 'magenta' } },
+                shrink: true,
+            },
+            render,
+            () => {
+                inputsBox.toggle();
+                render();
+            },
+            async (event) => {
+                await setInputs(this.name, event.inputs);
+                alert('Inputs set!', { x: event.x + 3, y: event.y + 1 });
+            }
+        );
+        const inputsButton = blessed.button({
+            parent: container,
+            top: 0,
+            right:
+                (state.right as number) +
+                ACTION_STATE_FORMAT.get(ActionState.IN_PROGRESS)!.full.length +
+                2,
+            content: 'Add inputs',
+            hidden: true,
+            border: 'line',
+            style: { bold: true },
+            shrink: true,
+        });
+        inputsButton.on('click', () => {
+            if (!inputsBox.visible) {
+                inputsBox.toggle();
+                render();
+            }
+        });
+        const ref = blessed.box({
+            top: 1,
+            left: 1,
+            parent: container,
+            style: { fg: 'cyan', bold: true, underline: true },
+            shrink: true,
+        });
+
+        const boxesOptions = {
+            parent: container,
+            padding: 1,
+            border: { type: 'line' as 'line' },
+            width: '100%-2',
+            shrink: true,
+            style: { border: { fg: 'grey' }, fg: 'grey' },
+        };
+        const id = new BoxWithLabel({ ...boxesOptions, label: 'ID', top: 3 });
+        const args = new BoxWithLabel({
+            ...boxesOptions,
+            label: 'Arguments',
+            top: 6,
+        });
+        const bag = new BoxWithLabel({
+            ...boxesOptions,
+            label: 'Bag',
+            top: 10,
+        });
+        const result = new BoxWithLabel({
+            ...boxesOptions,
+            label: 'Result',
+            top: 14,
+        });
+
+        this.ui = {
+            container,
+            state,
+            ref,
+            id,
+            args,
+            bag,
+            result,
+            inputsBox,
+            inputsButton,
+        };
+
+        // Copy content on click
+        Object.entries(this.ui).forEach(([key, box]) => {
+            if (
+                key === 'container' ||
+                key === 'inputsButton' ||
+                key === 'inputsBox'
+            )
+                return;
+            box.on('click', (event) => {
+                copy(box.getContent());
+                alert('Copied!', { x: event.x + 3, y: event.y + 1 });
+            });
+        });
+
+        // needed so that scrolling on children
+        // is registered in the parent
+        this.ui.container.children.forEach((child) => {
+            listenToChildScroll(child, this.ui.container, render);
+            listenToChildKey(
+                child,
+                this.ui.container,
+                (target: Widgets.BoxElement, key: string) => {
+                    if (keyScroll(target, key, 0)) render();
+                }
+            );
+        });
+    }
+
+    setActions(actions: Map<string, ActionsViewerAction>) {
+        this.actions = actions;
+        this.refresh();
+    }
+
+    setActionId(actionId: string) {
+        this.actionId = actionId;
+        // make sure inputs button and box are hidden
+        this.ui.inputsButton.hide();
+        this.ui.inputsBox.hide();
+        this.refresh();
+    }
+
+    refresh() {
+        if (!this.actionId) return;
+
+        const action = this.actions.get(this.actionId)!;
+
+        this.name = this.actionId;
+
+        const { color, full } = ACTION_STATE_FORMAT.get(action.state)!;
+        this.ui.state.setContent(full);
+        this.ui.state.style.fg = color;
+        this.ui.state.style.border.fg = color;
+
+        if (
+            action.arguments?.[INPUTS_KEY] &&
+            action.state === ActionState.IN_PROGRESS
+        ) {
+            this.ui.inputsBox.setInputs(action);
+            this.ui.inputsButton.show();
+        } else {
+            this.ui.inputsButton.hide();
+        }
+
+        this.ui.ref.setContent(action.ref);
+        this.ui.id.setContent(action.id);
+        [
+            { type: 'arguments', elt: this.ui.args, prev: this.ui.id },
+            { type: 'bag', elt: this.ui.bag, prev: this.ui.args },
+            { type: 'result', elt: this.ui.result, prev: this.ui.bag },
+        ].forEach(({ type, elt, prev }) => {
+            elt.setTop((prev.top as number) + prev.getScreenLines().length + 5);
+            elt.setContent(
+                JSON.stringify(
+                    action[type as keyof ActionsViewerAction],
+                    undefined,
+                    '\t'
+                )
+            );
+        });
+    }
+}
+
+class LogsBox extends (blessed.box as unknown as {
+    new (opts: Widgets.BoxOptions): Widgets.BoxElement;
+}) {
+    private actionId?: string;
+
+    private logs: LogType[] = [];
+
+    private ui: {
+        container: Widgets.BoxElement;
+    };
+
+    private selection: {
+        content: string[];
+        origin?: { x: number; y: number };
+        start?: { x: number; y: number };
+        end?: { x: number; y: number };
+        direction?: number;
+    } = {
+        content: [],
+    };
+
+    private renderFn: (args?: any) => void;
+
+    constructor(
+        options: Widgets.BoxOptions,
+        render: (args?: any) => void,
+        alert: (msg: string, pos: { x: number; y: number }) => void
+    ) {
+        const { label, parent, top, ...otherOptions } = options;
+        super({
+            parent,
+            top,
+            ...otherOptions,
+        });
+
+        this.renderFn = render;
+
+        this.ui = {
+            container: blessed.box({
+                parent: this,
+                mouse: true,
+                keys: true,
+                alwaysScroll: true,
+                scrollable: true,
+                scrollbar: SCROLLBAR_STYLE,
+                padding: { left: 1 },
+            }),
+        };
+
+        // start selection
+        this.ui.container.on('mousedown', (data) => {
+            const x = Math.floor(data.x - (this.ui.container.aleft as number));
+            const y = Math.floor(data.y - (this.ui.container.atop as number));
+
+            if (!this.selection.origin) {
+                this.selection.origin = { x, y };
+                return;
+            }
+
+            const prevDirection = this.selection.direction;
+
+            const xDir = Math.sign(x - this.selection.origin.x);
+            const yDir = Math.sign(y - this.selection.origin.y);
+
+            this.selection.direction = yDir === 0 ? xDir : yDir;
+            if (this.selection.direction != prevDirection) {
+                if (this.selection.direction < 0)
+                    this.selection.end = this.selection.origin;
+                else this.selection.start = this.selection.origin;
+            }
+
+            if (this.selection.direction < 0) this.selection.start = { x, y };
+            else this.selection.end = { x, y };
+
+            this.refreshSelection();
+        });
+
+        // end selection and copy
+        this.ui.container.on('mouseup', async (event) => {
+            if (this.selection.start && this.selection.end) {
+                copy(this.selection.content.join('\n'));
+                alert('Copied!', {
+                    x: event.x + this.selection.direction! * 3,
+                    y: event.y + this.selection.direction! * 1,
+                });
+                // reset selection
+                this.selection = { content: [] };
+                this.refreshSelection(true);
+            }
+        });
+    }
+
+    setActionId(actionId?: string) {
+        this.actionId = actionId;
+        this.refresh();
+    }
+
+    setLogs(logs: LogType[]) {
+        this.logs.push(...logs);
+        this.refresh();
+    }
+
+    refresh() {
+        const filteredLogs = this.logs.filter(
+            ({ actionId }) => !this.actionId || actionId === this.actionId
+        );
+
+        this.ui.container.content = filteredLogs
+            .map((log) => {
+                let color;
+                let { timestamp, message, level, actionRef, actionId, err } =
+                    log;
+                switch (level) {
+                    case 'error':
+                        color = colors.red;
+                        break;
+                    case 'warn':
+                        color = colors.yellow;
+                        break;
+                    case 'info':
+                        color = colors.white;
+                        break;
+                    default:
+                        color = colors.grey;
+                }
+                if (err) message = `${err.stack}`;
+                let prefix = timestamp ?? '';
+                if (actionRef && actionId)
+                    prefix += `${prefix ? ' - ' : ''}${colors.bold(actionRef)} (${actionId})`;
+                if (prefix) prefix += ': ';
+                return color(prefix + message);
+            })
+            .join('\n');
+
+        if (this.visible) {
+            // auto scroll if scroll was at the bottom
+            if (this.ui.container.getScrollPerc() === 100)
+                this.ui.container.setScrollPerc(100);
+        }
+
+        this.refreshSelection();
+    }
+
+    private refreshSelection(reset: boolean = false) {
+        const visibleLines = this.ui.container.getScreenLines();
+        if (!visibleLines.length || (!this.selection.origin && !reset)) return;
+
+        const totalPanelHeight = this.ui.container.getScrollHeight();
+        const visiblePanelHeight = this.ui.container.height as number;
+        const scrollOffset = Math.round(
+            (1 / 100) *
+                (totalPanelHeight - visiblePanelHeight) *
+                this.ui.container.getScrollPerc()
+        );
+
+        this.selection.content = [];
+        const highlightedContent = visibleLines.map((line, i) => {
+            const idx = i - scrollOffset;
+            // strip existing tags
+            line = line
+                .replace(HIGHLIGHT_OPEN, '')
+                .replace(HIGHLIGHT_CLOSE, ''); // at most only one occurence per line
+            if (!this.selection.start || !this.selection.end) return line;
+            if (idx < this.selection.start.y || idx > this.selection.end.y)
+                return line;
+            let startCol = 0;
+            let endCol = stringWidth(line);
+            if (idx === this.selection.start.y)
+                startCol = this.selection.start.x;
+            if (idx === this.selection.end.y) endCol = this.selection.end.x;
+            this.selection.content.push(
+                stripAnsi(line).slice(startCol, endCol)
+            );
+            return highlight(line, startCol, endCol);
+        });
+        this.ui.container.setContent(highlightedContent.join('\n'));
+        this.renderFn();
+    }
+}
+
+/**
+ * ```
+ * ┌─────────────────────────┐
+ * │                 |CLOSE| │
+ * │                         │
+ * │ ┌─ [key1] ────────────┐ │
+ * │ │  ....               │ │
+ * │ └─────────────────────┘ │
+ * │ ┌─ [key2] ────────────┐ │
+ * │ │  ....               │ │
+ * │ └─────────────────────┘ │
+ * │ ....                    │
+ * │                         │
+ * │ |SET|                   │
+ * └─────────────────────────┘
+ * ```
+ */
+class InputsBox extends (blessed.box as unknown as {
+    new (opts: Widgets.BoxOptions): Widgets.BoxElement;
+}) {
+    private ui: {
+        inputsContainer: Widgets.BoxElement;
+        inputs: Widgets.BoxElement[];
+        dropdown: Widgets.ListElement;
+        closeButton: Widgets.ButtonElement;
+        submitButton: Widgets.ButtonElement;
+    };
+
+    private focusedInput: Widgets.TextboxElement | null = null;
+
+    private action: ActionsViewerAction | null = null;
+
+    private defaultInputs: {
+        [key: string]: any;
+    } = {};
+
+    private inputs: {
+        [key: string]: any;
+    } = {};
+
+    private inputsMap: {
+        [key: string]: Widgets.TextboxElement;
+    } = {};
+
+    private renderFn: (args?: any) => void;
+
+    private INPUT_FOCUSED_COLOR = 'cyan';
+    private INPUT_DEFAULT_COLOR = 'grey';
+
+    alignDropdown() {
+        if (!this.focusedInput) return;
+        const totalContainerHeight = this.ui.inputsContainer.getScrollHeight();
+        const visibleContainerHeight = this.ui.inputsContainer.height as number;
+        const scrollOffset =
+            (1 / 100) *
+            (totalContainerHeight - visibleContainerHeight) *
+            this.ui.inputsContainer.getScrollPerc();
+        this.ui.dropdown.top =
+            (this.focusedInput.top as number) - scrollOffset + 2;
+    }
+
+    constructor(
+        options: Widgets.BoxOptions,
+        render: (args?: any) => void,
+        onClose: () => void,
+        onSubmit: (event: any) => void
+    ) {
+        const { label, parent, top, ...otherOptions } = options;
+        super({
+            parent,
+            top,
+            ...otherOptions,
+        });
+
+        this.renderFn = render;
+
+        const inputsContainer = blessed.box({
+            parent: this,
+            top: 1,
+            left: 0,
+            bottom: 4,
+            right: 0,
+            scrollable: true,
+            alwaysScroll: true,
+            mouse: true,
+            focusable: true,
+            keys: true,
+            scrollbar: SCROLLBAR_STYLE,
+        });
+
+        const dropdown = blessed.list({
+            name: 'dropdown',
+            parent: this,
+            hidden: true,
+            keys: true,
+            mouse: true,
+            style: { selected: { bg: 'magenta' }, bg: 'grey' },
+        });
+
+        dropdown.on('select', (item, idx) => {
+            if (!this.focusedInput) return;
+
+            const key = this.focusedInput.get('key', '');
+            const value = this.focusedInput.get('values', [])[idx];
+
+            this.inputs[key] = value;
+            this.focusedInput.setValue(`${value}`);
+
+            // remove border that was added on focus
+            // cannot use blur as the input loses focus when the dropdown has it
+            this.focusedInput.style.border.fg = this.INPUT_DEFAULT_COLOR;
+
+            this.focus(); // blur everything
+            dropdown.hide();
+            render();
+        });
+
+        inputsContainer.on('scroll', () => {
+            if (dropdown.visible) {
+                this.alignDropdown();
+                render();
+            }
+        });
+
+        const closeButton = blessed.button({
+            parent: this,
+            top: 0,
+            right: 1,
+            content: 'Close',
+            underline: 'grey',
+            shrink: true,
+            mouse: true,
+        });
+
+        closeButton.on('click', onClose);
+
+        const submitButton = blessed.button({
+            parent: this,
+            left: 1,
+            bottom: 0,
+            border: 'line',
+            keys: true,
+            mouse: true,
+            focusable: true,
+            content: 'Add inputs',
+            shrink: true,
+        });
+
+        submitButton.setIndex(0);
+
+        submitButton.on('click', (event: any) => {
+            onSubmit({ ...event, inputs: this.inputs });
+        });
+
+        this.ui = {
+            inputsContainer,
+            dropdown,
+            inputs: [],
+            closeButton,
+            submitButton,
+        };
+    }
+
+    setInputs(action: ActionsViewerAction) {
+        const inputsDesc = Object.entries(
+            action.arguments[INPUTS_KEY] as InputsDescriptionType
+        ).filter(([, desc]) => desc.type === 'bag');
+
+        const defaultChanged = inputsDesc.some(
+            ([key, _]) =>
+                action.bag[INPUTS_KEY][key] !== this.defaultInputs[key]
+        );
+
+        // if already set, skip
+        if (this.action?.id === action.id && !defaultChanged) return;
+
+        let refresh = false;
+        // clear if it a new action
+        if (this.action?.id !== action.id) {
+            // clear children and reset scroll
+            for (const child of [...this.ui.inputsContainer.children])
+                child.destroy();
+            this.ui.inputsContainer.setScroll(0);
+            this.inputs = {};
+            this.inputsMap = {};
+            this.action = action;
+        } else {
+            refresh = true;
+        }
+
+        if (inputsDesc.length === 0) {
+            blessed.box({
+                parent: this.ui.inputsContainer,
+                top: 1,
+                left: 1,
+                right: 1,
+                content: 'No inputs',
+            });
+            return;
+        }
+
+        inputsDesc.forEach(([key, { options }], index) => {
+            // refresh only
+            if (refresh) {
+                const input = this.inputsMap[key];
+                const value = action.bag[INPUTS_KEY]?.[key];
+                if (value != null) {
+                    this.inputs[key] = value;
+                    this.defaultInputs[key] = value;
+                    input.setValue(`${value}`);
+                }
+                return;
+            }
+
+            const hasOptions = Array.isArray(options);
+
+            const input: blessed.Widgets.TextboxElement = blessed.textbox({
+                parent: this.ui.inputsContainer,
+                top: 1 + index * 4,
+                left: 1,
+                right: 1,
+                height: 3,
+                border: 'line',
+                keys: true,
+                mouse: true,
+                scrollable: false,
+                shrink: true,
+                style: { border: { fg: this.INPUT_DEFAULT_COLOR } },
+            });
+
+            this.inputsMap[key] = input;
+
+            blessed.text({
+                parent: this.ui.inputsContainer,
+                top: 1 + index * 4,
+                left: 2,
+                height: 1,
+                content: ` ${key} `,
+            });
+
+            const value = action.bag[INPUTS_KEY]?.[key];
+            if (value != null) {
+                this.inputs[key] = value;
+                this.defaultInputs[key] = value;
+                input.setValue(`${value}`);
+            } else if (this.inputs[key]) {
+                input.setValue(`${this.inputs[key]}`);
+            }
+
+            input.set('key', key);
+            input.set('values', options ?? []);
+
+            listenToChildScroll(input, this.ui.inputsContainer, () => {
+                this.renderFn();
+            });
+
+            if (hasOptions) {
+                input.on('focus', () => {
+                    input.style.border.fg = this.INPUT_FOCUSED_COLOR;
+                    this.focusedInput = input;
+                    this.ui.dropdown.setItems(options.map(utils.wrapInQuotes));
+                    this.ui.dropdown.left = (input.left as number) + 1;
+                    this.ui.dropdown.width = (input.width as number) - 2; // 2 for borders
+                    this.ui.dropdown.height = Math.min(options.length, 5);
+                    // reset scroll and select
+                    this.alignDropdown();
+                    this.ui.dropdown.resetScroll();
+                    this.ui.dropdown.select(
+                        options.findIndex((opt) => opt === this.inputs[key])
+                    );
+                    this.ui.dropdown.focus();
+                    this.ui.dropdown.show();
+                    this.renderFn();
+                });
+            } else {
+                input.on('focus', () => {
+                    input.style.border.fg = this.INPUT_FOCUSED_COLOR;
+                    input.readInput();
+                });
+                input.on('blur', () => {
+                    input.style.border.fg = this.INPUT_DEFAULT_COLOR;
+                    const value = input.getValue();
+                    if (value !== '') this.inputs[key] = value;
+                    this.screen.program.hideCursor();
+                });
+            }
+        });
+    }
+}
+
 export class ActionsBlessedRenderer implements ActionsRenderer {
     private screen!: Widgets.Screen;
 
@@ -110,52 +936,18 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
 
     /**
      * Box that contains actions info.
-     *
-     * Layout:
-     * ```
-     * ┌─────────────────────────┐
-     * │ <ref>        |stateBox| │
-     * │                         │
-     * │ |idBox ---------------| │
-     * │ |argumentsBox --------| │
-     * │ |resultBox -----------| │
-     * └─────────────────────────┘
-     * ```
-     *
-     * This should give:
-     * ```
-     * ┌─────────────────────────┐
-     * │ ActionRef       |STATE| │
-     * │                         │
-     * │ ┌─ ID ────────────────┐ │
-     * │ │  ....               │ │
-     * │ └─────────────────────┘ │
-     * │ ┌─ Arguments ─────────┐ │
-     * │ │  ....               │ │
-     * │ └─────────────────────┘ │
-     * │ ┌─ Result ────────────┐ │
-     * │ │  ....               │ │
-     * │ └─────────────────────┘ │
-     * └─────────────────────────┘
-     * ```
      */
-    private infoBox!: Widgets.BoxElement;
-    private stateBox!: Widgets.TextElement;
-    private refBox!: Widgets.TextElement;
-    private idBox!: Widgets.TextElement;
-    private argumentsBox!: Widgets.TextElement;
-    private bagBox!: Widgets.TextElement;
-    private resultBox!: Widgets.TextElement;
-    private idLabelBox!: Widgets.TextElement;
-    private argumentsLabelBox!: Widgets.TextElement;
-    private bagLabelBox!: Widgets.TextElement;
-    private resultLabelBox!: Widgets.TextElement;
-
-    private alertBox!: Widgets.TextElement;
-
-    private logsBox!: Widgets.BoxElement;
-    private logsBoxContainer!: Widgets.BoxElement;
+    private infoBox!: InfoBox;
+    /**
+     * Box that contains logs.
+     */
+    private logsBox!: LogsBox;
     private logsButton!: Widgets.TextElement;
+
+    /**
+     * Box to display alerts.
+     */
+    private alertBox!: Widgets.TextElement;
 
     private borders: Map<string, Widgets.BoxElement> = new Map();
 
@@ -201,12 +993,16 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     constructor(
         actionId: string,
         shouldRefresh: boolean = true,
-        exit: Function = () => process.exit()
+        exit: Function = () => process.exit(),
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
     ) {
         this.topAction = actionId;
         this.shouldRefresh = shouldRefresh;
         this.exit = exit;
-        this.setUp();
+        this.setUp(setInputs);
     }
 
     setTopAction(actionId: string) {
@@ -219,108 +1015,24 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
 
     setActions(actions: Map<string, ActionsViewerAction>) {
         this.actions = actions;
+        this.infoBox.setActions(actions);
     }
 
-    setLogs(
-        logs: {
-            level: string;
-            message: string;
-            actionId?: string;
-            actionRef?: string;
-            timestamp?: string;
-        }[]
-    ) {
-        this.logsBoxContainer.content = logs
-            .map((log) => {
-                let color;
-                switch (log.level) {
-                    case 'error':
-                        color = colors.red;
-                        break;
-                    case 'warn':
-                        color = colors.yellow;
-                        break;
-                    case 'info':
-                        color = colors.white;
-                        break;
-                    default:
-                        color = colors.grey.italic;
-                }
-                if (log.timestamp && log.actionRef && log.actionId)
-                    return color(
-                        `${log.timestamp} - ${colors.bold(log.actionRef)} (${colors.italic(log.actionId)}): ${log.message}`
-                    );
-
-                if (log.timestamp)
-                    return color(`${log.timestamp} - ${log.message}`);
-
-                return color(log.message);
-            })
-            .join('\n');
-
-        if (this.logsBox.visible) {
-            // auto scroll if scroll was at the bottom
-            if (this.logsBoxContainer.getScrollPerc() === 100)
-                this.logsBoxContainer.setScrollPerc(100);
-            this.render('new logs');
-        }
+    setLogs(logs: LogType[]) {
+        this.logsBox.setLogs(logs);
     }
 
     renders = 0;
 
     private render(from: string) {
-        this.debug(`${++this.renders} — render from q${from}`);
+        this.debug(`${++this.renders} — render from ${from}`);
         this.borders.forEach((border) => border.setFront());
 
-        if (this.shouldRefresh) {
+        if (this.shouldRefresh)
             this.loader.render(() => {
                 this.screen.render();
             });
-        } else {
-            this.screen.render();
-        }
-    }
-
-    private listenToChildScroll(
-        child: blessed.Widgets.Node,
-        target: blessed.Widgets.BoxElement
-    ) {
-        child.on('wheeldown', () => {
-            target.scroll(1);
-            this.render('listenToChildScroll wheeldown');
-        });
-        child.on('wheelup', () => {
-            target.scroll(-1);
-            this.render('listenToChildScroll wheelup');
-        });
-    }
-
-    private keyScroll(elt: blessed.Widgets.BoxElement, direction: string) {
-        switch (direction) {
-            case 'up':
-                elt.scroll(-1);
-                break;
-            case 'down':
-                elt.scroll(1);
-                break;
-            case 'left':
-                if ((elt.left as number) < 0) (elt.left as number)++;
-                break;
-            case 'right':
-                if ((elt.width as number) < this.xMax) (elt.left as number)--;
-        }
-        this.render('keyScroll');
-    }
-
-    private listenToChildKey(
-        child: blessed.Widgets.Node,
-        target: blessed.Widgets.BoxElement
-    ) {
-        ['up', 'down', 'left', 'right'].forEach((key) => {
-            child.on(`key ${key}`, () => {
-                this.keyScroll(target, key);
-            });
-        });
+        else this.screen.render();
     }
 
     debug(...msg: any) {
@@ -346,15 +1058,16 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
     /**
      * Setup Screen and boxes.
      */
-    private setUp() {
+    private setUp(
+        setInputs: (
+            actionId: string,
+            inputs: { [key: string]: any }
+        ) => Promise<void>
+    ) {
         this.screen = blessed.screen({
             fastCSR: true,
-            // useBCE: true,
             debug: true, // use F12 to print debug messages
-            // warnings: true,
-            border: {
-                type: 'line',
-            },
+            border: { type: 'line' },
             fullUnicode: true,
             warnings: false,
         });
@@ -415,133 +1128,22 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
 
         // info box
 
-        this.infoBox = blessed.box({
-            parent: this.screen,
-            top: 1,
-            right: 2,
-            bottom: 1,
-            width: this.clampWidth(70, 0.5, 2),
-            hidden: true,
-            border: { type: 'line' },
-            style: { border: { fg: 'magenta' } },
-            shrink: true,
-        });
-
-        const infoBoxContainer = blessed.box({
-            parent: this.infoBox,
-            mouse: true,
-            keys: true,
-            alwaysScroll: true,
-            scrollable: true,
-            scrollbar: SCROLLBAR_STYLE,
-            padding: { left: 1 },
-        });
-
-        const options = {
-            padding: 1,
-            border: { type: 'line' as 'line' },
-            width: '100%-2',
-            shrink: true,
-            style: { border: { fg: 'grey' }, fg: 'grey' },
-        };
-
-        this.stateBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 0,
-            right: 2,
-            border: 'line',
-            style: { bold: true },
-            shrink: true,
-        });
-
-        this.refBox = blessed.text({
-            top: 1,
-            left: 1,
-            parent: infoBoxContainer,
-            style: { fg: 'cyan', bold: true, underline: true },
-            shrink: true,
-        });
-
-        this.idBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 3,
-            ...options,
-        });
-
-        // specific box for id label because
-        // label placement is broken on scroll for some reason
-        this.idLabelBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 3,
-            left: 1,
-            content: ` ${colors.bold.underline('ID')} `,
-        });
-
-        this.argumentsBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 6,
-            ...options,
-        });
-
-        // specific box for arguments label
-        this.argumentsLabelBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 6,
-            left: 1,
-            content: ` ${colors.bold.underline('Arguments')} `,
-        });
-
-        this.bagBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 10,
-            ...options,
-        });
-
-        // specific box for arguments label
-        this.bagLabelBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 10,
-            left: 1,
-            content: ` ${colors.bold.underline('Bag')} `,
-        });
-
-        this.resultBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 14,
-            ...options,
-        });
-
-        // specific box for result label
-        this.resultLabelBox = blessed.text({
-            parent: infoBoxContainer,
-            top: 14,
-            left: 1,
-            content: ` ${colors.bold.underline('Result')} `,
-        });
-
-        // Copy content on click
-        ['ref', 'state', 'id', 'arguments', 'result'].forEach((type) => {
-            (this[`${type}Box` as keyof this] as Widgets.BoxElement).on(
-                'click',
-                (event) => {
-                    copy(
-                        (
-                            this[
-                                `${type}Box` as keyof this
-                            ] as Widgets.BoxElement
-                        ).getContent()
-                    );
-                    this.alert('Copied!', { x: event.x + 3, y: event.y + 1 });
-                }
-            );
-        });
-
-        // needed so that scrolling on children
-        // is registered in the parent
-        infoBoxContainer.children.forEach((child) => {
-            this.listenToChildScroll(child, infoBoxContainer);
-            this.listenToChildKey(child, infoBoxContainer);
-        });
+        this.infoBox = new InfoBox(
+            {
+                parent: this.screen,
+                top: 1,
+                right: 2,
+                bottom: 1,
+                width: this.clampWidth(70, 0.5, 2),
+                hidden: true,
+                border: { type: 'line' },
+                style: { border: { fg: 'magenta' } },
+                shrink: true,
+            },
+            this.render.bind(this),
+            this.alert.bind(this),
+            setInputs
+        );
 
         // Alert box
 
@@ -557,35 +1159,27 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
 
         // Logs box
 
-        this.logsBox = blessed.box({
-            parent: this.screen,
-            top: 1,
-            right: 2,
-            bottom: 1,
-            width: this.clampWidth(70, 0.5, 2),
-            hidden: true,
-            border: { type: 'line' },
-            style: { border: { fg: 'magenta' } },
-            shrink: true,
-        });
-
-        this.logsBoxContainer = blessed.box({
-            parent: this.logsBox,
-            mouse: true,
-            keys: true,
-            alwaysScroll: true,
-            scrollable: true,
-            scrollbar: SCROLLBAR_STYLE,
-            padding: { left: 1 },
-        });
-
+        this.logsBox = new LogsBox(
+            {
+                parent: this.screen,
+                top: 1,
+                right: 2,
+                bottom: 1,
+                width: this.clampWidth(70, 0.5, 2),
+                hidden: true,
+                border: { type: 'line' },
+                style: { border: { fg: 'magenta' } },
+                shrink: true,
+            },
+            this.render.bind(this),
+            this.alert.bind(this)
+        );
         this.logsButton = blessed.text({
             parent: this.screen,
             right: 1,
             bottom: 1,
-            content: ` ${colors.italic.underline('Show logs')} `,
+            content: ` ${colors.underline('Show logs')} `,
         });
-
         this.logsButton.on('click', () => this.toggleLogs());
 
         // Quit on Escape, q, or Control-C.
@@ -594,25 +1188,22 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             return this.exit();
         });
 
-        this.mainBox.on('key right', () => {
-            this.keyScroll(this.mainBox, 'right');
-        });
-
-        this.mainBox.on('key left', () => {
-            this.keyScroll(this.mainBox, 'left');
+        ['left', 'right'].forEach((direction) => {
+            this.mainBox.on(`key ${direction}`, () => {
+                if (keyScroll(this.mainBox, direction, this.xMax))
+                    this.render('from key scroll');
+            });
         });
 
         // hide infoBox and logsBox on click outside
         this.mainBox.on('click', () => {
-            if (this.infoBox.visible) {
-                this.infoBox.toggle();
-                this.render('mainbox click');
-            }
+            if (this.infoBox.visible) this.toggleInfo();
             if (this.logsBox.visible) this.toggleLogs();
+            this.logsBox.setActionId(); // display all logs
         });
     }
 
-    private alert(msg: string, pos: any) {
+    private alert(msg: string, pos: { x: number; y: number }) {
         this.alertBox.left = pos.x;
         this.alertBox.top = pos.y;
 
@@ -622,43 +1213,12 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.alertBox.setFront();
         this.render('alert');
 
+        // toggle off after 2s
         setTimeout(() => {
-            // toggle off
             if (this.alertBox.visible) this.alertBox.toggle();
             this.alertBox.setContent('');
             this.render('alert interval');
         }, 2000);
-    }
-
-    private setInfoBoxContent(action: ActionsViewerAction) {
-        this.infoBox.name = action.id;
-
-        const { color, full } = ACTION_STATE_FORMAT.get(action.state)!;
-        this.stateBox.setContent(full);
-        this.stateBox.style.fg = color;
-        this.stateBox.style.border.fg = color;
-
-        this.refBox.setContent(action.ref);
-        this.idBox.setContent(action.id);
-        (
-            [
-                ['arguments', this.idBox],
-                ['bag', this.argumentsBox],
-                ['result', this.bagBox],
-            ] as [string, blessed.Widgets.TextElement][]
-        ).forEach(([type, prevElt]) => {
-            (this[`${type}LabelBox` as keyof this] as Widgets.BoxElement).top =
-                (prevElt.top as number) + prevElt.getScreenLines().length + 5;
-            (this[`${type}Box` as keyof this] as Widgets.BoxElement).top =
-                (prevElt.top as number) + prevElt.getScreenLines().length + 5;
-            (this[`${type}Box` as keyof this] as Widgets.BoxElement).setContent(
-                JSON.stringify(
-                    action[type as keyof ActionsViewerAction],
-                    undefined,
-                    '\t'
-                )
-            );
-        });
     }
 
     /**
@@ -687,19 +1247,25 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
                 style: { border: { fg: 'grey' } },
             });
             this.mainBox.append(actionBox);
-            this.listenToChildScroll(actionBox, this.mainBox);
-            this.listenToChildKey(actionBox, this.mainBox);
+            listenToChildScroll(actionBox, this.mainBox, () =>
+                this.render('from action box scroll')
+            );
+            listenToChildKey(
+                actionBox,
+                this.mainBox,
+                (target: Widgets.BoxElement, key: string) => {
+                    if (keyScroll(target, key, 0))
+                        this.render('from action box key scroll');
+                }
+            );
             this.boxes.set(action.id, actionBox as Widgets.BoxElement);
 
             actionBox.on('click', () => {
-                if (
-                    !this.infoBox.visible ||
-                    this.infoBox.name == actionBox.name
-                )
-                    this.infoBox.toggle();
-
-                this.setInfoBoxContent(this.actions.get(action.id)!);
-                this.render('actionBox ' + actionBox.name);
+                if (!this.infoBox.visible || this.infoBox.name == action.id)
+                    this.toggleInfo(false);
+                this.infoBox.setActionId(action.id);
+                this.logsBox.setActionId(action.id);
+                this.render('actionBox ' + action.id);
             });
         }
 
@@ -711,20 +1277,9 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             actionBox.style.border.fg = 'white';
         else actionBox.style.border.fg = 'grey';
 
-        // let actionRefColor = colors.bold;
-        // if (!action.children?.length && action.state === ActionState.ERROR) {
-        //     actionBox.style.border.fg = 'red';
-        //     actionRefColor = actionRefColor.red;
-        // }
-
         actionBox.setContent(
             ` ${colors.bold(action.ref)} ${generatePrettyActionState(action.state, this.shouldRefresh, this.loader)}`
         );
-
-        // if infoBox is open, update it
-        if (this.infoBox.visible && this.infoBox.name == action.id) {
-            this.setInfoBoxContent(action);
-        }
 
         return actionBox;
     }
@@ -832,10 +1387,15 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         this.render('refresh');
     }
 
-    private toggleLogs() {
-        this.logsButton.content = ` ${colors.italic.underline(`${this.logsBox.visible ? 'Show' : 'Hide'} logs`)} `;
+    private toggleInfo(render: boolean = true) {
+        this.infoBox.toggle();
+        render && this.render('toggleInfo');
+    }
+
+    private toggleLogs(render: boolean = true) {
+        this.logsButton.content = ` ${colors.underline(`${this.logsBox.visible ? 'Show' : 'Hide'} logs`)} `;
         this.logsBox.toggle();
-        this.render('logsBox');
+        render && this.render('toggleLogs');
     }
 
     private clampWidth(
@@ -843,12 +1403,14 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
         percentage: number,
         padding: number = 0
     ) {
-        const screenWidth = this.screen.width as number;
-        return Math.min(
-            screenWidth - padding * 2,
-            Math.max(Math.ceil(percentage * screenWidth), minWidth)
+        return clampWidth(
+            this.screen.width as number,
+            minWidth,
+            percentage,
+            padding
         );
     }
+
     destroy() {
         this.active = false;
         this.screen.destroy();

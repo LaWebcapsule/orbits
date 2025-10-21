@@ -8,6 +8,7 @@ import {
     LogSchemaInterface,
     Workflow,
 } from '@orbi-ts/core';
+import { INPUTS_KEY } from '@orbi-ts/fuel';
 import { utils } from '@orbi-ts/services';
 import { isValidObjectId } from 'mongoose';
 
@@ -150,11 +151,11 @@ export class CRUD {
      * @returns list of logs
      */
     static async listLogs(
-        filter: any = {},
+        query: any = {},
         sort?: { [key: string]: -1 | 1 }
     ): Promise<LogSchemaInterface[]> {
         return await ActionRuntime.activeRuntime.LogModel.find(
-            { filter },
+            query,
             {},
             { sort: sort }
         );
@@ -247,17 +248,15 @@ export class CRUD {
 
         // pause children that are workflows
         // get registered actions and for each check if it has registered actions meaning it is a workflow
-        (actionDb.bag as Workflow['IBag'])?.registeredActions?.forEach(
-            async (subAction) => {
-                const subActionDb =
-                    await ActionRuntime.activeRuntime.ActionModel.findById(
-                        subAction._id
-                    );
-                if (subActionDb?.bag.registeredActions) {
-                    this.pause(subActionDb.id, duration);
-                }
-            }
-        );
+        for (const subAction of (actionDb.bag as Workflow['IBag'])
+            ?.registeredActions ?? []) {
+            const subActionDb =
+                await ActionRuntime.activeRuntime.ActionModel.findById(
+                    subAction._id
+                );
+            if (subActionDb?.bag.registeredActions)
+                this.pause(subActionDb.id, duration);
+        }
 
         actionDb.cronActivity.nextActivity = nextActivity;
         // TODO: rework core to pause a workflow
@@ -269,26 +268,38 @@ export class CRUD {
      * resume the action
      *
      * @param actionId
+     * @param runLocal whether the action is to be resumed locally;
+     * If `true`, the action registration will be checked, and the ActionRuntime filter configured to match the action to resume.
+     * @returns the resumed action dbDoc
      */
-    static async resume(actionId: string) {
+    static async resume(actionId: string, runLocal: boolean = false) {
         let actionDb = await this.findActionById(actionId);
 
-        actionDb!.cronActivity.nextActivity =
-            actionDb!.cronActivity.lastActivity ?? new Date();
+        if (runLocal) {
+            // check wether the action is registered
+            // this will throw an error if not
+            await Action.constructFromDb(actionDb);
+
+            // no need to set workers filter again on subActions
+            ActionRuntime.activeRuntime.workers.forEach((worker) => {
+                if ((actionDb.filter as any)?.cli)
+                    worker.filter = actionDb.filter;
+            });
+        }
+
+        this.resumeActionDb(actionDb);
 
         // resume children that are workflows
         // get registered actions and for each check if it has registered actions meaning it is a workflow
         // await to 'resume' in order
-        (actionDb.bag as Workflow['IBag'])?.registeredActions?.forEach(
-            async (subAction) => {
-                const subActionDb = await this.findActionById(subAction._id);
-                if (subActionDb?.bag.registeredActions) {
-                    this.resume(subActionDb.id);
-                }
-            }
-        );
+        for (const subAction of (actionDb.bag as Workflow['IBag'])
+            ?.registeredActions ?? []) {
+            const subActionDb = await this.findActionById(subAction._id);
+            if (subActionDb?.bag.registeredActions) this.resume(subActionDb.id); // no runLocal: no need to recheck registration and filter
+        }
 
         await actionDb!.save();
+        return actionDb;
     }
 
     /**
@@ -430,7 +441,58 @@ export class CRUD {
         const actionDb = await this.findActionById(actionId);
         utils.deepMerge(actionDb.bag, bag);
         actionDb.bag = bag;
+        this.resumeActionDb(actionDb);
         return actionDb.save();
+    }
+
+    static async addInputs(
+        actionId: string,
+        inputs: { [key: string]: any }
+    ): Promise<ActionSchemaInterface> {
+        const actionDb = await this.findActionById(actionId);
+        if (!(INPUTS_KEY in actionDb.argument))
+            throw new InvalidParameterError(
+                `provided action doesn't accept inputs`
+            );
+
+        for (const [key, value] of Object.entries(inputs)) {
+            const input = actionDb.argument[INPUTS_KEY][key];
+            if (!input)
+                throw new InvalidParameterError(
+                    `no matching input for key '${key}'`
+                );
+            if (input.type !== 'bag')
+                throw new InvalidParameterError(
+                    `invalid type ${typeof value} for input ${key}=${value}}, expected ${input.type}`
+                );
+
+            if (input.options && !input.options.includes(value)) {
+                throw new InvalidParameterError(
+                    `Invalid input for ${key}: ${this.wrapInQuotes(value)}, ` +
+                        `(options: [${input.options.map(this.wrapInQuotes).join(', ')}])`
+                );
+            }
+
+            actionDb.bag[INPUTS_KEY][key] = value;
+        }
+        actionDb.markModified(`bag.${INPUTS_KEY}`);
+        this.resumeActionDb(actionDb);
+        return actionDb.save();
+    }
+
+    private static resumeActionDb(actionDb: ActionSchemaInterface) {
+        actionDb!.cronActivity.nextActivity =
+            actionDb!.cronActivity.lastActivity ?? new Date();
+    }
+
+    /**
+     * Return value as a string, wrapped in quotes if it is a string
+     * @param value
+     * @returns string
+     */
+    private static wrapInQuotes(value: boolean | number | string): string {
+        if (typeof value === 'string') return `'${value}'`;
+        return `${value}`;
     }
 
     // TODO: move this into core

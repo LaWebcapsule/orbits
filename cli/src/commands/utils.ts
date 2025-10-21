@@ -1,6 +1,7 @@
 import colors from 'colors';
 import { findUpSync } from 'find-up-simple';
 import * as fs from 'fs';
+import { tmpdir } from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import winston from 'winston';
@@ -38,12 +39,16 @@ export const ACTION_STATE_COLORS = new Map(
     )
 );
 
-export const DEFAULT_LOG_FILE = 'orbits.log';
+export const DEFAULT_LOG_FILE = path.join(tmpdir(), 'orbits.log');
 export const DEFAULT_ACTIONS_FILE = 'orbi.ts';
 export const DEFAULT_DATABASE = DEFAULT_MONGO_URL;
 
 export const logError = (str: string) => {
-    console.error(colors.red(`ERROR: ${str}`));
+    console.error(colors.red(`ERROR - ${str}`));
+};
+
+export const logWarning = (str: string) => {
+    console.warn(colors.yellow(`WARN - ${str}`));
 };
 
 export const logErrorAndExit = (msg: string, code: exitCodes): never => {
@@ -60,8 +65,8 @@ export const setUpRuntime = async (opts?: {
 }) => {
     if (!opts?.noDatabase) {
         if (!process.env['ORBITS_DB__MONGO__URL'])
-            console.warn(
-                `WARN - Env variable ${colors.bold.italic('ORBITS_DB__MONGO__URL')} not set, using default value ${colors.italic(DEFAULT_DATABASE)}`
+            logWarning(
+                `Env variable ${colors.bold.italic('ORBITS_DB__MONGO__URL')} not set, using default value ${colors.italic(DEFAULT_DATABASE)}`
             );
     }
 
@@ -82,43 +87,49 @@ export const setUpRuntime = async (opts?: {
 
     await ActionRuntime.waitForActiveRuntime;
 
-    const defaultActionsFile =
-        findUpSync(DEFAULT_ACTIONS_FILE) ??
-        path.join(
-            __dirname,
-            '../../',
-            path.extname(__filename) === 'js'
-                ? DEFAULT_ACTIONS_FILE.replace('.ts', '.js')
-                : DEFAULT_ACTIONS_FILE
-        );
-
-    const actionsFiles = opts?.actionsFiles?.length
-        ? opts?.actionsFiles
-        : [defaultActionsFile];
-
-    const importActionsFilesPromises = actionsFiles.map(async (file) => {
-        const actionPath = !path.isAbsolute(file)
-            ? path.join(process.cwd(), file)
-            : file;
-        try {
-            fs.accessSync(actionPath);
-        } catch {
-            logErrorAndExit(
-                `Cannot access ${colors.bold.italic(actionPath)}`,
-                exitCodes.INVALID_PATH
+    if (opts && 'actionsFiles' in opts) {
+        const defaultActionsFile =
+            findUpSync(DEFAULT_ACTIONS_FILE) ??
+            path.join(
+                __dirname,
+                '../../',
+                path.extname(__filename) === '.js'
+                    ? DEFAULT_ACTIONS_FILE.replace('.ts', '.js')
+                    : DEFAULT_ACTIONS_FILE
             );
-        }
-        try {
-            await ActionRuntime.activeRuntime.recursiveImport(actionPath);
-        } catch (error) {
-            logErrorAndExit(
-                `Error importing ${colors.bold.italic(actionPath)}: ${error}`,
-                exitCodes.GENERIC_ERROR
-            );
-        }
-    });
 
-    await Promise.all(importActionsFilesPromises);
+        let actionFiles = [defaultActionsFile];
+        if (opts.actionsFiles && opts.actionsFiles.length > 0)
+            actionFiles = opts.actionsFiles;
+        else
+            logWarning(
+                `No actions files provided, will use default one at ${colors.italic.bold(defaultActionsFile)}`
+            );
+
+        const importActionsFilesPromises = actionFiles.map(async (file) => {
+            const actionPath = !path.isAbsolute(file)
+                ? path.join(process.cwd(), file)
+                : file;
+            try {
+                fs.accessSync(actionPath);
+            } catch {
+                logErrorAndExit(
+                    `Unable to access ${colors.bold.italic(actionPath)}, does it exist?`,
+                    exitCodes.INVALID_PATH
+                );
+            }
+            try {
+                await ActionRuntime.activeRuntime.recursiveImport(actionPath);
+            } catch (error) {
+                logErrorAndExit(
+                    `Error importing ${colors.bold.italic(actionPath)}: ${error}`,
+                    exitCodes.GENERIC_ERROR
+                );
+            }
+        });
+
+        await Promise.all(importActionsFilesPromises);
+    }
 
     // use our active runtime for all active runtimes
     for (const r of (global as any).orbitsRuntimes as ActionRuntime[])
