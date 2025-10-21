@@ -533,6 +533,11 @@ export class Action {
                             Date.now() - this.dbDoc.stateUpdatedAt.getTime() &&
                         this.dbDoc.state === ActionState.IN_PROGRESS
                     ) {
+                        const timeoutError = new ActionError(
+                            'Action has been IN_PROGRESS for too long (property delays of the action can be used to configure the timeout)'
+                        );
+                        this.setResult(timeoutError);
+                        this.internalLogError(timeoutError);
                         return ActionState.ERROR;
                     }
                 }
