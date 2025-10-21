@@ -20,7 +20,7 @@ import {
     databaseLogger,
 } from '@orbi-ts/core';
 import { randomUUID } from 'crypto';
-import { unlinkSync, writeFileSync } from 'fs';
+import { createWriteStream, unlinkSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import winston from 'winston';
 
@@ -118,7 +118,7 @@ const runInBackground = async (
                 opts,
             }),
         ],
-        { stdio: ['ignore', 'ignore', 'pipe', 'ipc'], detached: true }
+        { stdio: ['ignore', 'pipe', 'pipe', 'ipc'], detached: true }
     );
 
     if (!child.pid)
@@ -137,6 +137,10 @@ const runInBackground = async (
     const waitForChildClosed = new Promise<void>((resolve) => {
         resolveCloseChild = resolve;
     });
+
+    // pipe stdout to logfile
+    const logFile = createWriteStream(opts.logFile, { flags: 'a' });
+    child.stdout?.pipe(logFile);
 
     // on child exit, exit with same code as child
     child.on('close', async (code) => {
