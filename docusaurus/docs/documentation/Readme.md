@@ -43,6 +43,12 @@ Orbits provides:
 - Trigger remote actions in isolated or external environments.
 - Distribute your infrastructure templates cleanly and portably.
 
+### 🦾 Crash-proof and Reliable Agents
+- Design fault-tolerant agents that can safely run in production environments.
+- Enforce a clear concurrency model to execute operations once and only once across your resources lifecycle.
+- 
+
+
 ## Next Steps
 
 :::tip What's Next?
