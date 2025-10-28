@@ -16,9 +16,7 @@ const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(
     actionKind.COALESCING_WORKFLOW
 );
 const AGENT_TAG = actionKindSymbols.get(actionKind.AGENT);
-const AGENT_CONTROLLER_TAG = actionKindSymbols.get(
-    actionKind.AGENT_CONTROLLER
-);
+const AGENT_CONTROLLER_TAG = actionKindSymbols.get(actionKind.AGENT_CONTROLLER);
 
 export abstract class CoalescingWorkflow extends Workflow {
     static [COALESCING_WORKFLOW_TAG] = true;

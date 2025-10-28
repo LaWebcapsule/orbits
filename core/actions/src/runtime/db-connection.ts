@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { actionSchema, ActionSchemaInterface } from '../models/action.js';
-import { logSchema, LogSchemaInterface } from '../models/log.js';
 import { agentSchema, AgentSchemaInterface } from '../models/agent.js';
+import { logSchema, LogSchemaInterface } from '../models/log.js';
 import type { ActionRuntime } from './action-runtime.js';
 
 /**

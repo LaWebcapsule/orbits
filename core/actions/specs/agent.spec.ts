@@ -55,9 +55,7 @@ describe('Agent', () => {
 
     it('should be in success', () => {
         expect(testAgent.dbDoc.state).toEqual(ActionState.SUCCESS);
-        expect(testAgentChangeVersion.dbDoc.state).toEqual(
-            ActionState.SUCCESS
-        );
+        expect(testAgentChangeVersion.dbDoc.state).toEqual(ActionState.SUCCESS);
         expect(testAgentUpdate.dbDoc.state).toEqual(ActionState.SUCCESS);
     });
 

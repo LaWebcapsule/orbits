@@ -55,8 +55,7 @@ export class CdkStackAgent extends Agent {
         await this.repeatDo(
             'saveContext',
             () => {
-                this.agentDbDoc.info.cdkContext =
-                    context as utils.JSONObject;
+                this.agentDbDoc.info.cdkContext = context as utils.JSONObject;
                 return this.agentDbDoc.save();
             },
             {
