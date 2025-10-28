@@ -1,7 +1,7 @@
-import { Cdk8sResource } from '@orbi-ts/fuel';
+import { Cdk8sAgent } from '@orbi-ts/fuel';
 import { BasicChart } from '../cdk8s/basic-cdk8s.js';
 
-export class BasicResource extends Cdk8sResource {
+export class BasicAgent extends Cdk8sAgent {
     IResult: {
         namespace: string;
         cronJobName: string;

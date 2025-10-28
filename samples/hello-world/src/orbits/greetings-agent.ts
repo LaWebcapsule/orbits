@@ -1,13 +1,13 @@
-import { Resource } from '@orbi-ts/core';
+import { Agent } from '@orbi-ts/core';
 import { HelloWorkflow } from './hello-workflow.ts';
 
-export class GreetingResource extends Resource {
+export class GreetingAgent extends Agent {
     declare IResult: string;
 
     declare IArgument: {
         name: string;
         date: string;
-    } & Resource['IArgument'];
+    } & Agent['IArgument'];
 
     identity() {
         return `${this.argument.name}-${this.argument.date}`;

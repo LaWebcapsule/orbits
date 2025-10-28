@@ -105,7 +105,7 @@ We can get the result of the deploy action using the get method (provided its ID
 ➜ orbits-cli actions get 689de1b3fcb667fee45a4bfe
 ID                       ┆ ACTION REF     ┆ STATE   ┆ RESULT                                                                                                                                                             ┆ LAST ACTIVITY ┆ NEXT ACTIVITY ┆ PARENT > REF
 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-689de1b3fcb667fee45a4bfe ┆ LambdaResource ┆ SUCCESS ┆ {"CfId":"E28NIDFX6OEEC6","HelloAPIEndpointA3FBFD89":"https://fueo1zarcg.execute-api.eu-west-3.amazonaws.com/prod/","CfDomainName":"d16q083cvq1ymk.cloudfront.net"} ┆ —             ┆ in 7min 45s   ┆ 689de1b1fcb667fee45a4bc1 > deploy
+689de1b3fcb667fee45a4bfe ┆ LambdaAgent ┆ SUCCESS ┆ {"CfId":"E28NIDFX6OEEC6","HelloAPIEndpointA3FBFD89":"https://fueo1zarcg.execute-api.eu-west-3.amazonaws.com/prod/","CfDomainName":"d16q083cvq1ymk.cloudfront.net"} ┆ —             ┆ in 7min 45s   ┆ 689de1b1fcb667fee45a4bc1 > deploy
 ```
 
 With its ID, you can get the graphical view of an Action / Workflow at any moment:
@@ -126,7 +126,7 @@ First, here’s how our deployment workflow is defined:
 import { Workflow } from '@orbi-ts/core';
 import { CodeQualityWorkflow } from './code-quality';
 import { InvalidateCacheAction } from './invalidate-cache';
-import { LambdaResource } from './lambda-resource';
+import { LambdaAgent } from './lambda-agent';
 import { VerifyLambdaDeploymentAction } from './verify';
 
 export class DeployHelloWorkflow extends Workflow {
@@ -139,7 +139,7 @@ export class DeployHelloWorkflow extends Workflow {
         await this.do('quality', new CodeQualityWorkflow());
         const result = await this.do(
             'deploy',
-            new LambdaResource({
+            new LambdaAgent({
                 region: this.argument.region,
                 account: this.argument.account,
             })

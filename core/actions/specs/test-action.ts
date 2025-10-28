@@ -4,7 +4,7 @@ import {
     ActionState,
     CoalescingWorkflow,
     Executor,
-    Resource,
+    Agent,
     Sleep,
     Workflow,
 } from '../index.js';
@@ -351,7 +351,7 @@ export class TestGenerator extends CoalescingWorkflow {
     }
 }
 
-export class BlankResource extends Resource {
+export class BlankAgent extends Agent {
     declare IArgument: { commandName: string; version?: string };
 
     async init() {
@@ -368,29 +368,29 @@ export class BlankResource extends Resource {
     version = '1.0.0';
 
     incrementCommandCount(commandName: string) {
-        const n = this.resourceDbDoc.info[`n${commandName}`] || 0;
-        this.resourceDbDoc.info[`n${commandName}`] = n + 1;
-        this.resourceDbDoc.markModified('info');
+        const n = this.agentDbDoc.info[`n${commandName}`] || 0;
+        this.agentDbDoc.info[`n${commandName}`] = n + 1;
+        this.agentDbDoc.markModified('info');
     }
 
     async defineInstall() {
         await this.do('install', () => {
             this.incrementCommandCount('install');
-            return this.resourceDbDoc.save();
+            return this.agentDbDoc.save();
         });
     }
 
     async defineUpdate() {
         await this.do('update', () => {
             this.incrementCommandCount('update');
-            return this.resourceDbDoc.save();
+            return this.agentDbDoc.save();
         });
     }
 
     async defineUninstall() {
         await this.do('uninstall', () => {
             this.incrementCommandCount('uninstall');
-            return this.resourceDbDoc.save();
+            return this.agentDbDoc.save();
         });
     }
 

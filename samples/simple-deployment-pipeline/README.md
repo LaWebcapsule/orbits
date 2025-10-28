@@ -90,7 +90,7 @@ argument=$(cat<<EOF
 }
 EOF
 )
-orbits-cli actions run LambdaResource $argument -f src/orbits/orbi.ts --local-worker
+orbits-cli actions run LambdaAgent $argument -f src/orbits/orbi.ts --local-worker
 ```
 
 ⚠️ Warning: This will permanently delete all resources created by this example. Make sure you want to remove everything before running this command.
@@ -123,7 +123,7 @@ A Pull Request should trigger the quality action, a push to main should trigger 
 │   ├── orbits/
 │   │   ├── orbi.ts # Main Deploy workflow definition
 │   │   ├── code-quality.ts # Code Quality actions definition
-│   │   ├── lambda-resource.ts # lambda resource definition
+│   │   ├── lambda-agent.ts # lambda agent definition
 │   │   ├── invalidate-cache.ts # Invalidate cache action definition
 │   │   ├── verify.ts # Verify action definition
 │   ├── cdk/ # CDK stack definitions

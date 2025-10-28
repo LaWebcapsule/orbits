@@ -60,11 +60,11 @@ With standard CDK, you'd need to:
 With orbits, the same architecture becomes straightforward:
 
 ```ts
-const paramOutput = await this.do('updateParam', new ParamResource());
+const paramOutput = await this.do('updateParam', new ParamAgent());
 
 await this.do(
     'updateLambda',
-    new LambdaResource().setArgument({
+    new LambdaAgent().setArgument({
         stackProps: {
             parameterArn: paramOutput.parameterArn, // ✅ Direct cross-account reference
             env: { account: this.argument.accountB.id },
@@ -109,9 +109,9 @@ vi .env
 ├── src/
 │   ├── orbits/
 │   │   ├── orbi.ts # Main orchestration script
-│   │   ├── lambda-resource.ts # lambda resource definition
-│   │   ├── param-resource.ts # Param resource definition
-│   │   └── hello-resource.ts # Hello resource definition: the resource that make the junction between param and lambda
+│   │   ├── lambda-agent.ts # lambda agent definition
+│   │   ├── param-agent.ts # Param agent definition
+│   │   └── hello-agent.ts # Hello agent definition: the agent that make the junction between param and lambda
 │   └── cdk/              # CDK stack definitions
 │       ├── lambda.ts # lambda CDK stack
 │       └── param.ts # Param CDK stack
@@ -121,7 +121,7 @@ vi .env
 └── README.md
 ```
 
-### The Resource Definitions
+### The Agent Definitions
 
 #### Lambda and Param CDK Stack
 
@@ -136,14 +136,14 @@ A lambda that will display the value of the parameter passed in parameter if it 
 
 A parameter store that stores an "hello-world" value.
 
-#### Encapsulate the stacks in a resource definition.
+#### Encapsulate the stacks in a agent definition.
 
-Here's what a CDK resource definitions look like:
+Here's what a CDK agent definitions look like:
 
-**Lambda Resource (lambda-resource.ts):**
+**Lambda Agent (lambda-agent.ts):**
 
-```ts title="src/orbits/lambda-resource.ts"
-export class LambdaResource extends CdkStackResource {
+```ts title="src/orbits/lambda-agent.ts"
+export class LambdaAgent extends CdkStackAgent {
     StackConstructor = LambdaStack;
 
     declare IOutput: {
@@ -154,7 +154,7 @@ export class LambdaResource extends CdkStackResource {
 
 Let's go line by line.
 
-- `StackConstructor = LambdaStack`: this tells the orchestrator that `LambdaResource` will use the `LambdaStack` class constructor to define and manage its infrastructure.
+- `StackConstructor = LambdaStack`: this tells the orchestrator that `LambdaAgent` will use the `LambdaStack` class constructor to define and manage its infrastructure.
 -
 
 ```ts
@@ -164,29 +164,29 @@ declare IOutput: {
 ```
 
 The CloudFormation stack for the Lambda function exports a single output: "roleArn", which is the ARN of the Lambda's execution role.
-The IOutput declaration is used for type safety—it informs the developer that this resource will expose an output matching that structure.
+The IOutput declaration is used for type safety—it informs the developer that this agent will expose an output matching that structure.
 
 :::info
-If not already done, the CDK environment will be automatically bootstrapped by the CDKResource—no other step is required, the full lifecycle of your resource is managed.
+If not already done, the CDK environment will be automatically bootstrapped by the CDKAgent—no other step is required, the full lifecycle of your agent is managed.
 :::
 
-#### Write a proxy resource to orchestrate both lambda and param deployment
+#### Write a proxy agent to orchestrate both lambda and param deployment
 
 We could choose different orchestrations strategies.
-Here we choose to have a proxy resources that deploy both the `Param` and the `Lambda` stack and that synchronize the use of both in coordination.
+Here we choose to have a proxy agents that deploy both the `Param` and the `Lambda` stack and that synchronize the use of both in coordination.
 
 ##### Install step
 
 During the first step, we launch a first deployment of the `Lambda` stack.
 At this step, the `ParamStore` stack does not exist, so no optional properties are passed.
 
-```ts title="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-agent.ts"
 async defineInstall() {
-    await this.do('firstDeployLambda', this.constructLambdaResource());
+    await this.do('firstDeployLambda', this.constructLambdaAgent());
 }
 
-constructLambdaResource() {
-    return new LambdaResource().setArgument({
+constructLambdaAgent() {
+    return new LambdaAgent().setArgument({
         stackName: 'lambda',
         awsProfileName: this.argument.accountB.profile,
         stackProps: {
@@ -201,31 +201,31 @@ constructLambdaResource() {
 
 ##### Update step
 
-When updating the resource, we deploy both the `Param` and `Lambda` stack.
+When updating the agent, we deploy both the `Param` and `Lambda` stack.
 
-```ts title="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-agent.ts"
 async defineUpdate() {
-    const lambdaResource = this.constructLambdaResource();
+    const lambdaAgent = this.constructLambdaAgent();
 
     const lambdaOutput = await this.do('getLambdaOutput', () => {
-        return lambdaResource.getResourceOutput();
+        return lambdaAgent.getAgentOutput();
     });
 
     const paramOutput = await this.do(
         'updateParam',
-        this.constructParamResource(lambdaOutput)
+        this.constructParamAgent(lambdaOutput)
     );
 
-    await this.do('updateLambda', this.constructLambdaResource(paramOutput));
+    await this.do('updateLambda', this.constructLambdaAgent(paramOutput));
 }
 ```
 
-`ParamResource` consumes the output of `LambdaResource` and vice versa.
+`ParamAgent` consumes the output of `LambdaAgent` and vice versa.
 As a consequence, we need to refine the constructs methods.
 
-```ts title="src/orbits/hello-resource.ts"
-constructLambdaResource(paramOutput?: ParamResource['IOutput']) {
-    return new LambdaResource().setArgument({
+```ts title="src/orbits/hello-agent.ts"
+constructLambdaAgent(paramOutput?: ParamAgent['IOutput']) {
+    return new LambdaAgent().setArgument({
         stackName: 'lambda',
         awsProfileName: this.argument.accountB.profile,
         stackProps: {
@@ -239,8 +239,8 @@ constructLambdaResource(paramOutput?: ParamResource['IOutput']) {
     });
 }
 
-constructParamResource(lambdaOutput?: LambdaResource['IOutput']) {
-    return new ParamResource().setArgument({
+constructParamAgent(lambdaOutput?: LambdaAgent['IOutput']) {
+    return new ParamAgent().setArgument({
         stackName: 'param',
         awsProfileName: this.argument.accountA.profile,
         stackProps: {
@@ -259,15 +259,15 @@ constructParamResource(lambdaOutput?: LambdaResource['IOutput']) {
 
 To uninstall, we uninstall both the `Lambda` and `ParamStore` stacks.
 
-```ts title="src/orbits/hello-resource.ts"
+```ts title="src/orbits/hello-agent.ts"
 async defineUninstall() {
     await this.do(
         'uninstallLambda',
-        this.constructLambdaResource().setCommand('Uninstall')
+        this.constructLambdaAgent().setCommand('Uninstall')
     );
     await this.do(
         'uninstallParam',
-        this.constructParamResource().setCommand('Uninstall')
+        this.constructParamAgent().setCommand('Uninstall')
     );
 }
 ```

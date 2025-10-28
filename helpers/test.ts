@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 
 import { ActionRuntime } from '@orbi-ts/core';
 import { Deployment, Service, ServiceType } from 'cdk8s-plus-32';
-import { Cdk8sResource } from './src/standards-resource/cdk8s/cdk8s-resource.js';
+import { Cdk8sAgent } from './src/standards-agent/cdk8s/cdk8s-agent.js';
 
 export class Core extends Chart {
     constructor(scope: Construct, id: string) {
@@ -31,7 +31,7 @@ export class Core extends Chart {
     }
 }
 
-export class MyAction extends Cdk8sResource {
+export class MyAction extends Cdk8sAgent {
     static permanentRef = 'test-cdk8s';
 
     generateStack(): this['stack'] | Promise<this['stack']> {

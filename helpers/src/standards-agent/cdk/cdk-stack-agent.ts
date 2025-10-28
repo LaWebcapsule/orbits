@@ -1,4 +1,4 @@
-import { ActionState, Resource } from '@orbi-ts/core';
+import { ActionState, Agent } from '@orbi-ts/core';
 import { utils } from '@orbi-ts/services';
 import * as cdk from 'aws-cdk-lib';
 import {
@@ -8,8 +8,8 @@ import {
 } from '../../standards-actions/cdk/cdk-action.js';
 import { CdkHelper } from '../../standards-actions/cdk/cdk-helper.js';
 
-export class CdkStackResource extends Resource {
-    declare IArgument: Resource['IArgument'] &
+export class CdkStackAgent extends Agent {
+    declare IArgument: Agent['IArgument'] &
         CdkBootstrapAction['IArgument'] &
         Record<
             'stackProps',
@@ -43,7 +43,7 @@ export class CdkStackResource extends Resource {
         const deployAction = new CdkDeployAction();
         deployAction.setArgument({
             ...(this.argument as CdkBootstrapAction['IArgument'] as any),
-            cdkContext: this.resourceDbDoc.info.cdkContext,
+            cdkContext: this.agentDbDoc.info.cdkContext,
         });
         deployAction.setRepeat({
             [ActionState.ERROR]: 2,
@@ -55,9 +55,9 @@ export class CdkStackResource extends Resource {
         await this.repeatDo(
             'saveContext',
             () => {
-                this.resourceDbDoc.info.cdkContext =
+                this.agentDbDoc.info.cdkContext =
                     context as utils.JSONObject;
-                return this.resourceDbDoc.save();
+                return this.agentDbDoc.save();
             },
             {
                 [ActionState.ERROR]: 2,

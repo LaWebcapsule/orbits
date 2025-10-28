@@ -55,13 +55,13 @@ These requirements led us to build a dedicated orchestrator for cdk8s using Orbi
 
 ## Final result
 
-The result is an Orbits resource that manages your cdk8s deployment.
-You can read the [orbits documentation](/documentation/helper/integrations/cdk8s-resource) on how to use it.
+The result is an Orbits agent that manages your cdk8s deployment.
+You can read the [orbits documentation](/documentation/helper/integrations/cdk8s-agent) on how to use it.
 
 - You can use it by extending the base class:
 
 ```ts
-export class BasicResource extends Cdk8sResource {
+export class BasicAgent extends Cdk8sAgent {
     StackConstructor = BasicChart;
 }
 ```
@@ -69,12 +69,12 @@ export class BasicResource extends Cdk8sResource {
 - Or dynamically assign a custom stack generation method:
 
 ```ts
-const myCdk8sResource = new Cdk8sResource();
-myCdk8sResource.generateStack = () => {
-    return new cdk8s.Chart(myCdk8sResource.app, 'empty-chart');
+const myCdk8sAgent = new Cdk8sAgent();
+myCdk8sAgent.generateStack = () => {
+    return new cdk8s.Chart(myCdk8sAgent.app, 'empty-chart');
 };
 
-await this.do('update-stack', { dynamicAction: myCdk8sResource });
+await this.do('update-stack', { dynamicAction: myCdk8sAgent });
 ```
 
 :::info Outputs
@@ -98,12 +98,12 @@ Concurrency is also managed by Orbits. If a deployment is already running, concu
 
 ```ts
 // somewhere
-this.do('deploy', new MyBasicChartResource());
+this.do('deploy', new MyBasicChartAgent());
 // elsewhere
-this.do('deploy', new MyBasicChartResource());
+this.do('deploy', new MyBasicChartAgent());
 ```
 
-The two deployments will [coalesce](/documentation/core-concepts/resource#convergent-execution-coalescing).
+The two deployments will [coalesce](/documentation/core-concepts/agent#convergent-execution-coalescing).
 :::
 
 :::info Crash-proof
@@ -120,14 +120,14 @@ From a cdk8s chart, we want to:
 - Rollback to the previous state if necessary
 - Prune obsolete resources
 
-### The orbits Cdk8s resources
+### The orbits Cdk8s agents
 
-In Orbits, [resources](/documentation/core-concepts/resources) are stateful units that define hooks like defineUpdate.
+In Orbits, [agents](/documentation/core-concepts/agents) are stateful units that define hooks like defineUpdate.
 For the deployment of a cdk8s chart, we only need the `update` hook.
-The high-level flow of the resource implementation is as follows:
+The high-level flow of the agent implementation is as follows:
 
 ```ts
-export class Cdk8sResource {
+export class Cdk8sAgent {
     async defineUpdate() {
         try {
             await this.do("deploy", ...);
@@ -159,7 +159,7 @@ flowchart TD
     CheckRollbackFlag@{ shape: rounded}
 ```
 
-The complete implementation is available [here on github](https://github.com/LaWebcapsule/orbits/blob/main/helpers/src/standards-resource/cdk8s/cdk8s-resource.ts)
+The complete implementation is available [here on github](https://github.com/LaWebcapsule/orbits/blob/main/helpers/src/standards-agent/cdk8s/cdk8s-agent.ts)
 
 #### Deploying the chart
 
@@ -212,8 +212,8 @@ Our orchestrator provides a robust and flexible foundation for managing cdk8s de
 
 - Improved diff tools to preview changes before applying them
 - Extended tracking and monitoring of additional Kubernetes resources
-  Additionally, the resource offers a promising starting point for implementing drift detection, but that topic will be covered in a future post.
+  Additionally, the agent offers a promising starting point for implementing drift detection, but that topic will be covered in a future post.
 
 ---
 
-_The source code of the CDk8SResource is available here: [https://github.com/LaWebcapsule/orbits/blob/main/helpers/src/standards-resource/cdk8s/cdk8s-resource.ts](https://github.com/LaWebcapsule/orbits/blob/main/helpers/src/standards-resource/cdk8s/cdk8s-resource.ts)_
+_The source code of the CDk8SAgent is available here: [https://github.com/LaWebcapsule/orbits/blob/main/helpers/src/standards-agent/cdk8s/cdk8s-agent.ts](https://github.com/LaWebcapsule/orbits/blob/main/helpers/src/standards-agent/cdk8s/cdk8s-agent.ts)_

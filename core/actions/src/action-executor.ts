@@ -1,4 +1,4 @@
-import { Resource } from './../index.js';
+import { Agent } from './../index.js';
 import { ActionState } from './models/action.js';
 
 export class Executor {
@@ -7,7 +7,7 @@ export class Executor {
      */
     scope?: ActionState[];
 
-    generateSupportResource(): Resource | void {}
+    generateSupportAgent(): Agent | void {}
 
     resume(action) {
         return action._resume();

@@ -1,6 +1,6 @@
 # Hello world example
 
-A sample resource that say you hello!
+A sample agent that say you hello!
 Can be useful to help you write your first actions.
 
 ## Install dependencies
@@ -16,4 +16,4 @@ Can be useful to help you write your first actions.
 
 ## Relaunch the app
 
-If your relaunch the app a second time the same day, you should see that your resource still knows if it's already greeted you or not.
+If your relaunch the app a second time the same day, you should see that your agent still knows if it's already greeted you or not.

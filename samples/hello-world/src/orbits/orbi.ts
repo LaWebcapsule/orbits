@@ -1,8 +1,8 @@
 import { Action, ActionRuntime, ActionState } from '@orbi-ts/core';
-import { GreetingResource } from './greetings-resource.ts';
+import { GreetingAgent } from './greetings-agent.ts';
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
-    const greetingOfTheDay = new GreetingResource().setArgument({
+    const greetingOfTheDay = new GreetingAgent().setArgument({
         name: 'John Doe',
         date: String(new Date().toISOString().split('T')[0]),
     });
@@ -12,7 +12,7 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
         ActionState.ERROR,
     ]);
 
-    const greetingOfTheDay2 = new GreetingResource().setArgument({
+    const greetingOfTheDay2 = new GreetingAgent().setArgument({
         name: 'John Doe',
         date: String(new Date().toISOString().split('T')[0]),
     });

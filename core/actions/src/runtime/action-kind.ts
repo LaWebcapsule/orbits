@@ -5,10 +5,10 @@ export enum actionKind {
     WORKFLOW = 'orbits/workflow',
     //the action is a coalescing workflow
     COALESCING_WORKFLOW = 'orbits/coalescingWorkflow',
-    // The action is a resource controller
-    RESOURCE_CONTROLLER = 'orbits/resourceController',
-    // The action is a resource
-    RESOURCE = 'orbits/resource',
+    // The action is a agent controller
+    AGENT_CONTROLLER = 'orbits/agentController',
+    // The action is a agent
+    AGENT = 'orbits/agent',
 }
 
 export const actionKindSymbols: Map<actionKind, symbol> = new Map<

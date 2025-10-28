@@ -13,7 +13,7 @@ In this example, we’ll create a simple “hello-world” application. The beha
 
 - After 10 AM, say hello.
 - Say hello only once per day.
-- Say goodbye when the resource is uninstalled.
+- Say goodbye when the agent is uninstalled.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ cd samples/hello-world
 ├── src/
 │   └── orbits/
 │       └── orbi.ts # main orchestration script
-│       ├── greetings-resource.ts # the resource that orchestrates the lifecycle of greetings
+│       ├── greetings-agent.ts # the agent that orchestrates the lifecycle of greetings
 │       ├── hello-action.ts # an action that waits 10 am and outputs hello
 │       └── hello-workflow.ts # a workflow that takes a name as parameter and outputs "hello ${name}"
 ├── package.json
@@ -129,16 +129,16 @@ See the [Orbits Core documentation](./../core-concepts/workflow.md#the-do-method
 
 At the end of `define()`, we return a string which becomes the result of the workflow.
 
-## The Greetings Resources
+## The Greetings Agent
 
-```ts title='src/orbits/greeting-resource.ts'
-export class GreetingResource extends Resource {
+```ts title='src/orbits/greeting-agent.ts'
+export class GreetingAgent extends Agent {
     declare IResult: string;
 
     declare IArgument: {
         name: string;
         date: string;
-    } & Resource['IArgument'];
+    } & Agent['IArgument'];
 
     identity() {
         return `${this.argument.name}-${this.argument.date}`;
@@ -179,14 +179,14 @@ declare IResult: string;
 declare IArgument: {
     name: string;
     date: string
-} & Resource["IArgument"]
+} & Agent["IArgument"]
 ```
 
 Same as for workflows, this enables type checking and autocompletion.
 
 ### `Identity` method
 
-The `identity()` method uniquely identifies a resource instance.
+The `identity()` method uniquely identifies a agent instance.
 If two instances share the same identity, they refer to the same real-world object and will share state.
 
 ```ts
@@ -195,11 +195,11 @@ identity() {
 }
 ```
 
-That means that a greeting resource is unique by name and by date.
+That means that a greeting agent is unique by name and by date.
 
 ### Install hook
 
-Runs once when the resource is first created.
+Runs once when the agent is first created.
 
 ```ts
 async defineInstall() {
@@ -225,7 +225,7 @@ async defineUpdate() {
 }
 ```
 
-Runs every time the resource is reused with the same identity.
+Runs every time the agent is reused with the same identity.
 
 ### Uninstall hook
 
@@ -241,14 +241,14 @@ async defineUninstall() {
 To trigger it:
 
 ```ts
-    new GreetingResource().setArgument(...).setCommand('Uninstall');
+    new GreetingAgent().setArgument(...).setCommand('Uninstall');
 ```
 
 ### Go further: cycle hook
 
-We don't use it in our sample, but resources offer the possibility to launch a cycle command at fixed intervals.
+We don't use it in our sample, but agents offer the possibility to launch a cycle command at fixed intervals.
 This can be useful for recurring tasks like polling, cleanup, or reporting.
-Please [see the documentation](./../core-concepts/resource.md#cycle) to learn more.
+Please [see the documentation](./../core-concepts/agent.md#cycle) to learn more.
 
 ## Orbi.ts
 
@@ -256,10 +256,10 @@ In orbi.ts, we do:
 
 ```ts title="src/orbits/orbi.ts"
 import { Action, ActionRuntime, ActionState } from '@orbi-ts/core';
-import { GreetingResource } from './greetings-resource.ts';
+import { GreetingAgent } from './greetings-agent.ts';
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
-    const greetingOfTheDay = new GreetingResource().setArgument({
+    const greetingOfTheDay = new GreetingAgent().setArgument({
         name: 'John Doe',
         date: String(new Date().toISOString().split('T')[0]),
     });
@@ -269,7 +269,7 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
         ActionState.ERROR,
     ]);
 
-    const greetingOfTheDay2 = new GreetingResource().setArgument({
+    const greetingOfTheDay2 = new GreetingAgent().setArgument({
         name: 'John Doe',
         date: String(new Date().toISOString().split('T')[0]),
     });
@@ -281,7 +281,7 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
 });
 ```
 
-We launch the same Resource twice.
+We launch the same Agent twice.
 This shows evidence that:
 
 - during the first run, you will see greeting in console.log
@@ -307,7 +307,7 @@ Edit `orbi.ts`:
 
 ```ts title="src/orbits/orbi.ts"
 ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
-    const greetingOfTheDay = new GreetingResource().setArgument({
+    const greetingOfTheDay = new GreetingAgent().setArgument({
         name: "John Doe",
         date: String(new Date().toISOString().split("T")[0])
     }).setCommand("Uninstall")

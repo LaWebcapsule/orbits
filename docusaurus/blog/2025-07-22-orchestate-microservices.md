@@ -198,10 +198,10 @@ This approach requires a bit of additional setup, as you’ll need to interact w
 
 We’ll cover how Orbits makes it easy to manage long-running processes in a dedicated blog post soon.
 
-### Using resources to manage concurrency
+### Using agents to manage concurrency
 
 In our example, if we trigger the same order twice, it will be processed twice—this isn’t always the desired behavior.
-Orbits provides an opinionated way to handle concurrency through a concept called resources. [Resources](/documentation/core-concepts/resource) allow you to control and limit the execution of actions to prevent unintended duplication.
+Orbits provides an opinionated way to handle concurrency through a concept called agents. [Agents](/documentation/core-concepts/agent) allow you to control and limit the execution of actions to prevent unintended duplication.
 
 ## Conclusion
 

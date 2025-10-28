@@ -10,7 +10,7 @@ A practical example to help you orchestrate micro-services using Orbits.
 
 In this example, we revisit the classic case of orchestrating a banking transaction. For more context on why and how Orbits can be used to orchestrate microservices, you can check out the [full blog post](/blog/workflows-orchestrate-microservices) on the reason and utility of using orbits to orchestrate microservices.
 
-This well-known example originates from both [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/sample-lambda-orchestration.html) and [Temporal](https://temporal.io/blog/temporal-replaces-state-machines-for-distributed-applications). Interested readers can refer to these resources to compare the syntax and implementation experience each solution offers.
+This well-known example originates from both [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/sample-lambda-orchestration.html) and [Temporal](https://temporal.io/blog/temporal-replaces-state-machines-for-distributed-applications). Interested readers can refer to these agents to compare the syntax and implementation experience each solution offers.
 
 ## Installation
 

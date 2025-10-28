@@ -15,10 +15,10 @@ export class CdkHelper {
         this.cfnClient = new CloudFormationClient(opts);
     }
 
-    describePhysicalResource(stackResource: cdk.Resource, stack: cdk.Stack) {
+    describePhysicalAgent(stackAgent: cdk.Resource, stack: cdk.Stack) {
         const command = new DescribeStackResourceCommand({
             LogicalResourceId: stack.getLogicalId(
-                stackResource.node.defaultChild as any
+                stackAgent.node.defaultChild as any
             ),
             StackName: stack.stackName,
         });

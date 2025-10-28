@@ -217,7 +217,7 @@ You can manage this case using the `onMainTimeout` hook.
 
 Depending on the api implementation the library would consume, there are two strategies.
 
-Sometimes api allow you to set an id on the resource you created. In this case, you already have the id and just need to retrieve it.
+Sometimes api allow you to set an id on the agent you created. In this case, you already have the id and just need to retrieve it.
 So `onMainTimeout` can just call the already written watcher method.
 Example would be:
 

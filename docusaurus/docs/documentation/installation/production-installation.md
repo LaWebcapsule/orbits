@@ -40,8 +40,8 @@ You also benefit from:
 
 - Automatic scaling of your Orbits services;
 - Automatic deployment from your Git repositories;
-- A frontend to visualize your resources and workflows;
+- A frontend to visualize your agents and workflows;
 - Persistent logging;
-- Insights into your actions, workflows, and resources;
-- Permissions and secrets management over actions, workflows, and resources;
+- Insights into your actions, workflows, and agents;
+- Permissions and secrets management over actions, workflows, and agents;
   If you’re interested in accessing the beta, [click here](https://form.typeform.com/to/nuQSZn2y).

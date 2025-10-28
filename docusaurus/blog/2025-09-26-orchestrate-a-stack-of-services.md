@@ -21,22 +21,22 @@ This brings new challenges:
 
 <!-- truncate -->
 
-## From workflows to resources
+## From workflows to agents
 
 In Orbits, a `Workflow` is a one-time execution: it runs, performs its actions, and then it's done. While this is useful, it's not enough when you want to manage stateful, reusable services across multiple environments or tenants.
 
-Instead, Orbits introduces the concept of a `Resource`.
+Instead, Orbits introduces the concept of a `Agent`.
 
-A `Resource` encapsulates both the identity of what you’re deploying and the logic for how to install, update, or manage it. Resources can be reused, composed, and tracked.
+A `Agent` encapsulates both the identity of what you’re deploying and the logic for how to install, update, or manage it. Agents can be reused, composed, and tracked.
 
-### Defining a BaseResource
+### Defining a BaseAgent
 
 #### Giving an identity to our services
 
-To manage multiple services per tenant, such as frontend and backend, we start by defining a `BaseResource`. This base class provides a common identity mechanism using the tenantId and a service-specific name. The `identity()` method uniquely identifies each resource instance, which allows Orbits to track, reconcile, and avoid duplicating shared resources.
+To manage multiple services per tenant, such as frontend and backend, we start by defining a `BaseAgent`. This base class provides a common identity mechanism using the tenantId and a service-specific name. The `identity()` method uniquely identifies each agent instance, which allows Orbits to track, reconcile, and avoid duplicating shared agents.
 
 ```ts
-export class BaseResource extends Resource {
+export class BaseAgent extends Agent {
     IArgument: {
         tenantId: string;
     };
@@ -53,15 +53,15 @@ export class BaseResource extends Resource {
 
 Orbits ressources distinguish between the installation phase and the update phase. This allows precise control over what happens during first-time deployment versus subsequent updates.
 
-We can implement shared setup, such as Git repository creation and cloud account provisioning, in the `defineInstall()` method of `BaseResource`:
+We can implement shared setup, such as Git repository creation and cloud account provisioning, in the `defineInstall()` method of `BaseAgent`:
 
 ```ts
-export class BaseResource extends Resource {
+export class BaseAgent extends Agent {
     async defineInstall() {
-        const createGit = new GitResource().setArgument({
+        const createGit = new GitAgent().setArgument({
             name: this.serviceName,
         });
-        const createAWS = new AWSResource().setArgument({
+        const createAWS = new AWSAgent().setArgument({
             id: this.tenantId,
         });
 
@@ -75,18 +75,18 @@ export class BaseResource extends Resource {
 
 In this setup:
 
-- GitResource uses `serviceName`, so each service (frontend, backend) gets its own Git repository.
-- AWSResource uses `tenantId`, ensuring every services share the same cloud account for a given tenant : no duplicate account will be created.
+- GitAgent uses `serviceName`, so each service (frontend, backend) gets its own Git repository.
+- AWSAgent uses `tenantId`, ensuring every services share the same cloud account for a given tenant : no duplicate account will be created.
 
 ### Differentiating frontend and backend
 
 Once the shared installation is abstracted, each service can implement its own logic tailored to its infrastructure and operational needs.
 Here we modify the `update` step.
 
-#### Backend resource
+#### Backend agent
 
 ```ts
-export class BackendResource extends BaseResource {
+export class BackendAgent extends BaseAgent {
     declare serviceName = 'backend';
 
     async defineUpdate() {
@@ -104,10 +104,10 @@ export class BackendResource extends BaseResource {
 }
 ```
 
-#### Frontend resource
+#### Frontend agent
 
 ```ts
-export class FrontendResource extends BaseResource {
+export class FrontendAgent extends BaseAgent {
     declare serviceName = 'frontend';
 
     async defineUpdate() {
@@ -142,29 +142,29 @@ Now let’s define an application stack that orchestrates both frontend and back
 Below is a schematic version of what this orchestration might look like:
 
 ```ts
-export class MyStack extends Resource {
+export class MyStack extends Agent {
     async defineUpdate() {
         //choose a deployment strategy
         //here we first deploy the frontend and then the backend.
         //could have done this in parellel
-        const backendResource = new BackendResource().setArgument(
+        const backendAgent = new BackendAgent().setArgument(
             this.argument
         );
-        const frontendResource = new FrontendResource().setArgument(
+        const frontendAgent = new FrontendAgent().setArgument(
             this.argument
         );
         try {
-            await this.do('update-backend', backendResource);
-            await this.do('update-frontend', frontendResource);
+            await this.do('update-backend', backendAgent);
+            await this.do('update-frontend', frontendAgent);
         } catch (err) {
             //rollback to previous working commit
             await this.do(
                 'rollback-frontend',
-                frontendResource.setCommand('rollback')
+                frontendAgent.setCommand('rollback')
             );
             await this.do(
                 'rollback-backend',
-                backendResource.setCommand('rollback')
+                backendAgent.setCommand('rollback')
             );
         }
     }
@@ -177,10 +177,10 @@ You could easily parallelize both deployments using Promise.all if the order doe
 
 #### Managing multiple tenants
 
-To scale across tenants, we define a Tenants resource that loops over each tenant and applies the stack. Failures are isolated and can be reported via Slack, email, or any other channel.
+To scale across tenants, we define a Tenants agent that loops over each tenant and applies the stack. Failures are isolated and can be reported via Slack, email, or any other channel.
 
 ```ts
-export class Tenants extends Resource {
+export class Tenants extends Agent {
     // you would likely fetch this from a database
     tenants = ['clientA', 'clientB', 'clientC'];
 
@@ -213,10 +213,10 @@ export class Tenants extends Resource {
 
 This simple syntax addresses common pain points in managing cloud services under the hood:
 
-- avoiding duplication: when multiple executions of a resource run in parallel, Orbits ensures the same final state without recreating resources unnecessarily. The orchestrator intelligently determines what needs updating, skipping, or preserving.
+- avoiding duplication: when multiple executions of a agent run in parallel, Orbits ensures the same final state without recreating agents unnecessarily. The orchestrator intelligently determines what needs updating, skipping, or preserving.
 - running scripts in different contexts : The concept of an executor provides a clean way to run specific actions within the right environment or context. Since infrastructure and scripts are managed together, it’s easy to target the exact environment where a command should execute.
-- safe error handling: Encapsulating orchestration logic in `Resource` enables rollback strategies when something fails mid-deployment.
-- multi-Tenant scalability: The `Tenants` resource allows applying the same stack logic across many clients, while isolating failures and surfacing them clearly.
+- safe error handling: Encapsulating orchestration logic in `Agent` enables rollback strategies when something fails mid-deployment.
+- multi-Tenant scalability: The `Tenants` agent allows applying the same stack logic across many clients, while isolating failures and surfacing them clearly.
 
 ## Possible enhancements
 
@@ -224,7 +224,7 @@ This example provides a basic overview of how we manage multi-tenant deployments
 
 - we could implement more complex rollback strategies
 - we could implement drift detection via the `cycle` hook
-- we could share some resources accross tenants with the same concept of `Resource`
+- we could share some resources accross tenants with the same concept of `Agent`
 
 ---
 

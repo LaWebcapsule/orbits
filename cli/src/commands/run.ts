@@ -49,7 +49,7 @@ const cleanDb = async (cliInstanceUUID: string) => {
         ActionRuntime.activeRuntime.LogModel.deleteMany({
             filter: { cli: true, cliInstanceUUID },
         }),
-        ActionRuntime.activeRuntime.ResourceModel.deleteMany({
+        ActionRuntime.activeRuntime.AgentModel.deleteMany({
             filter: { cli: true, cliInstanceUUID },
         }),
     ]);

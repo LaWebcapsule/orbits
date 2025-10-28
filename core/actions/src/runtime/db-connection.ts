@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { actionSchema, ActionSchemaInterface } from '../models/action.js';
 import { logSchema, LogSchemaInterface } from '../models/log.js';
-import { resourceSchema, ResourceSchemaInterface } from '../models/resource.js';
+import { agentSchema, AgentSchemaInterface } from '../models/agent.js';
 import type { ActionRuntime } from './action-runtime.js';
 
 /**
@@ -31,9 +31,9 @@ export function setDbConnection(runtime: ActionRuntime) {
                 'Action',
                 actionSchema
             );
-        runtime.ResourceModel = runtime.db.mongo.conn.model<
-            ResourceSchemaInterface<any, any>
-        >('Resource', resourceSchema);
+        runtime.AgentModel = runtime.db.mongo.conn.model<
+            AgentSchemaInterface<any, any>
+        >('Agent', agentSchema);
         runtime.LogModel = runtime.db.mongo.conn.model<LogSchemaInterface>(
             'Log',
             logSchema
@@ -49,9 +49,9 @@ export function setDbConnection(runtime: ActionRuntime) {
         'Action',
         actionSchema
     );
-    runtime.ResourceModel = conn.model<ResourceSchemaInterface<any, any>>(
-        'Resource',
-        resourceSchema
+    runtime.AgentModel = conn.model<AgentSchemaInterface<any, any>>(
+        'Agent',
+        agentSchema
     );
     runtime.LogModel = conn.model<LogSchemaInterface>('Log', logSchema);
     return conn;

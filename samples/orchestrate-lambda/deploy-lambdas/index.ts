@@ -1,6 +1,6 @@
 import { App, Stack } from 'aws-cdk-lib';
 import {
-    IResource,
+    IAgent,
     LambdaIntegration,
     MockIntegration,
     PassthroughBehavior,
@@ -56,7 +56,7 @@ export class ApiLambdaCrudDynamoDBStack extends Stack {
             ...nodeJsFunctionProps,
         });
 
-        // Integrate the Lambda functions with the API Gateway resource
+        // Integrate the Lambda functions with the API Gateway agent
         const generateBuySellRecommendIntegration = new LambdaIntegration(
             generateBuySellRecommend
         );
@@ -64,18 +64,18 @@ export class ApiLambdaCrudDynamoDBStack extends Stack {
             checkStockPrice
         );
 
-        // Create an API Gateway resource for each of the CRUD operations
+        // Create an API Gateway agent for each of the CRUD operations
         const api = new RestApi(this, 'stockApi', {
             restApiName: 'Stock Trading State Machine',
             // In case you want to manage binary types, uncomment the following
             // binaryMediaTypes: ["*/*"],
         });
 
-        const checkStockPriceApi = api.root.addResource('checkStockPrice');
+        const checkStockPriceApi = api.root.addAgent('checkStockPrice');
         checkStockPriceApi.addMethod('GET', checkStockPriceIntegration);
         addCorsOptions(checkStockPriceApi);
 
-        const generateBuySellRecommendApi = api.root.addResource(
+        const generateBuySellRecommendApi = api.root.addAgent(
             'generateBuySellRecommendation'
         );
         generateBuySellRecommendApi.addMethod(
@@ -84,15 +84,15 @@ export class ApiLambdaCrudDynamoDBStack extends Stack {
         );
         addCorsOptions(generateBuySellRecommendApi);
 
-        const buyStockApi = api.root.addResource('buyStock');
+        const buyStockApi = api.root.addAgent('buyStock');
         buyStockApi.addMethod('POST', new LambdaIntegration(buyStock));
         addCorsOptions(buyStockApi);
 
-        const sellStockApi = api.root.addResource('sellStock');
+        const sellStockApi = api.root.addAgent('sellStock');
         sellStockApi.addMethod('POST', new LambdaIntegration(sellStock));
         addCorsOptions(sellStockApi);
 
-        // const singleItem = items.addResource('{id}');
+        // const singleItem = items.addAgent('{id}');
         // singleItem.addMethod('GET', getOneIntegration);
         // singleItem.addMethod('PATCH', updateOneIntegration);
         // singleItem.addMethod('DELETE', deleteOneIntegration);
@@ -100,8 +100,8 @@ export class ApiLambdaCrudDynamoDBStack extends Stack {
     }
 }
 
-export function addCorsOptions(apiResource: IResource) {
-    apiResource.addMethod(
+export function addCorsOptions(apiAgent: IAgent) {
+    apiAgent.addMethod(
         'OPTIONS',
         new MockIntegration({
             // In case you want to use binary media types, uncomment the following line

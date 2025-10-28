@@ -23,7 +23,7 @@ export class LambdaStack extends Stack {
             proxy: false,
         });
 
-        const hello = apiGw.root.addResource('hello');
+        const hello = apiGw.root.addAgent('hello');
         hello.addMethod('GET');
 
         const cachePolicy = new cloudfront.CachePolicy(

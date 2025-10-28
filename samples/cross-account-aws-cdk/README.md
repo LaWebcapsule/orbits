@@ -1,4 +1,4 @@
-# CDK Cross-Account Resource Example
+# CDK Cross-Account Agent Example
 
 A practical example demonstrating how to manage AWS resources across multiple accounts using CDK and orbits. This project showcases an hello-world example: it deploys an AWS Systems Manager parameter in Account A and read it from a Lambda function in Account B.
 
@@ -105,9 +105,9 @@ npx tsx src/orbits/orbi.ts
 ├── src/
 │   ├── orbits/
 │   │   ├── orbi.ts # Main orchestration script
-│   │   ├── lambda-resource.ts # lambda resource definition
-│   │   ├── param-resource.ts # Param resource definition
-│   │   ├── hello-resource.ts # Hello resource definition: the resource that make the junction between param and lambda
+│   │   ├── lambda-agent.ts # lambda agent definition
+│   │   ├── param-agent.ts # Param agent definition
+│   │   ├── hello-agent.ts # Hello agent definition: the agent that make the junction between param and lambda
 │   └── cdk/ # CDK stack definitions
 │       ├── lambda.ts # lambda CDK stack
 │       └── param.ts # Param CDK stack

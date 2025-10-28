@@ -23,7 +23,7 @@ You can control many of these behaviors through environment variables. See [Cust
 
 ### Waiting for Bootstrap Completion
 
-After instantiating the runtime, you can explicitly wait for the bootstrapping process to complete before creating Actions or Resources:
+After instantiating the runtime, you can explicitly wait for the bootstrapping process to complete before creating Actions or Agents:
 To wait for the end of the bootstrapping process, you can consume the `ActionRuntime.waitForActiveRuntime` promise. Then, you are ready to save your first Action!
 
 ```ts title="src/index.ts"
@@ -46,19 +46,19 @@ action.save();
 
 :::warning
 
-Be cautious when creating Actions directly after bootstrap. If multiple processes run this script simultaneously or if the same script is run multiple times, duplicate Actions will be created. This is typically not the desired behavior Instead, use Resources, which properly manage their lifecycle hooks:
+Be cautious when creating Actions directly after bootstrap. If multiple processes run this script simultaneously or if the same script is run multiple times, duplicate Actions will be created. This is typically not the desired behavior Instead, use Agents, which properly manage their lifecycle hooks:
 
 ```ts
 ActionRuntime.waitForActiveRuntime.then(() => {
-    const resource = new MyResource();
-    resource.save();
+    const agent = new MyAgent();
+    agent.save();
 });
 ```
 
 In general:
 
 - you will set a new Action via an external api call;
-- you can programmatically set a new Resource after the app has been bootstrapped.
+- you can programmatically set a new Agent after the app has been bootstrapped.
 
 :::
 
