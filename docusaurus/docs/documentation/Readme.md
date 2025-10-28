@@ -45,8 +45,8 @@ Orbits provides:
 
 ### 🦾 Crash-proof and Reliable Agents
 - Design fault-tolerant agents that can safely run in production environments.
-- Enforce a clear concurrency model to execute operations once and only once across your resources lifecycle.
-- 
+- Enforce a clear concurrency model to execute operations once and only once across your application lifecycle.
+- Guarantee deterministic, high-availability orchestration across distributed systems
 
 
 ## Next Steps
