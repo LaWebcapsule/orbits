@@ -58,7 +58,7 @@ export class LambdaStack extends Stack {
                 new iam.PolicyStatement({
                     effect: iam.Effect.ALLOW,
                     actions: ['sts:AssumeRole'],
-                    agents: [props?.accountARoleArn],
+                    resources: [props?.accountARoleArn],
                 })
             );
         }
