@@ -469,4 +469,18 @@ export class Agent extends CoalescingWorkflow {
     }
 }
 
+/**
+ * @deprecated `Resource` has been renamed to `Agent`.
+ * Please replace all occurrences of `Resource` with `Agent`.
+ * See: https://github.com/LaWebcapsule/orbits/pull/113
+ */
+export const Resource = new Proxy(Agent, {
+    construct(target, args, newTarget) {
+      console.warn(
+        "⚠️ 'Resource' is deprecated. Please replace to use 'Agent' constructor instead.\nSee: https://github.com/LaWebcapsule/orbits/pull/113"
+      );
+      return Reflect.construct(target, args, newTarget);
+    },
+});
+
 type x = AgentCommands<Agent>;
