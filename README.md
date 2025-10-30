@@ -1,6 +1,6 @@
 # Orbits
 
-Keep your orbit in the cloud galaxy! A typescript framework for DevOps workflow.
+Keep your orbit in the cloud galaxy! A typescript framework for DevOps Agents.
 
 <p align="center"><img src="docusaurus/static/img/workflow_orbits.png" width="75%"></p>
 
