@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.4.0
+
+### Minor Changes
+
+- 15474bf: rename resource in agent
+
 ## 0.3.0
 
 ### Minor Changes
