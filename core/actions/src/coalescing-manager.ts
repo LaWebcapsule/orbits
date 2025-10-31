@@ -95,9 +95,9 @@ export abstract class CoalescingWorkflow extends Workflow {
             const actions = await ActionRuntime.activeRuntime.ActionModel.find({
                 workflowRef: ref,
                 workflowIdentity: this.stringifyIdentity(),
-                state : {
-                    $lte : ActionState.SUCCESS //we do not retain ERROR, only SUCCESS are shared
-                }
+                state: {
+                    $lte: ActionState.SUCCESS, //we do not retain ERROR, only SUCCESS are shared
+                },
             }).sort('createdAt');
             for (const action of actions) {
                 if (!this.registeredActionIds.includes(action.id)) {
@@ -130,9 +130,9 @@ export abstract class CoalescingWorkflow extends Workflow {
         return super.do(ref, opts);
     }
 
-    trackAction(ref: string, action: ActionSchemaInterface){
+    trackAction(ref: string, action: ActionSchemaInterface) {
         const strategy = this.mapRefWithStrategy.get(ref);
-        if(strategy === 'cross-workflow'){
+        if (strategy === 'cross-workflow') {
             action.workflowCrossStrategy = true;
         }
         return super.trackAction(ref, action);

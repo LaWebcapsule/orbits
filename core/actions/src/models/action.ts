@@ -33,7 +33,7 @@ export interface ActionSchemaInterface<
     workflowRef?: string;
     workflowIteration?: number;
     workflowIdentity?: string;
-    workflowCrossStrategy?: boolean,
+    workflowCrossStrategy?: boolean;
     workflowStack: {
         ref: string;
         stepIndex: number;
