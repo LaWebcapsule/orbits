@@ -1,5 +1,5 @@
 ---
-'@orbi-ts/core': minor
+'@orbi-ts/core': patch
 ---
 
-rename resource in agent
+don't close successfull once actions in order to keep track of their value
