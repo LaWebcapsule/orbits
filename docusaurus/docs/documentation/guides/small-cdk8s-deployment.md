@@ -9,7 +9,7 @@ A practical example demonstrating how to manage kube resources through CDK8S and
 
 CDK8S is powerful for defining Kubernetes resources, but it lacks built-in support for programmatic deployment, rollback mechanisms, or exposing outputs.
 The Orbits CDK8S integration adds a [model-driven orchestration](https://www.wwt.com/blog/what-is-model-driven-orchestration-and-why-would-i-use-it) layer, making CDK8S fully operational in automated workflows.
-With `Cdk8sResource` from Orbits, you gain:
+With `Cdk8sAgent` from Orbits, you gain:
 
 - Programmatic deployment of your CDK8S charts;
 - Automatic rollback in case of deployment failure;
@@ -102,7 +102,7 @@ npx tsx src/orbits/orbi.ts
 ├── src/
 │   ├── orbits/
 │   │   └── orbi.ts # Main orchestration script
-│   │   └── basic-resource.ts # Basic resource definition
+│   │   └── basic-agent.ts # Basic agent definition
 │   └── cdk/              # CDK8S chart definitions
 │       └── basic-cdk8s.ts # basic chart definition
 ├── package.json

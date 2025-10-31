@@ -21,16 +21,16 @@ export class MyAction extends Action {
 
 Sometimes, an Executor needs some installation before being able to be called.
 This installation can include building a docker image, deploying a cdk...
-As a consequence, an Executor has a `generateSupportResource` method which returns a `Resource`.
+As a consequence, an Executor has a `generateSupportAgent` method which returns a `Agent`.
 
 ```ts
 const dockerExecutor = new DockerExecutor({
     // ...
 });
-const supportResource = dockerExecutor.generateSupportResource();
+const supportAgent = dockerExecutor.generateSupportAgent();
 ```
 
-You should consume the resource before using the Executor.
+You should consume the agent before using the Executor.
 Example:
 
 ```ts
@@ -39,7 +39,7 @@ export class MyBuildPipeline extends Workflow {
         const dockerExecutor = new DockerExecutor({});
         await this.do(
             'ensureExecutorHasSupport',
-            dockerExecutor.generateSupportResource()
+            dockerExecutor.generateSupportAgent()
         );
         await this.do('launchActionWithExecutor', new ActionThatUseExecutor());
     }

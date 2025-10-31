@@ -196,7 +196,7 @@ actionSchema.method('lockAndSave', function (this: ActionSchemaInterface<any>) {
         if (err instanceof mongoose.Error.VersionError) {
             throw new ActionError(
                 'Lock already acquired',
-                errorCodes.RESOURCE_LOCKED
+                errorCodes.AGENT_LOCKED
             );
         } else {
             throw err;

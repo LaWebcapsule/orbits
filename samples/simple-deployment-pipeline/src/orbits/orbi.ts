@@ -1,7 +1,7 @@
 import { Workflow } from '@orbi-ts/core';
 import { CodeQualityWorkflow } from './code-quality';
 import { InvalidateCacheAction } from './invalidate-cache';
-import { LambdaResource } from './lambda-resource';
+import { LambdaAgent } from './lambda-agent';
 import { VerifyLambdaDeploymentAction } from './verify';
 
 export class DeployHelloWorkflow extends Workflow {
@@ -14,7 +14,7 @@ export class DeployHelloWorkflow extends Workflow {
         await this.do('quality', new CodeQualityWorkflow());
         const result = await this.do(
             'deploy',
-            new LambdaResource({
+            new LambdaAgent({
                 region: this.argument.region,
                 account: this.argument.account,
             })

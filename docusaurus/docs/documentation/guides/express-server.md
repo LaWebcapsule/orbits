@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 ---
-# An express server over your resources
+# An express server over your agents
 
 # Install
 

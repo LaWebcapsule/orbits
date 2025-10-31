@@ -77,7 +77,7 @@ npx tsx src/orbits/orbi.ts
 ├── src/
 │   ├── orbits/
 │   │   ├── orbi.ts # Main orchestration script
-│   │   └── basic-resource.ts # Basic resource definition
+│   │   └── basic-agent.ts # Basic agent definition
 │   └── cdk/ # CDK8S chart definitions
 │       └── basic-cdk8s.ts # basic chart definition
 ├── package.json

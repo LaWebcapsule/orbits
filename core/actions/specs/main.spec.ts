@@ -26,7 +26,7 @@ const specFiles = [
     'action.spec' + extension,
     //'generator.spec' + extension,
     //'other-action.spec' + extension,
-    //'resource.spec' + extension,
+    'agent.spec' + extension,
 ];
 
 j.loadConfig({

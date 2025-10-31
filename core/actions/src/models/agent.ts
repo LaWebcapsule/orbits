@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export enum ResourceState {
+export enum AgentState {
     UNKNOWN = -1,
     SLEEPING,
     EXECUTING_MAIN,
@@ -13,7 +13,7 @@ export enum ResourceState {
     REVERTED,
 }
 
-export interface ResourceSchemaInterface<IOutput, Iinfo>
+export interface AgentSchemaInterface<IOutput, Iinfo>
     extends mongoose.Document {
     identity: string;
     actionRef: string;
@@ -30,7 +30,7 @@ export interface ResourceSchemaInterface<IOutput, Iinfo>
     info: Iinfo;
 }
 
-export const resourceSchema = new mongoose.Schema(
+export const agentSchema = new mongoose.Schema(
     {
         identity: { type: String },
         actionRef: String,
@@ -55,7 +55,7 @@ export const resourceSchema = new mongoose.Schema(
     }
 );
 
-resourceSchema.index(
+agentSchema.index(
     { identity: 1, actionRef: 1 },
     {
         unique: true,

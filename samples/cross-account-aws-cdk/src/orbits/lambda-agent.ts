@@ -1,7 +1,7 @@
-import { CdkStackResource } from '@orbi-ts/fuel';
+import { CdkStackAgent } from '@orbi-ts/fuel';
 import { LambdaStack } from '../cdk/lambda.js';
 
-export class LambdaResource extends CdkStackResource {
+export class LambdaAgent extends CdkStackAgent {
     StackConstructor = LambdaStack;
 
     declare IOutput: {

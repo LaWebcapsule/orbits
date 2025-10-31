@@ -9,8 +9,8 @@ import * as winston from 'winston';
 import { Action, ActionSchemaInterface } from '../../index.js';
 import { ActionCron } from '../action-job.js';
 import { ActionError } from '../error/error.js';
+import { AgentSchemaInterface } from '../models/agent.js';
 import { LogSchemaInterface } from '../models/log.js';
-import { ResourceSchemaInterface } from '../models/resource.js';
 import { actionKind, actionKindSymbols } from './action-kind.js';
 import { RuntimeDb, setDbConnection } from './db-connection.js';
 import { getEnv } from './get-env.js';
@@ -74,7 +74,7 @@ export class ActionRuntime {
     };
 
     ActionModel: mongoose.Model<ActionSchemaInterface>;
-    ResourceModel: mongoose.Model<ResourceSchemaInterface<any, any>>;
+    AgentModel: mongoose.Model<AgentSchemaInterface<any, any>>;
     LogModel: mongoose.Model<LogSchemaInterface>;
 
     bootstrapPath: string;

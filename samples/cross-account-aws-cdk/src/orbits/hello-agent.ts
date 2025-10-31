@@ -1,8 +1,8 @@
-import { Resource } from '@orbi-ts/core';
-import { LambdaResource } from './lambda-resource.js';
-import { ParamResource } from './param-resource.js';
+import { Agent } from '@orbi-ts/core';
+import { LambdaAgent } from './lambda-agent.js';
+import { ParamAgent } from './param-agent.js';
 
-export class HelloResource extends Resource {
+export class HelloAgent extends Agent {
     declare IArgument: {
         accountA: {
             id: string;
@@ -13,47 +13,47 @@ export class HelloResource extends Resource {
             profile: string;
         };
         region: string;
-    } & Resource['IArgument'];
+    } & Agent['IArgument'];
 
     identity() {
         return 'hello';
     }
 
     async defineInstall() {
-        await this.do('firstDeployLambda', this.constructLambdaResource());
+        await this.do('firstDeployLambda', this.constructLambdaAgent());
     }
 
     async defineUpdate() {
-        const lambdaResource = this.constructLambdaResource();
+        const lambdaAgent = this.constructLambdaAgent();
 
         const lambdaOutput = await this.do('getLambdaOutput', () => {
-            return lambdaResource.getResourceOutput();
+            return lambdaAgent.getAgentOutput();
         });
 
         const paramOutput = await this.do(
             'updateParam',
-            this.constructParamResource(lambdaOutput)
+            this.constructParamAgent(lambdaOutput)
         );
 
         await this.do(
             'updateLambda',
-            this.constructLambdaResource(paramOutput)
+            this.constructLambdaAgent(paramOutput)
         );
     }
 
     async defineUninstall() {
         await this.do(
             'uninstallLambda',
-            this.constructLambdaResource().setCommand('Uninstall')
+            this.constructLambdaAgent().setCommand('Uninstall')
         );
         await this.do(
             'uninstallParam',
-            this.constructParamResource().setCommand('Uninstall')
+            this.constructParamAgent().setCommand('Uninstall')
         );
     }
 
-    constructLambdaResource(paramOutput?: ParamResource['IOutput']) {
-        return new LambdaResource().setArgument({
+    constructLambdaAgent(paramOutput?: ParamAgent['IOutput']) {
+        return new LambdaAgent().setArgument({
             stackName: 'lambda',
             awsProfileName: this.argument.accountB.profile,
             stackProps: {
@@ -67,8 +67,8 @@ export class HelloResource extends Resource {
         });
     }
 
-    constructParamResource(lambdaOutput?: LambdaResource['IOutput']) {
-        return new ParamResource().setArgument({
+    constructParamAgent(lambdaOutput?: LambdaAgent['IOutput']) {
+        return new ParamAgent().setArgument({
             stackName: 'param',
             awsProfileName: this.argument.accountA.profile,
             stackProps: {

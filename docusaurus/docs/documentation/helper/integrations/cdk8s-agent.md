@@ -1,6 +1,6 @@
-# CDK8S Resources
+# CDK8S Agents
 
-CDK8S Resources let you programmatically manage and deploy your CDK8S charts.
+CDK8S Agents let you programmatically manage and deploy your CDK8S charts.
 It provides an enhanced way of working with the CDK8S, enabling you to:
 
 - Consistently deploy your charts with built-in rollback mechanisms in case of failure;
@@ -9,7 +9,7 @@ It provides an enhanced way of working with the CDK8S, enabling you to:
 
 ## Installation
 
-The `CdkResource` construct is part of the `@orbi-ts/fuel` package.
+The `CdkAgent` construct is part of the `@orbi-ts/fuel` package.
 You'll need to install it first:
 
 ```bash
@@ -19,7 +19,7 @@ npm install @orbi-ts/fuel
 Then import it :
 
 ```ts
-import { CdkResource } from '@orbi-ts/fuel';
+import { CdkAgent } from '@orbi-ts/fuel';
 ```
 
 ### Prerequisite
@@ -29,10 +29,10 @@ import { CdkResource } from '@orbi-ts/fuel';
 ## Encapsulate a CDK8S chart
 
 Assume you have a CDK8S chart named `BasicChart`.
-You wrap it in a CDK8S resource by extending the `Cdk8sResource` class.
+You wrap it in a CDK8S agent by extending the `Cdk8sAgent` class.
 
 ```ts
-export class BasicResource extends Cdk8sResource {
+export class BasicAgent extends Cdk8sAgent {
     StackConstructor = BasicChart;
 }
 ```
@@ -48,7 +48,7 @@ You define your output overriding the `setOutput` method.
 You can output any values of the object in your stack.
 
 ```ts title="src/cdk/lambda-stack.ts"
-export class BasicResource extends Cdk8sResource {
+export class BasicAgent extends Cdk8sAgent {
     StackConstructor = BasicChart;
     stack: BasicChart; //for typing purpose
 
@@ -67,8 +67,8 @@ This way, you can, for example :
 - let the cdk8s generate a namespace name: `this.ns = new kplus.Namespace(this, 'my-namespace')`;
 - retrieve and output the generated name:
 
-```ts title="src/cdk8s/basic-resource.ts"
-export class BasicResource extends Cdk8sResource {
+```ts title="src/cdk8s/basic-agent.ts"
+export class BasicAgent extends Cdk8sAgent {
     StackConstructor = BasicChart;
     stack: BasicChart; // for typing purpose
 
@@ -89,14 +89,14 @@ For example, you may need the IP of your loadbalancer in order to set it into yo
 
 - First, in your stack, export the load balancer service:
 
-```ts title="src/cdk8s/basic-resource.ts"
+```ts title="src/cdk8s/basic-agent.ts"
 this.loadBalancerService = new kplus.Service(this, 'load-balancer');
 ```
 
 - Then, in the `setOutput()`, query the kube api to have the IP address:
 
-```ts title="src/orbits/lambda-resource.ts"
-export class BasicResource extends CdkResource {
+```ts title="src/orbits/lambda-agent.ts"
+export class BasicAgent extends CdkAgent {
     StackConstructor = BasicChart;
 
     declare IOutput: {
@@ -117,9 +117,9 @@ export class BasicResource extends CdkResource {
 }
 ```
 
-## Consuming the resource
+## Consuming the agent
 
-You can consume cdk resource in any workflow/resource.
+You can consume cdk agent in any workflow/agent.
 
 ```ts title="src/orbits/my-workflow.ts"
 export class MyWorkflow extends Workflow {
@@ -127,7 +127,7 @@ export class MyWorkflow extends Workflow {
         //...
         await this.do(
             'deployMyChart',
-            new MyChartResource().setArgument({
+            new MyChartAgent().setArgument({
                 stackName: 'my-chart',
                 stackProps: {
                     // other props that will be passed to the stack constructors.
@@ -139,7 +139,7 @@ export class MyWorkflow extends Workflow {
 }
 ```
 
-## Resource lifecycle
+## Agent lifecycle
 
 ### Update step
 
@@ -148,7 +148,7 @@ The update step deploys the CDK8S stack, using `argument.stackProps` as input to
 :::info
 For advanced scenarios (e.g. when needing secrets or dynamic inputs), you can override the `init` method.
 
-```ts title="src/orbits/lambda-resource.ts"
+```ts title="src/orbits/lambda-agent.ts"
 secretValue = '';
 async init() {
     this.secretValue = await this.getSecret(this.argument.secretId);
@@ -184,23 +184,23 @@ async defineCycle() {
 ```
 
 By default, the cycle is run every 10 minutes.
-You can override this parameter with `defaultResourceSettings`.
+You can override this parameter with `defaultAgentSettings`.
 
 ### Uninstall step
 
 The uninstall step removes the CDK8S stack from the kube environment.
 
-## Resource output
+## Agent output
 
-You can retrieve Kube outputs from the deployed chart using `getResourceOutput()` method.
+You can retrieve Kube outputs from the deployed chart using `getAgentOutput()` method.
 
 ```ts
 // shortcut to get cloudformation output of the stacks
 const myOutput = await this.do('getMyChartOutput', () => {
-    return myChartResource.getResourceOutput();
+    return myChartAgent.getAgentOutput();
 });
 // output are also available after a deployments
-const myChartOutput = await this.do('deployMyChart', myChartResource);
+const myChartOutput = await this.do('deployMyChart', myChartAgent);
 ```
 
 The type of `myChartOutput` will be `MyChart['IOutput']`.
@@ -215,7 +215,7 @@ However, you can explicitly define how the kubeconfig is selected.
 You can specify the way kubeConfig is chosen:
 
 ```ts
-new MyChartResource().setArgument({
+new MyChartAgent().setArgument({
     kubeConfig: {
         from: {
             file: '/tmp/my-file', // path to the file
@@ -228,11 +228,11 @@ new MyChartResource().setArgument({
 **Advanced Use Cases**
 
 In more complex scenarios, you might need to download the `kubeconfig` dynamically before deploying.
-You may also want to standardize how kube credentials are handled across all your actions, instead of specifying kubeConfig every time you instantiate a chart resource.
+You may also want to standardize how kube credentials are handled across all your actions, instead of specifying kubeConfig every time you instantiate a chart agent.
 To do this, you can override the asynchronous `setKubeApi` method:
 
 ```ts
-export class MyChartResource extends Cdk8sResource {
+export class MyChartAgent extends Cdk8sAgent {
     override async setKubeApi() {
         // Download the kubeconfig file, e.g., from your cloud provider
         await getConfigFile(this.argument.clusterName);

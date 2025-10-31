@@ -18,12 +18,12 @@ export const BASE_ACTIONS = [
     'RejectAction',
     'Workflow',
     'TrackPromise',
-    'Resource',
+    'Agent',
     'CoalescingWorkflow',
     'Digestor',
     'Sleep',
-    'ResourceController',
-    'Resource',
+    'AgentController',
+    'Agent',
 ];
 
 export class InvalidParameterError extends Error {}
@@ -204,8 +204,8 @@ export class CRUD {
 
                 // order is important as broader types have inherited tags
                 for (const tagKind of [
-                    actionKind.RESOURCE,
-                    actionKind.RESOURCE_CONTROLLER,
+                    actionKind.AGENT,
+                    actionKind.AGENT_CONTROLLER,
                     actionKind.COALESCING_WORKFLOW,
                     actionKind.WORKFLOW,
                     actionKind.ACTION,
@@ -496,5 +496,5 @@ export class CRUD {
     }
 
     // TODO: move this into core
-    // TODO: add CRUD for resources
+    // TODO: add CRUD for agents
 }

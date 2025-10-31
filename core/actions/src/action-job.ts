@@ -145,7 +145,7 @@ export class ActionCron {
                     // throw an error that we will catch later
                     throw new ActionError(
                         'lock already taken',
-                        errorCodes.RESOURCE_LOCKED
+                        errorCodes.AGENT_LOCKED
                     );
                 }
                 action.internalLog('CRON action processing started');
@@ -178,7 +178,7 @@ export class ActionCron {
             .catch((err) => {
                 if (
                     err instanceof ActionError &&
-                    err.code === errorCodes.RESOURCE_LOCKED
+                    err.code === errorCodes.AGENT_LOCKED
                 ) {
                     ActionRuntime.activeRuntime.logger.debug(err);
                     return;

@@ -1,27 +1,27 @@
 ---
-title: Resource
+title: Agent
 sidebar_position: 3
 ---
 
-# Resource documentation
+# Agent documentation
 
-A Resource is a specialized type of Workflow designed to orchestrate the lifecycle of real-world entities, such as cloud accounts, services, or data systems. Resources provide a declarative and persistent way to manage these entities through versioning, reconciliation, shared state, and scheduled verification.
+A Agent is a specialized type of Workflow designed to orchestrate the lifecycle of real-world entities, such as cloud accounts, services, or data systems. Agents provide a declarative and persistent way to manage these entities through versioning, reconciliation, shared state, and scheduled verification.
 
-Resources offer:
+Agents offer:
 
 - Retroactive control loops;
 - Shared workflow state via identity;
 - Output reuse across executions;
 - Hookable lifecycle stages: install, update, uninstall, and cycle.
 
-## Write a Resource
+## Write a Agent
 
-A Resource is a `Workflow` with some specials behaviors.
+A Agent is a `Workflow` with some specials behaviors.
 
-### The `identity` of a resource
+### The `identity` of a agent
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -32,22 +32,22 @@ export class MyResource extends Resource {
 }
 ```
 
-The identity() method defines a unique key for the resource. All resource instances with the same constructor and identity value will share the same database document, lifecycle state, and output.
+The identity() method defines a unique key for the agent. All agent instances with the same constructor and identity value will share the same database document, lifecycle state, and output.
 
 This enables deduplication and stateful coordination between concurrent invocations.
 
-#### Persistent storage for resources
+#### Persistent storage for agents
 
-Each resource is backed by a shared database document, accessible via the `resourceDbDoc` property.
+Each agent is backed by a shared database document, accessible via the `agentDbDoc` property.
 Some properties of the document are internal to the framework and should not be modified unless you know what you are doing.
 
-#### Resource output
+#### Agent output
 
-Each resource can define an output with the `setOutput` method.
-Outputs are stored persistently and are available to other workflows or resource cycles.
+Each agent can define an output with the `setOutput` method.
+Outputs are stored persistently and are available to other workflows or agent cycles.
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -64,10 +64,10 @@ export class MyResource extends Resource {
 }
 ```
 
-Outputs can then be consumed by other workflows or resources:
+Outputs can then be consumed by other workflows or agents:
 
 ```ts
-export class MySecondResource extends Resource {
+export class MySecondAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -85,9 +85,9 @@ export class MySecondResource extends Resource {
     async defineUpdate() {
         const output = await this.do(
             'get-output',
-            new MyResource().setArgument({
+            new MyAgent().setArgument({
                 accountId: this.argument.accountId,
-            }).getResourceOutput
+            }).getAgentOutput
         );
         await this.do('deploy', () => {
             return new Service(output).create();
@@ -96,14 +96,14 @@ export class MySecondResource extends Resource {
 }
 ```
 
-### Resource lifecycle commands
+### Agent lifecycle commands
 
-Resources define lifecycle hooks. These correspond to specific `setCommand()` values and are executed based on state or schedule.
+Agents define lifecycle hooks. These correspond to specific `setCommand()` values and are executed based on state or schedule.
 
 #### Install hook
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -123,14 +123,14 @@ export class MyResource extends Resource {
 
 `defineInstall` runs:
 
-- when the resource has never been installed before;
+- when the agent has never been installed before;
 - when the version field changes;
 - when explicitly triggered with `.setCommand("install")`.
 
 #### Update
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -163,7 +163,7 @@ export class MyResource extends Resource {
 #### Uninstall
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -203,10 +203,10 @@ export class MyResource extends Resource {
 
 #### Cycle
 
-Resources support a `defineCycle()` method, triggered periodically to verify or reconcile the external-world state.
+Agents support a `defineCycle()` method, triggered periodically to verify or reconcile the external-world state.
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -240,7 +240,7 @@ export class MyResource extends Resource {
         });
     }
 
-    defaultResourceSettings = {
+    defaultAgentSettings = {
         cycle: {
             frequency: 10 * 60 * 1000, // the cycle hook will run every ten minutes
         },
@@ -254,13 +254,13 @@ export class MyResource extends Resource {
 
 The `cycle` hook is called:
 
-- at the frequency stored in the `resourceDbDoc`, under the path `cycle.frequency`. You can set a first value for this frequency using `defaultResourceSettings.cycle.frequency`.
+- at the frequency stored in the `agentDbDoc`, under the path `cycle.frequency`. You can set a first value for this frequency using `defaultAgentSettings.cycle.frequency`.
 - if you force the execution of the `cycle` step using `setCommand('cycle')`
 
-By default, the `cycle` hook does nothing. A simple strategy can be, to ensure your resources are up-to-date, to launch a complete digestion hook.
+By default, the `cycle` hook does nothing. A simple strategy can be, to ensure your agents are up-to-date, to launch a complete digestion hook.
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -294,28 +294,28 @@ export class MyResource extends Resource {
         });
     }
 
-    defaultResourceSettings = {
+    defaultAgentSettings = {
         cycle: {
             frequency: 10 * 60 * 1000, // the cycle hook will run every ten minutes
         },
     };
 
     async defineCycle() {
-        await this.do('digest', this.resource); // launch a digest cycle
+        await this.do('digest', this.agent); // launch a digest cycle
     }
 }
 ```
 
-#### Using resources in a workflow
+#### Using agents in a workflow
 
-You can execute a Resource like any other Workflow. Its default command is derived from current state (e.g. install or update):
+You can execute a Agent like any other Workflow. Its default command is derived from current state (e.g. install or update):
 
 ```ts
 export class MyWorkflow extends Workflow {
     define() {
         await this.do(
-            'myResource',
-            new MyResource().setArgument({ accountId })
+            'myAgent',
+            new MyAgent().setArgument({ accountId })
         );
     }
 }
@@ -327,8 +327,8 @@ Or force a specific command:
 export class MyWorkflow extends Workflow {
     define() {
         this.do(
-            'resourceUpToDate',
-            new MyResource().setArgument({
+            'agentUpToDate',
+            new MyAgent().setArgument({
                 accountId: this.argument.accountId,
             })
         ).setCommand('update');
@@ -338,12 +338,12 @@ export class MyWorkflow extends Workflow {
 
 #### Custom Hooks
 
-In addition to the standard lifecycle hooks (install, update, uninstall, cycle), a `Resource` can expose custom hooks. These are useful when you want to support additional behaviors that do not fit into the predefined lifecycle.
+In addition to the standard lifecycle hooks (install, update, uninstall, cycle), a `Agent` can expose custom hooks. These are useful when you want to support additional behaviors that do not fit into the predefined lifecycle.
 
 To define a custom hook, you simply create a `defineX()` method, where `X` is the name of your custom command (starting with an uppercase letter):
 
 ```ts
-export class MyResource extends Resource {
+export class MyAgent extends Agent {
     IArgument: {
         accountId: string;
     };
@@ -368,11 +368,11 @@ To invoke this hook, use `.setCommand("syncPermissions")` from any workflow:
 ```ts
 await this.do(
     'res',
-    new MyResource().setArgument({ accountId }).setCommand('syncPermissions')
+    new MyAgent().setArgument({ accountId }).setCommand('syncPermissions')
 );
 ```
 
-Custom hooks allow resources to be extended with additional behaviors while still benefiting from identity-based deduplication and persistent state management.
+Custom hooks allow agents to be extended with additional behaviors while still benefiting from identity-based deduplication and persistent state management.
 
 :::info
 Custom hook names must match the format `defineMyCommand`, and are called by passing "myCommand" to `setCommand()` (case-sensitive).
@@ -380,7 +380,7 @@ Custom hook names must match the format `defineMyCommand`, and are called by pas
 
 ### Convergent Execution (Coalescing)
 
-When multiple identical resource instances (same constructor and identity) are triggered concurrently **with the same command**, the system ensures that only one execution runs. The other invocations will wait and reuse the result of the running instance.
+When multiple identical agent instances (same constructor and identity) are triggered concurrently **with the same command**, the system ensures that only one execution runs. The other invocations will wait and reuse the result of the running instance.
 
 This is known as coalescing, and it ensures consistency, reduces overhead, and prevents race conditions.
 
@@ -388,59 +388,59 @@ Example:
 
 ```ts
 // ...some context
-await this.do('my-resource', new Resource().setCommand('update'));
+await this.do('my-agent', new Agent().setCommand('update'));
 // ...some other context elsewhere, called in the same time
-await this.do('my-resource', new Resource().setCommand('update'));
+await this.do('my-agent', new Agent().setCommand('update'));
 ```
 
-The two workflows want to run the `update` resource command.
-Only one `update` resource command will be launched and the two workflows steps will have the same result.
+The two workflows want to run the `update` agent command.
+Only one `update` agent command will be launched and the two workflows steps will have the same result.
 
 ### Divergent Execution (lock)
 
-When multiple identical resource instances are triggered concurrently with _different commands_, only one will execute. The others will fail with a lock error to prevent command conflicts.
+When multiple identical agent instances are triggered concurrently with _different commands_, only one will execute. The others will fail with a lock error to prevent command conflicts.
 
 Example :
 
 ```ts
 // ...some context
-await this.do('my-resource', new Resource().setCommand('update'));
+await this.do('my-agent', new Agent().setCommand('update'));
 // ...some other context elsewhere, called in the same time
-await this.do('my-resource', new Resource().setCommand('install')); // will be in error, as command 'update' is being executed.
+await this.do('my-agent', new Agent().setCommand('install')); // will be in error, as command 'update' is being executed.
 ```
 
-The first workflow wants to run the `update` resource command.
-The second workflow wants to run the `install` resource command.
+The first workflow wants to run the `update` agent command.
+The second workflow wants to run the `install` agent command.
 In this case, the update command will proceed, and the install command will be rejected due to command incompatibility.
 
-The set of mutually exclusive commands is defined in the `noConcurrencyCommandNames` property of the Resource class. When adding custom hooks, you should include them in this list if they require exclusivity.
+The set of mutually exclusive commands is defined in the `noConcurrencyCommandNames` property of the Agent class. When adding custom hooks, you should include them in this list if they require exclusivity.
 
 :::info
 
-_Best practices:_ Avoid manually specifying commands unless necessary. Let the resource determine the correct hook automatically.
+_Best practices:_ Avoid manually specifying commands unless necessary. Let the agent determine the correct hook automatically.
 
 ```ts
 // ...some context
-await this.do('my-resource', new Resource());
+await this.do('my-agent', new Agent());
 // ...safely coalesce
-await this.do('my-resource', new Resource());
+await this.do('my-agent', new Agent());
 ```
 
 :::
 
 ### Digest method
 
-The `digest()` method determines which commands (hooks) should be executed based on the current state of the resource. It is called during each lifecycle cycle and can be customized when implementing advanced behavior.
+The `digest()` method determines which commands (hooks) should be executed based on the current state of the agent. It is called during each lifecycle cycle and can be customized when implementing advanced behavior.
 
 Default implementation:
 
 ```ts
 async digest(): Promise<ScopeOfChanges<string>[]> {
     const changes = [];
-    if (this.resourceDbDoc.version !== this.version) {
+    if (this.agentDbDoc.version !== this.version) {
         changes.push(new ScopeOfChanges("install"));
     }
-    if (this.resourceDbDoc.version) {
+    if (this.agentDbDoc.version) {
         // meaning an install already occurred
         changes.push(new ScopeOfChanges("update"));
     }

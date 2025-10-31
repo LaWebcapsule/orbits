@@ -1,7 +1,7 @@
-import { CdkStackResource } from '@orbi-ts/fuel';
+import { CdkStackAgent } from '@orbi-ts/fuel';
 import { ParameterStoreStack } from '../cdk/param.js';
 
-export class ParamResource extends CdkStackResource {
+export class ParamAgent extends CdkStackAgent {
     StackConstructor = ParameterStoreStack;
 
     declare IOutput: {

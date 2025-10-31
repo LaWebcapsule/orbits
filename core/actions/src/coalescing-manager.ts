@@ -9,16 +9,14 @@ import {
     errorCodes,
     Workflow,
 } from '../index.js';
-import { ResourceSchemaInterface } from './models/resource.js';
+import { AgentSchemaInterface } from './models/agent.js';
 import { actionKind, actionKindSymbols } from './runtime/action-kind.js';
 
 const COALESCING_WORKFLOW_TAG = actionKindSymbols.get(
     actionKind.COALESCING_WORKFLOW
 );
-const RESOURCE_TAG = actionKindSymbols.get(actionKind.RESOURCE);
-const RESOURCE_CONTROLLER_TAG = actionKindSymbols.get(
-    actionKind.RESOURCE_CONTROLLER
-);
+const AGENT_TAG = actionKindSymbols.get(actionKind.AGENT);
+const AGENT_CONTROLLER_TAG = actionKindSymbols.get(actionKind.AGENT_CONTROLLER);
 
 export abstract class CoalescingWorkflow extends Workflow {
     static [COALESCING_WORKFLOW_TAG] = true;
@@ -188,65 +186,65 @@ export class Sleep extends Action {
     }
 }
 
-export class ResourceController<T extends Resource> extends CoalescingWorkflow {
+export class AgentController<T extends Agent> extends CoalescingWorkflow {
     declare IArgument: T['IArgument'] & {
         actionRef: string;
     };
 
-    static [RESOURCE_CONTROLLER_TAG] = true;
+    static [AGENT_CONTROLLER_TAG] = true;
 
-    constructor(resource?: T) {
+    constructor(agent?: T) {
         super();
-        if (resource) {
+        if (agent) {
             this.setArgument({
-                ...resource.argument,
-                actionRef: resource.dbDoc.actionRef,
+                ...agent.argument,
+                actionRef: agent.dbDoc.actionRef,
             });
-            this.setFilter(resource.dbDoc.filter);
+            this.setFilter(agent.dbDoc.filter);
         }
     }
 
-    resource: T;
-    resourceDbDoc: T['resourceDbDoc'];
+    agent: T;
+    agentDbDoc: T['agentDbDoc'];
 
     identity() {
-        this.constructResource();
-        return this.resource.identity();
+        this.constructAgent();
+        return this.agent.identity();
     }
 
-    constructResource() {
-        if (this.resource) {
-            return this.resource;
+    constructAgent() {
+        if (this.agent) {
+            return this.agent;
         }
         const ActionCtr = ActionRuntime.activeRuntime.getActionFromRegistry(
             this.argument.actionRef
         );
-        const resource = new ActionCtr() as T;
-        resource.setArgument({
+        const agent = new ActionCtr() as T;
+        agent.setArgument({
             ...this.argument,
             actionRef: undefined,
         });
-        this.resource = resource;
-        return resource;
+        this.agent = agent;
+        return agent;
     }
 
     async init() {
         await super.init();
-        const resource = this.constructResource();
-        await resource.getResourceDoc();
-        this.resource = resource;
-        this.resourceDbDoc = resource.resourceDbDoc;
+        const agent = this.constructAgent();
+        await agent.getAgentDoc();
+        this.agent = agent;
+        this.agentDbDoc = agent.agentDbDoc;
     }
 
     async define() {
         const sleep = new Sleep().setArgument({
-            time: this.resourceDbDoc.cycle.frequency,
+            time: this.agentDbDoc.cycle.frequency,
         });
         await this.do('sleep', sleep);
 
         try {
-            this.resource.setCommand('cycle' as any);
-            await this.do('cycle', this.resource.clone());
+            this.agent.setCommand('cycle' as any);
+            await this.do('cycle', this.agent.clone());
         } catch (err) {
             this.internalLog(`Error during cycle execution: ${err}`);
             //do nothing
@@ -267,7 +265,7 @@ export class ScopeOfChanges<T> {
     ) {}
 }
 
-type ResourceCommands<T> = {
+type AgentCommands<T> = {
     [K in keyof T]: T[K] extends (...args: any[]) => any
         ? K extends `define${infer S}`
             ? K extends keyof Workflow
@@ -277,13 +275,13 @@ type ResourceCommands<T> = {
         : never;
 }[keyof T];
 
-export class Resource extends CoalescingWorkflow {
-    static [RESOURCE_TAG] = true;
+export class Agent extends CoalescingWorkflow {
+    static [AGENT_TAG] = true;
 
     declare IArgument: { commandName?: string };
 
     async init() {
-        await this.getResourceDoc();
+        await this.getAgentDoc();
         await super.init();
     }
 
@@ -292,58 +290,58 @@ export class Resource extends CoalescingWorkflow {
     IOutput: JSONObject;
     IInfo: JSONObject;
 
-    resourceDbDoc: ResourceSchemaInterface<this['IOutput'], this['IInfo']>;
-    async getResourceDoc() {
-        if (this.resourceDbDoc) {
-            return Promise.resolve(this.resourceDbDoc);
+    agentDbDoc: AgentSchemaInterface<this['IOutput'], this['IInfo']>;
+    async getAgentDoc() {
+        if (this.agentDbDoc) {
+            return Promise.resolve(this.agentDbDoc);
         }
 
         let identity = this.stringifyIdentity();
 
-        this.resourceDbDoc = await this.runtime.ResourceModel.findOne({
+        this.agentDbDoc = await this.runtime.AgentModel.findOne({
             identity,
             actionRef: this.runtime.getActionRefFromRegistry(
                 this.constructor as any
             ),
         });
-        return this.resourceDbDoc;
+        return this.agentDbDoc;
     }
 
-    defaultResourceSettings: { cycle: { frequency: number } } = {
+    defaultAgentSettings: { cycle: { frequency: number } } = {
         cycle: {
             frequency: 10 * 60 * 1000, //default to 10 minutes
         },
     };
 
-    async createResourceDoc() {
-        if (await this.getResourceDoc()) {
+    async createAgentDoc() {
+        if (await this.getAgentDoc()) {
             return; //already exists
         }
-        this.resourceDbDoc = new this.runtime.ResourceModel({
-            ...this.defaultResourceSettings,
+        this.agentDbDoc = new this.runtime.AgentModel({
+            ...this.defaultAgentSettings,
             identity: this.stringifyIdentity(),
             actionRef: this.runtime.getActionRefFromRegistry(
                 this.constructor as any
             ),
         });
-        return this.resourceDbDoc.save();
+        return this.agentDbDoc.save();
     }
 
-    async saveResourceOutput(output: any) {
-        this.resourceDbDoc.output = output;
-        await this.resourceDbDoc.save();
+    async saveAgentOutput(output: any) {
+        this.agentDbDoc.output = output;
+        await this.agentDbDoc.save();
     }
 
-    async getResourceOutput() {
-        const resourceDbDoc = await this.getResourceDoc();
-        return resourceDbDoc.output;
+    async getAgentOutput() {
+        const agentDbDoc = await this.getAgentDoc();
+        return agentDbDoc.output;
     }
 
     setArgument(args: Omit<this['IArgument'], 'commandName'>): this {
         return super.setArgument(args);
     }
 
-    setCommand(commandName: ResourceCommands<this>) {
+    setCommand(commandName: AgentCommands<this>) {
         return this.setArgument({
             ...this.argument,
             commandName,
@@ -359,26 +357,26 @@ export class Resource extends CoalescingWorkflow {
     noConcurrencyCommandNames = ['install', 'update', 'uninstall'];
     async lockCommand(commandName: string) {
         if (this.noConcurrencyCommandNames.includes(commandName)) {
-            if (this.resourceDbDoc.locks.length) {
-                this.resourceDbDoc.locks.push({
+            if (this.agentDbDoc.locks.length) {
+                this.agentDbDoc.locks.push({
                     name: commandName,
                 });
-                await this.resourceDbDoc.save();
+                await this.agentDbDoc.save();
             } else {
                 throw new ActionError(
                     'a command is already in progress',
-                    errorCodes.RESOURCE_LOCKED
+                    errorCodes.AGENT_LOCKED
                 );
             }
         }
     }
 
     async define() {
-        await this.once('createResourceDoc', () => {
-            return this.createResourceDoc();
+        await this.once('createAgentDoc', () => {
+            return this.createAgentDoc();
         });
         await this.once('installController', () => {
-            const controller = new ResourceController(this);
+            const controller = new AgentController(this);
             return controller.save();
         });
         const commandName = this.argument.commandName
@@ -392,11 +390,11 @@ export class Resource extends CoalescingWorkflow {
                 await this.repeatDo(
                     'unlock',
                     async () => {
-                        await this.getResourceDoc();
-                        (this.resourceDbDoc.locks as any).pull({
+                        await this.getAgentDoc();
+                        (this.agentDbDoc.locks as any).pull({
                             name: commandName,
                         });
-                        await this.resourceDbDoc.save();
+                        await this.agentDbDoc.save();
                     },
                     {
                         [ActionState.ERROR]: Infinity,
@@ -413,8 +411,8 @@ export class Resource extends CoalescingWorkflow {
                 await this.do(c.commandName, clone);
             }
             await this.do('saveVersion', () => {
-                this.resourceDbDoc.version = this.version;
-                return this.resourceDbDoc.save();
+                this.agentDbDoc.version = this.version;
+                return this.agentDbDoc.save();
             });
             try {
                 await this.repeatDo(
@@ -429,13 +427,13 @@ export class Resource extends CoalescingWorkflow {
             } catch (err) {
                 //do nothing here.
             }
-            return this.resourceDbDoc.output;
+            return this.agentDbDoc.output;
         }
     }
 
     async digest(): Promise<ScopeOfChanges<string>[]> {
         const changes = [];
-        if (this.resourceDbDoc.version !== this.version) {
+        if (this.agentDbDoc.version !== this.version) {
             changes.push(new ScopeOfChanges('install'));
         }
         changes.push(new ScopeOfChanges('update'));
@@ -452,7 +450,7 @@ export class Resource extends CoalescingWorkflow {
 
     async endDigestor() {
         const output = await this.setOutput();
-        await this.saveResourceOutput(output);
+        await this.saveAgentOutput(output);
     }
 
     substitute(
@@ -464,11 +462,25 @@ export class Resource extends CoalescingWorkflow {
     }
 
     resyncWithDb() {
-        this.resourceDbDoc = undefined;
-        return this.getResourceDoc().then(() => {
+        this.agentDbDoc = undefined;
+        return this.getAgentDoc().then(() => {
             return super.resyncWithDb();
         });
     }
 }
 
-type x = ResourceCommands<Resource>;
+/**
+ * @deprecated `Resource` has been renamed to `Agent`.
+ * Please replace all occurrences of `Resource` with `Agent`.
+ * See: https://github.com/LaWebcapsule/orbits/pull/113
+ */
+export const Resource = new Proxy(Agent, {
+    construct(target, args, newTarget) {
+        console.warn(
+            "⚠️ 'Resource' is deprecated. Please replace to use 'Agent' constructor instead.\nSee: https://github.com/LaWebcapsule/orbits/pull/113"
+        );
+        return Reflect.construct(target, args, newTarget);
+    },
+});
+
+type x = AgentCommands<Agent>;

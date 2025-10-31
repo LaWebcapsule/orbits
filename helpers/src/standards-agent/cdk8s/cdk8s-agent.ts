@@ -4,7 +4,7 @@ import {
     Action,
     ActionError,
     ActionState,
-    Resource,
+    Agent,
     Workflow,
 } from '@orbi-ts/core';
 import { Cli } from '@orbi-ts/services';
@@ -13,7 +13,7 @@ import * as cdk8s from 'cdk8s';
 import { mkdir, rm, writeFile } from 'fs/promises';
 import { KubeApi } from '../../kubernetes/kubernetes-api.js';
 
-export class Cdk8sResource extends Resource implements cdk8s.IResolver {
+export class Cdk8sAgent extends Agent implements cdk8s.IResolver {
     cli = new Cli();
     kubeApi: KubeApi;
 
@@ -26,7 +26,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
         activityFrequency: 60 * 1000,
     };
 
-    IArgument: Resource['IArgument'] & {
+    IArgument: Agent['IArgument'] & {
         kubeConfig?: {
             from: {
                 file?: string;
@@ -139,7 +139,7 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
      *   **deploy** -- *failure* --> **rollback** -> **prune current chart objects**
      *
      * In case of error during rollback, pruning or chart saving, deployment will be left untouched.
-     * If pruning or chart saving fails, then newly added resources configuration won't be saved,
+     * If pruning or chart saving fails, then newly added agents configuration won't be saved,
      * but deployment will still be operational.
      */
     async defineUpdate() {
@@ -224,8 +224,8 @@ export class Cdk8sResource extends Resource implements cdk8s.IResolver {
             return this.kubeApi.deleteSecret(this.genSecretName());
         });
         await this.do('ResetOutput', () => {
-            this.resourceDbDoc.output = {};
-            return this.resourceDbDoc.save();
+            this.agentDbDoc.output = {};
+            return this.agentDbDoc.save();
         });
     }
 

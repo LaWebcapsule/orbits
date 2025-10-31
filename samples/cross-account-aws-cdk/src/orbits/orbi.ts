@@ -1,8 +1,8 @@
 import { ActionRuntime } from '@orbi-ts/core';
-import { HelloResource } from './hello-resource.js';
+import { HelloAgent } from './hello-agent.js';
 
 ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
-    const helloResource = new HelloResource().setArgument({
+    const helloAgent = new HelloAgent().setArgument({
         accountA: {
             id: process.env['AWS_ACCOUNT_A'],
             profile: process.env['AWS_ACCOUNT_A_PROFILE'],
@@ -14,7 +14,7 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
         region: process.env['AWS_REGION'],
     });
     if (process.env['HELLO_COMMAND'] === 'uninstall') {
-        helloResource.setCommand('Uninstall');
+        helloAgent.setCommand('Uninstall');
     }
-    helloResource.save();
+    helloAgent.save();
 });

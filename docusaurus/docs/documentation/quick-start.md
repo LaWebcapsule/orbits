@@ -6,7 +6,7 @@ title: Quickstart
 # Hello world
 
 <img src="/img/hello-world.png" alt="Hello Monkey"/>
-This is a basic guide to get your first resource working.
+This is a basic guide to get your first agent working.
 
 ## Install
 
@@ -170,7 +170,7 @@ await Action.trackActionAsPromise(workflow, [
 ]); // this line is optional.
 ```
 
-## Resources: a complete lifecycle
+## Agents: a complete lifecycle
 
 Greetings occurs only once in a day but if you do:
 
@@ -185,14 +185,14 @@ await workflow2.save();
 ```
 
 the workflow will run twice. How to run it only once ?
-This is managed by the concept of [`Resource`](./core-concepts/resource.md).
+This is managed by the concept of [`Agent`](./core-concepts/agent.md).
 
-```ts title='src/orbits/my-resource.ts'
-import { Resource } from '@orbi-ts/core';
+```ts title='src/orbits/my-agent.ts'
+import { Agent } from '@orbi-ts/core';
 import { MyWorkflow } from 'src/orbits/my-workflow.js';
 
-export class MyGreetings extends Resource {
-    declare IArgument: Resource['IArgument'] & {
+export class MyGreetings extends Agent {
+    declare IArgument: Agent['IArgument'] & {
         name: string;
         date: string;
     };
@@ -226,45 +226,45 @@ export class MyGreetings extends Resource {
 }
 ```
 
-### Consume your resources
+### Consume your agents
 
-A resource is an action, so you consume it like an action:
+An agent is an action, so you consume it like an action:
 
 ```ts title='src/anywhere-in-your-app.ts'
-import { MyGreetings } from 'src/orbits/my-resource.js';
+import { MyGreetings } from 'src/orbits/my-agent.js';
 // ...
-const resource = new MyGreetings()
+const agent = new MyGreetings()
     .setArgument({
         name: 'John Doe',
         date: '01-01-01',
     })
     .setCommand('Install');
-await resource.save(); // the action will be executed in the background. the greetings will appear in the console
-await Action.trackActionAsPromise(resource, [
+await agent.save(); // the action will be executed in the background. the greetings will appear in the console
+await Action.trackActionAsPromise(agent, [
     ActionState.SUCCESS,
     ActionState.ERROR,
 ]);
 
-const resource2 = new MyGreetings()
+const agent2 = new MyGreetings()
     .setArgument({
         name: 'John Doe',
         date: '01-01-01',
     })
     .setCommand('Install');
-await resource2.save(); // the action will be executed but nothing will appear in the console.log, as we already installed the resource
-await Action.trackActionAsPromise(resource2, [
+await agent2.save(); // the action will be executed but nothing will appear in the console.log, as we already installed the agent
+await Action.trackActionAsPromise(agent2, [
     ActionState.SUCCESS,
     ActionState.ERROR,
 ]);
 
-const resource3 = new MyGreetings()
+const agent3 = new MyGreetings()
     .setArgument({
         name: 'John Doe',
         date: '01-01-01',
     })
     .setCommand('Uninstall');
-await resource3.save(); // the action will be executed ; "goodbye" will appear in the console
-await Action.trackActionAsPromise(resource3, [
+await agent3.save(); // the action will be executed ; "goodbye" will appear in the console
+await Action.trackActionAsPromise(agent3, [
     ActionState.SUCCESS,
     ActionState.ERROR,
 ]);

@@ -1,11 +1,11 @@
-import { CdkStackResource } from '@orbi-ts/fuel';
+import { CdkStackAgent } from '@orbi-ts/fuel';
 import { LambdaStack } from '../cdk/lambda.js';
 
-export class LambdaResource extends CdkStackResource {
+export class LambdaAgent extends CdkStackAgent {
     constructor(env?: { region: string; account: string }) {
         super();
         if (env)
-            (this as LambdaResource).setArgument({
+            (this as LambdaAgent).setArgument({
                 stackName: 'hello-lambda',
                 stackProps: { env },
             });

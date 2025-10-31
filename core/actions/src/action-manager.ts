@@ -262,7 +262,7 @@ export class Action {
         } catch (err) {
             throw new ActionError(
                 `The action with ref ${actionDb.actionRef} has not been registered`,
-                errorCodes.RESOURCE_NOT_FOUND,
+                errorCodes.AGENT_NOT_FOUND,
                 {
                     err,
                     actionDb,
@@ -361,7 +361,7 @@ export class Action {
     private execute() {
         return this.changeState(ActionState.EXECUTING_MAIN)
             .catch((err) => {
-                if (err && err.code === errorCodes.RESOURCE_LOCKED) {
+                if (err && err.code === errorCodes.AGENT_LOCKED) {
                     // current thread is not handling the workflow
                     throw new BreakingActionState(ActionState.UNKNOWN);
                 }
@@ -664,7 +664,7 @@ export class Action {
                 break;
         }
         return resume.then(this.onStateNotification.bind(this)).catch((err) => {
-            if (err && err.code === errorCodes.RESOURCE_LOCKED) {
+            if (err && err.code === errorCodes.AGENT_LOCKED) {
                 this.internalLog('Lock already acquired');
             } else {
                 this.internalLogError(err);
