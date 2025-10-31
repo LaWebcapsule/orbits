@@ -33,6 +33,7 @@ export interface ActionSchemaInterface<
     workflowRef?: string;
     workflowIteration?: number;
     workflowIdentity?: string;
+    workflowCrossStrategy?: boolean,
     workflowStack: {
         ref: string;
         stepIndex: number;
@@ -94,6 +95,7 @@ export const actionSchema = new mongoose.Schema(
         workflowRef: String,
         workflowIteration: Number,
         workflowIdentity: String,
+        workflowOnce: Boolean,
         generatorCount: Number,
         workflowStack: [
             {
