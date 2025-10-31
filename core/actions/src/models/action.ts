@@ -95,7 +95,7 @@ export const actionSchema = new mongoose.Schema(
         workflowRef: String,
         workflowIteration: Number,
         workflowIdentity: String,
-        workflowOnce: Boolean,
+        workflowCrossStrategy: Boolean,
         generatorCount: Number,
         workflowStack: [
             {
