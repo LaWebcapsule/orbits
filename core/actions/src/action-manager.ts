@@ -738,6 +738,16 @@ export class Action {
             this.dbDoc.markModified('cronActivity.nextActivity');
             return this.changeState(ActionState.SLEEPING);
         } else if (this.dbDoc.workflowId) {
+            if (
+                this.dbDoc.workflowCrossStrategy &&
+                this.dbDoc.state === ActionState.SUCCESS
+            ) {
+                this.dbDoc.cronActivity.nextActivity = new Date(
+                    Date.now() + 365 * 24 * 60 * 60 * 1000
+                );
+                this.dbDoc.markModified('cronActivity.nextActivity');
+                return this.dbDoc.save().then(() => ActionState.UNKNOWN); //short circuit
+            }
             return Workflow.findPendingWorkflowUsingAction(this.dbDoc).then(
                 async (workflowDbs) => {
                     const trackingResumePromise = [];
