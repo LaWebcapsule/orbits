@@ -67,6 +67,26 @@ export ORBITS_DB__MONGO__URL=your-mongo-url
 npx tsx src/orbits/orbi.ts
 ```
 
+Or via the cli:
+
+```bash
+argument=$(cat<<EOF
+{
+  "accountA": {
+    "id": "$AWS_ACCOUNT_A",
+    "profile": "$AWS_ACCOUNT_A_PROFILE"
+  },
+  "accountB": {
+    "id": "$AWS_ACCOUNT_B",
+    "profile": "$AWS_ACCOUNT_B_PROFILE"
+  },
+  "region": "$AWS_REGION"
+}
+EOF
+)
+orbits-cli actions run HelloAgent $argument -f src/orbits/orbi.ts --local-worker
+```
+
 This command will:
 
 - Deploy the SSM parameter in Account A
@@ -96,6 +116,12 @@ To remove all deployed resources from both accounts:
 export HELLO_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts
 ```
+
+or via the cli:
+```bash
+orbits-cli actions run HelloAgent commandName=$HELLO_COMMAND -f src/orbits/orbi.ts --local-worker
+```
+
 
 ⚠️ Warning: This will permanently delete all resources created by this example. Make sure you want to remove everything before running this command.
 
