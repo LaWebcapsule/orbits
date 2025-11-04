@@ -7,13 +7,13 @@ A practical example demonstrating how to manage and coordinates micro-services w
 ### Clone this repository
 
 - Clone [this repository](https://github.com/LaWebcapsule/orbits)
-- Go to this directory :
+- Go to this directory:
 
 ```bash
 cd samples/orchestrate-lambda
 ```
 
-- Install node.js dependencies :
+- Install node.js dependencies:
   `npm i``
 
 ### Setup lambdas in aws
@@ -21,7 +21,7 @@ cd samples/orchestrate-lambda
 You'll need to deploy lambdas in aws
 
 - First of all you'll need an aws account with propers rights.
-- Go to this directory :
+- Go to this directory:
 
 ```bash
 cd ./deploy-lambdas
@@ -47,13 +47,19 @@ cp .base.env .env
 export $(cat .env | xargs)
 ```
 
-- Define your mongo_url :
+- Define your mongo_url:
 
 ```bash
 export ORBITS_DB__MONGO__URL=your-mongo-url
 ```
 
-- Run your workflow :
+- Run your workflow:
+
+```bash
+orbits-cli actions run TradingWorkflow -f src/orbits/orbi.ts --local-worker
+```
+
+or run:
 
 ```bash
 npx tsx src/orbits/orbi.ts

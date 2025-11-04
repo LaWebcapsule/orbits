@@ -11,8 +11,23 @@ Can be useful to help you write your first actions.
 
 ## Launch the app
 
-- `export ORBITS_DB__MONGO__URL=your-mongo-url`
-- `npx tsx src/orbits/orbi.ts`
+Export your DB URL:
+
+```bash
+export ORBITS_DB__MONGO__URL=your-mongo-url
+```
+
+Then:
+
+```bash
+orbits-cli actions run GreetingAgent name='John Doe' date=$(date '+%Y-%m-%d') -f src/orbits/orbi.ts --local-worker
+```
+
+or run:
+
+```bash
+npx tsx src/orbits/orbi.ts
+```
 
 ## Relaunch the app
 
