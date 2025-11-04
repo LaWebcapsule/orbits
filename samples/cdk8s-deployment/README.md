@@ -41,6 +41,12 @@ export ORBITS_DB__MONGO__URL=your-mongo-url
 npx tsx src/orbits/orbi.ts
 ```
 
+or via the cli:
+
+```bash
+orbits-cli actions run BasicAgent stackName=cdk8s-basic -f src/orbits/orbi.ts --local-worker
+```
+
 This command will:
 
 - Create a new Kubernetes namespace
@@ -59,8 +65,18 @@ Get the job:
 
 ```bash
 export NS=$(kubectl get ns -l orbits/stackName=cdk8s-basic -o jsonpath='{.items[0].metadata.name}')
+
 kubectl get all --namespace $NS -l orbits/stackName=cdk8s-basic
 ```
+
+> #### _Note_
+> You can get the created namespace and job names using the cli:
+> ```bash
+> orbits-cli actions get -f '{"identity":"{\"stackName\":\"cdk8s-basic\"}", "actionRef":"BasicAgent"}' -o '{"createdAt":1}' -j | jq '.[0].result.namespace'
+> ```
+> ```bash
+> orbits-cli actions get -f '{"identity":"{\"stackName\":\"cdk8s-basic\"}", "actionRef":"BasicAgent"}' -o '{"createdAt":1}' -j | jq '.[0].result.cronJobName'
+> ```
 
 ## Cleanup
 
@@ -69,6 +85,12 @@ To remove all deployed resources from both accounts:
 ```bash
 export CDK8S_COMMAND=uninstall
 npx tsx src/orbits/orbi.ts
+```
+
+or via the cli:
+
+```bash
+orbits-cli actions run BasicAgent commandName=$CDK8S_COMMAND stackName=cdk8s-basic -f src/orbits/orbi.ts --local-worker
 ```
 
 ## Project Structure

@@ -3,11 +3,6 @@ import winston from 'winston';
 import { exitCodes, runCrudCmd } from './utils.js';
 import { CHILD_ERROR_PREFIX } from './run.js';
 
-const throwError = (msg: string, code: exitCodes): never => {
-    process.stderr.write(msg);
-    process.exit(code);
-};
-
 const runAction = async (
     actionArgs: any,
     actionRef: string,

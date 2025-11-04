@@ -120,7 +120,7 @@ export ORBITS_DB__MONGO__URL='mongodb+srv://orbits:XXXX@myatlas-cluster.mongodb.
 To enable verbose logs while debugging, set the logging level to `debug`:
 
 ```bash
-export ORBITS_LOGGING_LEVEL='debug'
+export ORBITS_LOGGING__LEVEL='debug'
 ```
 :::
 
