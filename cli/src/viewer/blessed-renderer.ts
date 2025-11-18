@@ -1070,6 +1070,7 @@ export class ActionsBlessedRenderer implements ActionsRenderer {
             border: { type: 'line' },
             fullUnicode: true,
             warnings: false,
+            terminal: 'xterm-16color',
         });
 
         this.screen.title = 'Orbits Viewer';
