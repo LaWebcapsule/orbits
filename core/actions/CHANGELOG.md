@@ -1,5 +1,11 @@
 # @wbce/orbits-core
 
+## 0.4.1
+
+### Patch Changes
+
+- 44491f2: don't close successfull once actions in order to keep track of their value
+
 ## 0.4.0
 
 ### Minor Changes
