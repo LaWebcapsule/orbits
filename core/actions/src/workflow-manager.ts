@@ -320,7 +320,7 @@ export class Workflow extends Action {
         return this.trackDefine();
     }
 
-    private trackAction(ref: string, action: ActionSchemaInterface) {
+    protected trackAction(ref: string, action: ActionSchemaInterface) {
         this.registeredActionIds.push(action.id);
         if (
             !this.bag.registeredActions.find((descriptor) => {
