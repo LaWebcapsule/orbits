@@ -211,4 +211,4 @@ For your critical processes — e-commerce, finance, logistics, etc. — **adopt
 
 ---
 
-_Learn more about Orbits and its capabilities in our [documentation](/documentation/quick-start)._
+_Learn more about Orbits and its capabilities in our [documentation](/documentation/quickstart)._

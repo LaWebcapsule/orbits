@@ -54,7 +54,7 @@ Orbits provides:
 :::tip What's Next?
 Here are three recommended next steps to continue your journey:
 
-1. **👋 [Quickstart](./quick-start.md)** - Run your first workflow and see immediate results
+1. **👋 [Quickstart](./quickstart)** - Run your first workflow and see immediate results
 2. **⚙️ [Core concepts](./core-concepts/readme.md)** - Master the fundamental architecture principles and design patterns that power Orbits  
 3. **🛤️ [Guides](./guides/readme.md)** - Explore hands-on tutorials ranging from beginner-friendly to advanced implementation techniques
 :::

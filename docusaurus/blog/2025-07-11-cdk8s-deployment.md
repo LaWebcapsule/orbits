@@ -107,7 +107,7 @@ The two deployments will [coalesce](/documentation/core-concepts/agent#convergen
 :::
 
 :::info Crash-proof
-Orbits is [crash-proof](/documentation/quick-start#workflow-a-chain-of-actions).
+Orbits is [crash-proof](/documentation/quickstart#workflow-a-chain-of-actions).
 If a crash occurs mid-deployment, Orbits will resume from the same step on restart.
 :::
 

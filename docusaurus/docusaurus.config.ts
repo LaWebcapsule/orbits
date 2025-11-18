@@ -120,7 +120,7 @@ const config: Config = {
           items: [
             {
               label: 'Tutorial',
-              to: 'https://orbits.do/documentation/quick-start',
+              to: 'https://orbits.do/documentation/quickstart',
             },
           ],
         },
