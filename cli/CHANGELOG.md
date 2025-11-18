@@ -1,5 +1,11 @@
 # @wbce/orbits-cli
 
+## 0.2.2
+
+### Patch Changes
+
+- d479380: Fix error from unsupported term Setulc format
+
 ## 0.2.1
 
 ### Patch Changes
