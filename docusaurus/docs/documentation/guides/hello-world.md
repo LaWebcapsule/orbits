@@ -49,7 +49,7 @@ import { Action, ActionState } from '@orbi-ts/core';
 
 export class HelloAction extends Action {
     main() {
-        console.log('Hello 👋');
+        this.internalLog('Hello 👋', { level: 'info' });
         this.setResult('Hello');
         return ActionState.SUCCESS;
     }
@@ -152,19 +152,22 @@ export class GreetingAgent extends Agent {
             })
         );
         await this.do('display-greeting', () => {
-            console.log(`${greeting}  👋👋👋`);
+            this.internalLog(`${greeting}  👋👋👋`, { level: 'info' });
             return Promise.resolve();
         });
     }
 
     async defineUpdate() {
         //do nothing
-        console.log(`(I have already seen you.)👻`);
+        this.internalLog(`(I have already seen you.)👻`, { level: 'info' });
     }
 
     async defineUninstall() {
         await this.do('display-goodbye', () => {
-            console.log(`Goodbye my dear friend ${this.argument.name} 👋👋👋`);
+            this.internalLog(
+                `Goodbye my dear friend ${this.argument.name} 👋👋👋`,
+                { level: 'info' }
+            );
             return Promise.resolve();
         });
     }
@@ -210,7 +213,7 @@ async defineInstall() {
         })
     );
     await this.do('display-greeting', () => {
-        console.log(`${greeting}  👋👋👋`);
+        this.internalLog(`${greeting}  👋👋👋`, { level: 'info' });
         return Promise.resolve();
     });
 }
@@ -221,7 +224,7 @@ async defineInstall() {
 ```ts
 async defineUpdate() {
     //do nothing
-    console.log(`(I have already seen you.)👻`);
+    this.internalLog(`(I have already seen you.)👻`, { level: 'info' });
 }
 ```
 
@@ -232,7 +235,7 @@ Runs every time the agent is reused with the same identity.
 ```ts
 async defineUninstall() {
     await this.do('display-goodbye', () => {
-        console.log(`Goodbye my dear friend ${this.argument.name} 👋👋👋`);
+        this.internalLog(`Goodbye my dear friend ${this.argument.name} 👋👋👋`, { level: 'info' });
         return Promise.resolve();
     });
 }
@@ -284,8 +287,8 @@ ActionRuntime.activeRuntime.waitForBootstrap.then(async () => {
 We launch the same Agent twice.
 This shows evidence that:
 
-- during the first run, you will see greeting in console.log
-- during the second run, you will only see the "I have already seen you" console.log
+- during the first run, you will see greeting in the logs
+- during the second run, you will only see the "I have already seen you" in the logs
 
 ## Running the sample
 
@@ -322,7 +325,23 @@ export ORBITS_DB__MONGO__URL="your-mongo-cluster"
 npx tsx src/orbits/orbi.ts
 ```
 
-You should see the goodbye message in the console.
+You should see the goodbye message in the logs.
+
+## Using the CLI
+
+Instead of running the script above, you can directly run the agent from the command line using the CLI:
+
+- running the agent
+
+```bash
+orbits-cli actions run MyGreetings name='John Doe' date='01-01-01' -f src/orbits/greeting-agent.ts -l
+```
+
+- uninstalling the agent
+
+```bash
+orbits-cli actions run MyGreetings name='John Doe' date='01-01-01' commandName=Uninstall -f src/orbits/greeting-agent.ts -l
+```
 
 ## Next Steps
 

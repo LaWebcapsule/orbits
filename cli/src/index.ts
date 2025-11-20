@@ -88,4 +88,4 @@ setUpCommands(
     ACTIONS_COMMANDS
 );
 
-program.parse();
+export { program };

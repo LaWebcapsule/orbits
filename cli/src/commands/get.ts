@@ -127,4 +127,5 @@ export const getCmd = {
             dflt: { val: false },
         },
     ],
+    example: '`orbits-cli actions get 68e22ce5041bdfe83c6412f1`'
 };
