@@ -3,10 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build:cli": "../cli/scripts/generate-doc.ts ./docs/cli/commands.md",
     "docusaurus": "docusaurus",
-    "start": "npm run build:cli && docusaurus start",
-    "build": "npm run build:cli && docusaurus build",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
