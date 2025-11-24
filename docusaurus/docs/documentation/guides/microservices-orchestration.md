@@ -17,21 +17,23 @@ This well-known example originates from both [AWS Step Functions](https://docs.a
 ### Clone this repository
 
 - Clone [this repository](https://github.com/LaWebcapsule/orbits)
-- Go to this directory :
+- Go to this directory:
 
 ```bash
 cd samples/orchestrate-lambda
 ```
 
-- Install node.js dependencies :
-  `npm i``
+- Install node.js dependencies:
+```bash
+npm i
+```
 
 ### Setup lambdas in aws
 
 You'll need to deploy lambdas in aws
 
 - First of all you'll need an aws account with propers rights.
-- Go to this directory :
+- Go to this directory:
 
 ```bash
 cd ./deploy-lambdas
@@ -61,7 +63,7 @@ cp .base.env .env
 │   │   ├── package.json
 │   │   ├── sell-stock.ts # Sell stock Lambda
 │   │   ├── tsconfig.ts
-│   │   └── update-one.ts  # not used
+│   │   └── update-one.ts # not used
 │   ├── cdk.json
 │   ├── index.js
 │   ├── index.ts # lambda CDK stack definition
@@ -168,16 +170,25 @@ This structuring makes the action not only easy to test in isolation but also re
 export $(cat .env | xargs)
 ```
 
-- Define your mongo_url :
+- Define your mongo url:
 
 ```bash
 export ORBITS_DB__MONGO__URL=your-mongo-url
 ```
 
-- Run your workflow :
+- Run your workflow:
+
+```bash
+orbits-cli actions run TradingWorkflow -f src/orbits/orbi.ts --local-worker
+```
+
+or run:
 
 ```bash
 npx tsx src/orbits/orbi.ts
+```
+
+This command will execute the trading workflow
 ```
 
 This command will:

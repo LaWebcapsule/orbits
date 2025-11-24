@@ -34,8 +34,8 @@ npm i
 
 You'll need access to two AWS accounts with the following permissions:
 
-Account A: CloudFormation deployment rights
-Account B: CloudFormation deployment rights
+- Account A: CloudFormation deployment rights
+- Account B: CloudFormation deployment rights
 
 #### Configure environment values
 
@@ -62,6 +62,26 @@ export ORBITS_DB__MONGO__URL=your-mongo-url
 ```
 
 - Deploy Cross-Account Infrastructure
+
+```bash
+argument=$(cat<<EOF
+{
+  "accountA": {
+    "id": "$AWS_ACCOUNT_A",
+    "profile": "$AWS_ACCOUNT_A_PROFILE"
+  },
+  "accountB": {
+    "id": "$AWS_ACCOUNT_B",
+    "profile": "$AWS_ACCOUNT_B_PROFILE"
+  },
+  "region": "$AWS_REGION"
+}
+EOF
+)
+orbits-cli actions run HelloAgent $argument -f src/orbits/orbi.ts --local-worker
+```
+
+or run
 
 ```bash
 npx tsx src/orbits/orbi.ts
@@ -94,6 +114,12 @@ To remove all deployed resources from both accounts:
 
 ```bash
 export HELLO_COMMAND=uninstall
+orbits-cli actions run HelloAgent commandName=$HELLO_COMMAND -f src/orbits/orbi.ts --local-worker
+```
+
+or run:
+
+```bash
 npx tsx src/orbits/orbi.ts
 ```
 
@@ -107,7 +133,7 @@ npx tsx src/orbits/orbi.ts
 │   │   ├── orbi.ts # Main orchestration script
 │   │   ├── lambda-agent.ts # lambda agent definition
 │   │   ├── param-agent.ts # Param agent definition
-│   │   ├── hello-agent.ts # Hello agent definition: the agent that make the junction between param and lambda
+│   │   └── hello-agent.ts # Hello agent definition: the agent that make the junction between param and lambda
 │   └── cdk/ # CDK stack definitions
 │       ├── lambda.ts # lambda CDK stack
 │       └── param.ts # Param CDK stack

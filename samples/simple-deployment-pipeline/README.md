@@ -50,7 +50,7 @@ export ORBITS_DB__MONGO__URL=your-mongo-url
 
 #### Run the deployment workflow
 
-As this sample aims to demonstrate the cli, `orbi.ts` only exports classes and does not run any code.
+As this sample aims to demonstrate the CLI, `orbi.ts` only exports classes and does not run any code.
 
 Run the workflow `DeployHelloWorkflow` this way:
 
@@ -66,7 +66,7 @@ orbits-cli actions run -f src/orbits/orbi.ts --local-worker \
 - `region`: AWS region;
 - `account`: AWS account;
 
-`-f` tells the cli where to look for orbits actions.
+`-f` tells the CLI where to look for orbits actions.
 
 `--local-worker` starts an orbits worker locally.
 

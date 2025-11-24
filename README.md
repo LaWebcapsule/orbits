@@ -20,7 +20,7 @@ By combining the flexibility of Node.js with a powerful workflow engine, Orbits 
 
 ## Getting started
 
-Read the [Hello world quickstart](https://orbits.do/documentation/quick-start)
+Read the [Hello world quickstart](https://orbits.do/documentation/quickstart)
 
 ## Documentation
 

@@ -3,6 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -88,7 +89,7 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'documentation',
           position: 'left',
           label: 'Documentation',
         },
@@ -97,6 +98,12 @@ const config: Config = {
           sidebarId: 'typedocSidebar',
           position: 'left',
           label: 'API',
+        },
+        {
+            type: 'docSidebar',
+            sidebarId: 'cli',
+            position: 'left',
+            label: 'CLI',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
@@ -114,7 +121,7 @@ const config: Config = {
           items: [
             {
               label: 'Tutorial',
-              to: 'https://orbits.do/documentation/quick-start',
+              to: 'https://orbits.do/documentation/quickstart',
             },
           ],
         },
@@ -179,6 +186,25 @@ const config: Config = {
         excludeInternal: true
       },
     ],
+    [
+
+      async function cliDoc(context) {
+        return {
+          name: 'cli-docgen-plugin',
+          async loadContent() {
+            const output = path.join(__dirname, "docs/cli/commands.md");
+            const cmd = `${path.join(__dirname, "../cli/scripts/generate-doc.ts ")} ${output}`;
+            execSync(cmd);
+            return '';
+          },
+          getPathsToWatch() {
+            return [path.join(__dirname, '../cli/src/**/*.{ts,tsx}')];
+          },
+        }
+      },
+      {
+      }
+    ],
     async function webflowIntegrationPlugin(context, options) {
       // ...
       return {
@@ -206,6 +232,7 @@ const config: Config = {
         }
       };
     },
+
   ],
 };
 

@@ -8,4 +8,5 @@ const __dirname = path.dirname(__filename);
 // do not start any runtime
 process.env['ORBITS_AUTOSTART'] = 'false';
 
-import(path.resolve(__dirname + '/../src/index.js'));
+const { program } = await import(path.resolve(__dirname + '/../src/index.js'));
+program.parse();

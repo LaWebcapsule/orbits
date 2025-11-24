@@ -5,7 +5,7 @@ title: Quickstart
 
 # Hello world
 
-<img src="/img/hello-world.png" alt="Hello Monkey"/>
+<img src="/img/hello-world.png" alt="Hello Monkey" />
 This is a basic guide to get your first agent working.
 
 ## Install
@@ -43,7 +43,7 @@ import { Action, ActionState } from '@orbi-ts/core';
 
 export class MyAction extends Action {
     main() {
-        console.log('hello!');
+        this.internalLog('hello!', { level: 'info' });
         this.setResult('hello!');
         return ActionState.SUCCESS;
     }
@@ -61,7 +61,7 @@ import { Action, ActionState } from '@orbi-ts/core';
 
 export class MyAction extends Action {
     main() {
-        console.log('hello!');
+        this.internalLog('hello', { level: 'info' });
         this.setResult('hello!');
         return ActionState.IN_PROGRESS;
     }
@@ -73,8 +73,9 @@ export class MyAction extends Action {
         if (new Date().getHours() > 10) {
             return ActionState.SUCCESS;
         } else {
-            console.log(
-                'Waiting until after 10am before confirming success...'
+            this.internalLog(
+                'Waiting until after 10am before confirming success...',
+                { level: 'info' }
             );
             return ActionState.IN_PROGRESS;
         }
@@ -120,8 +121,9 @@ export ORBITS_DB__MONGO__URL='mongodb+srv://orbits:XXXX@myatlas-cluster.mongodb.
 To enable verbose logs while debugging, set the logging level to `debug`:
 
 ```bash
-export ORBITS_LOGGING_LEVEL='debug'
+export ORBITS_LOGGING__LEVEL='debug'
 ```
+
 :::
 
 ## Workflow: a chain of actions
@@ -141,7 +143,9 @@ export class MyWorkflow extends Workflow {
     async define() {
         const resultOfMyAction = await this.do('hello', new MyAction());
         const name = await this.do('name', () => {
-            console.log(`${resultOfMyAction}, ${this.argument.name}!`);
+            this.internalLog(`${resultOfMyAction}, ${this.argument.name}!`, {
+                level: 'info',
+            });
             return Promise.resolve(this.argument.name);
         });
         return `${resultOfMyAction}, ${name}!`;
@@ -218,7 +222,7 @@ export class MyGreetings extends Agent {
     async defineUninstall() {
         // say goodbye
         const goodbye = await this.do('goodbye', () => {
-            console.log('goodbye');
+            this.internalLog('goodbye', { level: 'info' });
             return Promise.resolve('goodbye ; it was a great day');
         });
         return `${goodbye} ${this.argument.name}`;
@@ -269,6 +273,51 @@ await Action.trackActionAsPromise(agent3, [
     ActionState.ERROR,
 ]);
 ```
+
+## Run your actions with the cli
+
+You can use the orbits cli to run and visualize your actions and workflows from you terminal.
+
+##### Run MyGreetings agent
+
+```bash
+orbits-cli actions run MyGreetings name='John Doe' date='01-01-01' -f src/orbits/my-agent.ts -l
+```
+
+<video
+controls
+style={{
+        width: '100%',
+        maxWidth: '800px',
+        margin: '16px auto',
+        display: 'block',
+    }}
+
+>
+    <source src="/videos/install-agent.mp4" />
+</video>
+
+##### Uninstall MyGreetings agent
+
+```bash
+orbits-cli actions run MyGreetings name='John Doe' date='01-01-01' commandName=Uninstall -f src/orbits/my-agent.ts -l
+```
+
+<video
+controls
+style={{
+        width: '100%',
+        maxWidth: '800px',
+        margin: '16px auto',
+        display: 'block',
+    }}
+>
+    <source src="/videos/uninstall-agent.mp4" />
+</video>
+
+
+Head [here](/cli/commands) to know more about the different cli commands.
+
 
 ## Next Steps
 
