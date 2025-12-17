@@ -33,7 +33,6 @@
     "@docusaurus/types": "^3.9.2",
     "@tsconfig/node22": "^22.0.2",
     "typedoc": "^0.28.5",
-    "typedoc-plugin-markdown": "4.6.4",
     "typescript": "5.8.3"
   },
   "browserslist": {
@@ -50,9 +49,5 @@
   },
   "engines": {
     "node": ">=18.0"
-  },
-  "overrides": {
-    "typedoc": "^0.28.5",
-    "webpack-dev-server": "^5.2.2"
   }
 }
