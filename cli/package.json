@@ -23,23 +23,23 @@
         "ansi-styles": "^6.2.3",
         "blessed": "^0.1.81",
         "colors": "^1.4.0",
-        "commander": "^14.0.0",
+        "commander": "^14.0.2",
         "copy-paste": "^2.2.0",
         "find-up-simple": "^1.0.1",
-        "mongoose": "^8.17.0",
+        "mongoose": "^8.22.0",
         "string-width": "^8.1.0",
         "strip-ansi": "^7.1.2",
         "winston": "catalog:"
     },
     "devDependencies": {
-        "@tsconfig/node22": "^22.0.2",
-        "@types/blessed": "^0.1.25",
+        "@tsconfig/node22": "^22.0.5",
+        "@types/blessed": "^0.1.27",
         "@types/copy-paste": "^2.1.0",
         "prettier": "catalog:",
         "prettier-plugin-organize-imports": "catalog:",
         "tslib": "catalog:",
-        "tsx": "^4.20.3",
-        "typescript": "^5.9.2"
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3"
     },
     "files": [
         "dist"
