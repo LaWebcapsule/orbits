@@ -1,5 +1,13 @@
 # @wbce/orbits-cli
 
+## 0.2.3
+
+### Patch Changes
+
+- e59bb2d: update dependencies
+- Updated dependencies [e59bb2d]
+    - @orbi-ts/fuel@0.2.2
+
 ## 0.2.2
 
 ### Patch Changes

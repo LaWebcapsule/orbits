@@ -1,5 +1,11 @@
 # @wbce/orbits-fuel
 
+## 0.2.2
+
+### Patch Changes
+
+- e59bb2d: update dependencies
+
 ## 0.2.1
 
 ### Patch Changes
