@@ -11,8 +11,8 @@
     "license": "ISC",
     "dependencies": {
         "@aws-sdk/client-cloudfront": "^3.864.0",
-        "@orbi-ts/core": "latest",
-        "@orbi-ts/fuel": "latest",
+        "@orbi-ts/core": "*",
+        "@orbi-ts/fuel": "*",
         "aws-cdk-lib": "^2.182.0"
     },
     "devDependencies": {
