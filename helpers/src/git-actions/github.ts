@@ -115,8 +115,8 @@ export class GithubApi implements GitProvider {
             .then((infos) =>
                 Boolean(
                     infos.data.length &&
-                        // make sure data includes the given ref
-                        infos.data.find((data) => data.head.ref === refId)
+                    // make sure data includes the given ref
+                    infos.data.find((data) => data.head.ref === refId)
                 )
             );
     }

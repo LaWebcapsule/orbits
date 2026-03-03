@@ -19,7 +19,8 @@ export interface ActionSchemaInterface<
     TArgument = any,
     TBag = any,
     TResult = any,
-> extends mongoose.Document {
+>
+    extends mongoose.Document {
     state: ActionState;
     stateUpdatedAt: Date;
     argument: TArgument;
