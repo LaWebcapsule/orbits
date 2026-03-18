@@ -1,5 +1,11 @@
 # @wbce/orbits-fuel
 
+## 0.2.3
+
+### Patch Changes
+
+- e031659: fix/security-updates
+
 ## 0.2.2
 
 ### Patch Changes
