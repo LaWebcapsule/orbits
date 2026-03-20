@@ -12,7 +12,7 @@ By combining the flexibility of Node.js with a powerful workflow engine, Orbits 
 
 ## Key features
 
-- **Reusable Workflow in typescript**: Apply the [SAGA principles](https://www.baeldung.com/cs/saga-pattern-microservices directly in native TypeScript. Build crash-resilient orchestrators that are easy to maintain and evolve
+- **Reusable Workflow in typescript**: Apply the [SAGA principles](https://www.baeldung.com/cs/saga-pattern-microservices directly in native TypeScript. Build crash-resilient orchestrators that are easy to maintain and evolve.
 - **Model-Driven Orchestration for IaC**: Extend your existing tools like Helm or ArgoCD with custom logic. Define infrastructure as models and orchestrate them according to your specific needs.
 - **Multi-Tenant by Design**: Orchestrate deployments across accounts, services, and environments — all from a unified framework..
 - **Local Testing & Repeatability**: Run your CI/CD workflows locally, write unit tests with Jasmine or Mocha, and ensure reliability before deploying.
