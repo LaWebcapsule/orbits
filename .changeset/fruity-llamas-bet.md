@@ -6,4 +6,4 @@
 '@orbi-ts/services': patch
 ---
 
-Bump picomatch to 4.0.4 and handlebars to 4.7.9
+Update dependencies
