@@ -1,5 +1,11 @@
 # @orbi-ts/services
 
+## 0.2.1
+
+### Patch Changes
+
+- 17bedda: Update dependencies
+
 ## 0.2.0
 
 ### Minor Changes

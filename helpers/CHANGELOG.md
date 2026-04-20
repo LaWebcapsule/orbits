@@ -1,5 +1,15 @@
 # @wbce/orbits-fuel
 
+## 0.2.3
+
+### Patch Changes
+
+- 17bedda: Update dependencies
+- e031659: fix/security-updates
+- Updated dependencies [17bedda]
+    - @orbi-ts/core@0.4.2
+    - @orbi-ts/services@0.2.1
+
 ## 0.2.2
 
 ### Patch Changes
