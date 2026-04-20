@@ -1,5 +1,13 @@
 # @wbce/orbits-core
 
+## 0.4.2
+
+### Patch Changes
+
+- 17bedda: Update dependencies
+- Updated dependencies [17bedda]
+    - @orbi-ts/services@0.2.1
+
 ## 0.4.1
 
 ### Patch Changes
