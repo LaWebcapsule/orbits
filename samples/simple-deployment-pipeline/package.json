@@ -25,7 +25,7 @@
         "jiti": "^2.5.1",
         "prettier": "^3.6.2",
         "strip-ansi": "^7.1.0",
-        "ts-jest": "^29.4.1",
+        "ts-jest": "^29.4.9",
         "ts-node": "^10.9.2",
         "tsx": "^4.19.4",
         "typescript": "5.8.3",
