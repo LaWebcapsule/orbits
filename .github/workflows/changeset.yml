@@ -10,6 +10,11 @@ env:
 
 jobs:
   version:
+    name: Version & Publish
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +29,7 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "pnpm"
 
       - name: Install dependencies
