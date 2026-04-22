@@ -2,6 +2,10 @@
   "name": "@orbi-ts/eslint-plugin-orbits",
   "version": "0.1.2",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaWebcapsule/orbits"
+  },
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Info: no test specified\"",
