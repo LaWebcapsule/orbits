@@ -10,6 +10,11 @@ env:
 
 jobs:
   version:
+    name: Version & Publish
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -19,12 +24,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "pnpm"
 
       - name: Install dependencies
@@ -41,4 +46,4 @@ jobs:
           publish: pnpm ci:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
