@@ -5,11 +5,9 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "*",
-    "@types/uuid": "*"
+    "@types/node": "*"
   },
   "dependencies": {
-    "aws-sdk": "*",
-    "uuid": "*"
+    "aws-sdk": "^2.1693.0"
   }
 }

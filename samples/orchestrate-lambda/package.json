@@ -12,6 +12,7 @@
   "dependencies": {
     "@orbi-ts/core": "latest",
     "@orbi-ts/fuel": "latest",
+    "aws-cdk-lib": "^2.258.0",
     "path": "^0.12.7"
   },
 "devDependencies": {
@@ -19,5 +20,8 @@
     "tsx": "^4.19.4",
     "typescript": "5.8.3"
   },
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
 }
