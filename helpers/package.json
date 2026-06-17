@@ -52,7 +52,7 @@
         "@types/dockerode": "^3.3.47",
         "@types/express": "^4.17.25",
         "aws-cdk": "^2.1108.0",
-        "aws-cdk-lib": "^2.241.0",
+        "aws-cdk-lib": "^2.246.0",
         "cdk8s": "^2.70.49",
         "dockerode": "^4.0.9",
         "express": "^4.22.1",
