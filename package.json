@@ -16,6 +16,11 @@
     "url": "https://gitlab.com/LaWebcapsule/orbits/actions/issues"
   },
   "homepage": "https://gitlab.com/LaWebcapsule/orbits/actions#readme",
+  "packageManager": "pnpm@10.29.3",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10.29.3"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.31.0"
   },
