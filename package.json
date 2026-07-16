@@ -22,7 +22,7 @@
     "pnpm": ">=10.29.3"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0"
+    "@changesets/cli": "^2.31.1"
   },
   "pnpm": {
     "overrides": {
@@ -55,7 +55,8 @@
       "fast-xml-builder@<=1.1.6": ">=1.1.7",
       "fast-uri@<3.1.2": ">=3.1.2",
       "ws@>=8.0.0 <8.20.1": ">=8.20.1",
-      "@grpc/grpc-js@>=1.14.0 <1.14.4": ">=1.14.4"
+      "@grpc/grpc-js@>=1.14.0 <1.14.4": ">=1.14.4",
+      "form-data@>=4.0.0 <4.0.6": ">=4.0.6"
     }
   },
   "dependencies": {
