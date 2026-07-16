@@ -25,7 +25,7 @@ catalogs:
       specifier: ^6.13.9
       version: 6.13.9
     prettier:
-      specifier: ^3.9.3
+      specifier: ^3.9.5
       version: 3.8.1
     prettier-plugin-organize-imports:
       specifier: ^4.3.0
@@ -87,14 +87,14 @@ importers:
     dependencies:
       prettier:
         specifier: 'catalog:'
-        version: 3.9.3
+        version: 3.9.5
       prettier-plugin-organize-imports:
         specifier: 'catalog:'
-        version: 4.3.0(prettier@3.9.3)(typescript@5.9.3)
+        version: 4.3.0(prettier@3.9.5)(typescript@5.9.3)
     devDependencies:
       '@changesets/cli':
-        specifier: ^2.31.0
-        version: 2.31.0(@types/node@25.3.3)
+        specifier: ^2.31.1
+        version: 2.31.1(@types/node@25.3.3)
 
   cli:
     dependencies:
@@ -356,7 +356,7 @@ importers:
         version: 9.39.3(jiti@1.21.7)
       eslint-doc-generator:
         specifier: ^2.4.0
-        version: 2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.3)(typescript@5.9.3)
+        version: 2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.5)(typescript@5.9.3)
       eslint-plugin-eslint-plugin:
         specifier: ^6.5.0
         version: 6.5.0(eslint@9.39.3(jiti@1.21.7))
@@ -790,8 +790,8 @@ packages:
   '@changesets/changelog-git@0.2.1':
     resolution: {integrity: sha512-x/xEleCFLH28c3bQeQIyeZf8lFXyDFVn1SgcBiR2Tw/r4IAWlk1fzxCEZ6NxQAjF2Nwtczoen3OA2qR+UawQ8Q==}
 
-  '@changesets/cli@2.31.0':
-    resolution: {integrity: sha512-AhI4enNTgHu2IZr6K4WZyf0EPch4XVMn1yOMFmCD9gsfBGqMYaHXls5HyDv6/CL5axVQABz68eG30eCtbr2wFg==}
+  '@changesets/cli@2.31.1':
+    resolution: {integrity: sha512-uO05WTcRBwuVOJVSW8Cmpqw6q0WDL53ajGCMyszutvOe5toOnunbpM4jZzf+qxBOz7i0AzopZ8diBuewjmF40w==}
     hasBin: true
 
   '@changesets/config@3.1.4':
@@ -2972,8 +2972,8 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
-  iconv-lite@0.7.2:
-    resolution: {integrity: sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==}
+  iconv-lite@0.7.3:
+    resolution: {integrity: sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==}
     engines: {node: '>=0.10.0'}
 
   ieee754@1.2.1:
@@ -3660,8 +3660,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prettier@3.9.3:
-    resolution: {integrity: sha512-HWmu+K+zvHNpaMfSnYeqdqrDbR16cuIXaPx8WoHaviQkDJh1/0BNtOZmHVQI5jc3wXv0H1yXc9wjvFdXh+n3hQ==}
+  prettier@3.9.5:
+    resolution: {integrity: sha512-/FVl766LpUfB5vXgCYOYa0MeV/441Ia99AeICQIQFTY/Nw0roZwULcXpku5i1/m5kt/baz+s4Zogspd839HSMg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -4383,6 +4383,18 @@ packages:
 
   ws@8.21.0:
     resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  ws@8.21.1:
+    resolution: {integrity: sha512-+0NTnW77fFN/DjQi6k/Sq/Yvk4Sgajw7urW8V+asjXnRgDs9gyGkdb7EzgfhA4goXsRIZKE28fzIXBHEzhuiWw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -6051,7 +6063,7 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.31.0(@types/node@25.3.3)':
+  '@changesets/cli@2.31.1(@types/node@25.3.3)':
     dependencies:
       '@changesets/apply-release-plan': 7.1.1
       '@changesets/assemble-release-plan': 6.0.10
@@ -6403,7 +6415,7 @@ snapshots:
   '@inquirer/external-editor@1.0.3(@types/node@25.3.3)':
     dependencies:
       chardet: 2.2.0
-      iconv-lite: 0.7.2
+      iconv-lite: 0.7.3
     optionalDependencies:
       '@types/node': 25.3.3
 
@@ -8123,7 +8135,7 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-doc-generator@2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.3)(typescript@5.9.3):
+  eslint-doc-generator@2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.5)(typescript@5.9.3):
     dependencies:
       '@typescript-eslint/utils': 8.18.0(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)
       ajv: 8.18.0
@@ -8140,7 +8152,7 @@ snapshots:
       markdown-table: 3.0.4
       type-fest: 4.41.0
     optionalDependencies:
-      prettier: 3.9.3
+      prettier: 3.9.5
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -8572,7 +8584,7 @@ snapshots:
       safer-buffer: 2.1.2
     optional: true
 
-  iconv-lite@0.7.2:
+  iconv-lite@0.7.3:
     dependencies:
       safer-buffer: 2.1.2
 
@@ -8695,7 +8707,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
-      ws: 8.21.0
+      ws: 8.21.1
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -9176,16 +9188,16 @@ snapshots:
       prettier: 3.8.1
       typescript: 5.9.3
 
-  prettier-plugin-organize-imports@4.3.0(prettier@3.9.3)(typescript@5.9.3):
+  prettier-plugin-organize-imports@4.3.0(prettier@3.9.5)(typescript@5.9.3):
     dependencies:
-      prettier: 3.9.3
+      prettier: 3.9.5
       typescript: 5.9.3
 
   prettier@2.8.8: {}
 
   prettier@3.8.1: {}
 
-  prettier@3.9.3: {}
+  prettier@3.9.5: {}
 
   pretty-format@29.7.0:
     dependencies:
@@ -9915,6 +9927,9 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.21.0: {}
+
+  ws@8.21.1:
+    optional: true
 
   xcase@2.0.1: {}
 
