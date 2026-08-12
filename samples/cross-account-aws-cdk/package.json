@@ -13,7 +13,7 @@
   "dependencies": {
     "@orbi-ts/core": "latest",
     "@orbi-ts/fuel": "latest",
-    "aws-cdk-lib": "^2.182.0"
+    "aws-cdk-lib": "^2.264.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "16.1.3",
