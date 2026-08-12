@@ -12,7 +12,7 @@
   "dependencies": {
     "@orbi-ts/core": "latest",
     "@orbi-ts/fuel": "latest",
-    "aws-cdk-lib": "^2.258.0",
+    "aws-cdk-lib": "^2.264.0",
     "path": "^0.12.7"
   },
 "devDependencies": {
