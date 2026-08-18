@@ -59,7 +59,7 @@
         "mongoose": "catalog:",
         "octokit": "^4.1.4",
         "source-map-support": "^0.5.21",
-        "tsx": "^4.21.0",
+        "tsx": "^4.23.12",
         "winston": "catalog:"
     },
     "type": "module"
