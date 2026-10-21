@@ -43,7 +43,7 @@
         "@aws-sdk/client-cloudformation": "^3.1000.0",
         "@aws-sdk/client-ecr": "^3.1000.0",
         "@aws-sdk/client-sso-oidc": "^3.1000.0",
-        "@gitbeaker/node": "^35.8.1",
+        "@gitbeaker/rest": "^43.8.0",
         "@kubernetes/client-node": "^1.4.0",
         "@octokit/auth-token": "^3.0.4",
         "@octokit/types": "^13.10.0",
