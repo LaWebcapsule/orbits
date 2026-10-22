@@ -1,5 +1,14 @@
 # @wbce/orbits-fuel
 
+## 0.0.58
+
+### Patch Changes
+
+- Replace the deprecated `@gitbeaker/node` with `@gitbeaker/rest`, which removes
+  `decode-uri-component@0.2.2` from the dependency tree (GHSA-vcc3-ghjq-m6fr).
+  Maintenance release for the `@wbce` package family: still depends on
+  `@wbce/orbits-core@^0.0.43`, no public API or GitLab request change.
+
 ## 0.0.57
 
 ### Patch Changes
