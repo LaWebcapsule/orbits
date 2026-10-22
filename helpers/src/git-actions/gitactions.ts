@@ -45,11 +45,17 @@ export class AddGitWebHookAction extends GitAction {
     static defaultDelay = 2 * 60 * 1000;
 
     main() {
-        return this.gitProvider.addWebHook(
-            this.argument.repoName,
-            this.argument.targetUrl,
-            this.argument.events
-        );
+        return this.gitProvider
+            .addWebHook(
+                this.argument.repoName,
+                this.argument.targetUrl,
+                this.argument.events
+            )
+            .then((hook) => {
+                // main() resolves to the next ActionState, not to the result.
+                this.setResult(hook);
+                return ActionState.SUCCESS;
+            });
     }
 
     watcher() {
