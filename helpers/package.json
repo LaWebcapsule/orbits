@@ -41,7 +41,6 @@
         "@aws-sdk/client-cloudformation": "^3.787.0",
         "@aws-sdk/client-ecr": "^3.787.0",
         "@aws-sdk/client-sso-oidc": "^3.787.0",
-        "@gitbeaker/node": "^35.8.1",
         "@octokit/auth-token": "^3.0.4",
         "@octokit/types": "^13.10.0",
         "@types/dockerode": "^3.3.38",
