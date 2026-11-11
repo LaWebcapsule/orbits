@@ -23,10 +23,10 @@ catalogs:
       version: 4.6.0
     mongoose:
       specifier: ^6.13.11
-      version: 6.13.11
+      version: 6.13.12
     prettier:
       specifier: ^3.9.5
-      version: 3.8.1
+      version: 3.9.5
     prettier-plugin-organize-imports:
       specifier: ^4.3.0
       version: 4.3.0
@@ -137,8 +137,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       mongoose:
-        specifier: ^8.24.3
-        version: 8.24.3(@aws-sdk/credential-providers@3.1000.0)(socks@2.8.7)
+        specifier: ^8.24.7
+        version: 8.24.7(@aws-sdk/credential-providers@3.1000.0)(socks@2.8.7)
       string-width:
         specifier: ^8.2.0
         version: 8.2.0
@@ -160,10 +160,10 @@ importers:
         version: 2.1.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.1
+        version: 3.9.10
       prettier-plugin-organize-imports:
         specifier: 'catalog:'
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
+        version: 4.3.0(prettier@3.9.10)(typescript@5.9.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -184,7 +184,7 @@ importers:
         version: 4.2.0
       mongoose:
         specifier: 'catalog:'
-        version: 6.13.11
+        version: 6.13.12
       precinct:
         specifier: ^12.2.0
         version: 12.2.0
@@ -212,10 +212,10 @@ importers:
         version: 4.6.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.1
+        version: 3.9.10
       prettier-plugin-organize-imports:
         specifier: 'catalog:'
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
+        version: 4.3.0(prettier@3.9.10)(typescript@5.9.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -281,7 +281,7 @@ importers:
         version: 4.22.1
       mongoose:
         specifier: 'catalog:'
-        version: 6.13.11
+        version: 6.13.12
       octokit:
         specifier: ^4.1.4
         version: 4.1.4
@@ -315,10 +315,10 @@ importers:
         version: 4.6.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.1
+        version: 3.9.10
       prettier-plugin-organize-imports:
         specifier: 'catalog:'
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
+        version: 4.3.0(prettier@3.9.10)(typescript@5.9.3)
       ts-node:
         specifier: 'catalog:'
         version: 10.9.2(@types/node@18.19.130)(typescript@5.9.3)
@@ -367,7 +367,7 @@ importers:
         version: 9.39.3(jiti@1.21.7)
       eslint-doc-generator:
         specifier: ^2.4.0
-        version: 2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.5)(typescript@5.9.3)
+        version: 2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.10)(typescript@5.9.3)
       eslint-plugin-eslint-plugin:
         specifier: ^6.5.0
         version: 6.5.0(eslint@9.39.3(jiti@1.21.7))
@@ -397,10 +397,10 @@ importers:
         version: 18.19.130
       prettier:
         specifier: 'catalog:'
-        version: 3.8.1
+        version: 3.9.10
       prettier-plugin-organize-imports:
         specifier: 'catalog:'
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
+        version: 4.3.0(prettier@3.9.10)(typescript@5.9.3)
       ts-node:
         specifier: 'catalog:'
         version: 10.9.2(@types/node@18.19.130)(typescript@5.9.3)
@@ -1189,8 +1189,8 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
-  '@mongodb-js/saslprep@1.4.6':
-    resolution: {integrity: sha512-y+x3H1xBZd38n10NZF/rEBlvDOOMQ6LKUTHqr8R9VkJ+mmQOYtJFxIlkkK8fZrtOiL6VixbOBWMbZGBdal3Z1g==}
+  '@mongodb-js/saslprep@1.6.3':
+    resolution: {integrity: sha512-aHGFvT95c82CoQ7hb6qXpz8Hcc5PJb3ZtQ+P01QDBbyQday0mjcrJPeNJOHCgWe0pGX0zKmKP+1mWi/I/BCX9Q==}
 
   '@nodable/entities@2.1.0':
     resolution: {integrity: sha512-nyT7T3nbMyBI/lvr6L5TyWbFJAI9FTgVRakNoBqCD+PmID8DzFrrNdLLtHMwMszOtqZa8PAOV24ZqDnQrhQINA==}
@@ -1567,6 +1567,9 @@ packages:
   '@smithy/smithy-client@4.12.0':
     resolution: {integrity: sha512-R8bQ9K3lCcXyZmBnQqUZJF4ChZmtWT5NLi6x5kgWx5D+/j0KorXcA0YcFg/X5TOgnTCy1tbKc6z2g2y4amFupQ==}
     engines: {node: '>=18.0.0'}
+    deprecated: |-
+      Deprecated due to a bug in custom logger data redaction. Upgrade to the latest version. If you used a custom logger with
+        this version, review your logs and rotate any credentials or other secrets. See https://github.com/aws/aws-sdk-js-v3/issues/8393.
 
   '@smithy/types@4.13.0':
     resolution: {integrity: sha512-COuLsZILbbQsdrwKQpkkpyep7lCsByxwj7m0Mg5v66/ZTyenlfBc40/QFQ5chO0YN/PNEH1Bi3fGtfXPnYNeDw==}
@@ -2620,6 +2623,7 @@ packages:
   eslint@9.39.3:
     resolution: {integrity: sha512-VmQ+sifHUbI/IcSopBCF/HO3YiHQx/AVd3UVyYL6weuwW+HvON9VYn5l6Zl1WZzPWXPNZrSQpxwkkZ/VuvJZzg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -3344,24 +3348,24 @@ packages:
       socks:
         optional: true
 
-  mongoose@6.13.11:
-    resolution: {integrity: sha512-5KM1Oq106FCdiy4//geOam3mPFekkSY0a4L+zQQPrc6tB6AJtg772aMgeUHF2sTNSxFhJQsAOjpLJpK6Cz+hRw==}
+  mongoose@6.13.12:
+    resolution: {integrity: sha512-VljZzIHa///LQAwM15y8V3lgpi2+/+AcLmjb98Dsyxe3sCF0yxb3i+10+rxS5Z0QzVM2/p7ibNITfjnQP47Azw==}
     engines: {node: '>=12.0.0'}
 
-  mongoose@8.24.3:
-    resolution: {integrity: sha512-CMHqVyjK0Szc6irT14+O+QpN30kHxJLa0FjjLiBz/Txivmfg3mUUdMWAXfYM1Ubl0SNUkcG2cyLKOnhvttLtOA==}
+  mongoose@8.24.7:
+    resolution: {integrity: sha512-+hrEOLpLGPgOt7S/UrcBAKZ4gvB6+5qf16jspWH5xQ8WtQu9lRTzcqy04ZNQrlIox4Pl6Nh2RzlNDPSOFw9rng==}
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
     resolution: {integrity: sha512-ikJRQTk8hw5DEoFVxHG1Gn9T/xcjtdnOKIU1JTmGjZZlg9LST2mBLmcX3/ICIbgJydT2GOc15RnNy5mHmzfSew==}
     engines: {node: '>=4.0.0'}
 
-  mquery@4.0.3:
-    resolution: {integrity: sha512-J5heI+P08I6VJ2Ky3+33IpCdAvlYGTSUjwTPxkAr8i8EoduPMBX2OY/wa3IKZIQl7MU4SbFk8ndgSKyB/cl1zA==}
+  mquery@4.0.4:
+    resolution: {integrity: sha512-L98XAumGC8qNT/YgxIvlvvMwxW1ZmbFA9RAlNCVF08iouv2ebWoV1Pyo9tQEMInHHxbW0BQ9GfxEjyDd4v/Uww==}
     engines: {node: '>=12.0.0'}
 
-  mquery@5.0.0:
-    resolution: {integrity: sha512-iQMncpmEK8R8ncT8HJGsGc9Dsp8xcgYMVSbs5jgnm1lFHTZqMJTUWTDx1LBO8+mK3tPNZWFLBghQEIOULSTHZg==}
+  mquery@5.0.1:
+    resolution: {integrity: sha512-C99lWV0TFI34pS008jBsi3JrE2xZPnTgUw5yApQR71nRP0hxLy8D5m1Lbbk83c8AQWJwdJ0329HzFtZ1MRTUIw==}
     engines: {node: '>=14.0.0'}
 
   mri@1.2.0:
@@ -3581,8 +3585,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  prettier@3.8.1:
-    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+  prettier@3.9.10:
+    resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -6397,7 +6401,7 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 2.1.0
 
-  '@mongodb-js/saslprep@1.4.6':
+  '@mongodb-js/saslprep@1.6.3':
     dependencies:
       sparse-bitfield: 3.0.3
 
@@ -7972,7 +7976,7 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-doc-generator@2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.5)(typescript@5.9.3):
+  eslint-doc-generator@2.4.0(eslint@9.39.3(jiti@1.21.7))(prettier@3.9.10)(typescript@5.9.3):
     dependencies:
       '@typescript-eslint/utils': 8.18.0(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)
       ajv: 8.18.0
@@ -7989,7 +7993,7 @@ snapshots:
       markdown-table: 3.0.4
       type-fest: 4.41.0
     optionalDependencies:
-      prettier: 3.9.5
+      prettier: 3.9.10
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -8724,39 +8728,39 @@ snapshots:
       socks: 2.8.7
     optionalDependencies:
       '@aws-sdk/credential-providers': 3.1000.0
-      '@mongodb-js/saslprep': 1.4.6
+      '@mongodb-js/saslprep': 1.6.3
     transitivePeerDependencies:
       - aws-crt
 
   mongodb@6.20.0(@aws-sdk/credential-providers@3.1000.0)(socks@2.8.7):
     dependencies:
-      '@mongodb-js/saslprep': 1.4.6
+      '@mongodb-js/saslprep': 1.6.3
       bson: 6.10.4
       mongodb-connection-string-url: 3.0.2
     optionalDependencies:
       '@aws-sdk/credential-providers': 3.1000.0
       socks: 2.8.7
 
-  mongoose@6.13.11:
+  mongoose@6.13.12:
     dependencies:
       bson: 4.7.2
       kareem: 2.5.1
       mongodb: 4.17.2
       mpath: 0.9.0
-      mquery: 4.0.3
+      mquery: 4.0.4
       ms: 2.1.3
       sift: 16.0.1
     transitivePeerDependencies:
       - aws-crt
       - supports-color
 
-  mongoose@8.24.3(@aws-sdk/credential-providers@3.1000.0)(socks@2.8.7):
+  mongoose@8.24.7(@aws-sdk/credential-providers@3.1000.0)(socks@2.8.7):
     dependencies:
       bson: 6.10.4
       kareem: 2.6.3
       mongodb: 6.20.0(@aws-sdk/credential-providers@3.1000.0)(socks@2.8.7)
       mpath: 0.9.0
-      mquery: 5.0.0
+      mquery: 5.0.1
       ms: 2.1.3
       sift: 17.1.3
     transitivePeerDependencies:
@@ -8771,13 +8775,13 @@ snapshots:
 
   mpath@0.9.0: {}
 
-  mquery@4.0.3:
+  mquery@4.0.4:
     dependencies:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
-  mquery@5.0.0:
+  mquery@5.0.1:
     dependencies:
       debug: 4.4.3
     transitivePeerDependencies:
@@ -8977,9 +8981,9 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-organize-imports@4.3.0(prettier@3.8.1)(typescript@5.9.3):
+  prettier-plugin-organize-imports@4.3.0(prettier@3.9.10)(typescript@5.9.3):
     dependencies:
-      prettier: 3.8.1
+      prettier: 3.9.10
       typescript: 5.9.3
 
   prettier-plugin-organize-imports@4.3.0(prettier@3.9.5)(typescript@5.9.3):
@@ -8989,7 +8993,7 @@ snapshots:
 
   prettier@2.8.8: {}
 
-  prettier@3.8.1: {}
+  prettier@3.9.10: {}
 
   prettier@3.9.5: {}
 
