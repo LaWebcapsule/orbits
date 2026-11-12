@@ -17,11 +17,6 @@ export class GitAction extends Action {
             this.argument.gitProviderName === gitProviders.GITHUB
         ) {
             gitToken = process.env['gh_token'];
-        } else if (
-            !gitToken &&
-            this.argument.gitProviderName === gitProviders.GITLAB
-        ) {
-            gitToken = process.env['gitlab_token'];
         }
         this.gitProvider = gitCenter.getGitProvider(
             this.argument.gitProviderName,
