@@ -1,5 +1,11 @@
 # @wbce/orbits-fuel
 
+## 0.0.58
+
+### Patch Changes
+
+- 83248ea: Remove GitLab support and the deprecated `@gitbeaker/node` dependency (fixes `decode-uri-component` GHSA-vcc3-ghjq-m6fr, GHSA-qr28-fpjm-wq7f)
+
 ## 0.0.57
 
 ### Patch Changes
